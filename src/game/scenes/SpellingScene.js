@@ -168,6 +168,14 @@ export class SpellingScene extends Scene {
         });
     }
 
+    _drawInstructions() {
+        this.add.text(512, 462, 'Clique sur les lettres dans l\'ordre', {
+            fontSize: '20px',
+            color: '#004488',
+            fontFamily: 'Arial Black, Arial, sans-serif'
+        }).setOrigin(0.5);
+    }
+
     _drawCloseButton() {
         let btn;
         if (this.textures.exists('ui_button_red')) {
