@@ -1,5 +1,5 @@
-import { ITEMS, RARITY } from './data/ItemData.js';
-import { getInventory, addToInventory } from './data/LevelData.js';
+import { ITEMS, RARITY } from '../data/ItemData.js';
+import { getInventory, addToInventory } from '../data/LevelData.js';
 
 export class LootManager {
     static rollLoot() {
