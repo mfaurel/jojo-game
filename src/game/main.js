@@ -9,6 +9,8 @@ import { MathVictoryScene } from './scenes/MathVictoryScene';
 import { CastleScene }    from './scenes/CastleScene';
 import { SpellingScene }  from './scenes/SpellingScene';
 import { VictoryScene }   from './scenes/VictoryScene';
+import { RewardPopup }    from './scenes/RewardPopup';
+import { CollectionScene } from './scenes/CollectionScene';
 import { AUTO, Game, Scale } from 'phaser';
 
 const config = {
@@ -26,13 +28,15 @@ const config = {
         Preloader,
         MainMenu,
         SpellingMenu,
-        MathWorldSelectScene,
         MathDungeon,
         MathProblemScene,
-        MathVictoryScene,
         CastleScene,
         SpellingScene,
         VictoryScene,
+        RewardPopup,
+        CollectionScene,
+    ]
+};
     ]
 };
 
