@@ -52,14 +52,14 @@ export class MathProblemScene extends Scene {
         // Header
         const titleText = this.isChest ? 'Coffre Magique ! 🎁' : 'Aide Jolyne ! ✨';
         this.add.text(panelX, panelY - panelHeight * 0.4, titleText, {
-            fontSize: 'clamp(28px, 6vw, 48px)',
+            fontSize: '32px',
             fontFamily: 'Arial Black',
             color: '#004488'
         }).setOrigin(0.5);
 
         // Equation Display
         this.add.text(panelX, panelY - panelHeight * 0.2, `${this.num1} + ${this.num2} =`, {
-            fontSize: 'clamp(40px, 10vw, 80px)',
+            fontSize: '60px',
             fontFamily: 'Arial Black',
             color: '#ff6600',
             stroke: '#000',
@@ -69,10 +69,11 @@ export class MathProblemScene extends Scene {
         // Input Box
         const inputBg = this.add.graphics();
         inputBg.fillStyle(0x00aaff, 0.1);
-        inputBg.fillRoundedRect(panelX - 60, panelY - 50, 120, 100, 15);
+        // Widened box to fit 2 digits safely (160 instead of 120)
+        inputBg.fillRoundedRect(panelX - 80, panelY - 50, 160, 100, 15);
         
         this.inputText = this.add.text(panelX, panelY, '?', {
-            fontSize: 'clamp(60px, 12vw, 90px)',
+            fontSize: '70px',
             fontFamily: 'Arial Black',
             color: '#00aaff'
         }).setOrigin(0.5);
@@ -108,7 +109,7 @@ export class MathProblemScene extends Scene {
         bg.setInteractive({ useHandCursor: true });
         
         const txt = this.add.text(x, y, label, {
-            fontSize: 'clamp(24px, 5vw, 40px)',
+            fontSize: '32px',
             fontFamily: 'Arial Black',
             color: '#ffffff'
         }).setOrigin(0.5);

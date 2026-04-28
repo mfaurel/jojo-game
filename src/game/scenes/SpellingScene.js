@@ -140,8 +140,10 @@ export class SpellingScene extends Scene {
             const cy = startY;
 
             let bg;
+            const baseScale = tileW / 128; // ui_tile.svg is 128x128
+            
             if (this.textures.exists('ui_tile')) {
-                bg = this.add.image(cx, cy, 'ui_tile').setDisplaySize(tileW, tileH);
+                bg = this.add.image(cx, cy, 'ui_tile').setScale(baseScale);
             } else {
                 bg = this.add.rectangle(cx, cy, tileW, tileH, 0xee7700, 1);
             }
@@ -155,15 +157,15 @@ export class SpellingScene extends Scene {
                 strokeThickness: 4,
             }).setOrigin(0.5).setDepth(4);
 
-            bg.on('pointerover', () => { if (!tile.used) bg.setScale(1.1); });
-            bg.on('pointerout',  () => { if (!tile.used) bg.setScale(1); });
-            bg.on('pointerdown', () => { if (!tile.used) bg.setScale(0.9); });
+            bg.on('pointerover', () => { if (!tile.used) bg.setScale(baseScale * 1.1); });
+            bg.on('pointerout',  () => { if (!tile.used) bg.setScale(baseScale); });
+            bg.on('pointerdown', () => { if (!tile.used) bg.setScale(baseScale * 0.9); });
             bg.on('pointerup',   () => {
-                bg.setScale(1);
+                bg.setScale(baseScale);
                 if (!tile.used) this._selectLetter(tile);
             });
 
-            const tile = { bg, txt, letter, used: false };
+            const tile = { bg, txt, letter, used: false, baseScale };
             this.tiles.push(tile);
         });
     }
@@ -246,6 +248,7 @@ export class SpellingScene extends Scene {
         const tile = this.attempt.pop();
         tile.used = false;
         tile.bg.setAlpha(1);
+        tile.bg.setScale(tile.baseScale || 1);
         tile.txt.setAlpha(1);
         this.slotTexts[this.attempt.length].setText('');
         audio.playBackspace();
@@ -329,6 +332,7 @@ export class SpellingScene extends Scene {
         this.attempt.forEach(tile => {
             tile.used = false;
             tile.bg.setAlpha(1);
+            tile.bg.setScale(tile.baseScale || 1);
             tile.txt.setAlpha(1);
         });
         this.attempt = [];

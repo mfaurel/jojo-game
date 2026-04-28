@@ -108,7 +108,7 @@ export class MathDungeon extends Scene {
         // Score HUD background
         this.add.rectangle(135, 42, 250, 58, 0x000000, 0.5).setDepth(199);
 
-        this.add.text(18, 16, 'Score', {
+        this.add.text(18, 16, 'Points', {
             fontSize: '15px',
             color: '#aaccff',
             fontFamily: 'Arial Black',
@@ -358,7 +358,7 @@ export class MathDungeon extends Scene {
     }
 
     _drawDetailedMonster(g, name) {
-        if (name === 'Snowman') {
+        if (name === 'Bonhomme de Neige') {
             g.fillStyle(0xe0e0e0, 1);
             g.fillCircle(0, 50, 70);
             g.fillCircle(0, -30, 50);
@@ -370,7 +370,7 @@ export class MathDungeon extends Scene {
             g.fillStyle(0x2c3e50, 1);
             g.fillCircle(-15, -45, 6);
             g.fillCircle(15, -45, 6);
-        } else if (name === 'Ice Golem') {
+        } else if (name === 'Golem de Glace') {
             g.fillStyle(0x2980b9, 1);
             g.fillRect(-70, -100, 140, 200);
             g.fillStyle(0x3498db, 1);
@@ -381,7 +381,7 @@ export class MathDungeon extends Scene {
             g.lineStyle(2, 0xffffff, 0.5);
             g.lineBetween(-30, 10, 20, 50);
             g.lineBetween(40, -20, 60, 20);
-        } else if (name === 'Polar Bear') {
+        } else if (name === 'Ours Polaire') {
             g.fillStyle(0xdcdde1, 1);
             g.fillEllipse(0, 0, 160, 110);
             g.fillCircle(90, -40, 50);
@@ -390,7 +390,7 @@ export class MathDungeon extends Scene {
             g.fillStyle(0x2f3640, 1);
             g.fillCircle(115, -45, 6);
             g.fillCircle(130, -35, 10);
-        } else if (name === 'Lollipop') {
+        } else if (name === 'Sucette') {
             // Stick with candy stripes
             g.fillStyle(0xffffff, 1);
             g.fillRect(-7, 0, 14, 120);
@@ -420,7 +420,7 @@ export class MathDungeon extends Scene {
             g.beginPath();
             g.arc(0, -55, 18, 0.2, Math.PI - 0.2, false);
             g.strokePath();
-        } else if (name === 'Gummy Bear') {
+        } else if (name === 'Ourson Gommeux') {
             // Body
             g.fillStyle(0xff6644, 1);
             g.fillEllipse(0, 30, 110, 130);
@@ -445,7 +445,7 @@ export class MathDungeon extends Scene {
             g.beginPath();
             g.arc(0, -40, 16, 0.2, Math.PI - 0.2, false);
             g.strokePath();
-        } else if (name === 'Candy Cane') {
+        } else if (name === 'Canne en Sucre') {
             // White shaft
             g.fillStyle(0xffffff, 1);
             g.fillRect(-18, -60, 36, 160);
@@ -470,7 +470,7 @@ export class MathDungeon extends Scene {
             g.beginPath();
             g.arc(0, 55, 10, 0.2, Math.PI - 0.2, false);
             g.strokePath();
-        } else if (name === 'Bee') {
+        } else if (name === 'Abeille') {
             // Striped body
             g.fillStyle(0xffd700, 1);
             g.fillEllipse(0, 20, 80, 120);
@@ -501,7 +501,7 @@ export class MathDungeon extends Scene {
             g.beginPath();
             g.arc(0, -46, 13, 0.2, Math.PI - 0.2, false);
             g.strokePath();
-        } else if (name === 'Butterfly') {
+        } else if (name === 'Papillon') {
             // Upper wings
             g.fillStyle(0x8833ff, 1);
             g.fillTriangle(-95, -65, -10, -55, -10, 60);
@@ -526,7 +526,7 @@ export class MathDungeon extends Scene {
             g.fillStyle(0x8833ff, 1);
             g.fillCircle(-20, -100, 6);
             g.fillCircle(20, -100, 6);
-        } else if (name === 'Ladybug') {
+        } else if (name === 'Coccinelle') {
             // Red body
             g.fillStyle(0xdd1111, 1);
             g.fillEllipse(0, 10, 140, 120);
