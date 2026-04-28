@@ -1,0 +1,8 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" fill="#6A1A9A"/>
+  <!-- Gold Border -->
+  <rect x="8" y="8" width="112" height="112" fill="none" stroke="#FFD700" stroke-width="6"/>
+  <!-- Center Star -->
+  <path d="M64 25 L75 50 L100 50 L80 65 L90 90 L64 75 L38 90 L48 65 L28 50 L53 50 Z" fill="#FFD700" fill-opacity="0.8"/>
+  <circle cx="64" cy="58" r="10" fill="#FFD700"/>
+</svg>

@@ -12,24 +12,51 @@ export class MapBuilder {
                 const type = mapGrid[row][col];
                 const px = col * TILE_SIZE;
                 const py = row * TILE_SIZE;
-                switch (type) {
-                    case TILE.FLOOR:
-                    case TILE.START:
-                        this._drawFloor(px, py);
-                        break;
-                    case TILE.WALL:
-                        this._drawWall(px, py);
-                        break;
-                    case TILE.GOAL:
-                        this._drawGoal(px, py);
-                        break;
-                    case TILE.GATE:
-                        this._drawFloor(px, py); // gate manager draws on top
-                        break;
+                
+                // Try to use a sprite if the texture is loaded, otherwise fallback to graphics
+                if (!this._tryDrawSprite(type, px, py)) {
+                    this._drawProcedural(type, px, py);
                 }
             }
         }
         this._drawOuterBorder();
+    }
+
+    _tryDrawSprite(type, px, py) {
+        const textureKey = this._getTextureKey(type);
+        if (textureKey && this.scene.textures.exists(textureKey)) {
+            // Anchor at top-left to match rect drawing
+            this.scene.add.image(px, py, textureKey).setOrigin(0).setDisplaySize(TILE_SIZE, TILE_SIZE);
+            return true;
+        }
+        return false;
+    }
+
+    _getTextureKey(type) {
+        switch (type) {
+            case TILE.FLOOR: return 'tile_floor';
+            case TILE.WALL:  return 'tile_wall';
+            case TILE.GOAL:  return 'tile_goal';
+            default:         return null;
+        }
+    }
+
+    _drawProcedural(type, px, py) {
+        switch (type) {
+            case TILE.FLOOR:
+            case TILE.START:
+                this._drawFloor(px, py);
+                break;
+            case TILE.WALL:
+                this._drawWall(px, py);
+                break;
+            case TILE.GOAL:
+                this._drawGoal(px, py);
+                break;
+            case TILE.GATE:
+                this._drawFloor(px, py);
+                break;
+        }
     }
 
     _drawFloor(px, py) {

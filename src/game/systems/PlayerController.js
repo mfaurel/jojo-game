@@ -13,8 +13,26 @@ export class PlayerController {
     }
 
     _buildSprite() {
-        const gfx = this.scene.add.graphics();
+        let visual;
 
+        if (this.scene.textures.exists('player')) {
+            // Use sprite if texture is available
+            visual = this.scene.add.sprite(0, 0, 'player');
+            // Ensure it fits the tile size nicely (allowing for some padding/breathing room)
+            visual.setDisplaySize(TILE_SIZE * 0.8, TILE_SIZE * 0.8);
+        } else {
+            // Fallback to procedural graphics
+            const gfx = this.scene.add.graphics();
+            this._drawProceduralPlayer(gfx);
+            visual = gfx;
+        }
+
+        const pos = tileToPx(this.col, this.row);
+        this.container = this.scene.add.container(pos.x, pos.y, [visual]);
+        this.container.setDepth(10);
+    }
+
+    _drawProceduralPlayer(gfx) {
         // Pink dress (oval body)
         gfx.fillStyle(0xff80b4, 1);
         gfx.fillEllipse(0, 10, 46, 34);
@@ -61,10 +79,6 @@ export class PlayerController {
         gfx.beginPath();
         gfx.arc(0, -14, 5, 0.15, Math.PI - 0.15, false);
         gfx.strokePath();
-
-        const pos = tileToPx(this.col, this.row);
-        this.container = this.scene.add.container(pos.x, pos.y, [gfx]);
-        this.container.setDepth(10);
     }
 
     _setupInput() {

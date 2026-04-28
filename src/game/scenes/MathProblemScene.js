@@ -39,11 +39,15 @@ export class MathProblemScene extends Scene {
         const panelX = width / 2;
         const panelY = height / 2;
 
-        const panel = this.add.graphics();
-        panel.fillStyle(0xffffff, 1);
-        panel.fillRoundedRect(panelX - panelWidth/2, panelY - panelHeight/2, panelWidth, panelHeight, 30);
-        panel.lineStyle(8, 0x00aaff, 1);
-        panel.strokeRoundedRect(panelX - panelWidth/2, panelY - panelHeight/2, panelWidth, panelHeight, 30);
+        if (this.textures.exists('ui_panel')) {
+            this.add.nineslice(panelX, panelY, 'ui_panel', 0, panelWidth, panelHeight, 40, 40, 40, 40);
+        } else {
+            const panel = this.add.graphics();
+            panel.fillStyle(0xffffff, 1);
+            panel.fillRoundedRect(panelX - panelWidth/2, panelY - panelHeight/2, panelWidth, panelHeight, 30);
+            panel.lineStyle(8, 0x00aaff, 1);
+            panel.strokeRoundedRect(panelX - panelWidth/2, panelY - panelHeight/2, panelWidth, panelHeight, 30);
+        }
 
         // Header
         const titleText = this.isChest ? 'Coffre Magique ! 🎁' : 'Aide Jolyne ! ✨';
@@ -94,8 +98,14 @@ export class MathProblemScene extends Scene {
 
     _createKey(x, y, label, color, isBack) {
         const size = Math.min(this.cameras.main.width * 0.12, 45);
-        const bg = this.add.circle(x, y, size, color, 1)
-            .setInteractive({ useHandCursor: true });
+        
+        let bg;
+        if (this.textures.exists('ui_button')) {
+            bg = this.add.image(x, y, isBack ? 'ui_button_red' : 'ui_button').setDisplaySize(size * 2, size * 2);
+        } else {
+            bg = this.add.circle(x, y, size, color, 1);
+        }
+        bg.setInteractive({ useHandCursor: true });
         
         const txt = this.add.text(x, y, label, {
             fontSize: 'clamp(24px, 5vw, 40px)',

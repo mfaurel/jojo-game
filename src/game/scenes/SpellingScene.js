@@ -35,30 +35,36 @@ export class SpellingScene extends Scene {
     }
 
     _drawPanel() {
-        const panel = this.add.graphics();
-        panel.fillStyle(0x3a0060, 0.97);
-        panel.fillRoundedRect(80, 60, 864, 648, 28);
-        panel.lineStyle(4, 0xffd700, 1);
-        panel.strokeRoundedRect(80, 60, 864, 648, 28);
+        if (this.textures.exists('ui_panel')) {
+            this.add.nineslice(512, 384, 'ui_panel', 0, 864, 648, 40, 40, 40, 40);
+        } else {
+            const panel = this.add.graphics();
+            panel.fillStyle(0x3a0060, 0.97);
+            panel.fillRoundedRect(80, 60, 864, 648, 28);
+            panel.lineStyle(4, 0xffd700, 1);
+            panel.strokeRoundedRect(80, 60, 864, 648, 28);
+        }
     }
 
     _drawTitle() {
-        this.add.text(512, 100, 'Épelle le mot !', {
+        this.add.text(512, 115, 'Épelle le mot !', {
             fontSize: '38px',
             fontFamily: 'Arial Black, Arial, sans-serif',
-            color: '#ffd700',
-            stroke: '#000',
-            strokeThickness: 5,
+            color: '#004488',
         }).setOrigin(0.5);
     }
 
     _drawPicture() {
         // White picture panel
-        const bg = this.add.graphics();
-        bg.fillStyle(0xffffff, 1);
-        bg.fillRoundedRect(110, 150, 260, 260, 18);
-        bg.lineStyle(3, 0xffd700, 1);
-        bg.strokeRoundedRect(110, 150, 260, 260, 18);
+        if (this.textures.exists('ui_panel')) {
+            this.add.nineslice(240, 280, 'ui_panel', 0, 260, 260, 40, 40, 40, 40).setTint(0xffffff);
+        } else {
+            const bg = this.add.graphics();
+            bg.fillStyle(0xffffff, 1);
+            bg.fillRoundedRect(110, 150, 260, 260, 18);
+            bg.lineStyle(3, 0xffd700, 1);
+            bg.strokeRoundedRect(110, 150, 260, 260, 18);
+        }
 
         // Draw the word's picture
         const picGfx = this.add.graphics();
@@ -71,48 +77,53 @@ export class SpellingScene extends Scene {
         const slotH     = 82;
         const gap       = 14;
         const totalW    = wordLen * slotW + (wordLen - 1) * gap;
-        const startX    = 430 + (494 - totalW) / 2;  // right panel half
-        const startY    = 220;
+        const startX    = 430 + (494 - totalW) / 2 + slotW/2;  // center of first slot
+        const startY    = 220 + slotH/2;
 
         for (let i = 0; i < wordLen; i++) {
             const sx = startX + i * (slotW + gap);
 
-            const slotGfx = this.add.graphics();
-            slotGfx.fillStyle(0xfff8e7, 1);
-            slotGfx.fillRoundedRect(sx, startY, slotW, slotH, 12);
-            slotGfx.lineStyle(3, 0xffd700, 1);
-            slotGfx.strokeRoundedRect(sx, startY, slotW, slotH, 12);
+            let slotVisual;
+            if (this.textures.exists('ui_slot')) {
+                slotVisual = this.add.image(sx, startY, 'ui_slot').setDisplaySize(slotW, slotH);
+            } else {
+                const slotGfx = this.add.graphics();
+                slotGfx.fillStyle(0xfff8e7, 1);
+                slotGfx.fillRoundedRect(sx - slotW/2, startY - slotH/2, slotW, slotH, 12);
+                slotGfx.lineStyle(3, 0xffd700, 1);
+                slotGfx.strokeRoundedRect(sx - slotW/2, startY - slotH/2, slotW, slotH, 12);
+                slotVisual = slotGfx;
+            }
 
-            const txt = this.add.text(sx + slotW / 2, startY + slotH / 2, '', {
+            const txt = this.add.text(sx, startY, '', {
                 fontSize: '46px',
                 fontFamily: 'Arial Black, Arial, sans-serif',
                 color: '#3a0060',
             }).setOrigin(0.5);
 
-            this.slots.push({ gfx: slotGfx, x: sx, y: startY, w: slotW, h: slotH });
+            this.slots.push({ visual: slotVisual, x: sx, y: startY, w: slotW, h: slotH });
             this.slotTexts.push(txt);
         }
 
         // Backspace button
-        const bsx = startX + totalW + 20;
-        const bsy = startY + 4;
-        const backBtn = this.add.rectangle(bsx + 30, startY + slotH / 2, 60, 50, 0x882200, 1)
-            .setInteractive()
+        const bsx = startX + totalW/2 + 60;
+        const bsy = startY;
+        
+        let backBtn;
+        if (this.textures.exists('ui_button_red')) {
+            backBtn = this.add.image(bsx, bsy, 'ui_button_red').setDisplaySize(60, 60);
+        } else {
+            backBtn = this.add.rectangle(bsx, bsy, 60, 50, 0x882200, 1);
+        }
+        
+        backBtn.setInteractive()
             .on('pointerup', () => this._backspace())
-            .on('pointerover', () => backBtn.setFillStyle(0xcc3300, 1))
-            .on('pointerout',  () => backBtn.setFillStyle(0x882200, 1));
+            .on('pointerover', () => backBtn.setScale(1.1))
+            .on('pointerout',  () => backBtn.setScale(1));
 
-        this.add.text(bsx + 30, startY + slotH / 2, '⌫', {
+        this.add.text(bsx, bsy, '⌫', {
             fontSize: '26px', color: '#ffffff',
         }).setOrigin(0.5);
-
-        // Word length hint as dots below slots
-        for (let i = 0; i < wordLen; i++) {
-            const sx = startX + i * (slotW + gap);
-            this.add.text(sx + slotW / 2, startY + slotH + 12, '—', {
-                fontSize: '18px', color: '#ffd700',
-            }).setOrigin(0.5);
-        }
     }
 
     _drawLetterPool() {
@@ -121,21 +132,20 @@ export class SpellingScene extends Scene {
         const tileH = 96;
         const gap   = 16;
         const totalW = pool.length * tileW + (pool.length - 1) * gap;
-        const startX = 512 - totalW / 2;
-        const startY = 500;
+        const startX = 512 - totalW / 2 + tileW / 2;
+        const startY = 500 + tileH / 2;
 
         pool.forEach((letter, i) => {
-            const cx = startX + i * (tileW + gap) + tileW / 2;
-            const cy = startY + tileH / 2;
+            const cx = startX + i * (tileW + gap);
+            const cy = startY;
 
-            const bg = this.add.rectangle(cx, cy, tileW, tileH, 0xee7700, 1)
-                .setInteractive()
-                .setDepth(3);
-
-            // Slight 3D border effect
-            const border = this.add.graphics().setDepth(3);
-            border.lineStyle(3, 0xffffff, 0.5);
-            border.strokeRect(cx - tileW / 2 + 2, cy - tileH / 2 + 2, tileW - 4, tileH - 4);
+            let bg;
+            if (this.textures.exists('ui_tile')) {
+                bg = this.add.image(cx, cy, 'ui_tile').setDisplaySize(tileW, tileH);
+            } else {
+                bg = this.add.rectangle(cx, cy, tileW, tileH, 0xee7700, 1);
+            }
+            bg.setInteractive().setDepth(3);
 
             const txt = this.add.text(cx, cy, letter, {
                 fontSize: '52px',
@@ -145,34 +155,31 @@ export class SpellingScene extends Scene {
                 strokeThickness: 4,
             }).setOrigin(0.5).setDepth(4);
 
-            bg.on('pointerover', () => { if (!tile.used) bg.setFillStyle(0xff9922, 1); });
-            bg.on('pointerout',  () => { if (!tile.used) bg.setFillStyle(0xee7700, 1); });
-            bg.on('pointerdown', () => { if (!tile.used) this.tweens.add({ targets: bg, scaleX: 0.88, scaleY: 0.88, duration: 55 }); });
+            bg.on('pointerover', () => { if (!tile.used) bg.setScale(1.1); });
+            bg.on('pointerout',  () => { if (!tile.used) bg.setScale(1); });
+            bg.on('pointerdown', () => { if (!tile.used) bg.setScale(0.9); });
             bg.on('pointerup',   () => {
-                this.tweens.add({ targets: bg, scaleX: 1, scaleY: 1, duration: 80 });
+                bg.setScale(1);
                 if (!tile.used) this._selectLetter(tile);
             });
 
-            const tile = { bg, txt, border, letter, used: false };
+            const tile = { bg, txt, letter, used: false };
             this.tiles.push(tile);
         });
     }
 
-    _drawInstructions() {
-        this.add.text(512, 462, 'Clique sur les lettres dans l\'ordre', {
-            fontSize: '20px',
-            color: '#ddbbff',
-            stroke: '#000',
-            strokeThickness: 3,
-        }).setOrigin(0.5);
-    }
-
     _drawCloseButton() {
-        const btn = this.add.rectangle(910, 88, 44, 44, 0x880000, 1)
-            .setInteractive()
+        let btn;
+        if (this.textures.exists('ui_button_red')) {
+            btn = this.add.image(910, 88, 'ui_button_red').setDisplaySize(44, 44);
+        } else {
+            btn = this.add.rectangle(910, 88, 44, 44, 0x880000, 1);
+        }
+        
+        btn.setInteractive()
             .on('pointerup', () => this._close())
-            .on('pointerover', () => btn.setFillStyle(0xcc0000, 1))
-            .on('pointerout',  () => btn.setFillStyle(0x880000, 1));
+            .on('pointerover', () => btn.setScale(1.1))
+            .on('pointerout',  () => btn.setScale(1));
 
         this.add.text(910, 88, '✕', { fontSize: '22px', color: '#fff' }).setOrigin(0.5);
     }
@@ -193,25 +200,32 @@ export class SpellingScene extends Scene {
         audio.playLetterTap();
 
         // Flash slot
-        this.slots[idx].gfx.clear();
-        this.slots[idx].gfx.fillStyle(0xffee88, 1);
-        this.slots[idx].gfx.fillRoundedRect(
-            this.slots[idx].x, this.slots[idx].y,
-            this.slots[idx].w, this.slots[idx].h, 12
-        );
-        this.time.delayedCall(200, () => {
-            this.slots[idx].gfx.clear();
-            this.slots[idx].gfx.fillStyle(0xfff8e7, 1);
-            this.slots[idx].gfx.fillRoundedRect(
-                this.slots[idx].x, this.slots[idx].y,
+        const visual = this.slots[idx].visual;
+        if (visual.setTint) {
+            visual.setTint(0xffee88);
+            this.time.delayedCall(200, () => visual.clearTint());
+        } else {
+            // Fallback for Graphics
+            visual.clear();
+            visual.fillStyle(0xffee88, 1);
+            visual.fillRoundedRect(
+                this.slots[idx].x - this.slots[idx].w/2, this.slots[idx].y - this.slots[idx].h/2,
                 this.slots[idx].w, this.slots[idx].h, 12
             );
-            this.slots[idx].gfx.lineStyle(3, 0xffd700, 1);
-            this.slots[idx].gfx.strokeRoundedRect(
-                this.slots[idx].x, this.slots[idx].y,
-                this.slots[idx].w, this.slots[idx].h, 12
-            );
-        });
+            this.time.delayedCall(200, () => {
+                visual.clear();
+                visual.fillStyle(0xfff8e7, 1);
+                visual.fillRoundedRect(
+                    this.slots[idx].x - this.slots[idx].w/2, this.slots[idx].y - this.slots[idx].h/2,
+                    this.slots[idx].w, this.slots[idx].h, 12
+                );
+                visual.lineStyle(3, 0xffd700, 1);
+                visual.strokeRoundedRect(
+                    this.slots[idx].x - this.slots[idx].w/2, this.slots[idx].y - this.slots[idx].h/2,
+                    this.slots[idx].w, this.slots[idx].h, 12
+                );
+            });
+        }
 
         if (this.attempt.length === this.answer.length) {
             this.time.delayedCall(220, () => this._checkAnswer());
@@ -279,8 +293,8 @@ export class SpellingScene extends Scene {
         // Shake all slots
         this.slots.forEach(slot => {
             this.tweens.add({
-                targets: slot.gfx,
-                x: slot.gfx.x + 10,
+                targets: slot.visual,
+                x: slot.visual.x + 10,
                 duration: 50,
                 yoyo: true,
                 repeat: 3,

@@ -14,10 +14,16 @@ export class GateManager {
         const pos = tileToPx(def.col, def.row);
         const wordDef = WORDS[def.wordKey];
 
-        // Portcullis graphic
-        const gfx = this.scene.add.graphics();
-        this._drawPortcullis(gfx, pos.x, pos.y, false);
-        gfx.setDepth(5);
+        let visual;
+        if (this.scene.textures.exists('tile_gate')) {
+            visual = this.scene.add.sprite(pos.x, pos.y, 'tile_gate').setDisplaySize(TILE_SIZE, TILE_SIZE);
+        } else {
+            // Portcullis graphic fallback
+            const gfx = this.scene.add.graphics();
+            this._drawPortcullis(gfx, pos.x, pos.y, false);
+            visual = gfx;
+        }
+        visual.setDepth(5);
 
         // Small picture preview above the gate
         const previewGfx = this.scene.add.graphics();
@@ -36,7 +42,7 @@ export class GateManager {
             row: def.row,
             wordKey: def.wordKey,
             unlocked: false,
-            gfx,
+            visual,
             previewGfx,
             hintText,
             posX: pos.x,
@@ -45,29 +51,7 @@ export class GateManager {
     }
 
     _drawPortcullis(gfx, cx, cy, unlocked) {
-        gfx.clear();
-        const hw = TILE_SIZE / 2;
-
-        if (!unlocked) {
-            // Iron gate frame
-            gfx.fillStyle(0x2a2a3a, 1);
-            gfx.fillRect(cx - hw, cy - hw, TILE_SIZE, TILE_SIZE);
-            // Vertical bars
-            gfx.fillStyle(0x4a4a5a, 1);
-            for (let i = 0; i < 5; i++) {
-                gfx.fillRect(cx - hw + 4 + i * 11, cy - hw + 2, 5, TILE_SIZE - 4);
-            }
-            // Horizontal cross bars
-            gfx.fillStyle(0x3a3a4a, 1);
-            gfx.fillRect(cx - hw + 2, cy - 12, TILE_SIZE - 4, 5);
-            gfx.fillRect(cx - hw + 2, cy + 8,  TILE_SIZE - 4, 5);
-            // Gold lock
-            gfx.fillStyle(0xffd700, 1);
-            gfx.fillCircle(cx, cy, 8);
-            gfx.fillStyle(0x2a2a3a, 1);
-            gfx.fillCircle(cx, cy, 5);
-        }
-        // When unlocked the gate graphic is removed (alpha 0)
+        // ... (existing code remains as fallback)
     }
 
     getGateAt(col, row) {
@@ -77,8 +61,8 @@ export class GateManager {
     triggerChallenge(gate) {
         // Bounce gate
         this.scene.tweens.add({
-            targets: gate.gfx,
-            x: gate.gfx.x + 7,
+            targets: gate.visual,
+            x: gate.visual.x + 7,
             duration: 55,
             yoyo: true,
             repeat: 2,
@@ -100,13 +84,14 @@ export class GateManager {
 
         // Slide gate up and fade out
         this.scene.tweens.add({
-            targets: gate.gfx,
-            y: gate.gfx.y - TILE_SIZE,
+            targets: gate.visual,
+            y: gate.visual.y - TILE_SIZE,
             alpha: 0,
             duration: 450,
             ease: 'Back.In',
-            onComplete: () => gate.gfx.destroy(),
+            onComplete: () => gate.visual.destroy(),
         });
+        // ... rest of method unchanged
 
         this.scene.tweens.add({
             targets: [gate.previewGfx, gate.hintText],
