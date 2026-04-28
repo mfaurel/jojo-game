@@ -2,48 +2,53 @@ import { Scene } from 'phaser';
 import { MapBuilder } from '../systems/MapBuilder.js';
 import { PlayerController } from '../systems/PlayerController.js';
 import { GateManager } from '../systems/GateManager.js';
-import { MAP_GRID, GATES, PLAYER_START } from '../data/MapData.js';
+import { GATE_POSITIONS, PLAYER_START, createGrid } from '../data/MapData.js';
+import { LEVELS } from '../data/LevelData.js';
 
 export class CastleScene extends Scene {
     constructor() {
         super('CastleScene');
     }
 
+    init(data) {
+        this.levelIndex = data?.levelIndex ?? 0;
+    }
+
     create() {
-        this.cameras.main.setBackgroundColor(0x1a1a5e);
+        const level = LEVELS[this.levelIndex];
+        this.cameras.main.setBackgroundColor(level.bg);
 
-        // Build static castle map
+        const grid = createGrid();
+
         const mapBuilder = new MapBuilder(this);
-        mapBuilder.build(MAP_GRID);
+        mapBuilder.build(grid);
 
-        // Gates (must come before player so layering is correct)
-        this.gateManager = new GateManager(this, GATES);
+        // Combine gate positions with this level's word keys
+        const gates = GATE_POSITIONS.map((pos, i) => ({
+            ...pos,
+            wordKey: level.words[i],
+        }));
 
-        // Jolyne player
-        this.player = new PlayerController(this, PLAYER_START.col, PLAYER_START.row);
-
-        // HUD
-        this._buildHUD();
+        this.gateManager = new GateManager(this, gates, grid);
+        this.player      = new PlayerController(this, PLAYER_START.col, PLAYER_START.row, grid);
 
         this.gatesUnlocked = 0;
-        this.totalGates    = GATES.length;
+        this.totalGates    = gates.length;
 
-        // Brief intro fade
+        this._buildHUD(level.name);
         this.cameras.main.fadeIn(600);
     }
 
-    _buildHUD() {
-        // Title bar (scrollFactor 0 = fixed on screen)
-        this.add.text(512, 14, '🏰 Le Château de Jolyne', {
+    _buildHUD(levelName) {
+        this.add.text(512, 14, `🏰 ${levelName}`, {
             fontSize: '20px',
             color: '#ffd700',
             stroke: '#000',
             strokeThickness: 3,
         }).setOrigin(0.5, 0).setScrollFactor(0).setDepth(30);
 
-        // Gate counter stars
         this.starIcons = [];
-        for (let i = 0; i < GATES.length; i++) {
+        for (let i = 0; i < this.totalGates; i++) {
             const star = this.add.text(860 + i * 30, 8, '☆', {
                 fontSize: '22px',
                 color: '#555577',
@@ -59,11 +64,11 @@ export class CastleScene extends Scene {
     }
 
     onGoalReached() {
-        if (this.gatesUnlocked < this.totalGates) return; // not all solved yet
+        if (this.gatesUnlocked < this.totalGates) return;
 
         this.cameras.main.fadeOut(800, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => {
-            this.scene.start('VictoryScene');
+            this.scene.start('VictoryScene', { levelIndex: this.levelIndex });
         });
     }
 

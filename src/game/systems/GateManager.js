@@ -1,10 +1,11 @@
-import { TILE_SIZE, MAP_GRID, TILE, tileToPx } from '../data/MapData.js';
+import { TILE_SIZE, TILE, tileToPx } from '../data/MapData.js';
 import { WORDS } from '../data/WordData.js';
 import { audio } from './AudioManager.js';
 
 export class GateManager {
-    constructor(scene, gateDefinitions) {
+    constructor(scene, gateDefinitions, grid) {
         this.scene = scene;
+        this.grid  = grid;
         this.gates = [];
         gateDefinitions.forEach(def => this.gates.push(this._createGate(def)));
     }
@@ -93,7 +94,7 @@ export class GateManager {
 
     _unlockGate(gate) {
         gate.unlocked = true;
-        MAP_GRID[gate.row][gate.col] = TILE.FLOOR;
+        this.grid[gate.row][gate.col] = TILE.FLOOR;
 
         audio.playGateUnlock();
 

@@ -25,17 +25,22 @@ export const MAP_GRID = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // row 11
 ];
 
-// Gates ordered easy→hard: ROI (3 letters) first, then 4-letter words
-export const GATES = [
-    { col: 3,  row: 2, wordKey: 'ROI'  },
-    { col: 7,  row: 2, wordKey: 'CHAT' },
-    { col: 11, row: 2, wordKey: 'TOUR' },
-    { col: 8,  row: 7, wordKey: 'OURS' },
-    { col: 6,  row: 7, wordKey: 'LUNE' },
+// Gate positions only — words are injected per-level by CastleScene
+export const GATE_POSITIONS = [
+    { col: 3,  row: 2 },
+    { col: 7,  row: 2 },
+    { col: 11, row: 2 },
+    { col: 8,  row: 7 },
+    { col: 6,  row: 7 },
 ];
 
 export const PLAYER_START = { col: 1, row: 2 };
 export const GOAL_TILE    = { col: 14, row: 9 };
+
+// Always return a fresh copy — prevents cross-level grid mutation
+export function createGrid() {
+    return MAP_GRID.map(row => [...row]);
+}
 
 export function tileToPx(col, row) {
     return { x: col * TILE_SIZE + TILE_SIZE / 2, y: row * TILE_SIZE + TILE_SIZE / 2 };

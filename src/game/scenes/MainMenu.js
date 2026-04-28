@@ -1,23 +1,20 @@
 import { Scene } from 'phaser';
+import { LEVELS, getProgress } from '../data/LevelData.js';
 
-export class MainMenu extends Scene
-{
-    constructor ()
-    {
+export class MainMenu extends Scene {
+    constructor() {
         super('MainMenu');
     }
 
-    create ()
-    {
+    create() {
         this.cameras.main.setBackgroundColor(0x1a1a5e);
 
         // Night sky stars
         for (let i = 0; i < 60; i++) {
             const x = Math.random() * 1024;
-            const y = Math.random() * 500;
+            const y = Math.random() * 420;
             const r = 1 + Math.random() * 2;
             const star = this.add.circle(x, y, r, 0xffffff, 0.6 + Math.random() * 0.4);
-            // Gentle twinkle
             this.tweens.add({
                 targets: star,
                 alpha: 0.1 + Math.random() * 0.3,
@@ -28,11 +25,9 @@ export class MainMenu extends Scene
             });
         }
 
-        // Castle silhouette
         this._drawCastle();
 
-        // Title
-        this.add.text(512, 100, '🏰 Le Château de Jolyne', {
+        this.add.text(512, 55, '🏰 Le Château de Jolyne', {
             fontSize: '44px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffd700',
@@ -40,94 +35,134 @@ export class MainMenu extends Scene
             strokeThickness: 6,
         }).setOrigin(0.5);
 
-        this.add.text(512, 165, 'Apprends à épeler en français !', {
+        this.add.text(512, 118, 'Apprends à épeler en français !', {
             fontSize: '24px',
             color: '#ddaaff',
             stroke: '#000',
             strokeThickness: 3,
         }).setOrigin(0.5);
 
-        // Play button
-        const btn = this.add.rectangle(512, 570, 280, 70, 0x006600, 1)
-            .setInteractive()
-            .on('pointerover', () => btn.setFillStyle(0x009900, 1))
-            .on('pointerout',  () => btn.setFillStyle(0x006600, 1))
-            .on('pointerup',   () => {
-                this.cameras.main.fadeOut(500, 0, 0, 0);
-                this.cameras.main.once('camerafadeoutcomplete', () => {
-                    this.scene.start('CastleScene');
-                });
-            });
+        this._drawJolyne(512, 248);
 
-        const btnTxt = this.add.text(512, 570, '▶  JOUER', {
-            fontSize: '38px',
+        this.add.text(512, 340, 'Choisis ton niveau !', {
+            fontSize: '26px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffffff',
-            stroke: '#003300',
-            strokeThickness: 5,
+            stroke: '#000',
+            strokeThickness: 4,
         }).setOrigin(0.5);
 
-        // Pulse button
-        this.tweens.add({
-            targets: [btn, btnTxt],
-            scaleX: 1.06, scaleY: 1.06,
-            duration: 800,
-            yoyo: true,
-            repeat: -1,
-            ease: 'Sine.InOut',
-        });
+        this._buildLevelCards();
+    }
 
-        // Mini Jolyne below title
-        this._drawJolyne(512, 450);
+    _buildLevelCards() {
+        const progress = getProgress();
+        const cardW = 175;
+        const cardH = 120;
+        const gap   = 9;
+        const totalW = LEVELS.length * cardW + (LEVELS.length - 1) * gap;
+        const startX = (1024 - totalW) / 2;
+        const cy     = 490;
+
+        LEVELS.forEach((level, i) => {
+            const cx = startX + i * (cardW + gap) + cardW / 2;
+            const done = !!progress[level.id];
+
+            const bg = this.add.rectangle(cx, cy, cardW, cardH, level.btnColor, 1)
+                .setInteractive()
+                .setDepth(10);
+
+            // Completed glow border
+            if (done) {
+                const border = this.add.rectangle(cx, cy, cardW + 6, cardH + 6, 0xffd700, 1)
+                    .setDepth(9);
+                this.tweens.add({
+                    targets: border,
+                    alpha: 0.4,
+                    duration: 900,
+                    yoyo: true,
+                    repeat: -1,
+                    ease: 'Sine.InOut',
+                });
+            }
+
+            // Hover effect
+            bg.on('pointerover', () => bg.setFillStyle(level.btnColor + 0x101010, 1));
+            bg.on('pointerout',  () => bg.setFillStyle(level.btnColor, 1));
+            bg.on('pointerup',   () => this._startLevel(i));
+
+            // Emoji
+            this.add.text(cx, cy - 34, level.emoji, {
+                fontSize: '34px',
+            }).setOrigin(0.5).setDepth(11);
+
+            // Level name
+            this.add.text(cx, cy + 3, level.name, {
+                fontSize: '15px',
+                fontFamily: 'Arial Black, Arial, sans-serif',
+                color: '#ffffff',
+                stroke: '#000',
+                strokeThickness: 3,
+            }).setOrigin(0.5).setDepth(11);
+
+            // "NIVEAU X"
+            this.add.text(cx, cy + 25, `NIVEAU ${i + 1}`, {
+                fontSize: '12px',
+                color: '#aaccff',
+            }).setOrigin(0.5).setDepth(11);
+
+            // Star if completed
+            if (done) {
+                this.add.text(cx + cardW / 2 - 14, cy - cardH / 2 + 10, '★', {
+                    fontSize: '18px',
+                    color: '#ffd700',
+                }).setOrigin(0.5).setDepth(12);
+            }
+        });
+    }
+
+    _startLevel(levelIndex) {
+        this.cameras.main.fadeOut(500, 0, 0, 0);
+        this.cameras.main.once('camerafadeoutcomplete', () => {
+            this.scene.start('CastleScene', { levelIndex });
+        });
     }
 
     _drawCastle() {
         const g = this.add.graphics();
 
-        // Ground
         g.fillStyle(0x2a1a6a, 1);
-        g.fillRect(0, 640, 1024, 128);
+        g.fillRect(0, 620, 1024, 148);
 
-        // Main castle body
         g.fillStyle(0x3a2a7a, 1);
-        g.fillRect(312, 460, 400, 180);
+        g.fillRect(312, 460, 400, 160);
 
-        // Tower left
-        g.fillRect(250, 400, 100, 240);
-        // Tower right
-        g.fillRect(674, 400, 100, 240);
+        g.fillRect(250, 400, 100, 220);
+        g.fillRect(674, 400, 100, 220);
 
-        // Battlements on main body
-        g.fillStyle(0x3a2a7a, 1);
         for (let i = 0; i < 7; i++) {
             g.fillRect(312 + i * 58, 440, 30, 22);
         }
-
-        // Battlements on towers
         for (let i = 0; i < 3; i++) {
             g.fillRect(250 + i * 35, 378, 22, 24);
             g.fillRect(674 + i * 35, 378, 22, 24);
         }
 
-        // Gate arch
         g.fillStyle(0x111122, 1);
-        g.fillRect(448, 536, 128, 104);
-        g.fillCircle(512, 536, 64);
+        g.fillRect(448, 520, 128, 100);
+        g.fillCircle(512, 520, 64);
 
-        // Tower windows
         g.fillStyle(0x8899ff, 0.5);
         g.fillRect(280, 430, 30, 40);
         g.fillCircle(295, 430, 15);
         g.fillRect(704, 430, 30, 40);
         g.fillCircle(719, 430, 15);
 
-        // Flag left
         g.fillStyle(0xff4466, 1);
         g.fillTriangle(250, 370, 250, 340, 278, 355);
         g.fillStyle(0xffffff, 1);
         g.fillRect(248, 330, 4, 45);
 
-        // Flag right
         g.fillStyle(0xff4466, 1);
         g.fillTriangle(774, 370, 774, 340, 746, 355);
         g.fillStyle(0xffffff, 1);
@@ -136,7 +171,7 @@ export class MainMenu extends Scene
 
     _drawJolyne(cx, cy) {
         const g = this.add.graphics();
-        const s = 1.5;
+        const s = 1.3;
 
         g.fillStyle(0xff80b4, 1);
         g.fillEllipse(cx, cy + 10 * s, 46 * s, 34 * s);
@@ -175,7 +210,6 @@ export class MainMenu extends Scene
         g.arc(cx, cy - 14 * s, 5 * s, 0.15, Math.PI - 0.15, false);
         g.strokePath();
 
-        // Wave animation
         this.tweens.add({
             targets: g,
             angle: { from: -5, to: 5 },

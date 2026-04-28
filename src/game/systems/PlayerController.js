@@ -1,10 +1,11 @@
-import { TILE_SIZE, MAP_COLS, MAP_ROWS, MAP_GRID, TILE, tileToPx } from '../data/MapData.js';
+import { TILE_SIZE, MAP_COLS, MAP_ROWS, TILE, tileToPx } from '../data/MapData.js';
 
 export class PlayerController {
-    constructor(scene, startCol, startRow) {
+    constructor(scene, startCol, startRow, grid) {
         this.scene     = scene;
         this.col       = startCol;
         this.row       = startRow;
+        this.grid      = grid;
         this.isMoving  = false;
         this.container = null;
         this._buildSprite();
@@ -115,7 +116,7 @@ export class PlayerController {
 
         if (newCol < 0 || newCol >= MAP_COLS || newRow < 0 || newRow >= MAP_ROWS) return;
 
-        const targetTile = MAP_GRID[newRow][newCol];
+        const targetTile = this.grid[newRow][newCol];
 
         if (targetTile === TILE.WALL) return;
 

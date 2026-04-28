@@ -1,12 +1,18 @@
 import { Scene } from 'phaser';
 import { audio } from '../systems/AudioManager.js';
+import { saveProgress } from '../data/LevelData.js';
 
 export class VictoryScene extends Scene {
     constructor() {
         super('VictoryScene');
     }
 
+    init(data) {
+        this.levelIndex = data?.levelIndex ?? 0;
+    }
+
     create() {
+        saveProgress(this.levelIndex);
         this.cameras.main.setBackgroundColor(0x2a0055);
         audio.playVictory();
 
