@@ -45,6 +45,8 @@ export const LEVELS = [
 ];
 
 const SAVE_KEY = 'jolyne_progress';
+const INVENTORY_KEY = 'jolyne_inventory';
+const EQUIP_KEY = 'jolyne_equipment';
 
 export function getProgress() {
     try {
@@ -60,4 +62,45 @@ export function saveProgress(levelId) {
     try {
         localStorage.setItem(SAVE_KEY, JSON.stringify(p));
     } catch { /* storage unavailable */ }
+}
+
+// --- Inventory & Equipment ---
+
+export function getInventory() {
+    try {
+        return JSON.parse(localStorage.getItem(INVENTORY_KEY)) || ['skin_default', 'bg_night'];
+    } catch {
+        return ['skin_default', 'bg_night'];
+    }
+}
+
+export function addToInventory(itemId) {
+    const inv = getInventory();
+    if (!inv.includes(itemId)) {
+        inv.push(itemId);
+        try {
+            localStorage.setItem(INVENTORY_KEY, JSON.stringify(inv));
+        } catch { }
+    }
+}
+
+export function getEquipment() {
+    try {
+        return JSON.parse(localStorage.getItem(EQUIP_KEY)) || {
+            skin: 'skin_default',
+            background: 'bg_night',
+            item_left: null,
+            item_right: null
+        };
+    } catch {
+        return { skin: 'skin_default', background: 'bg_night', item_left: null, item_right: null };
+    }
+}
+
+export function setEquipment(category, itemId) {
+    const equip = getEquipment();
+    equip[category] = itemId;
+    try {
+        localStorage.setItem(EQUIP_KEY, JSON.stringify(equip));
+    } catch { }
 }

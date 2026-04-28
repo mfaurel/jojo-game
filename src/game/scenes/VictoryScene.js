@@ -1,7 +1,9 @@
 import { Scene } from 'phaser';
 import { audio } from '../systems/AudioManager.js';
-import { saveProgress } from '../data/LevelData.js';
+import { saveProgress, getProgress, addToInventory } from '../data/LevelData.js';
 import { LEVELS } from '../data/LevelData.js';
+import { LootManager } from '../systems/LootManager.js';
+import { SPECIAL_REWARDS } from '../data/ItemData.js';
 
 export class VictoryScene extends Scene {
     constructor() {
@@ -15,6 +17,7 @@ export class VictoryScene extends Scene {
 
     create() {
         saveProgress(this.levelIndex);
+        this._checkLoot();
 
         this._skipped          = false;
         this._cinematicObjects = [];
@@ -41,6 +44,33 @@ export class VictoryScene extends Scene {
     _track(obj) {
         this._cinematicObjects.push(obj);
         return obj;
+    }
+
+    _checkLoot() {
+        // 1. Random Loot Roll
+        const wonItem = LootManager.rollLoot();
+        if (wonItem) {
+            this.time.delayedCall(1000, () => {
+                this.scene.launch('RewardPopup', { item: wonItem });
+            });
+        }
+
+        // 2. Category Completion Check
+        const progress = getProgress();
+        // Since we have 5 levels, check if all 5 are done (stubs for math)
+        let allDone = true;
+        for (let i = 0; i < 5; i++) {
+            if (!progress[i]) {
+                allDone = false;
+                break;
+            }
+        }
+
+        if (allDone) {
+            const reward = this.gameType === 'math' ? SPECIAL_REWARDS.MATH_ALL : SPECIAL_REWARDS.SPELLING_ALL;
+            addToInventory(reward.id);
+            // Optionally show special popup later
+        }
     }
 
     _clearCinematicObjects() {

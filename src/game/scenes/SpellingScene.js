@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { WORDS } from '../data/WordData.js';
 import { audio } from '../systems/AudioManager.js';
+import { getEquipment } from '../data/LevelData.js';
 
 export class SpellingScene extends Scene {
     constructor() {
@@ -17,6 +18,9 @@ export class SpellingScene extends Scene {
         this.slotTexts = [];
         this.slots     = [];
         this._locked   = false; // prevent input during success/retry animation
+        
+        const equip = getEquipment();
+        this.skinKey = equip.skin === 'skin_default' ? 'jojo_pixel' : equip.skin;
     }
 
     create() {
@@ -24,6 +28,7 @@ export class SpellingScene extends Scene {
         this._drawPanel();
         this._drawTitle();
         this._drawPicture();
+        this._drawCharacter();
         this._drawSlots();
         this._drawLetterPool();
         this._drawInstructions();
@@ -32,6 +37,20 @@ export class SpellingScene extends Scene {
 
     _drawOverlay() {
         this.add.rectangle(512, 384, 1024, 768, 0x000000, 0.6);
+    }
+
+    _drawCharacter() {
+        if (this.textures.exists(this.skinKey)) {
+            const char = this.add.image(115, 600, this.skinKey).setDisplaySize(140, 140);
+            this.tweens.add({
+                targets: char,
+                y: 590,
+                duration: 800,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.InOut'
+            });
+        }
     }
 
     _drawPanel() {
@@ -105,24 +124,24 @@ export class SpellingScene extends Scene {
             this.slotTexts.push(txt);
         }
 
-        // Backspace button
-        const bsx = startX + totalW/2 + 60;
+        // Backspace button (Fixed position on the right to avoid overlap)
+        const bsx = 880;
         const bsy = startY;
         
         let backBtn;
         if (this.textures.exists('ui_button_red')) {
-            backBtn = this.add.image(bsx, bsy, 'ui_button_red').setDisplaySize(60, 60);
+            backBtn = this.add.image(bsx, bsy, 'ui_button_red').setDisplaySize(70, 70);
         } else {
-            backBtn = this.add.rectangle(bsx, bsy, 60, 50, 0x882200, 1);
+            backBtn = this.add.rectangle(bsx, bsy, 70, 60, 0x882200, 1);
         }
         
-        backBtn.setInteractive()
+        backBtn.setInteractive({ useHandCursor: true })
             .on('pointerup', () => this._backspace())
             .on('pointerover', () => backBtn.setScale(1.1))
             .on('pointerout',  () => backBtn.setScale(1));
 
         this.add.text(bsx, bsy, '⌫', {
-            fontSize: '26px', color: '#ffffff',
+            fontSize: '30px', color: '#ffffff',
         }).setOrigin(0.5);
     }
 

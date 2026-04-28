@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { getEquipment } from '../data/LevelData.js';
 
 export class MathProblemScene extends Scene {
     constructor() {
@@ -14,6 +15,8 @@ export class MathProblemScene extends Scene {
         this.num2 = Math.floor(Math.random() * numMax) + 1;
         this.answer = this.num1 + this.num2;
         this.currentInput = '';
+        
+        this.equip = getEquipment();
     }
 
     create() {
@@ -22,6 +25,8 @@ export class MathProblemScene extends Scene {
         // Semi-transparent animated background
         this.add.rectangle(width/2, height/2, width, height, 0x000000, 0.7);
         
+        this._drawCharacter();
+
         // Success Particles for later
         this.successParticles = this.add.particles(width/2, height/2, 'particle', {
             speed: { min: 100, max: 400 },
@@ -147,7 +152,7 @@ export class MathProblemScene extends Scene {
         this.successParticles.explode(60);
         
         const bravo = this.add.text(this.cameras.main.width/2, this.cameras.main.height/2, 'SUPER ! 🌟', {
-            fontSize: 'clamp(60px, 15vw, 120px)',
+            fontSize: '80px',
             fontFamily: 'Arial Black',
             color: '#ffd700',
             stroke: '#000',
@@ -168,5 +173,31 @@ export class MathProblemScene extends Scene {
                 });
             }
         });
+    }
+
+    _drawCharacter() {
+        const { width, height } = this.cameras.main;
+        const skinKey = this.equip.skin === 'skin_default' ? 'jojo_pixel' : this.equip.skin;
+
+        if (this.textures.exists(skinKey)) {
+            const char = this.add.image(120, height - 120, skinKey).setDisplaySize(180, 180);
+            
+            // Draw arm items if equipped
+            if (this.equip.item_left) {
+                this.add.text(40, height - 160, '🛡️', { fontSize: '40px' });
+            }
+            if (this.equip.item_right) {
+                this.add.text(200, height - 160, '⚔️', { fontSize: '40px' });
+            }
+
+            this.tweens.add({
+                targets: char,
+                y: height - 130,
+                duration: 900,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.InOut'
+            });
+        }
     }
 }

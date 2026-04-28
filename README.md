@@ -116,3 +116,7 @@ Then reference the new word key in a gate definition inside `src/game/data/MapDa
 |---------|---------|
 | [Phaser](https://phaser.io) | 4.0.0 |
 | [Vite](https://vitejs.dev) | 6.x |
+
+## Credits
+Thanks of visuals from Zsky https://www.patreon.com/Zsky
+Thanks of visual frome Kenney.nl 

@@ -37,10 +37,37 @@ export class MainMenu extends Scene {
             this.scene.start('SpellingMenu');
         });
 
-        this._createChoiceButton(512, 540, '🔢 Mathématiques', 0x2266aa, () => {
-            this.scene.start('MathWorldSelectScene');
+        this._createChoiceButton(512, 540, '❄️ Mathématiques', 0x2266aa, () => {
+            this.scene.start('MathDungeon');
         });
-    }
+
+        this._createSmallButton(900, 710, '🎁 Collection', 0xaa00aa, () => {
+            this.scene.start('CollectionScene');
+        });
+        }
+
+        _createSmallButton(x, y, label, color, callback) {
+        const btnW = 220;
+        const btnH = 60;
+
+        let bg;
+        if (this.textures.exists('ui_panel')) {
+            bg = this.add.nineslice(x, y, 'ui_panel', 0, btnW, btnH, 40, 40, 40, 40).setTint(color);
+        } else {
+            bg = this.add.rectangle(x, y, btnW, btnH, color, 1);
+        }
+
+        bg.setInteractive({ useHandCursor: true });
+
+        const txt = this.add.text(x, y, label, {
+            fontSize: '22px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#ffffff'
+        }).setOrigin(0.5);
+
+        bg.on('pointerup', callback);
+        }
+
 
     _createChoiceButton(x, y, label, color, callback) {
         const btnW = 450;
