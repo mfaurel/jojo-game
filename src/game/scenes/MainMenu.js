@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { getEquipment } from '../data/LevelData.js';
 
 export class MainMenu extends Scene {
     constructor() {
@@ -6,7 +7,16 @@ export class MainMenu extends Scene {
     }
 
     create() {
-        this.cameras.main.setBackgroundColor(0x1a1a5e);
+        const equip = getEquipment();
+        
+        // Apply background based on equipment
+        if (equip.background === 'bg_castle') {
+            this.cameras.main.setBackgroundColor(0x2a0055);
+        } else if (equip.background === 'bg_galaxy') {
+            this.cameras.main.setBackgroundColor(0x000022);
+        } else {
+            this.cameras.main.setBackgroundColor(0x1a1a5e);
+        }
 
         // Night sky stars
         for (let i = 0; i < 40; i++) {

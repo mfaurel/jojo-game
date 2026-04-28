@@ -68,7 +68,14 @@ export function saveProgress(levelId) {
 
 export function getInventory() {
     try {
-        return JSON.parse(localStorage.getItem(INVENTORY_KEY)) || ['skin_default', 'bg_night'];
+        const inv = JSON.parse(localStorage.getItem(INVENTORY_KEY));
+        if (inv && Array.isArray(inv)) {
+            // Ensure defaults are always there
+            if (!inv.includes('skin_default')) inv.push('skin_default');
+            if (!inv.includes('bg_night')) inv.push('bg_night');
+            return inv;
+        }
+        return ['skin_default', 'bg_night'];
     } catch {
         return ['skin_default', 'bg_night'];
     }

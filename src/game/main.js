@@ -37,8 +37,6 @@ const config = {
         CollectionScene,
     ]
 };
-    ]
-};
 
 const StartGame = (parent) => {
     return new Game({ ...config, parent });
