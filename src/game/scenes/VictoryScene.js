@@ -132,7 +132,7 @@ export class VictoryScene extends Scene {
             .setAlpha(0)
             .on('pointerover', () => btn.setFillStyle(0x009900, 1))
             .on('pointerout',  () => btn.setFillStyle(0x006600, 1))
-            .on('pointerup',   () => this.scene.start('MainMenu'));
+            .on('pointerup',   () => this.scene.start('SpellingMenu'));
 
         const btnTxt = this.add.text(512, 692, '▶  Rejouer !', {
             fontSize: '30px',

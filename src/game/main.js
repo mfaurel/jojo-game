@@ -1,6 +1,9 @@
 import { Boot }          from './scenes/Boot';
 import { Preloader }      from './scenes/Preloader';
 import { MainMenu }       from './scenes/MainMenu';
+import { SpellingMenu }   from './scenes/SpellingMenu';
+import { MathDungeon }    from './scenes/MathDungeon';
+import { MathProblemScene } from './scenes/MathProblemScene';
 import { CastleScene }    from './scenes/CastleScene';
 import { SpellingScene }  from './scenes/SpellingScene';
 import { VictoryScene }   from './scenes/VictoryScene';
@@ -20,6 +23,9 @@ const config = {
         Boot,
         Preloader,
         MainMenu,
+        SpellingMenu,
+        MathDungeon,
+        MathProblemScene,
         CastleScene,
         SpellingScene,
         VictoryScene,
