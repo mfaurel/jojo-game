@@ -1,153 +1,118 @@
-# Phaser Vite Template
+# 🏰 Le Château de Jolyne
 
-This is a Phaser 4 project template that uses Vite for bundling. It supports hot-reloading for quick development workflow and includes scripts to generate production-ready builds.
+An educational 2D RPG game built with **Phaser 4** for a 4-year-old French child learning to spell. The princess Jolyne is trapped in a castle labyrinth — she can only pass through locked gates by correctly spelling the word shown in a picture.
 
-**[This Template is also available as a TypeScript version.](https://github.com/phaserjs/template-vite-ts)**
+## Gameplay
 
-### Versions
+- Move Jolyne with **arrow keys**, **WASD**, or the **on-screen D-pad** (touch/tablet friendly)
+- Walk into a locked gate to trigger a spelling challenge
+- **Tap the letter tiles** in the correct order to spell the word shown in the picture
+- Unlock all 5 gates to reach the throne room and win
 
-This template has been updated for:
+The first level features 5 French words ordered by difficulty:
 
-- [Phaser 4.0.0](https://github.com/phaserjs/phaser)
-- [Vite 6.3.1](https://github.com/vitejs/vite)
+| Gate | Word | Meaning |
+|------|------|---------|
+| 1 | ROI | King |
+| 2 | CHAT | Cat |
+| 3 | TOUR | Tower |
+| 4 | OURS | Bear |
+| 5 | LUNE | Moon |
 
-![screenshot](screenshot.png)
+No punishment on wrong answers — just a gentle "Essaie encore ! 💛" and a retry.
+
+## Technical notes
+
+- **No external assets** — every visual is drawn with the Phaser `Graphics` API
+- **No audio files** — all sounds are generated at runtime via the Web Audio API
+- Grid-based movement (16 × 12 tiles at 64 px = exactly 1024 × 768, no camera scroll)
+- Spelling challenge runs as an overlay scene on top of the castle scene
+- Vocabulary is fully defined in `src/game/data/WordData.js` — add new words there
+- New levels can be added as new `MapData` files without touching any other system
+
+## Project structure
+
+```
+src/
+  main.js                    # DOM bootstrap
+  game/
+    main.js                  # Phaser game config + scene registry
+    data/
+      MapData.js             # Tile grid, gate positions, constants
+      WordData.js            # French word list + picture draw functions
+    scenes/
+      Boot.js                # First scene — sets background
+      Preloader.js           # Generates shared textures
+      MainMenu.js            # Castle title screen
+      CastleScene.js         # Main gameplay (orchestrator)
+      SpellingScene.js       # Spelling challenge overlay
+      VictoryScene.js        # End-of-level celebration
+    systems/
+      MapBuilder.js          # Draws castle tiles with Graphics API
+      PlayerController.js    # Jolyne sprite, grid movement, D-pad
+      GateManager.js         # Gate graphics, unlock logic
+      AudioManager.js        # Web Audio tone generator
+```
 
 ## Requirements
 
-[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
+[Node.js](https://nodejs.org) (v18 or later)
 
-## Available Commands
-
-| Command | Description |
-|---------|-------------|
-| `npm install` | Install project dependencies |
-| `npm run dev` | Launch a development web server |
-| `npm run build` | Create a production build in the `dist` folder |
-| `npm run dev-nolog` | Launch a development web server without sending anonymous data (see "About log.js" below) |
-| `npm run build-nolog` | Create a production build in the `dist` folder without sending anonymous data (see "About log.js" below) |
-
-
-## Writing Code
-
-After cloning the repo, run `npm install` from your project directory. Then, you can start the local development server by running `npm run dev`.
-
-The local development server runs on `http://localhost:8080` by default. Please see the Vite documentation if you wish to change this, or add SSL support.
-
-Once the server is running you can edit any of the files in the `src` folder. Vite will automatically recompile your code and then reload the browser.
-
-## Template Project Structure
-
-We have provided a default project structure to get you started. This is as follows:
-
-| Path                         | Description                                                |
-|------------------------------|------------------------------------------------------------|
-| `index.html`                 | A basic HTML page to contain the game.                     |
-| `public/assets`              | Game sprites, audio, etc. Served directly at runtime.      |
-| `public/style.css`           | Global layout styles.                                      |
-| `src/main.js`                | Application bootstrap.                                     |
-| `src/game`                   | Folder containing the game code.                           |
-| `src/game/main.js`           | Game entry point: configures and starts the game.          |
-| `src/game/scenes`            | Folder with all Phaser game scenes.                        | 
-
-## Handling Assets
-
-Vite supports loading assets via JavaScript module `import` statements.
-
-This template provides support for both embedding assets and also loading them from a static folder. To embed an asset, you can import it at the top of the JavaScript file you are using it in:
-
-```js
-import logoImg from './assets/logo.png'
-```
-
-To load static files such as audio files, videos, etc place them into the `public/assets` folder. Then you can use this path in the Loader calls within Phaser:
-
-```js
-preload ()
-{
-    //  This is an example of an imported bundled image.
-    //  Remember to import it at the top of this file
-    this.load.image('logo', logoImg);
-
-    //  This is an example of loading a static image
-    //  from the public/assets folder:
-    this.load.image('background', 'assets/bg.png');
-}
-```
-
-When you issue the `npm run build` command, all static assets are automatically copied to the `dist/assets` folder.
-
-## Deploying to Production
-
-After you run the `npm run build` command, your code will be built into a single bundle and saved to the `dist` folder, along with any other assets your project imported, or stored in the public assets folder.
-
-In order to deploy your game, you will need to upload *all* of the contents of the `dist` folder to a public facing web server.
-
-## Customizing the Template
-
-### Vite
-
-If you want to customize your build, such as adding plugin (i.e. for loading CSS or fonts), you can modify the `vite/config.*.mjs` file for cross-project changes, or you can modify and/or create new configuration files and target them in specific npm tasks inside of `package.json`. Please see the [Vite documentation](https://vitejs.dev/) for more information.
-
-## About log.js
-
-If you inspect our node scripts you will see there is a file called `log.js`. This file makes a single silent API call to a domain called `gryzor.co`. This domain is owned by Phaser Studio Inc. The domain name is a homage to one of our favorite retro games.
-
-We send the following 3 pieces of data to this API: The name of the template being used (vue, react, etc). If the build was 'dev' or 'prod' and finally the version of Phaser being used.
-
-At no point is any personal data collected or sent. We don't know about your project files, device, browser or anything else. Feel free to inspect the `log.js` file to confirm this.
-
-Why do we do this? Because being open source means we have no visible metrics about which of our templates are being used. We work hard to maintain a large and diverse set of templates for Phaser developers and this is our small anonymous way to determine if that work is actually paying off, or not. In short, it helps us ensure we're building the tools for you.
-
-However, if you don't want to send any data, you can use these commands instead:
-
-Dev:
+## Local development
 
 ```bash
+npm install
 npm run dev-nolog
 ```
 
-Build:
+Open **http://localhost:8080** in your browser.
+
+Live-reload is enabled — editing any file in `src/` will instantly refresh the page.
+
+## Production build
 
 ```bash
 npm run build-nolog
 ```
 
-Or, to disable the log entirely, simply delete the file `log.js` and remove the call to it in the `scripts` section of `package.json`:
+The output is written to the `dist/` folder. Upload its contents to any static web host.
 
-Before:
+## Deploying to GitHub Pages
 
-```json
-"scripts": {
-    "dev": "node log.js dev & dev-template-script",
-    "build": "node log.js build & build-template-script"
-},
+Push the repository to GitHub, then enable **GitHub Pages** in the repository settings:
+
+1. Go to **Settings → Pages**
+2. Under *Source*, select **GitHub Actions**
+
+The included workflow (`.github/workflows/deploy.yml`) will automatically build and publish the game whenever you push to the `main` branch. Your game will be available at:
+
+```
+https://<your-github-username>.github.io/<repository-name>/
 ```
 
-After:
+## Adding more words
 
-```json
-"scripts": {
-    "dev": "dev-template-script",
-    "build": "build-template-script"
-},
+Open `src/game/data/WordData.js` and add a new entry:
+
+```js
+export const WORDS = {
+  // existing words…
+
+  ARBRE: {
+    answer: 'ARBRE',
+    letters: ['A', 'R', 'B', 'R', 'E', 'T'],  // correct letters + distractors
+    drawPicture(gfx, cx, cy, r) {
+      // draw a tree using gfx.fillRect, gfx.fillCircle, etc.
+    }
+  },
+};
 ```
 
-Either of these will stop `log.js` from running. If you do decide to do this, please could you at least join our Discord and tell us which template you're using! Or send us a quick email. Either will be super-helpful, thank you.
+Then reference the new word key in a gate definition inside `src/game/data/MapData.js`.
 
-## Join the Phaser Community!
+## Tech stack
 
-We love to see what developers like you create with Phaser! It really motivates us to keep improving. So please join our community and show-off your work 😄
-
-**Visit:** The [Phaser website](https://phaser.io) and follow on [Phaser Twitter](https://twitter.com/phaser_)<br />
-**Play:** Some of the amazing games [#madewithphaser](https://twitter.com/search?q=%23madewithphaser&src=typed_query&f=live)<br />
-**Learn:** [API Docs](https://newdocs.phaser.io), [Support Forum](https://phaser.discourse.group/) and [StackOverflow](https://stackoverflow.com/questions/tagged/phaser-framework)<br />
-**Discord:** Join us on [Discord](https://discord.gg/phaser)<br />
-**Code:** 2000+ [Examples](https://labs.phaser.io)<br />
-**Read:** The [Phaser World](https://phaser.io/community/newsletter) Newsletter<br />
-
-Created by [Phaser Studio](mailto:support@phaser.io). Powered by coffee, anime, pixels and love.
-
-The Phaser logo and characters are &copy; 2011 - 2025 Phaser Studio Inc.
-
-All rights reserved.
+| Library | Version |
+|---------|---------|
+| [Phaser](https://phaser.io) | 4.0.0 |
+| [Vite](https://vitejs.dev) | 6.x |
