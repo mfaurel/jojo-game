@@ -2,6 +2,8 @@
 
 An educational 2D RPG game built with **Phaser 4** for a 4-year-old French child learning to spell. The princess Jolyne is trapped in a castle labyrinth — she can only pass through locked gates by correctly spelling the word shown in a picture.
 
+[Accès au jeu](https://mfaurel.github.io/jojo-game/) 
+
 ## Gameplay
 
 - Move Jolyne with **arrow keys**, **WASD**, or the **on-screen D-pad** (touch/tablet friendly)
