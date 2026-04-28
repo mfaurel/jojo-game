@@ -68,7 +68,7 @@ export class CastleScene extends Scene {
 
         this.cameras.main.fadeOut(800, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => {
-            this.scene.start('VictoryScene', { levelIndex: this.levelIndex });
+            this.scene.start('VictoryScene', { levelIndex: this.levelIndex, gameType: 'spelling' });
         });
     }
 

@@ -53,6 +53,19 @@ class AudioManager {
         notes.forEach((freq, i) => this._tone(freq, 200, 'sine', 0.28, i * 0.13));
     }
 
+    playFanfare() {
+        // C5 + E5 + G5 chord, then C6 solo hit
+        this._tone(523,  300, 'sine', 0.18, 0);
+        this._tone(659,  300, 'sine', 0.18, 0);
+        this._tone(784,  300, 'sine', 0.18, 0);
+        this._tone(1047, 500, 'sine', 0.22, 0.22);
+    }
+
+    playStarReveal(index) {
+        const freqs = [523, 659, 784, 880, 1047];
+        this._tone(freqs[index] ?? 523, 150, 'sine', 0.22);
+    }
+
     playVictory() {
         // Happy 8-note melody (C-C-G-G-A-A-G)
         const melody = [
