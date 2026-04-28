@@ -8,10 +8,10 @@ export class MathProblemScene extends Scene {
     init(data) {
         this.onSuccess = data.onSuccess;
         this.isChest = data.isChest || false;
-        
-        // Generate simple problem: a + b
-        this.num1 = Math.floor(Math.random() * 5) + 1;
-        this.num2 = Math.floor(Math.random() * 5) + 1;
+        const numMax = data.numMax ?? 5;
+
+        this.num1 = Math.floor(Math.random() * numMax) + 1;
+        this.num2 = Math.floor(Math.random() * numMax) + 1;
         this.answer = this.num1 + this.num2;
         this.currentInput = '';
     }

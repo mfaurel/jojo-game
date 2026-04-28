@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { MATH_WORLDS } from '../data/MathWorldData.js';
 
 export class MathDungeon extends Scene {
     constructor() {
@@ -10,31 +11,29 @@ export class MathDungeon extends Scene {
         this.decorations = [];
     }
 
+    init(data) {
+        this.worldIndex = data.worldIndex ?? 0;
+        this.worldConfig = MATH_WORLDS[this.worldIndex];
+        this.score = 0;
+    }
+
     create() {
         const { width, height } = this.cameras.main;
-        
-        // Background Gradient (Deep Ice to Fog)
-        this.cameras.main.setBackgroundColor(0x1a3a5a);
 
-        // Floor and Ceiling with Gradients
+        this.cameras.main.setBackgroundColor(this.worldConfig.skyTop);
+
         this._drawEnvironment(width, height);
 
-        // Perspective Grid
         this.lines = this.add.graphics();
-        
-        // Snow Particles
-        this._createSnowParticles(width, height);
 
-        // World Group for monsters/chests
+        this._createWorldParticles(width, height);
+
         this.worldGroup = this.add.group();
 
-        // Princess Arms
         this._drawArms(width, height);
 
-        // UI Layer
         this._createUI(width, height);
 
-        // Reset state
         this.distance = 0;
         this.nextEncounter = 300;
         this.isWalking = true;
@@ -42,47 +41,101 @@ export class MathDungeon extends Scene {
 
     _drawEnvironment(w, h) {
         const vanishingY = h * 0.5;
-        
-        // Ceiling Gradient
+        const wc = this.worldConfig;
+
         const ceiling = this.add.graphics();
-        ceiling.fillGradientStyle(0x0a1a2a, 0x0a1a2a, 0x5a88aa, 0x5a88aa, 1);
+        ceiling.fillGradientStyle(wc.skyTop, wc.skyTop, wc.skyBottom, wc.skyBottom, 1);
         ceiling.fillRect(0, 0, w, vanishingY);
 
-        // Floor Gradient
         const floor = this.add.graphics();
-        floor.fillGradientStyle(0x5a88aa, 0x5a88aa, 0xddf4ff, 0xddf4ff, 1);
+        floor.fillGradientStyle(wc.floorTop, wc.floorTop, wc.floorBottom, wc.floorBottom, 1);
         floor.fillRect(0, vanishingY, w, h - vanishingY);
 
-        // Fog near vanishing point
         const fog = this.add.graphics();
-        fog.fillGradientStyle(0x88ccff, 0x88ccff, 0x88ccff, 0x88ccff, 0, 0, 0.8, 0.8);
+        const fc = wc.fogColor;
+        fog.fillGradientStyle(fc, fc, fc, fc, 0, 0, 0.8, 0.8);
         fog.fillCircle(w / 2, vanishingY, 150);
         fog.setAlpha(0.4);
     }
 
-    _createSnowParticles(w, h) {
-        const snow = this.add.particles(0, 0, 'particle', {
-            x: { min: 0, max: w },
-            y: -10,
-            lifespan: 5000,
-            speedY: { min: 50, max: 150 },
-            speedX: { min: -20, max: 20 },
-            scale: { start: 0.1, end: 0.3 },
-            alpha: { start: 0.6, end: 0 },
-            frequency: 100,
-            blendMode: 'ADD'
-        });
-        snow.setDepth(5);
+    _createWorldParticles(w, h) {
+        const type = this.worldConfig.particles;
+
+        if (type === 'snow') {
+            const snow = this.add.particles(0, 0, 'particle', {
+                x: { min: 0, max: w },
+                y: -10,
+                lifespan: 5000,
+                speedY: { min: 50, max: 150 },
+                speedX: { min: -20, max: 20 },
+                scale: { start: 0.1, end: 0.3 },
+                alpha: { start: 0.6, end: 0 },
+                frequency: 100,
+                blendMode: 'ADD'
+            });
+            snow.setDepth(5);
+        } else if (type === 'candy') {
+            const candy = this.add.particles(0, 0, 'particle', {
+                x: { min: 0, max: w },
+                y: -10,
+                lifespan: 3500,
+                speedY: { min: 30, max: 80 },
+                speedX: { min: -30, max: 30 },
+                scale: { start: 0.25, end: 0.05 },
+                alpha: { start: 0.9, end: 0 },
+                frequency: 70,
+                blendMode: 'ADD'
+            });
+            candy.setDepth(5);
+        } else {
+            // petal
+            const petal = this.add.particles(0, 0, 'particle', {
+                x: { min: 0, max: w },
+                y: -10,
+                lifespan: 7000,
+                speedY: { min: 20, max: 50 },
+                speedX: { min: -50, max: 50 },
+                scale: { start: 0.15, end: 0.3 },
+                alpha: { start: 0.7, end: 0 },
+                frequency: 130,
+                blendMode: 'ADD'
+            });
+            petal.setDepth(5);
+        }
     }
 
     _createUI(w, h) {
-        this.distText = this.add.text(w * 0.05, h * 0.05, 'Distance: 0m', {
-            fontSize: 'clamp(20px, 4vw, 28px)',
-            color: '#ffffff',
+        // Score HUD background
+        this.add.rectangle(135, 42, 250, 58, 0x000000, 0.5).setDepth(199);
+
+        this.add.text(18, 16, 'Score', {
+            fontSize: '15px',
+            color: '#aaccff',
             fontFamily: 'Arial Black',
-            stroke: '#004488',
-            strokeThickness: 4
         }).setDepth(200);
+
+        this.scoreText = this.add.text(18, 34, `0 / ${this.worldConfig.pointsNeeded}`, {
+            fontSize: '22px',
+            fontFamily: 'Arial Black',
+            color: '#ffd700',
+            stroke: '#000',
+            strokeThickness: 3,
+        }).setDepth(200);
+
+        // Progress bar track
+        this.add.rectangle(135, 73, 222, 12, 0x333333).setDepth(200);
+        // Progress bar fill (origin 0, 0.5 so it grows from the left)
+        this.progressBar = this.add.rectangle(24, 73, 0, 12, 0x00ff88)
+            .setOrigin(0, 0.5).setDepth(201);
+
+        // World name badge top-centre
+        this.add.text(w / 2, 12, this.worldConfig.name, {
+            fontSize: '20px',
+            fontFamily: 'Arial Black',
+            color: '#ffffff',
+            stroke: '#000',
+            strokeThickness: 3,
+        }).setOrigin(0.5, 0).setDepth(200);
 
         const backBtn = this.add.text(w * 0.95, h * 0.05, 'Menu', {
             fontSize: 'clamp(18px, 3.5vw, 24px)',
@@ -90,15 +143,24 @@ export class MathDungeon extends Scene {
             backgroundColor: '#004488',
             padding: { x: 15, y: 8 }
         }).setOrigin(1, 0).setInteractive({ useHandCursor: true }).setDepth(200);
-        
-        backBtn.on('pointerup', () => this.scene.start('MainMenu'));
+
+        backBtn.on('pointerup', () => this.scene.start('MathWorldSelectScene'));
+    }
+
+    _updateScoreHUD(newScore) {
+        this.score = newScore;
+        this.scoreText.setText(`${newScore} / ${this.worldConfig.pointsNeeded}`);
+        const fraction = Math.min(newScore / this.worldConfig.pointsNeeded, 1);
+        this.progressBar.width = 222 * fraction;
+        if (fraction < 0.5) this.progressBar.setFillStyle(0x00ff88);
+        else if (fraction < 0.85) this.progressBar.setFillStyle(0xffdd00);
+        else this.progressBar.setFillStyle(0xff8800);
     }
 
     update(time, delta) {
         if (!this.isWalking) return;
 
         this.distance += delta * 0.15;
-        this.distText.setText(`Distance: ${Math.floor(this.distance)}m`);
 
         this._updatePerspective();
 
@@ -113,16 +175,12 @@ export class MathDungeon extends Scene {
         const { width, height } = this.cameras.main;
         const vX = width / 2;
         const vY = height / 2;
+        const gc = this.worldConfig.gridColor;
 
         this.lines.clear();
-        
-        // Dynamic Glow from Wand
-        const wandLightX = this.wandArm.x;
-        const wandLightY = this.wandArm.y - 150;
-        
-        this.lines.lineStyle(2, 0xffffff, 0.2);
-        
-        // Perspective Corners
+
+        this.lines.lineStyle(2, gc, 0.2);
+
         this.lines.lineBetween(0, 0, vX, vY);
         this.lines.lineBetween(width, 0, vX, vY);
         this.lines.lineBetween(0, height, vX, vY);
@@ -136,14 +194,13 @@ export class MathDungeon extends Scene {
             const rw = width * scale;
             const rh = height * scale;
             if (rw < 5000) {
-                this.lines.lineStyle(1.5, 0xffffff, 0.3 * (1 - i / 8));
+                this.lines.lineStyle(1.5, gc, 0.3 * (1 - i / 8));
                 this.lines.strokeRect(vX - rw / 2, vY - rh / 2, rw, rh);
             }
         }
     }
 
     _drawArms(w, h) {
-        // Shared Trail Emitter
         this.magicTrail = this.add.particles(0, 0, 'particle', {
             speed: { min: 20, max: 60 },
             scale: { start: 0.4, end: 0 },
@@ -154,14 +211,12 @@ export class MathDungeon extends Scene {
             follow: null
         });
 
-        // Teddy (Left)
         this.teddyArm = this.add.container(w * 0.2, h * 0.85);
         const teddyG = this.add.graphics();
         this._drawDetailedTeddy(teddyG);
         this.teddyArm.add(teddyG);
         this.teddyArm.setDepth(150);
 
-        // Wand (Right)
         this.wandArm = this.add.container(w * 0.8, h * 0.85);
         const wandG = this.add.graphics();
         this._drawDetailedWand(wandG);
@@ -172,30 +227,24 @@ export class MathDungeon extends Scene {
     }
 
     _drawDetailedTeddy(g) {
-        // Shadow/Depth
         g.fillStyle(0x5d2e0c, 1);
-        g.fillEllipse(5, 5, 130, 170); // Drop shadow arm
-        
-        // Body
+        g.fillEllipse(5, 5, 130, 170);
+
         g.fillStyle(0x8b4513, 1);
         g.fillEllipse(0, 0, 130, 170);
-        
-        // Head
+
         g.fillStyle(0xa0522d, 1);
         g.fillCircle(-40, -60, 45);
         g.lineStyle(3, 0x5d2e0c, 1);
         g.strokeCircle(-40, -60, 45);
 
-        // Highlight
         g.fillStyle(0xcd853f, 0.4);
         g.fillCircle(-30, -70, 15);
 
-        // Ears
         g.fillStyle(0x8b4513, 1);
         g.fillCircle(-75, -95, 22);
         g.fillCircle(-5, -95, 22);
-        
-        // Eyes
+
         g.fillStyle(0x000000, 1);
         g.fillCircle(-55, -65, 6);
         g.fillCircle(-25, -65, 6);
@@ -205,22 +254,19 @@ export class MathDungeon extends Scene {
     }
 
     _drawDetailedWand(g) {
-        // Hand
         g.fillStyle(0xbb8a6a, 1);
-        g.fillCircle(5, 5, 45); // Shadow
+        g.fillCircle(5, 5, 45);
         g.fillStyle(0xffe4b5, 1);
         g.fillCircle(0, 0, 45);
-        
-        // Stick
+
         g.fillStyle(0x2b1e1e, 1);
-        g.fillRect(-3, -160, 12, 160); // Shadow
+        g.fillRect(-3, -160, 12, 160);
         g.fillStyle(0x4b2e1e, 1);
         g.fillRect(-6, -160, 10, 160);
-        
-        // Star with glow
-        g.fillStyle(0xffa500, 1); // Darker core
+
+        g.fillStyle(0xffa500, 1);
         this._drawStar(g, 0, -170, 5, 45, 20);
-        g.fillStyle(0xffd700, 1); // Brighter top
+        g.fillStyle(0xffd700, 1);
         this._drawStar(g, -2, -172, 5, 40, 18);
     }
 
@@ -228,20 +274,20 @@ export class MathDungeon extends Scene {
         let rot = Math.PI / 2 * 3;
         let x = cx;
         let y = cy;
-        let step = Math.PI / spikes;
+        const step = Math.PI / spikes;
         graphics.beginPath();
-        graphics.moveTo(cx, cy - outerRadius)
+        graphics.moveTo(cx, cy - outerRadius);
         for (let i = 0; i < spikes; i++) {
             x = cx + Math.cos(rot) * outerRadius;
             y = cy + Math.sin(rot) * outerRadius;
-            graphics.lineTo(x, y)
-            rot += step
+            graphics.lineTo(x, y);
+            rot += step;
             x = cx + Math.cos(rot) * innerRadius;
             y = cy + Math.sin(rot) * innerRadius;
-            graphics.lineTo(x, y)
-            rot += step
+            graphics.lineTo(x, y);
+            rot += step;
         }
-        graphics.lineTo(cx, cy - outerRadius)
+        graphics.lineTo(cx, cy - outerRadius);
         graphics.closePath();
         graphics.fillPath();
     }
@@ -250,10 +296,10 @@ export class MathDungeon extends Scene {
         const { width, height } = this.cameras.main;
         const swayX = Math.sin(time / 250) * 15;
         const swayY = Math.cos(time / 200) * 10;
-        
+
         this.wandArm.x = (width * 0.85) + swayX;
         this.wandArm.y = (height * 0.85) + swayY;
-        
+
         this.teddyArm.x = (width * 0.15) - swayX;
         this.teddyArm.y = (height * 0.85) + swayY;
     }
@@ -267,12 +313,11 @@ export class MathDungeon extends Scene {
 
     _spawnMonster() {
         const { width, height } = this.cameras.main;
-        const monsters = ['Snowman', 'Ice Golem', 'Polar Bear'];
+        const monsters = this.worldConfig.monsters;
         const name = monsters[Math.floor(Math.random() * monsters.length)];
 
         const container = this.add.container(width / 2, height / 2).setScale(0.01);
-        
-        // Shadow
+
         const shadow = this.add.ellipse(0, 80, 120, 40, 0x000000, 0.2);
         container.add(shadow);
 
@@ -280,8 +325,8 @@ export class MathDungeon extends Scene {
         this._drawDetailedMonster(g, name);
         container.add(g);
 
-        const title = this.add.text(0, -150, name, { 
-            fontSize: '44px', 
+        const title = this.add.text(0, -160, name, {
+            fontSize: '44px',
             color: '#ffffff',
             stroke: '#004488',
             strokeThickness: 6,
@@ -297,8 +342,15 @@ export class MathDungeon extends Scene {
             onComplete: () => {
                 this.scene.pause();
                 this.scene.launch('MathProblemScene', {
+                    numMax: this.worldConfig.numMax,
                     onSuccess: () => {
-                        this._handleMonsterDefeat(container);
+                        const newScore = this.score + 200;
+                        this._updateScoreHUD(newScore);
+                        if (newScore >= this.worldConfig.pointsNeeded) {
+                            this._triggerWorldComplete();
+                        } else {
+                            this._handleMonsterDefeat(container);
+                        }
                     }
                 });
             }
@@ -307,48 +359,202 @@ export class MathDungeon extends Scene {
 
     _drawDetailedMonster(g, name) {
         if (name === 'Snowman') {
-            // Body with shading
             g.fillStyle(0xe0e0e0, 1);
-            g.fillCircle(0, 50, 70); // Bottom
-            g.fillCircle(0, -30, 50); // Top
+            g.fillCircle(0, 50, 70);
+            g.fillCircle(0, -30, 50);
             g.fillStyle(0xffffff, 1);
-            g.fillCircle(-10, 40, 60); // Highlight
+            g.fillCircle(-10, 40, 60);
             g.fillCircle(-8, -35, 42);
-
-            // Carrot nose
             g.fillStyle(0xd35400, 1);
             g.fillTriangle(0, -35, 0, -25, 40, -30);
-            
-            // Eyes
             g.fillStyle(0x2c3e50, 1);
             g.fillCircle(-15, -45, 6);
             g.fillCircle(15, -45, 6);
         } else if (name === 'Ice Golem') {
-            // Crystal body
             g.fillStyle(0x2980b9, 1);
             g.fillRect(-70, -100, 140, 200);
             g.fillStyle(0x3498db, 1);
             g.fillRect(-60, -90, 120, 180);
-            
-            // Glowing eyes
             g.fillStyle(0x00ffff, 1);
             g.fillRect(-45, -70, 25, 25);
             g.fillRect(20, -70, 25, 25);
-            
-            // Cracks/Details
             g.lineStyle(2, 0xffffff, 0.5);
             g.lineBetween(-30, 10, 20, 50);
             g.lineBetween(40, -20, 60, 20);
-        } else { // Polar Bear
+        } else if (name === 'Polar Bear') {
             g.fillStyle(0xdcdde1, 1);
             g.fillEllipse(0, 0, 160, 110);
-            g.fillCircle(90, -40, 50); // Head
+            g.fillCircle(90, -40, 50);
             g.fillStyle(0xffffff, 1);
             g.fillEllipse(-10, -5, 140, 90);
-            
             g.fillStyle(0x2f3640, 1);
-            g.fillCircle(115, -45, 6); // Eye
-            g.fillCircle(130, -35, 10); // Nose
+            g.fillCircle(115, -45, 6);
+            g.fillCircle(130, -35, 10);
+        } else if (name === 'Lollipop') {
+            // Stick with candy stripes
+            g.fillStyle(0xffffff, 1);
+            g.fillRect(-7, 0, 14, 120);
+            g.fillStyle(0xff4444, 1);
+            for (let i = 0; i < 5; i++) {
+                g.fillRect(-7, i * 24, 14, 12);
+            }
+            // Head
+            g.fillStyle(0xff69b4, 1);
+            g.fillCircle(0, -60, 70);
+            // Spiral
+            g.lineStyle(7, 0xffffff, 0.8);
+            g.beginPath();
+            for (let a = 0; a < Math.PI * 2.5; a += 0.15) {
+                const r = a * 9;
+                const px = Math.cos(a) * r;
+                const py = Math.sin(a) * r - 60;
+                if (a === 0) g.moveTo(px, py);
+                else g.lineTo(px, py);
+            }
+            g.strokePath();
+            // Eyes and smile
+            g.fillStyle(0x2c3e50, 1);
+            g.fillCircle(-22, -72, 7);
+            g.fillCircle(22, -72, 7);
+            g.lineStyle(5, 0x2c3e50, 1);
+            g.beginPath();
+            g.arc(0, -55, 18, 0.2, Math.PI - 0.2, false);
+            g.strokePath();
+        } else if (name === 'Gummy Bear') {
+            // Body
+            g.fillStyle(0xff6644, 1);
+            g.fillEllipse(0, 30, 110, 130);
+            // Head
+            g.fillCircle(0, -50, 55);
+            // Glossy highlight
+            g.fillStyle(0xff9977, 0.5);
+            g.fillCircle(-18, -65, 20);
+            // Ears
+            g.fillStyle(0xff6644, 1);
+            g.fillCircle(-38, -95, 18);
+            g.fillCircle(38, -95, 18);
+            // Eyes
+            g.fillStyle(0x2c3e50, 1);
+            g.fillCircle(-18, -55, 7);
+            g.fillCircle(18, -55, 7);
+            g.fillStyle(0xffffff, 1);
+            g.fillCircle(-20, -57, 3);
+            g.fillCircle(16, -57, 3);
+            // Smile
+            g.lineStyle(4, 0x2c3e50, 1);
+            g.beginPath();
+            g.arc(0, -40, 16, 0.2, Math.PI - 0.2, false);
+            g.strokePath();
+        } else if (name === 'Candy Cane') {
+            // White shaft
+            g.fillStyle(0xffffff, 1);
+            g.fillRect(-18, -60, 36, 160);
+            // Red stripes
+            g.fillStyle(0xdd1111, 1);
+            for (let i = 0; i < 6; i++) {
+                g.fillRect(-18, -60 + i * 27, 36, 13);
+            }
+            // Hook top (white base then stripes)
+            g.fillStyle(0xffffff, 1);
+            g.fillRect(-18, -88, 70, 30);
+            g.fillRect(34, -88, 36, 60);
+            g.fillStyle(0xdd1111, 1);
+            g.fillRect(-18, -88, 70, 13);
+            g.fillRect(34, -88, 36, 13);
+            g.fillRect(34, -62, 36, 13);
+            // Face on shaft
+            g.fillStyle(0x2c3e50, 1);
+            g.fillCircle(-6, 40, 5);
+            g.fillCircle(6, 40, 5);
+            g.lineStyle(4, 0x2c3e50, 1);
+            g.beginPath();
+            g.arc(0, 55, 10, 0.2, Math.PI - 0.2, false);
+            g.strokePath();
+        } else if (name === 'Bee') {
+            // Striped body
+            g.fillStyle(0xffd700, 1);
+            g.fillEllipse(0, 20, 80, 120);
+            g.fillStyle(0x1a1a1a, 1);
+            g.fillRect(-40, 0, 80, 18);
+            g.fillRect(-40, 36, 80, 18);
+            g.fillRect(-40, 72, 80, 18);
+            // Wings
+            g.fillStyle(0xaaddff, 0.55);
+            g.fillEllipse(-65, -30, 80, 50);
+            g.fillEllipse(65, -30, 80, 50);
+            // Head
+            g.fillStyle(0xffd700, 1);
+            g.fillCircle(0, -55, 38);
+            // Eyes
+            g.fillStyle(0x1a1a1a, 1);
+            g.fillCircle(-13, -60, 7);
+            g.fillCircle(13, -60, 7);
+            // Antennae
+            g.lineStyle(3, 0x1a1a1a, 1);
+            g.lineBetween(-10, -90, -25, -118);
+            g.lineBetween(10, -90, 25, -118);
+            g.fillStyle(0x1a1a1a, 1);
+            g.fillCircle(-25, -118, 5);
+            g.fillCircle(25, -118, 5);
+            // Smile
+            g.lineStyle(3, 0x1a1a1a, 1);
+            g.beginPath();
+            g.arc(0, -46, 13, 0.2, Math.PI - 0.2, false);
+            g.strokePath();
+        } else if (name === 'Butterfly') {
+            // Upper wings
+            g.fillStyle(0x8833ff, 1);
+            g.fillTriangle(-95, -65, -10, -55, -10, 60);
+            g.fillTriangle(95, -65, 10, -55, 10, 60);
+            // Lower wings
+            g.fillStyle(0xbb88ff, 1);
+            g.fillTriangle(-70, 65, -10, 10, -10, 115);
+            g.fillTriangle(70, 65, 10, 10, 10, 115);
+            // Wing highlights
+            g.lineStyle(2, 0xffffff, 0.45);
+            g.lineBetween(-55, -40, -20, 20);
+            g.lineBetween(55, -40, 20, 20);
+            // Body
+            g.fillStyle(0x1a1a1a, 1);
+            g.fillEllipse(0, 20, 16, 120);
+            // Head
+            g.fillCircle(0, -50, 18);
+            // Antennae
+            g.lineStyle(3, 0x1a1a1a, 1);
+            g.lineBetween(-5, -65, -20, -100);
+            g.lineBetween(5, -65, 20, -100);
+            g.fillStyle(0x8833ff, 1);
+            g.fillCircle(-20, -100, 6);
+            g.fillCircle(20, -100, 6);
+        } else if (name === 'Ladybug') {
+            // Red body
+            g.fillStyle(0xdd1111, 1);
+            g.fillEllipse(0, 10, 140, 120);
+            // Centre line
+            g.lineStyle(4, 0x1a1a1a, 1);
+            g.lineBetween(0, -50, 0, 70);
+            // Spots (3 per side)
+            g.fillStyle(0x1a1a1a, 1);
+            g.fillCircle(-34, -12, 16);
+            g.fillCircle(34, -12, 16);
+            g.fillCircle(-32, 28, 13);
+            g.fillCircle(32, 28, 13);
+            g.fillCircle(-20, 58, 10);
+            g.fillCircle(20, 58, 10);
+            // Head
+            g.fillStyle(0x1a1a1a, 1);
+            g.fillCircle(0, -62, 36);
+            // Eyes
+            g.fillStyle(0xffffff, 1);
+            g.fillCircle(-12, -68, 9);
+            g.fillCircle(12, -68, 9);
+            g.fillStyle(0x1a1a1a, 1);
+            g.fillCircle(-12, -68, 5);
+            g.fillCircle(12, -68, 5);
+            // Antennae
+            g.lineStyle(3, 0x1a1a1a, 1);
+            g.lineBetween(-8, -94, -20, -122);
+            g.lineBetween(8, -94, 20, -122);
         }
     }
 
@@ -377,30 +583,23 @@ export class MathDungeon extends Scene {
     _spawnChest() {
         const { width, height } = this.cameras.main;
         const container = this.add.container(width / 2, height / 2).setScale(0.01);
-        
-        // Aura
+
         const aura = this.add.circle(0, 0, 100, 0xffd700, 0.2);
         this.tweens.add({ targets: aura, scale: 1.5, alpha: 0, duration: 1500, repeat: -1 });
         container.add(aura);
 
         const g = this.add.graphics();
-        // Box
         g.fillStyle(0x5d2e0c, 1);
         g.fillRoundedRect(-60, -50, 120, 100, 10);
         g.fillStyle(0x8b4513, 1);
         g.fillRoundedRect(-55, -45, 110, 90, 8);
-        
-        // Gold Straps
         g.fillStyle(0xffd700, 1);
         g.fillRect(-40, -50, 15, 100);
         g.fillRect(25, -50, 15, 100);
-        
-        // Lock
         g.fillStyle(0xf1c40f, 1);
         g.fillCircle(0, 0, 15);
         g.fillStyle(0x000000, 1);
         g.fillRect(-2, 0, 4, 10);
-
         container.add(g);
 
         this.tweens.add({
@@ -411,10 +610,17 @@ export class MathDungeon extends Scene {
                 this.scene.pause();
                 this.scene.launch('MathProblemScene', {
                     isChest: true,
+                    numMax: this.worldConfig.numMax,
                     onSuccess: () => {
-                        this._addDecoration();
-                        container.destroy();
-                        this._resumeWalking();
+                        const newScore = this.score + 200;
+                        this._updateScoreHUD(newScore);
+                        if (newScore >= this.worldConfig.pointsNeeded) {
+                            this._triggerWorldComplete();
+                        } else {
+                            this._addDecoration();
+                            container.destroy();
+                            this._resumeWalking();
+                        }
                     }
                 });
             }
@@ -427,14 +633,19 @@ export class MathDungeon extends Scene {
         this.scene.resume();
     }
 
+    _triggerWorldComplete() {
+        this.isWalking = false;
+        this.scene.launch('MathVictoryScene', { worldIndex: this.worldIndex });
+    }
+
     _addDecoration() {
         const { width, height } = this.cameras.main;
         const x = Math.random() * width;
         const y = height * 0.1 + Math.random() * (height * 0.3);
-        const star = this.add.text(x, y, '✨', { 
-            fontSize: `${Math.floor(Math.random() * 20 + 20)}px` 
+        const star = this.add.text(x, y, '✨', {
+            fontSize: `${Math.floor(Math.random() * 20 + 20)}px`
         }).setDepth(2).setAlpha(0);
-        
+
         this.tweens.add({
             targets: star,
             alpha: 0.8,

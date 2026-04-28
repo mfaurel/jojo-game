@@ -37,8 +37,8 @@ export class MainMenu extends Scene {
             this.scene.start('SpellingMenu');
         });
 
-        this._createChoiceButton(512, 540, '❄️ Mathématiques', 0x2266aa, () => {
-            this.scene.start('MathDungeon');
+        this._createChoiceButton(512, 540, '🔢 Mathématiques', 0x2266aa, () => {
+            this.scene.start('MathWorldSelectScene');
         });
     }
 
