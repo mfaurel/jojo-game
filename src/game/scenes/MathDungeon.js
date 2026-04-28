@@ -6,8 +6,8 @@ export class MathDungeon extends Scene {
         super('MathDungeon');
         this.distance = 0;
         this.isWalking = true;
-        this.encounterThreshold = 400;
-        this.nextEncounter = 400;
+        this.encounterThreshold = 150;
+        this.nextEncounter = 150;
         this.decorations = [];
     }
 
@@ -35,7 +35,7 @@ export class MathDungeon extends Scene {
         this._createUI(width, height);
 
         this.distance = 0;
-        this.nextEncounter = 300;
+        this.nextEncounter = 100;
         this.isWalking = true;
     }
 
@@ -160,7 +160,7 @@ export class MathDungeon extends Scene {
     update(time, delta) {
         if (!this.isWalking) return;
 
-        this.distance += delta * 0.15;
+        this.distance += delta * 0.35;
 
         this._updatePerspective();
 
@@ -629,7 +629,7 @@ export class MathDungeon extends Scene {
 
     _resumeWalking() {
         this.isWalking = true;
-        this.nextEncounter = this.distance + this.encounterThreshold + Math.random() * 200;
+        this.nextEncounter = this.distance + this.encounterThreshold + Math.random() * 80;
         this.scene.resume();
     }
 

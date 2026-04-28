@@ -22,12 +22,10 @@ export class MathProblemScene extends Scene {
     create() {
         const { width, height } = this.cameras.main;
 
-        // Semi-transparent animated background
         this.add.rectangle(width/2, height/2, width, height, 0x000000, 0.7);
-        
+
         this._drawCharacter();
 
-        // Success Particles for later
         this.successParticles = this.add.particles(width/2, height/2, 'particle', {
             speed: { min: 100, max: 400 },
             scale: { start: 0.6, end: 0 },
@@ -38,59 +36,57 @@ export class MathProblemScene extends Scene {
             emitting: false
         });
 
-        // Main Panel
-        const panelWidth = Math.min(width * 0.85, 600);
-        const panelHeight = Math.min(height * 0.85, 650);
-        const panelX = width / 2;
-        const panelY = height / 2;
+        const panelW = Math.min(width * 0.85, 600);
+        const panelH = Math.min(height * 0.92, 680);
+        const px = width / 2;
+        const py = height / 2;
+        const panelTop = py - panelH / 2;
 
         if (this.textures.exists('ui_panel')) {
-            this.add.nineslice(panelX, panelY, 'ui_panel', 0, panelWidth, panelHeight, 40, 40, 40, 40);
+            this.add.nineslice(px, py, 'ui_panel', 0, panelW, panelH, 40, 40, 40, 40);
         } else {
             const panel = this.add.graphics();
             panel.fillStyle(0xffffff, 1);
-            panel.fillRoundedRect(panelX - panelWidth/2, panelY - panelHeight/2, panelWidth, panelHeight, 30);
+            panel.fillRoundedRect(px - panelW/2, py - panelH/2, panelW, panelH, 30);
             panel.lineStyle(8, 0x00aaff, 1);
-            panel.strokeRoundedRect(panelX - panelWidth/2, panelY - panelHeight/2, panelWidth, panelHeight, 30);
+            panel.strokeRoundedRect(px - panelW/2, py - panelH/2, panelW, panelH, 30);
         }
 
-        // Header
         const titleText = this.isChest ? 'Coffre Magique ! 🎁' : 'Aide Jolyne ! ✨';
-        this.add.text(panelX, panelY - panelHeight * 0.4, titleText, {
-            fontSize: '32px',
+        this.add.text(px, panelTop + 38, titleText, {
+            fontSize: '30px',
             fontFamily: 'Arial Black',
             color: '#004488'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5, 0);
 
-        // Equation Display
-        this.add.text(panelX, panelY - panelHeight * 0.2, `${this.num1} + ${this.num2} =`, {
+        this.add.text(px, panelTop + 115, `${this.num1} + ${this.num2} =`, {
             fontSize: '60px',
             fontFamily: 'Arial Black',
             color: '#ff6600',
             stroke: '#000',
             strokeThickness: 4
-        }).setOrigin(0.5);
+        }).setOrigin(0.5, 0);
 
-        // Input Box
         const inputBg = this.add.graphics();
         inputBg.fillStyle(0x00aaff, 0.1);
-        // Widened box to fit 2 digits safely (160 instead of 120)
-        inputBg.fillRoundedRect(panelX - 80, panelY - 50, 160, 100, 15);
-        
-        this.inputText = this.add.text(panelX, panelY, '?', {
-            fontSize: '70px',
+        inputBg.fillRoundedRect(px - 80, panelTop + 210, 160, 88, 15);
+
+        this.inputText = this.add.text(px, panelTop + 254, '?', {
+            fontSize: '65px',
             fontFamily: 'Arial Black',
             color: '#00aaff'
         }).setOrigin(0.5);
 
-        // Responsive Keypad
-        this._drawKeypad(panelX, panelY + panelHeight * 0.25, panelWidth);
+        const keypadCy = panelTop + 360;
+        this._drawKeypad(px, keypadCy, panelW, panelH - 380);
     }
 
-    _drawKeypad(cx, cy, panelWidth) {
-        const gap = panelWidth * 0.18;
+    _drawKeypad(cx, cy, panelWidth, availableHeight) {
+        // gap must satisfy: 2*gap*0.9 + gap*0.42 <= availableHeight  →  gap <= availableHeight/2.22
+        const gap = Math.floor(Math.min(panelWidth * 0.18, availableHeight / 2.22));
+        const keyR = Math.floor(gap * 0.42);
         const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '⌫'];
-        
+
         keys.forEach((key, i) => {
             const row = Math.floor(i / 4);
             const col = i % 4;
@@ -98,12 +94,12 @@ export class MathProblemScene extends Scene {
             const y = cy + (row * gap * 0.9);
 
             const isBack = key === '⌫';
-            this._createKey(x, y, key, isBack ? 0xaa0000 : 0x00aaff, isBack);
+            this._createKey(x, y, key, isBack ? 0xaa0000 : 0x00aaff, isBack, keyR);
         });
     }
 
-    _createKey(x, y, label, color, isBack) {
-        const size = Math.min(this.cameras.main.width * 0.12, 45);
+    _createKey(x, y, label, color, isBack, size) {
+        size = size ?? Math.min(this.cameras.main.width * 0.12, 45);
         
         let bg;
         if (this.textures.exists('ui_button')) {
