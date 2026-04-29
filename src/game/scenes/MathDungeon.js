@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import { MATH_WORLDS } from '../data/MathWorldData.js';
+import { getEquipment } from '../data/LevelData.js';
 
 export class MathDungeon extends Scene {
     constructor() {
@@ -201,6 +202,8 @@ export class MathDungeon extends Scene {
     }
 
     _drawArms(w, h) {
+        const equip = getEquipment();
+
         this.magicTrail = this.add.particles(0, 0, 'particle', {
             speed: { min: 20, max: 60 },
             scale: { start: 0.4, end: 0 },
@@ -211,19 +214,152 @@ export class MathDungeon extends Scene {
             follow: null
         });
 
+        // Left arm — shield if equipped, teddy bear by default
         this.teddyArm = this.add.container(w * 0.2, h * 0.85);
-        const teddyG = this.add.graphics();
-        this._drawDetailedTeddy(teddyG);
-        this.teddyArm.add(teddyG);
+        const leftG = this.add.graphics();
+        if (equip.item_left === 'item_L_shield') {
+            this._drawShield(leftG);
+        } else if (equip.item_left === 'item_L_magic') {
+            this._drawMagicGlove(leftG);
+        } else {
+            this._drawDetailedTeddy(leftG);
+        }
+        this.teddyArm.add(leftG);
         this.teddyArm.setDepth(150);
 
+        // Right arm — sword if equipped, wand by default
         this.wandArm = this.add.container(w * 0.8, h * 0.85);
-        const wandG = this.add.graphics();
-        this._drawDetailedWand(wandG);
-        this.wandArm.add(wandG);
+        const rightG = this.add.graphics();
+        const showWand = !equip.item_right || equip.item_right === 'item_R_wand';
+        if (equip.item_right === 'item_R_sword') {
+            this._drawSword(rightG);
+        } else {
+            this._drawDetailedWand(rightG);
+        }
+        this.wandArm.add(rightG);
         this.wandArm.setDepth(150);
 
-        this.magicTrail.startFollow(this.wandArm, 0, -180);
+        if (showWand) {
+            this.magicTrail.startFollow(this.wandArm, 0, -180);
+        }
+    }
+
+    _drawShield(g) {
+        // Shadow
+        g.fillStyle(0x3d1a00, 0.5);
+        g.beginPath();
+        g.moveTo(-52, -68);
+        g.lineTo(57, -68);
+        g.lineTo(57, 33);
+        g.lineTo(2, 83);
+        g.lineTo(-52, 33);
+        g.closePath();
+        g.fillPath();
+
+        // Main body
+        g.fillStyle(0x8b4513, 1);
+        g.beginPath();
+        g.moveTo(-55, -70);
+        g.lineTo(55, -70);
+        g.lineTo(55, 30);
+        g.lineTo(0, 80);
+        g.lineTo(-55, 30);
+        g.closePath();
+        g.fillPath();
+
+        // Inner panel
+        g.fillStyle(0xcd853f, 1);
+        g.beginPath();
+        g.moveTo(-38, -55);
+        g.lineTo(38, -55);
+        g.lineTo(38, 22);
+        g.lineTo(0, 60);
+        g.lineTo(-38, 22);
+        g.closePath();
+        g.fillPath();
+
+        // Decorative cross
+        g.fillStyle(0xffd700, 1);
+        g.fillRect(-5, -50, 10, 115);
+        g.fillRect(-38, -8, 76, 10);
+
+        // Boss (center knob)
+        g.fillStyle(0xffd700, 1);
+        g.fillCircle(0, 0, 14);
+        g.fillStyle(0xffee88, 1);
+        g.fillCircle(-3, -3, 5);
+
+        // Rim
+        g.lineStyle(4, 0x5d2e0c, 1);
+        g.beginPath();
+        g.moveTo(-55, -70);
+        g.lineTo(55, -70);
+        g.lineTo(55, 30);
+        g.lineTo(0, 80);
+        g.lineTo(-55, 30);
+        g.closePath();
+        g.strokePath();
+    }
+
+    _drawMagicGlove(g) {
+        // Purple glove base
+        g.fillStyle(0x6a0dad, 1);
+        g.fillEllipse(0, 20, 110, 150);
+
+        // Fingers
+        g.fillStyle(0x7b14c4, 1);
+        for (let i = 0; i < 4; i++) {
+            g.fillRoundedRect(-44 + i * 28, -70, 22, 60, 10);
+        }
+        // Thumb
+        g.fillRoundedRect(-62, -40, 22, 50, 10);
+
+        // Magic runes on back
+        g.lineStyle(2, 0xff88ff, 0.8);
+        g.strokeCircle(0, 30, 28);
+        g.lineStyle(2, 0xffccff, 0.6);
+        g.lineBetween(-20, 10, 20, 50);
+        g.lineBetween(20, 10, -20, 50);
+
+        // Glow sparkles
+        g.fillStyle(0xff88ff, 0.9);
+        g.fillCircle(-30, -80, 7);
+        g.fillCircle(35, -90, 5);
+        g.fillCircle(0, -100, 9);
+    }
+
+    _drawSword(g) {
+        // Blade
+        g.fillStyle(0xaaaaaa, 1);
+        g.fillTriangle(-10, -60, 10, -60, 0, -200);
+        g.fillRect(-10, -60, 20, 120);
+
+        // Blade edge highlights
+        g.fillStyle(0xeeeeee, 1);
+        g.fillTriangle(-2, -60, 4, -60, 0, -195);
+        g.fillRect(-2, -60, 6, 120);
+
+        // Crossguard
+        g.fillStyle(0xffd700, 1);
+        g.fillRect(-50, 55, 100, 18);
+        g.fillCircle(-50, 64, 10);
+        g.fillCircle(50, 64, 10);
+
+        // Handle
+        g.fillStyle(0x5d2e0c, 1);
+        g.fillRect(-12, 73, 24, 80);
+
+        // Handle wrapping
+        g.lineStyle(3, 0x3d1a00, 0.7);
+        for (let i = 0; i < 5; i++) {
+            g.lineBetween(-12, 80 + i * 14, 12, 80 + i * 14);
+        }
+
+        // Pommel
+        g.fillStyle(0xffd700, 1);
+        g.fillCircle(0, 160, 16);
+        g.fillStyle(0xffee88, 1);
+        g.fillCircle(-4, 156, 6);
     }
 
     _drawDetailedTeddy(g) {

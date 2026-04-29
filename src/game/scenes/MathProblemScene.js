@@ -180,10 +180,6 @@ export class MathProblemScene extends Scene {
             const char = this.add.image(120, height - 120, 'jojo_pixel').setDisplaySize(180, 180);
             if (skinItem?.tint) char.setTint(skinItem.tint);
 
-            const leftItem  = ITEMS.find(i => i.id === this.equip.item_left);
-            const rightItem = ITEMS.find(i => i.id === this.equip.item_right);
-            this.add.text(35,  height - 158, leftItem?.emoji  ?? '🧤', { fontSize: '40px' }).setOrigin(0.5);
-            this.add.text(205, height - 158, rightItem?.emoji ?? '⭐', { fontSize: '40px' }).setOrigin(0.5);
 
             this.tweens.add({
                 targets: char,
