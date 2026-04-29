@@ -7,23 +7,23 @@ export const RARITY = {
 };
 
 export const ITEMS = [
-    // --- SKINS (Spelling Character) ---
-    { id: 'skin_default', category: 'skin', name: 'Jolyne Pixel', rarity: 'COMMON', asset: 'jojo_pixel' },
-    { id: 'skin_pink',    category: 'skin', name: 'Robe Rose',   rarity: 'UNCOMMON', asset: 'jojo_pink' },
-    { id: 'skin_gold',    category: 'skin', name: 'Princesse d\'Or', rarity: 'EPIC', asset: 'jojo_gold' },
+    // --- SKINS (Spelling & Math character) ---
+    { id: 'skin_default', category: 'skin', name: 'Jolyne Pixel',     rarity: 'COMMON',   asset: 'jojo_pixel', tint: null       },
+    { id: 'skin_pink',    category: 'skin', name: 'Robe Rose',        rarity: 'UNCOMMON', asset: 'jojo_pixel', tint: 0xff88cc   },
+    { id: 'skin_gold',    category: 'skin', name: 'Princesse d\'Or',  rarity: 'EPIC',     asset: 'jojo_pixel', tint: 0xffd700   },
 
     // --- BACKGROUNDS (Main Menu) ---
-    { id: 'bg_night',     category: 'background', name: 'Nuit Étoilée', rarity: 'COMMON', asset: 'bg_night' },
-    { id: 'bg_castle',    category: 'background', name: 'Château Royal', rarity: 'RARE', asset: 'bg_castle' },
-    { id: 'bg_galaxy',    category: 'background', name: 'Galaxie Rose', rarity: 'LEGENDARY', asset: 'bg_galaxy' },
+    { id: 'bg_night',   category: 'background', name: 'Nuit Étoilée',  rarity: 'COMMON',    asset: 'bg_night',   bgColor: 0x1a1a5e },
+    { id: 'bg_castle',  category: 'background', name: 'Château Royal', rarity: 'RARE',      asset: 'bg_castle',  bgColor: 0x2a0055 },
+    { id: 'bg_galaxy',  category: 'background', name: 'Galaxie Rose',  rarity: 'LEGENDARY', asset: 'bg_galaxy',  bgColor: 0x000022 },
 
     // --- MATH ITEMS (Left Arm) ---
-    { id: 'item_L_shield', category: 'item_left', name: 'Bouclier de Bois', rarity: 'COMMON', asset: 'shield_wood' },
-    { id: 'item_L_magic',  category: 'item_left', name: 'Gant Magique', rarity: 'RARE', asset: 'glove_magic' },
+    { id: 'item_L_shield', category: 'item_left',  name: 'Bouclier de Bois',    rarity: 'COMMON', asset: 'shield_wood',  emoji: '🛡️' },
+    { id: 'item_L_magic',  category: 'item_left',  name: 'Gant Magique',        rarity: 'RARE',   asset: 'glove_magic',  emoji: '🧤' },
 
     // --- MATH ITEMS (Right Arm) ---
-    { id: 'item_R_sword',  category: 'item_right', name: 'Épée de Fer', rarity: 'UNCOMMON', asset: 'sword_iron' },
-    { id: 'item_R_wand',   category: 'item_right', name: 'Baguette d\'Étoile', rarity: 'EPIC', asset: 'wand_star' },
+    { id: 'item_R_sword',  category: 'item_right', name: 'Épée de Fer',         rarity: 'UNCOMMON', asset: 'sword_iron',  emoji: '⚔️' },
+    { id: 'item_R_wand',   category: 'item_right', name: 'Baguette d\'Étoile',  rarity: 'EPIC',     asset: 'wand_star',   emoji: '⭐' },
 ];
 
 export const SPECIAL_REWARDS = {

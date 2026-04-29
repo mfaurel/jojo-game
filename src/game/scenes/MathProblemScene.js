@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import { getEquipment } from '../data/LevelData.js';
+import { ITEMS } from '../data/ItemData.js';
 
 export class MathProblemScene extends Scene {
     constructor() {
@@ -172,18 +173,20 @@ export class MathProblemScene extends Scene {
     }
 
     _drawCharacter() {
-        const { width, height } = this.cameras.main;
-        const skinKey = this.equip.skin === 'skin_default' ? 'jojo_pixel' : this.equip.skin;
+        const { height } = this.cameras.main;
 
-        if (this.textures.exists(skinKey)) {
-            const char = this.add.image(120, height - 120, skinKey).setDisplaySize(180, 180);
-            
-            // Draw arm items if equipped
+        if (this.textures.exists('jojo_pixel')) {
+            const skinItem = ITEMS.find(i => i.id === (this.equip.skin ?? 'skin_default'));
+            const char = this.add.image(120, height - 120, 'jojo_pixel').setDisplaySize(180, 180);
+            if (skinItem?.tint) char.setTint(skinItem.tint);
+
             if (this.equip.item_left) {
-                this.add.text(40, height - 160, '🛡️', { fontSize: '40px' });
+                const leftItem = ITEMS.find(i => i.id === this.equip.item_left);
+                this.add.text(40, height - 160, leftItem?.emoji ?? '🛡️', { fontSize: '40px' });
             }
             if (this.equip.item_right) {
-                this.add.text(200, height - 160, '⚔️', { fontSize: '40px' });
+                const rightItem = ITEMS.find(i => i.id === this.equip.item_right);
+                this.add.text(200, height - 160, rightItem?.emoji ?? '⚔️', { fontSize: '40px' });
             }
 
             this.tweens.add({

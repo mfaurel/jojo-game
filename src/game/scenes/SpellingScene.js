@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import { WORDS } from '../data/WordData.js';
 import { audio } from '../systems/AudioManager.js';
 import { getEquipment } from '../data/LevelData.js';
+import { ITEMS } from '../data/ItemData.js';
 
 export class SpellingScene extends Scene {
     constructor() {
@@ -20,7 +21,8 @@ export class SpellingScene extends Scene {
         this._locked   = false; // prevent input during success/retry animation
         
         const equip = getEquipment();
-        this.skinKey = equip.skin === 'skin_default' ? 'jojo_pixel' : equip.skin;
+        const skinItem = ITEMS.find(i => i.id === (equip.skin ?? 'skin_default'));
+        this.skinTint = skinItem?.tint ?? null;
     }
 
     create() {
@@ -40,8 +42,9 @@ export class SpellingScene extends Scene {
     }
 
     _drawCharacter() {
-        if (this.textures.exists(this.skinKey)) {
-            const char = this.add.image(115, 600, this.skinKey).setDisplaySize(140, 140);
+        if (this.textures.exists('jojo_pixel')) {
+            const char = this.add.image(115, 600, 'jojo_pixel').setDisplaySize(140, 140);
+            if (this.skinTint) char.setTint(this.skinTint);
             this.tweens.add({
                 targets: char,
                 y: 590,
