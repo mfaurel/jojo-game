@@ -33,10 +33,10 @@ export class PlayerController {
         this.container = this.scene.add.container(pos.x, pos.y, [visual]);
         this.container.setDepth(10);
 
-        // Idle bob
+        // Bob the visual child so the container's y stays clean for grid movement
         this.scene.tweens.add({
-            targets: this.container,
-            y: pos.y - 4,
+            targets: visual,
+            y: -4,
             duration: 400,
             yoyo: true,
             repeat: -1,

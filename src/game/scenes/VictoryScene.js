@@ -1,9 +1,9 @@
 import { Scene } from 'phaser';
 import { audio } from '../systems/AudioManager.js';
-import { saveProgress, getProgress, addToInventory } from '../data/LevelData.js';
+import { saveProgress, getProgress, addToInventory, getEquipment } from '../data/LevelData.js';
 import { LEVELS } from '../data/LevelData.js';
 import { LootManager } from '../systems/LootManager.js';
-import { SPECIAL_REWARDS } from '../data/ItemData.js';
+import { SPECIAL_REWARDS, ITEMS } from '../data/ItemData.js';
 
 export class VictoryScene extends Scene {
     constructor() {
@@ -262,15 +262,14 @@ export class VictoryScene extends Scene {
         const cy    = 490;
 
         const jolyneGfx = this._makeJolyneGfx(cx, cy);
-        // Start off-screen left: world x = cx + gfx.x = 512 + (-592) = -80
-        jolyneGfx.x = -(cx + 80);
+        jolyneGfx.x = -80; // start off-screen left
         jolyneGfx.setDepth(5);
         this._track(jolyneGfx);
 
-        // Slide in
+        // Slide in to final position
         this.tweens.add({
             targets: jolyneGfx,
-            x: 0,
+            x: cx,
             duration: 600,
             ease: 'Quad.Out',
         });
@@ -278,7 +277,7 @@ export class VictoryScene extends Scene {
         // Celebratory bounce (continuous)
         this.tweens.add({
             targets: jolyneGfx,
-            y: jolyneGfx.y - 14,
+            y: cy - 14,
             duration: 480,
             yoyo: true,
             repeat: -1,
@@ -348,49 +347,11 @@ export class VictoryScene extends Scene {
     }
 
     _makeJolyneGfx(cx, cy) {
-        const gfx = this.add.graphics();
-        const s   = 2.2;
-
-        gfx.fillStyle(0xff80b4, 1);
-        gfx.fillEllipse(cx, cy + 10 * s, 46 * s, 34 * s);
-
-        gfx.fillStyle(0xffe4b5, 1);
-        gfx.fillCircle(cx, cy - 16 * s, 15 * s);
-
-        gfx.fillStyle(0xffd700, 1);
-        gfx.fillRect(cx - 13 * s, cy - 35 * s, 26 * s, 7 * s);
-
-        gfx.beginPath();
-        gfx.moveTo(cx - 11 * s, cy - 35 * s);
-        gfx.lineTo(cx - 14 * s, cy - 47 * s);
-        gfx.lineTo(cx -  5 * s, cy - 35 * s);
-        gfx.closePath(); gfx.fillPath();
-
-        gfx.beginPath();
-        gfx.moveTo(cx -  3 * s, cy - 35 * s);
-        gfx.lineTo(cx,           cy - 50 * s);
-        gfx.lineTo(cx +  3 * s, cy - 35 * s);
-        gfx.closePath(); gfx.fillPath();
-
-        gfx.beginPath();
-        gfx.moveTo(cx + 11 * s, cy - 35 * s);
-        gfx.lineTo(cx + 14 * s, cy - 47 * s);
-        gfx.lineTo(cx +  5 * s, cy - 35 * s);
-        gfx.closePath(); gfx.fillPath();
-
-        gfx.fillStyle(0xff4466, 1);
-        gfx.fillCircle(cx, cy - 31 * s, 3 * s);
-
-        gfx.fillStyle(0x553311, 1);
-        gfx.fillCircle(cx - 5 * s, cy - 18 * s, 3 * s);
-        gfx.fillCircle(cx + 5 * s, cy - 18 * s, 3 * s);
-
-        gfx.lineStyle(2.5 * s, 0x553311, 1);
-        gfx.beginPath();
-        gfx.arc(cx, cy - 14 * s, 5 * s, 0.15, Math.PI - 0.15, false);
-        gfx.strokePath();
-
-        return gfx;
+        const equip    = getEquipment();
+        const skinItem = ITEMS.find(i => i.id === (equip.skin ?? 'skin_default'));
+        const img      = this.add.image(cx, cy, 'jojo_pixel').setDisplaySize(180, 180);
+        if (skinItem?.tint) img.setTint(skinItem.tint);
+        return img;
     }
 
     // ─── Phase 4: FÉLICITATIONS + stars + confetti (6 → 8.5s) ───────────────
@@ -545,51 +506,14 @@ export class VictoryScene extends Scene {
     }
 
     _drawJolyne(cx, cy) {
-        const gfx = this.add.graphics();
-        const s   = 2.2;
-
-        gfx.fillStyle(0xff80b4, 1);
-        gfx.fillEllipse(cx, cy + 10 * s, 46 * s, 34 * s);
-
-        gfx.fillStyle(0xffe4b5, 1);
-        gfx.fillCircle(cx, cy - 16 * s, 15 * s);
-
-        gfx.fillStyle(0xffd700, 1);
-        gfx.fillRect(cx - 13 * s, cy - 35 * s, 26 * s, 7 * s);
-
-        gfx.beginPath();
-        gfx.moveTo(cx - 11 * s, cy - 35 * s);
-        gfx.lineTo(cx - 14 * s, cy - 47 * s);
-        gfx.lineTo(cx -  5 * s, cy - 35 * s);
-        gfx.closePath(); gfx.fillPath();
-
-        gfx.beginPath();
-        gfx.moveTo(cx -  3 * s, cy - 35 * s);
-        gfx.lineTo(cx,           cy - 50 * s);
-        gfx.lineTo(cx +  3 * s, cy - 35 * s);
-        gfx.closePath(); gfx.fillPath();
-
-        gfx.beginPath();
-        gfx.moveTo(cx + 11 * s, cy - 35 * s);
-        gfx.lineTo(cx + 14 * s, cy - 47 * s);
-        gfx.lineTo(cx +  5 * s, cy - 35 * s);
-        gfx.closePath(); gfx.fillPath();
-
-        gfx.fillStyle(0xff4466, 1);
-        gfx.fillCircle(cx, cy - 31 * s, 3 * s);
-
-        gfx.fillStyle(0x553311, 1);
-        gfx.fillCircle(cx - 5 * s, cy - 18 * s, 3 * s);
-        gfx.fillCircle(cx + 5 * s, cy - 18 * s, 3 * s);
-
-        gfx.lineStyle(2.5 * s, 0x553311, 1);
-        gfx.beginPath();
-        gfx.arc(cx, cy - 14 * s, 5 * s, 0.15, Math.PI - 0.15, false);
-        gfx.strokePath();
+        const equip    = getEquipment();
+        const skinItem = ITEMS.find(i => i.id === (equip.skin ?? 'skin_default'));
+        const img      = this.add.image(cx, cy, 'jojo_pixel').setDisplaySize(180, 180);
+        if (skinItem?.tint) img.setTint(skinItem.tint);
 
         this.tweens.add({
-            targets: gfx,
-            y: gfx.y - 12,
+            targets: img,
+            y: cy - 12,
             duration: 600,
             yoyo: true,
             repeat: -1,
