@@ -26,8 +26,8 @@ export class Preloader extends Scene
         this.load.svg('ui_tile', 'ui_tile.svg', { width: 128, height: 128 });
         this.load.svg('ui_slot', 'ui_slot.svg', { width: 128, height: 128 });
 
-        // Load Pixel Art & Rewards (from resources folder)
-        this.load.setPath('../resources'); // Go up from assets to root, then into resources
+        // Load Pixel Art & Rewards (from resources folder, served from public root)
+        this.load.setPath('resources');
         this.load.image('jojo_pixel', 'jojopixelart_cut.png');
         this.load.image('jojopixelart_maths', 'jojopixelart_maths.jpeg');
         this.load.image('jojopixelart_spelling', 'jojopixelart_spelling.jpeg');

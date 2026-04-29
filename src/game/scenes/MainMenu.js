@@ -1,7 +1,6 @@
 import { Scene } from 'phaser';
-import { getEquipment } from '../data/LevelData.js';
+import { getEquipment, addToInventory } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
-import { addToInventory } from '../data/LevelData.js';
 
 export class MainMenu extends Scene {
     constructor() {
@@ -10,8 +9,7 @@ export class MainMenu extends Scene {
 
     create() {
         const equip = getEquipment();
-        
-        // Apply background based on equipment
+
         if (equip.background === 'bg_castle') {
             this.cameras.main.setBackgroundColor(0x2a0055);
         } else if (equip.background === 'bg_galaxy') {
@@ -20,14 +18,11 @@ export class MainMenu extends Scene {
             this.cameras.main.setBackgroundColor(0x1a1a5e);
         }
 
-        // Night sky stars
         for (let i = 0; i < 40; i++) {
             const x = Math.random() * 1024;
             const y = Math.random() * 768;
             const r = 0.1 + Math.random() * 0.4;
-            this.add.image(x, y, 'particle')
-                .setScale(r)
-                .setAlpha(0.4 + Math.random() * 0.4);
+            this.add.image(x, y, 'particle').setScale(r).setAlpha(0.4 + Math.random() * 0.4);
         }
 
         this.add.text(512, 150, 'Le Monde de Jolyne', {
@@ -58,13 +53,11 @@ export class MainMenu extends Scene {
         });
 
         this._initCheatCode();
-        }
+    }
 
-        _initCheatCode() {
-        const SEQUENCE = [
-            Phaser.Input.Keyboard.KeyCodes.UP,
-            Phaser.Input.Keyboard.KeyCodes.UP,
-        ];
+    _initCheatCode() {
+        // Konami: UP UP DOWN DOWN LEFT RIGHT LEFT RIGHT  (raw keyCodes)
+        const SEQUENCE = [38, 38, 40, 40, 37, 39, 37, 39];
         let progress = 0;
 
         this.input.keyboard.on('keydown', (event) => {
@@ -78,9 +71,9 @@ export class MainMenu extends Scene {
                 progress = event.keyCode === SEQUENCE[0] ? 1 : 0;
             }
         });
-        }
+    }
 
-        _activateCheat() {
+    _activateCheat() {
         ITEMS.forEach(item => addToInventory(item.id));
 
         const { width, height } = this.cameras.main;
@@ -106,9 +99,9 @@ export class MainMenu extends Scene {
                 });
             },
         });
-        }
+    }
 
-        _createSmallButton(x, y, label, color, callback) {
+    _createSmallButton(x, y, label, color, callback) {
         const btnW = 220;
         const btnH = 60;
 
@@ -120,16 +113,14 @@ export class MainMenu extends Scene {
         }
 
         bg.setInteractive({ useHandCursor: true });
-
-        const txt = this.add.text(x, y, label, {
+        this.add.text(x, y, label, {
             fontSize: '22px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffffff'
         }).setOrigin(0.5);
 
         bg.on('pointerup', callback);
-        }
-
+    }
 
     _createChoiceButton(x, y, label, color, callback) {
         const btnW = 450;
@@ -139,8 +130,7 @@ export class MainMenu extends Scene {
         if (this.textures.exists('ui_panel')) {
             bg = this.add.nineslice(x, y, 'ui_panel', 0, btnW, btnH, 40, 40, 40, 40).setTint(color);
         } else {
-            bg = this.add.rectangle(x, y, btnW, btnH, color, 1)
-                .setStrokeStyle(6, 0xffffff);
+            bg = this.add.rectangle(x, y, btnW, btnH, color, 1).setStrokeStyle(6, 0xffffff);
         }
 
         bg.setInteractive({ useHandCursor: true });
@@ -153,21 +143,8 @@ export class MainMenu extends Scene {
             strokeThickness: 4
         }).setOrigin(0.5);
 
-        bg.on('pointerover', () => {
-            if (bg.setFillStyle) bg.setFillStyle(color + 0x111111);
-            bg.setScale(1.05);
-            txt.setScale(1.05);
-        });
-
-        bg.on('pointerout', () => {
-            if (bg.setFillStyle) bg.setFillStyle(color);
-            bg.setScale(1);
-            txt.setScale(1);
-        });
-
-        bg.on('pointerup', () => {
-            this.cameras.main.fadeOut(500, 0, 0, 0);
-            this.cameras.main.once('camerafadeoutcomplete', callback);
-        });
+        bg.on('pointerover', () => { if (bg.setFillStyle) bg.setFillStyle(color + 0x111111); bg.setScale(1.05); txt.setScale(1.05); });
+        bg.on('pointerout',  () => { if (bg.setFillStyle) bg.setFillStyle(color); bg.setScale(1); txt.setScale(1); });
+        bg.on('pointerup',   () => { this.cameras.main.fadeOut(500, 0, 0, 0); this.cameras.main.once('camerafadeoutcomplete', callback); });
     }
 }
