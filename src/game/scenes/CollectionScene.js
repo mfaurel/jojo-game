@@ -31,14 +31,24 @@ export class CollectionScene extends Scene {
     }
 
     _drawCategories() {
+        const { width } = this.cameras.main;
         const categories = [
-            { id: 'skin', label: 'Personnage' },
-            { id: 'background', label: 'Fonds' },
-            { id: 'item_left', label: 'Bras Gauche' },
-            { id: 'item_right', label: 'Bras Droit' }
+            { label: '👗 Personnage', color: '#ff80b4' },
+            { label: '🌅 Fonds',      color: '#80b4ff' },
+            { label: '🛡️ Bras Gauche', color: '#80ffb4' },
+            { label: '⚔️ Bras Droit',  color: '#ffd700' },
         ];
-
-        // Stub: category selection logic can be added here
+        const totalW = categories.length * 220 + (categories.length - 1) * 10;
+        const startX = (width - totalW) / 2;
+        categories.forEach((cat, i) => {
+            this.add.text(startX + i * 230 + 110, 115, cat.label, {
+                fontSize: '17px',
+                fontFamily: 'Arial Black',
+                color: cat.color,
+                backgroundColor: '#2a1144',
+                padding: { x: 10, y: 5 },
+            }).setOrigin(0.5);
+        });
     }
 
     _drawItems() {

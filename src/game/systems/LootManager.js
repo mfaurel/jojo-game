@@ -1,18 +1,10 @@
-import { ITEMS, RARITY } from '../data/ItemData.js';
+import { ITEMS } from '../data/ItemData.js';
 import { getInventory, addToInventory } from '../data/LevelData.js';
 
 export class LootManager {
     static rollLoot() {
-        const rand = Math.random();
-        let cumulative = 0;
         let selectedRarity = 'COMMON';
 
-        // Roll for rarity
-        // Note: Sort by chance ascending to handle cumulative correctly if needed, 
-        // but here we use the defined chances.
-        const rarities = Object.entries(RARITY).sort((a, b) => a[1].chance - b[1].chance);
-        
-        // Simpler approach:
         const roll = Math.random();
         if (roll < 0.03) selectedRarity = 'LEGENDARY';
         else if (roll < 0.10) selectedRarity = 'EPIC';

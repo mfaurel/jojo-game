@@ -60,13 +60,13 @@ export class RewardPopup extends Scene {
             }
         });
 
-        // Add particles
+        // Burst of particles when panel opens
         this.add.particles(width/2, height/2, 'particle', {
-            speed: 200,
+            speed: { min: 100, max: 300 },
             scale: { start: 0.6, end: 0 },
             blendMode: 'ADD',
             lifespan: 1000,
-            quantity: 2
-        });
+            quantity: 40,
+        }).explode();
     }
 }

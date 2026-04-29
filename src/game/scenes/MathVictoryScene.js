@@ -1,6 +1,9 @@
 import { Scene } from 'phaser';
-import { MATH_WORLDS, saveMathProgress } from '../data/MathWorldData.js';
+import { MATH_WORLDS, saveMathProgress, getMathProgress } from '../data/MathWorldData.js';
 import { audio } from '../systems/AudioManager.js';
+import { LootManager } from '../systems/LootManager.js';
+import { addToInventory } from '../data/LevelData.js';
+import { SPECIAL_REWARDS } from '../data/ItemData.js';
 
 export class MathVictoryScene extends Scene {
     constructor() {
@@ -14,6 +17,9 @@ export class MathVictoryScene extends Scene {
     }
 
     create() {
+        saveMathProgress(this.worldIndex);
+        this._checkLoot();
+
         const { width, height } = this.cameras.main;
 
         // Phase 0 — dim overlay
@@ -86,10 +92,8 @@ export class MathVictoryScene extends Scene {
             }).explode();
         });
 
-        // Phase 5 — save progress + continue button (1800ms)
+        // Phase 5 — continue button (1800ms)
         this.time.delayedCall(1800, () => {
-            saveMathProgress(this.worldIndex);
-
             const btnBg = this.add.rectangle(width / 2, height * 0.78, 240, 58, this.worldConfig.btnColor, 1)
                 .setInteractive({ useHandCursor: true })
                 .setDepth(20);
@@ -108,6 +112,21 @@ export class MathVictoryScene extends Scene {
 
         // Phase 6 — auto-advance (3500ms)
         this.time.delayedCall(3500, () => this._exitToWorldSelect());
+    }
+
+    _checkLoot() {
+        const wonItem = LootManager.rollLoot();
+        if (wonItem) {
+            this.time.delayedCall(1000, () => {
+                this.scene.launch('RewardPopup', { item: wonItem });
+            });
+        }
+
+        const progress = getMathProgress();
+        const allDone = MATH_WORLDS.every((_, i) => progress[i] === true);
+        if (allDone) {
+            addToInventory(SPECIAL_REWARDS.MATH_ALL.id);
+        }
     }
 
     _exitToWorldSelect() {
