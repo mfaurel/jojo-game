@@ -63,13 +63,6 @@ export class MainMenu extends Scene {
         _initCheatCode() {
         const SEQUENCE = [
             Phaser.Input.Keyboard.KeyCodes.UP,
-            Phaser.Input.Keyboard.KeyCodes.UP,
-            Phaser.Input.Keyboard.KeyCodes.DOWN,
-            Phaser.Input.Keyboard.KeyCodes.DOWN,
-            Phaser.Input.Keyboard.KeyCodes.LEFT,
-            Phaser.Input.Keyboard.KeyCodes.RIGHT,
-            Phaser.Input.Keyboard.KeyCodes.LEFT,
-            Phaser.Input.Keyboard.KeyCodes.RIGHT,
         ];
         let progress = 0;
 
