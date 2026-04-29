@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import { MATH_WORLDS, getMathProgress, getMathUnlocked } from '../data/MathWorldData.js';
+import { t } from '../data/I18n.js';
 
 export class MathWorldSelectScene extends Scene {
     constructor() {
@@ -26,7 +27,7 @@ export class MathWorldSelectScene extends Scene {
             });
         }
 
-        this.add.text(width / 2, 55, '🔢 Les Mondes des Maths', {
+        this.add.text(width / 2, 55, t('mathWorldTitle'), {
             fontSize: '44px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffd700',
@@ -34,7 +35,7 @@ export class MathWorldSelectScene extends Scene {
             strokeThickness: 6,
         }).setOrigin(0.5);
 
-        this.add.text(width / 2, 118, 'Choisis ton monde !', {
+        this.add.text(width / 2, 118, t('chooseMathWorld'), {
             fontSize: '24px',
             color: '#ddaaff',
             stroke: '#000',
@@ -43,7 +44,7 @@ export class MathWorldSelectScene extends Scene {
 
         this._buildWorldCards();
 
-        const backBtn = this.add.text(20, 20, '⬅ Retour', {
+        const backBtn = this.add.text(20, 20, t('back'), {
             fontSize: '24px',
             color: '#ffffff',
             backgroundColor: '#2a2a88',
@@ -87,7 +88,7 @@ export class MathWorldSelectScene extends Scene {
             this.add.text(cx, cy - 52, world.emoji, { fontSize: '40px' })
                 .setOrigin(0.5).setDepth(11);
 
-            this.add.text(cx, cy + 4, world.name, {
+            this.add.text(cx, cy + 4, t(world.nameKey), {
                 fontSize: '15px',
                 fontFamily: 'Arial Black, Arial, sans-serif',
                 color: '#ffffff',
@@ -95,7 +96,7 @@ export class MathWorldSelectScene extends Scene {
                 strokeThickness: 3,
             }).setOrigin(0.5).setDepth(11);
 
-            this.add.text(cx, cy + 28, `MONDE ${i + 1}`, {
+            this.add.text(cx, cy + 28, t('worldLabel', i + 1), {
                 fontSize: '12px',
                 color: '#aaccff',
             }).setOrigin(0.5).setDepth(11);
@@ -116,7 +117,7 @@ export class MathWorldSelectScene extends Scene {
                 this.add.rectangle(cx, cy, cardW, cardH, 0x000000, 0.5).setDepth(13);
                 this.add.text(cx, cy - 18, '🔒', { fontSize: '36px' })
                     .setOrigin(0.5).setDepth(14);
-                this.add.text(cx, cy + 35, 'Terminer le\nmonde précédent', {
+                this.add.text(cx, cy + 35, t('completePrevWorld'), {
                     fontSize: '11px',
                     color: '#ffaaaa',
                     align: 'center',

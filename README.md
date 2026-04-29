@@ -1,6 +1,6 @@
 # 🏰 Le Monde de Jolyne
 
-An educational 2D RPG built with **Phaser 4** for a young French child learning to spell and do arithmetic. The princess Jolyne explores a castle labyrinth and an icy dungeon — unlocking gates by spelling words correctly and defeating monsters by solving additions.
+An educational 2D RPG built with **Phaser 4** for a young child (target age: 4+) learning to spell and do arithmetic. The princess Jolyne explores a castle labyrinth and an icy dungeon — unlocking gates by spelling words correctly and defeating monsters by solving additions.
 
 [Accès au jeu](https://mfaurel.github.io/jojo-game/)
 
@@ -15,15 +15,19 @@ Move Jolyne through a castle labyrinth with **arrow keys**, **WASD**, or the **o
 - Walk into a locked gate to trigger a spelling challenge
 - **Tap the letter tiles** in the correct order to spell the word shown in the picture
 - Unlock all 5 gates to reach the throne room and complete the level
-- 5 themed levels, each with 5 French words ordered by difficulty
+- **5 themed levels, each with a distinct maze layout** for replayability
+- A picture preview of the word to spell is shown above each gate
+- After 2 failed attempts on the same word, the first correct letter flashes gold as a hint
 
-| Level | Theme | Words |
-|-------|-------|-------|
+| Level | Theme | Words (FR / EN / ES) |
+|-------|-------|----------------------|
 | 1 | Le Château | ROI, CHAT, TOUR, OURS, LUNE |
 | 2 | Les Animaux | COQ, OIE, LION, LOUP, CERF |
 | 3 | La Nature | EAU, BOIS, MONT, VENT, CIEL |
 | 4 | La Cuisine | PAIN, LAIT, NOIX, MIEL, OEUF |
 | 5 | La Maison | VELO, AUTO, BAIN, FOUR, VASE |
+
+Each level uses a **different maze shape** (S-shape, U-shape, reverse-S, vertical S, perimeter box) so the path feels fresh every time.
 
 No punishment on wrong answers — a gentle *"Essaie encore ! 💛"* and a retry.
 
@@ -36,6 +40,7 @@ A first-person dungeon crawler where Jolyne walks forward automatically and enco
 - **Defeat monsters** by solving an addition problem on a keypad (`num1 + num2 = ?`)
 - **Open treasure chests** the same way for bonus points
 - Reach the **points target** to complete the world and unlock the next
+- The monster's name is shown during the challenge to connect the fight to the dungeon
 - 3 worlds of increasing difficulty:
 
 | World | Theme | Range | Target |
@@ -86,6 +91,27 @@ Both unlock a full-screen image viewable in the Collection screen.
 
 ---
 
+## Internationalisation (i18n)
+
+The game supports **French, English, and Spanish**. A language toggle button (**FR / EN / ES**) in the top-right corner of the main menu cycles between languages. The selection persists via `localStorage`.
+
+All word definitions carry FR / EN / ES spelling variants and letter pools. The picture drawn above each gate is language-independent (concept-based).
+
+---
+
+## 4-year-old UX features
+
+- **Large D-pad buttons** (70 × 70 px) for small fingers
+- **Instant audio feedback** on every letter tap and step
+- **Gate picture previews** at 44 px radius — large enough to recognise on a tablet
+- **Pulsing 🏆 trophy** above the goal tile so the child knows where to aim
+- **First-letter hint** flashes gold after 2 failed spelling attempts
+- **"Essaie encore !"** text and screen shake on wrong math answers; input is locked briefly so button spam doesn't stack messages
+- **Backspace** in math deletes one digit (not the whole answer)
+- **Progress badges** on the main menu buttons once any level is completed
+
+---
+
 ## Cheat code
 
 On the main menu, press **↑ ↑** to instantly unlock all items in the collection.
@@ -111,17 +137,18 @@ src/
   game/
     main.js                      # Phaser config + scene registry
     data/
-      MapData.js                 # Tile grid, gate positions, constants
-      WordData.js                # French word list + picture draw functions
+      MapData.js                 # Five maze layouts (LEVEL_MAPS), gate positions, tile constants
+      WordData.js                # Word list with FR/EN/ES variants + language-agnostic picture draw functions
+      I18n.js                    # i18n strings for FR/EN/ES, getLang/setLang/cycleLang/t()
       LevelData.js               # Spelling progress, inventory, equipment (localStorage)
       MathWorldData.js           # Math world definitions + progress (localStorage)
       ItemData.js                # All unlockable items with rarity, tint, emoji
     scenes/
       Boot.js                    # First scene
       Preloader.js               # Asset loading + particle texture generation
-      MainMenu.js                # Title screen with background theming + cheat code
+      MainMenu.js                # Title screen with language toggle, background theming, cheat code
       SpellingMenu.js            # Level select for spelling
-      CastleScene.js             # Spelling gameplay (orchestrator)
+      CastleScene.js             # Spelling gameplay (orchestrator, picks maze by levelIndex)
       SpellingScene.js           # Spelling challenge overlay
       VictoryScene.js            # Spelling end-of-level celebration
       MathWorldSelectScene.js    # World select for math
@@ -132,9 +159,9 @@ src/
       CollectionScene.js         # Tabbed inventory & equip screen
     systems/
       MapBuilder.js              # Draws castle tiles
-      PlayerController.js        # Jolyne sprite, grid movement, D-pad
-      GateManager.js             # Gate graphics and unlock logic
-      AudioManager.js            # Web Audio tone generator
+      PlayerController.js        # Jolyne sprite, grid movement, D-pad (70px buttons)
+      GateManager.js             # Gate graphics and unlock logic (language-aware word lookup)
+      AudioManager.js            # Web Audio tone generator (playLetterTap, playStep, playWrong, …)
       LootManager.js             # Gacha roll logic with duplicate protection
 public/
   assets/                        # SVG UI tiles
@@ -181,23 +208,24 @@ https://<your-github-username>.github.io/<repository-name>/
 
 ## Adding more words
 
-Open `src/game/data/WordData.js` and add a new entry:
+Open `src/game/data/WordData.js` and add a new entry inside `WORD_CONCEPTS`:
 
 ```js
 ARBRE: {
-  answer: 'ARBRE',
-  letters: ['A', 'R', 'B', 'R', 'E', 'T'],  // correct letters + distractors
+  fr: { answer: 'ARBRE', letters: ['A','R','B','R','E','T'] },
+  en: { answer: 'TREE',  letters: ['T','R','E','E','A','O'] },
+  es: { answer: 'ARBOL', letters: ['A','R','B','O','L','I'] },
   drawPicture(gfx, cx, cy, r) {
-    // draw using gfx.fillRect, gfx.fillCircle, etc.
+    // draw using gfx.fillRect, gfx.fillCircle, etc. (language-independent)
   }
 }
 ```
 
-Then reference the key in a gate definition in `src/game/data/MapData.js`.
+Then reference the key in the `words` array of the relevant level in `src/game/data/LevelData.js`.
 
 ## Adding more levels
 
-Create a new `MapDataN.js` file, define the tile grid and gate positions, then register the scene in `src/game/main.js`.
+Add a new entry to `LEVELS` in `LevelData.js` and a corresponding maze layout to `LEVEL_MAPS` in `MapData.js` (grid 16×12, gate positions, player start, goal tile).
 
 ---
 

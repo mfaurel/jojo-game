@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import { getEquipment } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
 import { audio } from '../systems/AudioManager.js';
+import { t } from '../data/I18n.js';
 
 export class MathProblemScene extends Scene {
     constructor() {
@@ -56,7 +57,7 @@ export class MathProblemScene extends Scene {
             panel.strokeRoundedRect(px - panelW/2, py - panelH/2, panelW, panelH, 30);
         }
 
-        const titleText = this.isChest ? 'Coffre Magique ! 🎁' : 'Aide Jolyne ! ✨';
+        const titleText = this.isChest ? t('magicChest') : t('helpJolyne');
         this.add.text(px, panelTop + 38, titleText, {
             fontSize: '30px',
             fontFamily: 'Arial Black',
@@ -64,7 +65,7 @@ export class MathProblemScene extends Scene {
         }).setOrigin(0.5, 0);
 
         if (this.monsterName) {
-            this.add.text(px, panelTop + 78, `⚔️ contre ${this.monsterName}`, {
+            this.add.text(px, panelTop + 78, t('versus', t(this.monsterName)), {
                 fontSize: '20px',
                 fontFamily: 'Arial Black',
                 color: '#cc4400',
@@ -154,7 +155,7 @@ export class MathProblemScene extends Scene {
             this._inputLocked = true;
             this.cameras.main.shake(150, 0.005);
             const { width, height } = this.cameras.main;
-            const msg = this.add.text(width / 2, height / 2 - 60, 'Essaie encore ! 💛', {
+            const msg = this.add.text(width / 2, height / 2 - 60, t('tryAgainMath'), {
                 fontSize: '40px',
                 fontFamily: 'Arial Black',
                 color: '#ffd700',
@@ -173,7 +174,7 @@ export class MathProblemScene extends Scene {
     _showSuccess() {
         this.successParticles.explode(60);
         
-        const bravo = this.add.text(this.cameras.main.width/2, this.cameras.main.height/2, 'SUPER ! 🌟', {
+        const bravo = this.add.text(this.cameras.main.width/2, this.cameras.main.height/2, t('superText'), {
             fontSize: '80px',
             fontFamily: 'Arial Black',
             color: '#ffd700',

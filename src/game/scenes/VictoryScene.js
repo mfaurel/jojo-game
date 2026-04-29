@@ -4,6 +4,7 @@ import { saveProgress, getProgress, addToInventory, getEquipment } from '../data
 import { LEVELS } from '../data/LevelData.js';
 import { LootManager } from '../systems/LootManager.js';
 import { SPECIAL_REWARDS, ITEMS } from '../data/ItemData.js';
+import { t } from '../data/I18n.js';
 
 export class VictoryScene extends Scene {
     constructor() {
@@ -217,7 +218,7 @@ export class VictoryScene extends Scene {
         // "5 / 5 portes ouvertes !" label
         this.time.delayedCall(1600, () => {
             if (this._skipped) return;
-            const label = this.add.text(512, 572, '5 / 5 portes ouvertes !', {
+            const label = this.add.text(512, 572, t('gatesOpened'), {
                 fontSize: '28px',
                 fontFamily: 'Arial Black, Arial, sans-serif',
                 color: '#ffd700',
@@ -358,7 +359,7 @@ export class VictoryScene extends Scene {
 
     _playPhase4() {
         // Title
-        const title = this.add.text(512, 88, '🎉 FÉLICITATIONS ! 🎉', {
+        const title = this.add.text(512, 88, t('congratulations'), {
             fontSize: '46px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffd700',
@@ -441,8 +442,8 @@ export class VictoryScene extends Scene {
 
         const level        = LEVELS[this.levelIndex];
         const subtitleText = this.gameType === 'math'
-            ? 'Tu as résolu tous les calculs !'
-            : `Tu as maîtrisé ${level.name} !`;
+            ? t('mathVictorySubtitle')
+            : t('masteredLevel', t(level.nameKey));
         const sub = this.add.text(512, 198, subtitleText, {
             fontSize: '24px',
             color: '#ffddff',
@@ -464,7 +465,7 @@ export class VictoryScene extends Scene {
             .on('pointerout',  () => btn.setFillStyle(0x006600))
             .on('pointerup',   () => this.scene.start('SpellingMenu'));
 
-        const btnTxt = this.add.text(512, 692, '▶  Choisir un niveau', {
+        const btnTxt = this.add.text(512, 692, t('chooseLevelBtn'), {
             fontSize: '28px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffffff',

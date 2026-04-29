@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
-import { WORDS } from '../data/WordData.js';
+import { getWord } from '../data/WordData.js';
+import { t } from '../data/I18n.js';
 import { audio } from '../systems/AudioManager.js';
 import { getEquipment } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
@@ -12,7 +13,7 @@ export class SpellingScene extends Scene {
     init(data) {
         this.wordKey   = data.wordKey;
         this.onSuccess = data.onSuccess;
-        this.wordDef   = WORDS[this.wordKey];
+        this.wordDef   = getWord(this.wordKey);
         this.answer    = this.wordDef.answer;
         this.attempt   = [];
         this.tiles     = [];
@@ -70,7 +71,7 @@ export class SpellingScene extends Scene {
     }
 
     _drawTitle() {
-        this.add.text(512, 115, 'Épelle le mot !', {
+        this.add.text(512, 115, t('spellWord'), {
             fontSize: '38px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#004488',
@@ -194,7 +195,7 @@ export class SpellingScene extends Scene {
     }
 
     _drawInstructions() {
-        this.add.text(512, 462, 'Clique sur les lettres dans l\'ordre', {
+        this.add.text(512, 462, t('clickInOrder'), {
             fontSize: '20px',
             color: '#004488',
             fontFamily: 'Arial Black, Arial, sans-serif'
@@ -293,7 +294,7 @@ export class SpellingScene extends Scene {
         this.tweens.add({ targets: flash, alpha: 0, duration: 500, delay: 200 });
 
         // BRAVO text
-        const bravo = this.add.text(512, 320, 'BRAVO ! 🌟', {
+        const bravo = this.add.text(512, 320, t('bravo'), {
             fontSize: '80px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffd700',
@@ -337,7 +338,7 @@ export class SpellingScene extends Scene {
             });
         });
 
-        const msg = this.add.text(512, 420, 'Essaie encore ! 💛', {
+        const msg = this.add.text(512, 420, t('tryAgain'), {
             fontSize: '30px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffffff',

@@ -1,7 +1,9 @@
+// nameKey and monster entries reference i18n keys in I18n.js.
+
 export const MATH_WORLDS = [
     {
         id: 0,
-        name: 'La Toundra',
+        nameKey: 'world_toundra',
         emoji: '❄️',
         btnColor: 0x1a4a7a,
         skyTop: 0x0a1a2a,
@@ -11,13 +13,13 @@ export const MATH_WORLDS = [
         fogColor: 0x88ccff,
         gridColor: 0xffffff,
         particles: 'snow',
-        monsters: ['Bonhomme de Neige', 'Golem de Glace', 'Ours Polaire'],
+        monsters: ['monster_snowman', 'monster_ice_golem', 'monster_polar_bear'],
         numMax: 5,
         pointsNeeded: 1200,
     },
     {
         id: 1,
-        name: 'Le Pays Sucré',
+        nameKey: 'world_sucre',
         emoji: '🍭',
         btnColor: 0xcc4488,
         skyTop: 0xff80b4,
@@ -27,13 +29,13 @@ export const MATH_WORLDS = [
         fogColor: 0xffaacc,
         gridColor: 0xff44aa,
         particles: 'candy',
-        monsters: ['Sucette', 'Ourson', 'Canne en Sucre'],
+        monsters: ['monster_lollipop', 'monster_teddy', 'monster_candy_cane'],
         numMax: 8,
         pointsNeeded: 1200,
     },
     {
         id: 2,
-        name: 'La Prairie',
+        nameKey: 'world_prairie',
         emoji: '🌸',
         btnColor: 0x3a8a3a,
         skyTop: 0x4db8e8,
@@ -43,7 +45,7 @@ export const MATH_WORLDS = [
         fogColor: 0xccffcc,
         gridColor: 0x66dd44,
         particles: 'petal',
-        monsters: ['Abeille', 'Papillon', 'Coccinelle'],
+        monsters: ['monster_bee', 'monster_butterfly', 'monster_ladybug'],
         numMax: 10,
         pointsNeeded: 1200,
     },

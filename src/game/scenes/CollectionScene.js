@@ -1,11 +1,12 @@
 import { Scene } from 'phaser';
 import { ITEMS, RARITY, SPECIAL_REWARDS } from '../data/ItemData.js';
 import { getInventory, getEquipment, setEquipment } from '../data/LevelData.js';
+import { t } from '../data/I18n.js';
 
 const TABS = [
-    { label: '🏰 Orthographe',   categories: ['skin'],                  desc: 'Personnage' },
-    { label: '❄️ Mathématiques', categories: ['item_left', 'item_right'], desc: 'Équipement' },
-    { label: '🌟 Bonus',          categories: ['background'],             desc: 'Fond d\'écran' },
+    { labelKey: 'tabSpelling', categories: ['skin'] },
+    { labelKey: 'tabMath',     categories: ['item_left', 'item_right'] },
+    { labelKey: 'tabBonus',    categories: ['background'] },
 ];
 
 export class CollectionScene extends Scene {
@@ -29,7 +30,7 @@ export class CollectionScene extends Scene {
             );
         }
 
-        this.add.text(width / 2, 38, 'Ma Collection ✨', {
+        this.add.text(width / 2, 38, t('collectionTitle'), {
             fontSize: '38px',
             fontFamily: 'Arial Black',
             color: '#ffd700',
@@ -37,7 +38,7 @@ export class CollectionScene extends Scene {
             strokeThickness: 5,
         }).setOrigin(0.5);
 
-        const backBtn = this.add.text(22, 38, '⬅ Menu', {
+        const backBtn = this.add.text(22, 38, t('backMenu'), {
             fontSize: '20px',
             color: '#ffffff',
             backgroundColor: '#2a2a88',
@@ -66,7 +67,7 @@ export class CollectionScene extends Scene {
                 .setStrokeStyle(2, isActive ? 0xffd700 : 0x440088)
                 .setInteractive({ useHandCursor: true });
 
-            this.add.text(cx, cy, tab.label, {
+            this.add.text(cx, cy, t(tab.labelKey), {
                 fontSize: '18px',
                 fontFamily: 'Arial Black',
                 color: isActive ? '#ffd700' : '#aaaacc',
@@ -104,7 +105,7 @@ export class CollectionScene extends Scene {
         const startX = (width - totalW) / 2;
         const cy = 320;
 
-        this.add.text(width / 2, 135, 'Choisir un personnage pour Jolyne', {
+        this.add.text(width / 2, 135, t('chooseSkin'), {
             fontSize: '18px',
             color: '#ddaaff',
         }).setOrigin(0.5);
@@ -122,18 +123,18 @@ export class CollectionScene extends Scene {
     _drawMathTab(inventory, equipment) {
         const { width } = this.cameras.main;
 
-        this.add.text(width / 2, 135, 'Équipement pour le jeu de Mathématiques', {
+        this.add.text(width / 2, 135, t('mathEquipment'), {
             fontSize: '18px',
             color: '#ddaaff',
         }).setOrigin(0.5);
 
         const rowDefs = [
-            { label: '🛡️ Bras Gauche', cat: 'item_left',  y: 270 },
-            { label: '⚔️ Bras Droit',  cat: 'item_right', y: 450 },
+            { labelKey: 'leftArm',  cat: 'item_left',  y: 270 },
+            { labelKey: 'rightArm', cat: 'item_right', y: 450 },
         ];
 
         rowDefs.forEach(row => {
-            this.add.text(width / 2, row.y - 80, row.label, {
+            this.add.text(width / 2, row.y - 80, t(row.labelKey), {
                 fontSize: '20px',
                 fontFamily: 'Arial Black',
                 color: '#80ffb4',
@@ -167,7 +168,7 @@ export class CollectionScene extends Scene {
         const startX = (width - totalW) / 2;
         const cy = 300;
 
-        this.add.text(width / 2, 135, 'Choisir le fond du Menu Principal', {
+        this.add.text(width / 2, 135, t('chooseBg'), {
             fontSize: '18px',
             color: '#ddaaff',
         }).setOrigin(0.5);
@@ -201,21 +202,21 @@ export class CollectionScene extends Scene {
         this._drawItemPreview(cx, cy - 18, item);
 
         // Name
-        this.add.text(cx, cy + cardH / 2 - 42, item.name, {
+        this.add.text(cx, cy + cardH / 2 - 42, t(item.nameKey), {
             fontSize: '14px',
             fontFamily: 'Arial Black',
             color: rarityColor,
         }).setOrigin(0.5);
 
         // Rarity label
-        this.add.text(cx, cy + cardH / 2 - 24, RARITY[item.rarity].label, {
+        this.add.text(cx, cy + cardH / 2 - 24, t(RARITY[item.rarity].labelKey), {
             fontSize: '11px',
             color: rarityColor,
         }).setOrigin(0.5);
 
         // Status badge
         if (isEquipped) {
-            this.add.text(cx, cy + cardH / 2 - 6, '✔ ÉQUIPÉ', {
+            this.add.text(cx, cy + cardH / 2 - 6, t('equipped'), {
                 fontSize: '13px',
                 fontFamily: 'Arial Black',
                 color: '#00ff88',
@@ -228,7 +229,7 @@ export class CollectionScene extends Scene {
                 setEquipment(item.category, item.id);
                 this.scene.start('CollectionScene', { tab: this.activeTab });
             });
-            this.add.text(cx, cy + cardH / 2 - 6, 'Équiper', {
+            this.add.text(cx, cy + cardH / 2 - 6, t('equip'), {
                 fontSize: '13px',
                 color: '#aaaaff',
             }).setOrigin(0.5);
@@ -266,7 +267,7 @@ export class CollectionScene extends Scene {
         const inventory = getInventory();
         const { width, height } = this.cameras.main;
 
-        this.add.text(width / 2, height - 220, '— Récompenses Spéciales —', {
+        this.add.text(width / 2, height - 220, t('specialRewardsTitle'), {
             fontSize: '16px',
             color: '#888888',
         }).setOrigin(0.5);
@@ -279,7 +280,7 @@ export class CollectionScene extends Scene {
 
             if (isUnlocked) {
                 const img = this.add.image(x, y, reward.asset).setDisplaySize(120, 90);
-                this.add.text(x, y + 58, reward.name, { fontSize: '14px', color: '#ffd700' }).setOrigin(0.5);
+                this.add.text(x, y + 58, t(reward.nameKey), { fontSize: '14px', color: '#ffd700' }).setOrigin(0.5);
                 img.setInteractive({ useHandCursor: true }).on('pointerup', () => this._showFullPicture(reward.asset));
             } else {
                 this.add.rectangle(x, y, 120, 90, 0x111111, 1).setStrokeStyle(2, 0x333333);

@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import { RARITY } from '../data/ItemData.js';
+import { t } from '../data/I18n.js';
 
 export class RewardPopup extends Scene {
     constructor() {
@@ -19,26 +20,26 @@ export class RewardPopup extends Scene {
         const panel = this.add.nineslice(width/2, height/2, 'ui_panel', 0, 500, 400, 40, 40, 40, 40);
         panel.setScale(0);
 
-        const title = this.add.text(width/2, height/2 - 140, 'NOUVEAU CONTENU !', {
+        const title = this.add.text(width/2, height/2 - 140, t('newContent'), {
             fontSize: '32px',
             fontFamily: 'Arial Black',
             color: '#ffd700'
         }).setOrigin(0.5).setAlpha(0);
 
         const rarityInfo = RARITY[this.item.rarity];
-        const rarityText = this.add.text(width/2, height/2 - 90, rarityInfo.label, {
+        const rarityText = this.add.text(width/2, height/2 - 90, t(rarityInfo.labelKey), {
             fontSize: '24px',
             fontFamily: 'Arial Black',
             color: rarityInfo.color
         }).setOrigin(0.5).setAlpha(0);
 
-        const itemName = this.add.text(width/2, height/2 + 80, this.item.name, {
+        const itemName = this.add.text(width/2, height/2 + 80, t(this.item.nameKey), {
             fontSize: '38px',
             fontFamily: 'Arial Black',
             color: '#004488'
         }).setOrigin(0.5).setAlpha(0);
 
-        const btn = this.add.text(width/2, height/2 + 160, 'GÉNIAL !', {
+        const btn = this.add.text(width/2, height/2 + 160, t('great'), {
             fontSize: '28px',
             backgroundColor: '#00aaff',
             padding: { x: 20, y: 10 }

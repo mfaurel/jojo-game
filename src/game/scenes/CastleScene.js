@@ -2,8 +2,9 @@ import { Scene } from 'phaser';
 import { MapBuilder } from '../systems/MapBuilder.js';
 import { PlayerController } from '../systems/PlayerController.js';
 import { GateManager } from '../systems/GateManager.js';
-import { GATE_POSITIONS, GOAL_TILE, PLAYER_START, createGrid, tileToPx } from '../data/MapData.js';
+import { LEVEL_MAPS, tileToPx } from '../data/MapData.js';
 import { LEVELS } from '../data/LevelData.js';
+import { t } from '../data/I18n.js';
 
 export class CastleScene extends Scene {
     constructor() {
@@ -15,24 +16,24 @@ export class CastleScene extends Scene {
     }
 
     create() {
-        const level = LEVELS[this.levelIndex];
+        const level   = LEVELS[this.levelIndex];
+        const mapData = LEVEL_MAPS[this.levelIndex];
         this.cameras.main.setBackgroundColor(level.bg);
 
-        const grid = createGrid();
+        const grid = mapData.grid.map(row => [...row]);
 
         const mapBuilder = new MapBuilder(this);
         mapBuilder.build(grid);
 
-        // Combine gate positions with this level's word keys
-        const gates = GATE_POSITIONS.map((pos, i) => ({
+        const gates = mapData.gatePositions.map((pos, i) => ({
             ...pos,
             wordKey: level.words[i],
         }));
 
         this.gateManager = new GateManager(this, gates, grid);
-        this.player      = new PlayerController(this, PLAYER_START.col, PLAYER_START.row, grid);
+        this.player      = new PlayerController(this, mapData.playerStart.col, mapData.playerStart.row, grid);
 
-        const goalPos = tileToPx(GOAL_TILE.col, GOAL_TILE.row);
+        const goalPos = tileToPx(mapData.goalTile.col, mapData.goalTile.row);
         const goalIcon = this.add.text(goalPos.x, goalPos.y - 20, '🏆', {
             fontSize: '36px'
         }).setOrigin(0.5).setDepth(8);
@@ -48,7 +49,7 @@ export class CastleScene extends Scene {
         this.gatesUnlocked = 0;
         this.totalGates    = gates.length;
 
-        this._buildHUD(level.name);
+        this._buildHUD(t(level.nameKey));
         this.cameras.main.fadeIn(600);
     }
 

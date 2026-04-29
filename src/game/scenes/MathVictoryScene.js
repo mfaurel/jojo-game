@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { MATH_WORLDS, saveMathProgress, getMathProgress } from '../data/MathWorldData.js';
 import { audio } from '../systems/AudioManager.js';
+import { t } from '../data/I18n.js';
 import { LootManager } from '../systems/LootManager.js';
 import { addToInventory } from '../data/LevelData.js';
 import { SPECIAL_REWARDS } from '../data/ItemData.js';
@@ -30,7 +31,7 @@ export class MathVictoryScene extends Scene {
         // Phase 1 — BRAVO (300ms)
         this.time.delayedCall(300, () => {
             audio.playFanfare();
-            const bravo = this.add.text(width / 2, height / 2 - 70, 'BRAVO ! 🎉', {
+            const bravo = this.add.text(width / 2, height / 2 - 70, t('mathBravo'), {
                 fontSize: '90px',
                 fontFamily: 'Arial Black',
                 color: '#ffd700',
@@ -51,7 +52,7 @@ export class MathVictoryScene extends Scene {
 
         // Phase 2 — world name (700ms)
         this.time.delayedCall(700, () => {
-            const worldTxt = this.add.text(width / 2, height / 2 + 20, `Monde ${this.worldIndex + 1} terminé !`, {
+            const worldTxt = this.add.text(width / 2, height / 2 + 20, t('worldComplete', this.worldIndex + 1), {
                 fontSize: '38px',
                 fontFamily: 'Arial Black',
                 color: '#ffffff',
@@ -97,7 +98,7 @@ export class MathVictoryScene extends Scene {
             const btnBg = this.add.rectangle(width / 2, height * 0.78, 240, 58, this.worldConfig.btnColor, 1)
                 .setInteractive({ useHandCursor: true })
                 .setDepth(20);
-            this.add.text(width / 2, height * 0.78, 'Continuer →', {
+            this.add.text(width / 2, height * 0.78, t('continueBtn'), {
                 fontSize: '26px',
                 fontFamily: 'Arial Black',
                 color: '#ffffff',

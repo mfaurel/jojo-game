@@ -1,10 +1,11 @@
 // Central definition of all 5 levels.
 // words[i] maps 1-to-1 with GATE_POSITIONS[i] from MapData.js.
+// nameKey references an i18n key in I18n.js.
 
 export const LEVELS = [
     {
         id: 0,
-        name: 'Le Château',
+        nameKey: 'level_chateau',
         emoji: '🏰',
         bg: 0x1a1a5e,
         btnColor: 0x2a2a88,
@@ -12,7 +13,7 @@ export const LEVELS = [
     },
     {
         id: 1,
-        name: 'Les Animaux',
+        nameKey: 'level_animaux',
         emoji: '🐾',
         bg: 0x0f2818,
         btnColor: 0x1a4a28,
@@ -20,7 +21,7 @@ export const LEVELS = [
     },
     {
         id: 2,
-        name: 'La Nature',
+        nameKey: 'level_nature',
         emoji: '🌿',
         bg: 0x061830,
         btnColor: 0x103060,
@@ -28,7 +29,7 @@ export const LEVELS = [
     },
     {
         id: 3,
-        name: 'La Cuisine',
+        nameKey: 'level_cuisine',
         emoji: '🍞',
         bg: 0x2a1208,
         btnColor: 0x44220e,
@@ -36,7 +37,7 @@ export const LEVELS = [
     },
     {
         id: 4,
-        name: 'La Maison',
+        nameKey: 'level_maison',
         emoji: '🏠',
         bg: 0x1e0a2e,
         btnColor: 0x381850,
@@ -70,7 +71,6 @@ export function getInventory() {
     try {
         const inv = JSON.parse(localStorage.getItem(INVENTORY_KEY));
         if (inv && Array.isArray(inv)) {
-            // Ensure defaults are always there
             if (!inv.includes('skin_default')) inv.push('skin_default');
             if (!inv.includes('bg_night')) inv.push('bg_night');
             return inv;

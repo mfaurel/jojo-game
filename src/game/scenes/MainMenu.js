@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import { getEquipment, addToInventory, getProgress, LEVELS } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
 import { getMathProgress, MATH_WORLDS } from '../data/MathWorldData.js';
+import { t, cycleLang, getLang } from '../data/I18n.js';
 
 export class MainMenu extends Scene {
     constructor() {
@@ -26,7 +27,7 @@ export class MainMenu extends Scene {
             this.add.image(x, y, 'particle').setScale(r).setAlpha(0.4 + Math.random() * 0.4);
         }
 
-        this.add.text(512, 150, 'Le Monde de Jolyne', {
+        this.add.text(512, 150, t('gameTitle'), {
             fontSize: '64px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffd700',
@@ -34,24 +35,24 @@ export class MainMenu extends Scene {
             strokeThickness: 8,
         }).setOrigin(0.5);
 
-        this.add.text(512, 230, 'Choisis ton aventure !', {
+        this.add.text(512, 230, t('gameSubtitle'), {
             fontSize: '28px',
             color: '#ddaaff',
             stroke: '#000',
             strokeThickness: 3,
         }).setOrigin(0.5);
 
-        this._createChoiceButton(512, 380, '🏰 Orthographe', 0x2a2a88, () => {
+        this._createChoiceButton(512, 380, t('btnSpelling'), 0x2a2a88, () => {
             this.scene.start('SpellingMenu');
         });
 
-        this._createChoiceButton(512, 540, '❄️ Mathématiques', 0x2266aa, () => {
+        this._createChoiceButton(512, 540, t('btnMath'), 0x2266aa, () => {
             this.scene.start('MathWorldSelectScene');
         });
 
         const spellingDone = LEVELS.filter(l => getProgress()[l.id]).length;
         if (spellingDone > 0) {
-            this.add.text(512, 430, `⭐ ${spellingDone} / ${LEVELS.length} niveaux`, {
+            this.add.text(512, 430, t('spellingProgress', spellingDone, LEVELS.length), {
                 fontSize: '20px',
                 color: '#ffd700',
                 stroke: '#000',
@@ -61,7 +62,7 @@ export class MainMenu extends Scene {
 
         const mathDone = MATH_WORLDS.filter((_, i) => getMathProgress()[i]).length;
         if (mathDone > 0) {
-            this.add.text(512, 590, `⭐ ${mathDone} / ${MATH_WORLDS.length} mondes`, {
+            this.add.text(512, 590, t('mathProgress', mathDone, MATH_WORLDS.length), {
                 fontSize: '20px',
                 color: '#ffd700',
                 stroke: '#000',
@@ -69,11 +70,32 @@ export class MainMenu extends Scene {
             }).setOrigin(0.5, 0);
         }
 
-        this._createSmallButton(900, 710, '🎁 Collection', 0xaa00aa, () => {
+        this._createSmallButton(900, 710, t('btnCollection'), 0xaa00aa, () => {
             this.scene.start('CollectionScene');
         });
 
+        this._createLangButton();
+
         this._initCheatCode();
+    }
+
+    _createLangButton() {
+        const lang = getLang().toUpperCase();
+        const btn = this.add.text(960, 35, lang, {
+            fontSize: '22px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#ffffff',
+            backgroundColor: '#334455',
+            padding: { x: 12, y: 6 },
+        }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+
+        btn.on('pointerover', () => btn.setStyle({ color: '#ffd700' }));
+        btn.on('pointerout',  () => btn.setStyle({ color: '#ffffff' }));
+        btn.on('pointerup',   () => {
+            cycleLang();
+            this.cameras.main.fadeOut(300, 0, 0, 0);
+            this.cameras.main.once('camerafadeoutcomplete', () => this.scene.restart());
+        });
     }
 
     _initCheatCode() {
@@ -100,7 +122,7 @@ export class MainMenu extends Scene {
         const flash = this.add.rectangle(width / 2, height / 2, width, height, 0xffd700, 0.35).setDepth(50);
         this.tweens.add({ targets: flash, alpha: 0, duration: 600, onComplete: () => flash.destroy() });
 
-        const msg = this.add.text(width / 2, height / 2, '✨ TOUT DÉBLOQUÉ ! ✨', {
+        const msg = this.add.text(width / 2, height / 2, t('cheatUnlocked'), {
             fontSize: '52px',
             fontFamily: 'Arial Black',
             color: '#ffd700',

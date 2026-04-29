@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { LEVELS, getProgress, getEquipment } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
+import { t } from '../data/I18n.js';
 
 export class SpellingMenu extends Scene {
     constructor() {
@@ -28,7 +29,7 @@ export class SpellingMenu extends Scene {
 
         this._drawCastle();
 
-        this.add.text(512, 55, '🏰 Le Château de Jolyne', {
+        this.add.text(512, 55, t('spellingTitle'), {
             fontSize: '44px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffd700',
@@ -36,7 +37,7 @@ export class SpellingMenu extends Scene {
             strokeThickness: 6,
         }).setOrigin(0.5);
 
-        this.add.text(512, 118, 'Apprends à épeler en français !', {
+        this.add.text(512, 118, t('spellingSubtitle'), {
             fontSize: '24px',
             color: '#ddaaff',
             stroke: '#000',
@@ -45,7 +46,7 @@ export class SpellingMenu extends Scene {
 
         this._drawCharacter(512, 248);
 
-        this.add.text(512, 340, 'Choisis ton niveau !', {
+        this.add.text(512, 340, t('chooseLevel'), {
             fontSize: '26px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffffff',
@@ -56,7 +57,7 @@ export class SpellingMenu extends Scene {
         this._buildLevelCards();
 
         // Back to main selection
-        const backBtn = this.add.text(20, 20, '⬅ Retour', {
+        const backBtn = this.add.text(20, 20, t('back'), {
             fontSize: '24px',
             color: '#ffffff',
             backgroundColor: '#2a2a88',
@@ -107,7 +108,7 @@ export class SpellingMenu extends Scene {
             }).setOrigin(0.5).setDepth(11);
 
             // Level name
-            this.add.text(cx, cy + 3, level.name, {
+            this.add.text(cx, cy + 3, t(level.nameKey), {
                 fontSize: '15px',
                 fontFamily: 'Arial Black, Arial, sans-serif',
                 color: '#ffffff',
@@ -116,7 +117,7 @@ export class SpellingMenu extends Scene {
             }).setOrigin(0.5).setDepth(11);
 
             // "NIVEAU X"
-            this.add.text(cx, cy + 25, `NIVEAU ${i + 1}`, {
+            this.add.text(cx, cy + 25, t('levelLabel', i + 1), {
                 fontSize: '12px',
                 color: '#aaccff',
             }).setOrigin(0.5).setDepth(11);

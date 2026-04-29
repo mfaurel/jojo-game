@@ -1,5 +1,5 @@
 import { TILE_SIZE, TILE, tileToPx } from '../data/MapData.js';
-import { WORDS } from '../data/WordData.js';
+import { getWord } from '../data/WordData.js';
 import { audio } from './AudioManager.js';
 
 export class GateManager {
@@ -12,7 +12,7 @@ export class GateManager {
 
     _createGate(def) {
         const pos = tileToPx(def.col, def.row);
-        const wordDef = WORDS[def.wordKey];
+        const wordDef = getWord(def.wordKey);
 
         let visual;
         if (this.scene.textures.exists('tile_gate')) {
@@ -33,7 +33,7 @@ export class GateManager {
         // "???" hint label
         const hintText = this.scene.add.text(
             pos.x, pos.y + TILE_SIZE * 0.42,
-            '?'.repeat(def.wordKey.length),
+            '?'.repeat(wordDef.answer.length),
             { fontSize: '12px', color: '#ffe066', stroke: '#000', strokeThickness: 2 }
         ).setOrigin(0.5).setDepth(6);
 
