@@ -56,8 +56,7 @@ export class MainMenu extends Scene {
     }
 
     _initCheatCode() {
-        // Konami: UP UP DOWN DOWN LEFT RIGHT LEFT RIGHT  (raw keyCodes)
-        const SEQUENCE = [38, 38];
+        const SEQUENCE = [38, 38]; // UP UP
         let progress = 0;
 
         this.input.keyboard.on('keydown', (event) => {

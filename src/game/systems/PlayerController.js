@@ -1,4 +1,6 @@
 import { TILE_SIZE, MAP_COLS, MAP_ROWS, TILE, tileToPx } from '../data/MapData.js';
+import { getEquipment } from '../data/LevelData.js';
+import { ITEMS } from '../data/ItemData.js';
 
 export class PlayerController {
     constructor(scene, startCol, startRow, grid) {
@@ -15,13 +17,13 @@ export class PlayerController {
     _buildSprite() {
         let visual;
 
-        if (this.scene.textures.exists('player')) {
-            // Use sprite if texture is available
-            visual = this.scene.add.sprite(0, 0, 'player');
-            // Ensure it fits the tile size nicely (allowing for some padding/breathing room)
-            visual.setDisplaySize(TILE_SIZE * 0.8, TILE_SIZE * 0.8);
+        if (this.scene.textures.exists('jojo_pixel')) {
+            visual = this.scene.add.image(0, 0, 'jojo_pixel')
+                .setDisplaySize(TILE_SIZE * 0.85, TILE_SIZE * 0.85);
+            const equip    = getEquipment();
+            const skinItem = ITEMS.find(i => i.id === (equip.skin ?? 'skin_default'));
+            if (skinItem?.tint) visual.setTint(skinItem.tint);
         } else {
-            // Fallback to procedural graphics
             const gfx = this.scene.add.graphics();
             this._drawProceduralPlayer(gfx);
             visual = gfx;
@@ -30,6 +32,16 @@ export class PlayerController {
         const pos = tileToPx(this.col, this.row);
         this.container = this.scene.add.container(pos.x, pos.y, [visual]);
         this.container.setDepth(10);
+
+        // Idle bob
+        this.scene.tweens.add({
+            targets: this.container,
+            y: pos.y - 4,
+            duration: 400,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.InOut',
+        });
     }
 
     _drawProceduralPlayer(gfx) {

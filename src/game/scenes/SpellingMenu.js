@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
-import { LEVELS, getProgress } from '../data/LevelData.js';
+import { LEVELS, getProgress, getEquipment } from '../data/LevelData.js';
+import { ITEMS } from '../data/ItemData.js';
 
 export class SpellingMenu extends Scene {
     constructor() {
@@ -42,7 +43,7 @@ export class SpellingMenu extends Scene {
             strokeThickness: 3,
         }).setOrigin(0.5);
 
-        this._drawJolyne(512, 248);
+        this._drawCharacter(512, 248);
 
         this.add.text(512, 340, 'Choisis ton niveau !', {
             fontSize: '26px',
@@ -178,50 +179,17 @@ export class SpellingMenu extends Scene {
         g.fillRect(772, 330, 4, 45);
     }
 
-    _drawJolyne(cx, cy) {
-        const g = this.add.graphics();
-        const s = 1.3;
+    _drawCharacter(cx, cy) {
+        if (!this.textures.exists('jojo_pixel')) return;
 
-        g.fillStyle(0xff80b4, 1);
-        g.fillEllipse(cx, cy + 10 * s, 46 * s, 34 * s);
-        g.fillStyle(0xffe4b5, 1);
-        g.fillCircle(cx, cy - 16 * s, 15 * s);
-        g.fillStyle(0xffd700, 1);
-        g.fillRect(cx - 13 * s, cy - 35 * s, 26 * s, 7 * s);
-
-        g.beginPath();
-        g.moveTo(cx - 11 * s, cy - 35 * s);
-        g.lineTo(cx - 14 * s, cy - 47 * s);
-        g.lineTo(cx - 5 * s,  cy - 35 * s);
-        g.closePath(); g.fillPath();
-
-        g.beginPath();
-        g.moveTo(cx - 3 * s, cy - 35 * s);
-        g.lineTo(cx,          cy - 50 * s);
-        g.lineTo(cx + 3 * s,  cy - 35 * s);
-        g.closePath(); g.fillPath();
-
-        g.beginPath();
-        g.moveTo(cx + 11 * s, cy - 35 * s);
-        g.lineTo(cx + 14 * s, cy - 47 * s);
-        g.lineTo(cx + 5 * s,  cy - 35 * s);
-        g.closePath(); g.fillPath();
-
-        g.fillStyle(0xff4466, 1);
-        g.fillCircle(cx, cy - 31 * s, 3 * s);
-
-        g.fillStyle(0x553311, 1);
-        g.fillCircle(cx - 5 * s, cy - 18 * s, 3 * s);
-        g.fillCircle(cx + 5 * s, cy - 18 * s, 3 * s);
-
-        g.lineStyle(2.5 * s, 0x553311, 1);
-        g.beginPath();
-        g.arc(cx, cy - 14 * s, 5 * s, 0.15, Math.PI - 0.15, false);
-        g.strokePath();
+        const equip    = getEquipment();
+        const skinItem = ITEMS.find(i => i.id === (equip.skin ?? 'skin_default'));
+        const char     = this.add.image(cx, cy, 'jojo_pixel').setDisplaySize(120, 120);
+        if (skinItem?.tint) char.setTint(skinItem.tint);
 
         this.tweens.add({
-            targets: g,
-            angle: { from: -5, to: 5 },
+            targets: char,
+            y: cy - 12,
             duration: 800,
             yoyo: true,
             repeat: -1,
