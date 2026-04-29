@@ -27,7 +27,7 @@ export const MATH_WORLDS = [
         fogColor: 0xffaacc,
         gridColor: 0xff44aa,
         particles: 'candy',
-        monsters: ['Sucette', 'Ourson Gommeux', 'Canne en Sucre'],
+        monsters: ['Sucette', 'Ourson', 'Canne en Sucre'],
         numMax: 8,
         pointsNeeded: 1200,
     },

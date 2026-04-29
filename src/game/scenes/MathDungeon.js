@@ -420,7 +420,7 @@ export class MathDungeon extends Scene {
             g.beginPath();
             g.arc(0, -55, 18, 0.2, Math.PI - 0.2, false);
             g.strokePath();
-        } else if (name === 'Ourson Gommeux') {
+        } else if (name === 'Ourson') {
             // Body
             g.fillStyle(0xff6644, 1);
             g.fillEllipse(0, 30, 110, 130);

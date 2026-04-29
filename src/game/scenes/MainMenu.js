@@ -1,5 +1,7 @@
 import { Scene } from 'phaser';
 import { getEquipment } from '../data/LevelData.js';
+import { ITEMS } from '../data/ItemData.js';
+import { addToInventory } from '../data/LevelData.js';
 
 export class MainMenu extends Scene {
     constructor() {
@@ -53,6 +55,62 @@ export class MainMenu extends Scene {
 
         this._createSmallButton(900, 710, '🎁 Collection', 0xaa00aa, () => {
             this.scene.start('CollectionScene');
+        });
+
+        this._initCheatCode();
+        }
+
+        _initCheatCode() {
+        const SEQUENCE = [
+            Phaser.Input.Keyboard.KeyCodes.UP,
+            Phaser.Input.Keyboard.KeyCodes.UP,
+            Phaser.Input.Keyboard.KeyCodes.DOWN,
+            Phaser.Input.Keyboard.KeyCodes.DOWN,
+            Phaser.Input.Keyboard.KeyCodes.LEFT,
+            Phaser.Input.Keyboard.KeyCodes.RIGHT,
+            Phaser.Input.Keyboard.KeyCodes.LEFT,
+            Phaser.Input.Keyboard.KeyCodes.RIGHT,
+        ];
+        let progress = 0;
+
+        this.input.keyboard.on('keydown', (event) => {
+            if (event.keyCode === SEQUENCE[progress]) {
+                progress++;
+                if (progress === SEQUENCE.length) {
+                    progress = 0;
+                    this._activateCheat();
+                }
+            } else {
+                progress = event.keyCode === SEQUENCE[0] ? 1 : 0;
+            }
+        });
+        }
+
+        _activateCheat() {
+        ITEMS.forEach(item => addToInventory(item.id));
+
+        const { width, height } = this.cameras.main;
+        const flash = this.add.rectangle(width / 2, height / 2, width, height, 0xffd700, 0.35).setDepth(50);
+        this.tweens.add({ targets: flash, alpha: 0, duration: 600, onComplete: () => flash.destroy() });
+
+        const msg = this.add.text(width / 2, height / 2, '✨ TOUT DÉBLOQUÉ ! ✨', {
+            fontSize: '52px',
+            fontFamily: 'Arial Black',
+            color: '#ffd700',
+            stroke: '#000',
+            strokeThickness: 8,
+        }).setOrigin(0.5).setDepth(51).setScale(0);
+
+        this.tweens.add({
+            targets: msg,
+            scale: 1,
+            duration: 400,
+            ease: 'Back.Out',
+            onComplete: () => {
+                this.time.delayedCall(1500, () => {
+                    this.tweens.add({ targets: msg, alpha: 0, duration: 400, onComplete: () => msg.destroy() });
+                });
+            },
         });
         }
 
