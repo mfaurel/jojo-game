@@ -479,6 +479,7 @@ export class MathDungeon extends Scene {
                 this.scene.pause();
                 this.scene.launch('MathProblemScene', {
                     numMax: this.worldConfig.numMax,
+                    monsterName: name,
                     onSuccess: () => {
                         const newScore = this.score + 200;
                         this._updateScoreHUD(newScore);

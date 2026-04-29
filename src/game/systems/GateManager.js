@@ -27,7 +27,7 @@ export class GateManager {
 
         // Small picture preview above the gate
         const previewGfx = this.scene.add.graphics();
-        wordDef.drawPicture(previewGfx, pos.x, pos.y - 40, 22);
+        wordDef.drawPicture(previewGfx, pos.x, pos.y - 55, 44);
         previewGfx.setDepth(6);
 
         // "???" hint label

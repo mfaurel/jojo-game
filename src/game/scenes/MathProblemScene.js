@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { getEquipment } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
+import { audio } from '../systems/AudioManager.js';
 
 export class MathProblemScene extends Scene {
     constructor() {
@@ -16,7 +17,9 @@ export class MathProblemScene extends Scene {
         this.num2 = Math.floor(Math.random() * numMax) + 1;
         this.answer = this.num1 + this.num2;
         this.currentInput = '';
-        
+        this._inputLocked = false;
+        this.monsterName  = data.monsterName ?? null;
+
         this.equip = getEquipment();
     }
 
@@ -59,6 +62,16 @@ export class MathProblemScene extends Scene {
             fontFamily: 'Arial Black',
             color: '#004488'
         }).setOrigin(0.5, 0);
+
+        if (this.monsterName) {
+            this.add.text(px, panelTop + 78, `⚔️ contre ${this.monsterName}`, {
+                fontSize: '20px',
+                fontFamily: 'Arial Black',
+                color: '#cc4400',
+                stroke: '#000',
+                strokeThickness: 2
+            }).setOrigin(0.5, 0);
+        }
 
         this.add.text(px, panelTop + 115, `${this.num1} + ${this.num2} =`, {
             fontSize: '60px',
@@ -120,8 +133,8 @@ export class MathProblemScene extends Scene {
         bg.on('pointerout', () => bg.setScale(1));
         bg.on('pointerup', () => {
             if (isBack) {
-                this.currentInput = '';
-                this.inputText.setText('?');
+                this.currentInput = this.currentInput.slice(0, -1);
+                this.inputText.setText(this.currentInput || '?');
             } else {
                 this._handleInput(label);
             }
@@ -129,18 +142,30 @@ export class MathProblemScene extends Scene {
     }
 
     _handleInput(val) {
-        if (this.currentInput.length >= 2) return;
-        
+        if (this._inputLocked || this.currentInput.length >= 2) return;
+
         this.currentInput += val;
         this.inputText.setText(this.currentInput);
+        audio.playLetterTap();
 
         if (parseInt(this.currentInput) === this.answer) {
             this._showSuccess();
         } else if (this.currentInput.length >= this.answer.toString().length) {
-            this.time.delayedCall(400, () => {
+            this._inputLocked = true;
+            this.cameras.main.shake(150, 0.005);
+            const { width, height } = this.cameras.main;
+            const msg = this.add.text(width / 2, height / 2 - 60, 'Essaie encore ! 💛', {
+                fontSize: '40px',
+                fontFamily: 'Arial Black',
+                color: '#ffd700',
+                stroke: '#000',
+                strokeThickness: 6,
+            }).setOrigin(0.5).setDepth(100);
+            this.time.delayedCall(900, () => {
+                msg.destroy();
                 this.currentInput = '';
                 this.inputText.setText('?');
-                this.cameras.main.shake(150, 0.005);
+                this._inputLocked = false;
             });
         }
     }

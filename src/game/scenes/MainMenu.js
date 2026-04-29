@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
-import { getEquipment, addToInventory } from '../data/LevelData.js';
+import { getEquipment, addToInventory, getProgress, LEVELS } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
+import { getMathProgress, MATH_WORLDS } from '../data/MathWorldData.js';
 
 export class MainMenu extends Scene {
     constructor() {
@@ -47,6 +48,26 @@ export class MainMenu extends Scene {
         this._createChoiceButton(512, 540, '❄️ Mathématiques', 0x2266aa, () => {
             this.scene.start('MathWorldSelectScene');
         });
+
+        const spellingDone = LEVELS.filter(l => getProgress()[l.id]).length;
+        if (spellingDone > 0) {
+            this.add.text(512, 430, `⭐ ${spellingDone} / ${LEVELS.length} niveaux`, {
+                fontSize: '20px',
+                color: '#ffd700',
+                stroke: '#000',
+                strokeThickness: 3,
+            }).setOrigin(0.5, 0);
+        }
+
+        const mathDone = MATH_WORLDS.filter((_, i) => getMathProgress()[i]).length;
+        if (mathDone > 0) {
+            this.add.text(512, 590, `⭐ ${mathDone} / ${MATH_WORLDS.length} mondes`, {
+                fontSize: '20px',
+                color: '#ffd700',
+                stroke: '#000',
+                strokeThickness: 3,
+            }).setOrigin(0.5, 0);
+        }
 
         this._createSmallButton(900, 710, '🎁 Collection', 0xaa00aa, () => {
             this.scene.start('CollectionScene');

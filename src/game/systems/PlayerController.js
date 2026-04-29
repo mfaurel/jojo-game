@@ -1,6 +1,7 @@
 import { TILE_SIZE, MAP_COLS, MAP_ROWS, TILE, tileToPx } from '../data/MapData.js';
 import { getEquipment } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
+import { audio } from './AudioManager.js';
 
 export class PlayerController {
     constructor(scene, startCol, startRow, grid) {
@@ -120,7 +121,7 @@ export class PlayerController {
         ];
 
         buttons.forEach(({ symbol, dx, dy, bx, by }) => {
-            const bg = this.scene.add.rectangle(bx, by, 50, 50, 0x000000, 0.45)
+            const bg = this.scene.add.rectangle(bx, by, 70, 70, 0x000000, 0.45)
                 .setScrollFactor(0)
                 .setDepth(20)
                 .setInteractive()
@@ -129,7 +130,7 @@ export class PlayerController {
                 .on('pointerout',  () => bg.setFillStyle(0x000000, 0.45));
 
             this.scene.add.text(bx, by, symbol, {
-                fontSize: '24px',
+                fontSize: '30px',
                 color: '#ffffff',
             }).setOrigin(0.5).setScrollFactor(0).setDepth(21);
         });
@@ -174,6 +175,7 @@ export class PlayerController {
             duration: 160,
             ease: 'Linear',
             onComplete: () => {
+                audio.playStep();
                 this.isMoving = false;
                 if (onComplete) onComplete();
             }

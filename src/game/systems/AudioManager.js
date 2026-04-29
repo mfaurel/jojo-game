@@ -66,6 +66,10 @@ class AudioManager {
         this._tone(freqs[index] ?? 523, 150, 'sine', 0.22);
     }
 
+    playStep() {
+        this._tone(180, 60, 'sine', 0.08);
+    }
+
     playVictory() {
         // Happy 8-note melody (C-C-G-G-A-A-G)
         const melody = [

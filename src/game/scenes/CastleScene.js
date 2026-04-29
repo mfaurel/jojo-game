@@ -2,7 +2,7 @@ import { Scene } from 'phaser';
 import { MapBuilder } from '../systems/MapBuilder.js';
 import { PlayerController } from '../systems/PlayerController.js';
 import { GateManager } from '../systems/GateManager.js';
-import { GATE_POSITIONS, PLAYER_START, createGrid } from '../data/MapData.js';
+import { GATE_POSITIONS, GOAL_TILE, PLAYER_START, createGrid, tileToPx } from '../data/MapData.js';
 import { LEVELS } from '../data/LevelData.js';
 
 export class CastleScene extends Scene {
@@ -31,6 +31,19 @@ export class CastleScene extends Scene {
 
         this.gateManager = new GateManager(this, gates, grid);
         this.player      = new PlayerController(this, PLAYER_START.col, PLAYER_START.row, grid);
+
+        const goalPos = tileToPx(GOAL_TILE.col, GOAL_TILE.row);
+        const goalIcon = this.add.text(goalPos.x, goalPos.y - 20, '🏆', {
+            fontSize: '36px'
+        }).setOrigin(0.5).setDepth(8);
+        this.tweens.add({
+            targets: goalIcon,
+            y: goalPos.y - 34,
+            duration: 700,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.InOut'
+        });
 
         this.gatesUnlocked = 0;
         this.totalGates    = gates.length;

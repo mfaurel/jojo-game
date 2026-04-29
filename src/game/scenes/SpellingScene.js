@@ -19,6 +19,7 @@ export class SpellingScene extends Scene {
         this.slotTexts = [];
         this.slots     = [];
         this._locked   = false; // prevent input during success/retry animation
+        this._failCount = 0;
         
         const equip = getEquipment();
         const skinItem = ITEMS.find(i => i.id === (equip.skin ?? 'skin_default'));
@@ -321,6 +322,7 @@ export class SpellingScene extends Scene {
     }
 
     _showRetry() {
+        this._failCount++;
         audio.playWrong();
 
         // Shake all slots
@@ -347,6 +349,23 @@ export class SpellingScene extends Scene {
             msg.destroy();
             this._resetAttempt();
             this._locked = false;
+            if (this._failCount >= 2) {
+                this._showFirstLetterHint();
+            }
+        });
+    }
+
+    _showFirstLetterHint() {
+        const tile = this.tiles.find(t => t.letter === this.answer[0] && !t.used);
+        if (!tile) return;
+        this.tweens.add({
+            targets: tile.bg,
+            alpha: 0.4,
+            duration: 300,
+            yoyo: true,
+            repeat: 4,
+            ease: 'Sine.InOut',
+            onComplete: () => tile.bg.setAlpha(1),
         });
     }
 
