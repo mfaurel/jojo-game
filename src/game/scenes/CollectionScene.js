@@ -245,20 +245,69 @@ export class CollectionScene extends Scene {
                 this.add.text(cx, cy, '🧒', { fontSize: '36px' }).setOrigin(0.5);
             }
         } else if (item.category === 'background') {
-            this.add.rectangle(cx, cy, 80, 50, item.bgColor ?? 0x1a1a5e, 1)
-                .setStrokeStyle(1, 0x888888);
-            for (let i = 0; i < 5; i++) {
-                this.add.circle(
-                    cx - 30 + Math.random() * 60,
-                    cy - 15 + Math.random() * 30,
-                    1 + Math.random(), 0xffffff, 0.6
-                );
-            }
+            this._drawBgPreview(cx, cy, item.id);
         } else if (item.emoji) {
             this.add.text(cx, cy, item.emoji, { fontSize: '40px' }).setOrigin(0.5);
         } else {
             this.add.text(cx, cy, '📦', { fontSize: '32px' }).setOrigin(0.5);
         }
+    }
+
+    _drawBgPreview(cx, cy, id) {
+        const W = 80, H = 50;
+        const g = this.add.graphics();
+
+        if (id === 'bg_castle') {
+            // Deep purple sky
+            g.fillStyle(0x100028, 1); g.fillRect(cx - W/2, cy - H/2, W, H);
+            // Moon
+            g.fillStyle(0xffeebb, 0.15); g.fillCircle(cx + 26, cy - 14, 14);
+            g.fillStyle(0xffeebb, 1);    g.fillCircle(cx + 26, cy - 14, 9);
+            // Castle silhouette
+            g.fillStyle(0x080018, 1);
+            g.fillRect(cx - W/2, cy + 6, W, H/2);          // base
+            g.fillRect(cx - 22,  cy - 14, 44, 22);          // centre tower
+            g.fillRect(cx - 36,  cy - 8,  18, 16);          // left tower
+            g.fillRect(cx + 18,  cy - 8,  18, 16);          // right tower
+            // Battlements
+            for (let i = 0; i < 3; i++) {
+                g.fillRect(cx - 22 + i * 16, cy - 18, 10, 6);
+            }
+            // Torch glow
+            g.fillStyle(0xff8800, 0.7); g.fillCircle(cx - 10, cy + 2, 3);
+            g.fillStyle(0xff8800, 0.7); g.fillCircle(cx + 10, cy + 2, 3);
+        } else if (id === 'bg_galaxy') {
+            // Dark background
+            g.fillStyle(0x080010, 1); g.fillRect(cx - W/2, cy - H/2, W, H);
+            // Nebula blobs
+            g.fillStyle(0xff44aa, 0.18); g.fillEllipse(cx - 16, cy - 5, 38, 22);
+            g.fillStyle(0x9922ff, 0.15); g.fillEllipse(cx + 18, cy + 4, 30, 16);
+            g.fillStyle(0xff6688, 0.10); g.fillEllipse(cx + 2,  cy - 10, 44, 18);
+            // Stars
+            [[cx - 28, cy - 16], [cx + 22, cy - 18], [cx - 8, cy + 14],
+             [cx + 32, cy + 8],  [cx - 32, cy + 6],  [cx + 10, cy - 6]].forEach(([sx, sy]) => {
+                g.fillStyle(0xffffff, 0.7 + Math.random() * 0.3);
+                g.fillCircle(sx, sy, 1);
+            });
+            // Rainbow comet streak
+            const rx = [0xff4444, 0xff9900, 0xffee00, 0x44ee44, 0x44aaff, 0xaa44ff];
+            rx.forEach((c, i) => {
+                g.fillStyle(c, 0.85 - i * 0.1);
+                g.fillCircle(cx + 30 - i * 7, cy - 12 + i * 4, 2.5 - i * 0.3);
+            });
+        } else {
+            // Starry Night (default)
+            g.fillStyle(0x1a1a5e, 1); g.fillRect(cx - W/2, cy - H/2, W, H);
+            for (let i = 0; i < 18; i++) {
+                g.fillStyle(0xffffff, 0.4 + Math.random() * 0.6);
+                g.fillCircle(cx - W/2 + 4 + Math.random() * (W - 8),
+                             cy - H/2 + 4 + Math.random() * (H - 8), 0.6 + Math.random());
+            }
+        }
+
+        // Border
+        g.lineStyle(1, 0x888888, 0.8);
+        g.strokeRect(cx - W/2, cy - H/2, W, H);
     }
 
     // ── Special Rewards ───────────────────────────────────────────────────────

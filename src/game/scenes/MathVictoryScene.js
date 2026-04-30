@@ -93,35 +93,35 @@ export class MathVictoryScene extends Scene {
             }).explode();
         });
 
-        // Phase 5 — continue button (1800ms)
+        // Phase 5 — reward popup or continue button (1800ms)
         this.time.delayedCall(1800, () => {
-            const btnBg = this.add.rectangle(width / 2, height * 0.78, 240, 58, this.worldConfig.btnColor, 1)
-                .setInteractive({ useHandCursor: true })
-                .setDepth(20);
-            this.add.text(width / 2, height * 0.78, t('continueBtn'), {
-                fontSize: '26px',
-                fontFamily: 'Arial Black',
-                color: '#ffffff',
-                stroke: '#000',
-                strokeThickness: 3,
-            }).setOrigin(0.5).setDepth(21);
+            if (this.wonItem) {
+                this.scene.launch('RewardPopup', { item: this.wonItem });
+                this.scene.get('RewardPopup').events.once('shutdown', () => this._exitToWorldSelect());
+            } else {
+                const btnBg = this.add.rectangle(width / 2, height * 0.78, 240, 58, this.worldConfig.btnColor, 1)
+                    .setInteractive({ useHandCursor: true })
+                    .setDepth(20);
+                this.add.text(width / 2, height * 0.78, t('continueBtn'), {
+                    fontSize: '26px',
+                    fontFamily: 'Arial Black',
+                    color: '#ffffff',
+                    stroke: '#000',
+                    strokeThickness: 3,
+                }).setOrigin(0.5).setDepth(21);
 
-            btnBg.on('pointerover', () => btnBg.setFillStyle(this.worldConfig.btnColor + 0x101010));
-            btnBg.on('pointerout',  () => btnBg.setFillStyle(this.worldConfig.btnColor));
-            btnBg.on('pointerup',   () => this._exitToWorldSelect());
+                btnBg.on('pointerover', () => btnBg.setFillStyle(this.worldConfig.btnColor + 0x101010));
+                btnBg.on('pointerout',  () => btnBg.setFillStyle(this.worldConfig.btnColor));
+                btnBg.on('pointerup',   () => this._exitToWorldSelect());
+
+                // Auto-advance only when no reward popup is blocking
+                this.time.delayedCall(1700, () => this._exitToWorldSelect());
+            }
         });
-
-        // Phase 6 — auto-advance (3500ms)
-        this.time.delayedCall(3500, () => this._exitToWorldSelect());
     }
 
     _checkLoot() {
-        const wonItem = LootManager.rollLoot();
-        if (wonItem) {
-            this.time.delayedCall(1000, () => {
-                this.scene.launch('RewardPopup', { item: wonItem });
-            });
-        }
+        this.wonItem = LootManager.rollLoot();
 
         const progress = getMathProgress();
         const allDone = MATH_WORLDS.every((_, i) => progress[i] === true);

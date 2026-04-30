@@ -13,37 +13,40 @@ export class RewardPopup extends Scene {
 
     create() {
         const { width, height } = this.cameras.main;
-        
-        // Darken background
-        this.add.rectangle(width/2, height/2, width, height, 0x000000, 0.8);
+        const cx = width / 2;
+        const cy = height / 2;
 
-        const panel = this.add.nineslice(width/2, height/2, 'ui_panel', 0, 500, 400, 40, 40, 40, 40);
-        panel.setScale(0);
+        this.add.rectangle(cx, cy, width, height, 0x000000, 0.85).setDepth(100);
 
-        const title = this.add.text(width/2, height/2 - 140, t('newContent'), {
-            fontSize: '32px',
-            fontFamily: 'Arial Black',
-            color: '#ffd700'
-        }).setOrigin(0.5).setAlpha(0);
+        const panel = this.add.nineslice(cx, cy, 'ui_panel', 0, 500, 440, 40, 40, 40, 40).setDepth(101).setScale(0);
 
         const rarityInfo = RARITY[this.item.rarity];
-        const rarityText = this.add.text(width/2, height/2 - 90, t(rarityInfo.labelKey), {
+
+        const title = this.add.text(cx, cy - 185, t('newContent'), {
+            fontSize: '32px',
+            fontFamily: 'Arial Black',
+            color: '#ffd700',
+        }).setOrigin(0.5).setDepth(102).setAlpha(0);
+
+        const rarityText = this.add.text(cx, cy - 145, t(rarityInfo.labelKey), {
             fontSize: '24px',
             fontFamily: 'Arial Black',
-            color: rarityInfo.color
-        }).setOrigin(0.5).setAlpha(0);
+            color: rarityInfo.color,
+        }).setOrigin(0.5).setDepth(102).setAlpha(0);
 
-        const itemName = this.add.text(width/2, height/2 + 80, t(this.item.nameKey), {
-            fontSize: '38px',
+        const itemImage = this._buildItemImage(cx, cy - 40);
+
+        const itemName = this.add.text(cx, cy + 75, t(this.item.nameKey), {
+            fontSize: '34px',
             fontFamily: 'Arial Black',
-            color: '#004488'
-        }).setOrigin(0.5).setAlpha(0);
+            color: rarityInfo.color,
+        }).setOrigin(0.5).setDepth(102).setAlpha(0);
 
-        const btn = this.add.text(width/2, height/2 + 160, t('great'), {
+        const btn = this.add.text(cx, cy + 155, t('great'), {
             fontSize: '28px',
             backgroundColor: '#00aaff',
-            padding: { x: 20, y: 10 }
-        }).setOrigin(0.5).setInteractive({ useHandCursor: true }).setAlpha(0);
+            padding: { x: 20, y: 10 },
+        }).setOrigin(0.5).setDepth(102).setInteractive({ useHandCursor: true }).setAlpha(0);
 
         btn.on('pointerup', () => this.scene.stop());
 
@@ -53,21 +56,37 @@ export class RewardPopup extends Scene {
             duration: 500,
             ease: 'Back.Out',
             onComplete: () => {
-                this.tweens.add({
-                    targets: [title, rarityText, itemName, btn],
-                    alpha: 1,
-                    duration: 300
-                });
-            }
+                this.tweens.add({ targets: [title, rarityText, itemName, btn], alpha: 1, duration: 300 });
+                if (itemImage) {
+                    this.tweens.add({ targets: itemImage, alpha: 1, scaleX: 1, scaleY: 1, duration: 400, ease: 'Back.Out' });
+                }
+            },
         });
 
-        // Burst of particles when panel opens
-        this.add.particles(width/2, height/2, 'particle', {
+        this.add.particles(cx, cy, 'particle', {
             speed: { min: 100, max: 300 },
             scale: { start: 0.6, end: 0 },
             blendMode: 'ADD',
             lifespan: 1000,
             quantity: 40,
-        }).explode();
+        }).explode().setDepth(103);
+    }
+
+    _buildItemImage(cx, cy) {
+        if (this.item.category === 'skin') {
+            if (this.textures.exists('jojo_pixel')) {
+                const img = this.add.image(cx, cy, 'jojo_pixel')
+                    .setDisplaySize(100, 100).setDepth(102).setAlpha(0).setScale(0);
+                if (this.item.tint) img.setTint(this.item.tint);
+                return img;
+            }
+            return this.add.text(cx, cy, '🧒', { fontSize: '72px' })
+                .setOrigin(0.5).setDepth(102).setAlpha(0).setScale(0);
+        }
+
+        const emoji = this.item.emoji
+            ?? (this.item.category === 'background' ? '🖼️' : '📦');
+        return this.add.text(cx, cy, emoji, { fontSize: '72px' })
+            .setOrigin(0.5).setDepth(102).setAlpha(0).setScale(0);
     }
 }

@@ -48,29 +48,16 @@ export class VictoryScene extends Scene {
     }
 
     _checkLoot() {
-        // 1. Random Loot Roll
-        const wonItem = LootManager.rollLoot();
-        if (wonItem) {
-            this.time.delayedCall(1000, () => {
-                this.scene.launch('RewardPopup', { item: wonItem });
-            });
-        }
+        this.wonItem = LootManager.rollLoot();
 
-        // 2. Category Completion Check
         const progress = getProgress();
-        // Since we have 5 levels, check if all 5 are done (stubs for math)
         let allDone = true;
         for (let i = 0; i < 5; i++) {
-            if (!progress[i]) {
-                allDone = false;
-                break;
-            }
+            if (!progress[i]) { allDone = false; break; }
         }
-
         if (allDone) {
             const reward = this.gameType === 'math' ? SPECIAL_REWARDS.MATH_ALL : SPECIAL_REWARDS.SPELLING_ALL;
             addToInventory(reward.id);
-            // Optionally show special popup later
         }
     }
 
@@ -458,33 +445,42 @@ export class VictoryScene extends Scene {
         }).setOrigin(0.5).setAlpha(0);
         this.tweens.add({ targets: starsRow, alpha: 1, duration: 500, delay: 700 });
 
-        const btn = this.add.rectangle(512, 692, 290, 64, 0x006600, 1)
-            .setInteractive()
-            .setAlpha(0)
-            .on('pointerover', () => btn.setFillStyle(0x009900))
-            .on('pointerout',  () => btn.setFillStyle(0x006600))
-            .on('pointerup',   () => this.scene.start('SpellingMenu'));
-
-        const btnTxt = this.add.text(512, 692, t('chooseLevelBtn'), {
-            fontSize: '28px',
-            fontFamily: 'Arial Black, Arial, sans-serif',
-            color: '#ffffff',
-            stroke: '#003300',
-            strokeThickness: 4,
-        }).setOrigin(0.5).setAlpha(0);
-
-        this.tweens.add({ targets: [btn, btnTxt], alpha: 1, duration: 400, delay: 1000 });
-        this.time.delayedCall(1400, () => {
-            this.tweens.add({
-                targets: btn,
-                scaleX: 1.06,
-                scaleY: 1.06,
-                duration: 700,
-                yoyo: true,
-                repeat: -1,
-                ease: 'Sine.InOut',
+        if (this.wonItem) {
+            this.time.delayedCall(800, () => {
+                this.scene.launch('RewardPopup', { item: this.wonItem });
+                this.scene.get('RewardPopup').events.once('shutdown', () => {
+                    this.scene.start('SpellingMenu');
+                });
             });
-        });
+        } else {
+            const btn = this.add.rectangle(512, 692, 290, 64, 0x006600, 1)
+                .setInteractive()
+                .setAlpha(0)
+                .on('pointerover', () => btn.setFillStyle(0x009900))
+                .on('pointerout',  () => btn.setFillStyle(0x006600))
+                .on('pointerup',   () => this.scene.start('SpellingMenu'));
+
+            const btnTxt = this.add.text(512, 692, t('chooseLevelBtn'), {
+                fontSize: '28px',
+                fontFamily: 'Arial Black, Arial, sans-serif',
+                color: '#ffffff',
+                stroke: '#003300',
+                strokeThickness: 4,
+            }).setOrigin(0.5).setAlpha(0);
+
+            this.tweens.add({ targets: [btn, btnTxt], alpha: 1, duration: 400, delay: 1000 });
+            this.time.delayedCall(1400, () => {
+                this.tweens.add({
+                    targets: btn,
+                    scaleX: 1.06,
+                    scaleY: 1.06,
+                    duration: 700,
+                    yoyo: true,
+                    repeat: -1,
+                    ease: 'Sine.InOut',
+                });
+            });
+        }
     }
 
     _startStarRain() {

@@ -13,18 +13,11 @@ export class MainMenu extends Scene {
         const equip = getEquipment();
 
         if (equip.background === 'bg_castle') {
-            this.cameras.main.setBackgroundColor(0x2a0055);
+            this._drawCastleBg();
         } else if (equip.background === 'bg_galaxy') {
-            this.cameras.main.setBackgroundColor(0x000022);
+            this._drawGalaxyBg();
         } else {
-            this.cameras.main.setBackgroundColor(0x1a1a5e);
-        }
-
-        for (let i = 0; i < 40; i++) {
-            const x = Math.random() * 1024;
-            const y = Math.random() * 768;
-            const r = 0.1 + Math.random() * 0.4;
-            this.add.image(x, y, 'particle').setScale(r).setAlpha(0.4 + Math.random() * 0.4);
+            this._drawNightBg();
         }
 
         this.add.text(512, 150, t('gameTitle'), {
@@ -77,6 +70,202 @@ export class MainMenu extends Scene {
         this._createLangButton();
 
         this._initCheatCode();
+    }
+
+    // ── Background themes ─────────────────────────────────────────────────────
+
+    _drawNightBg() {
+        const { width, height } = this.cameras.main;
+        this.cameras.main.setBackgroundColor(0x1a1a5e);
+
+        for (let i = 0; i < 70; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const r = 0.4 + Math.random() * 1.6;
+            const star = this.add.circle(x, y, r, 0xffffff, 0.3 + Math.random() * 0.7);
+            this.tweens.add({
+                targets: star,
+                alpha: 0.05 + Math.random() * 0.15,
+                duration: 900 + Math.random() * 2800,
+                yoyo: true, repeat: -1,
+                delay: Math.random() * 2000,
+            });
+        }
+        // A few bright particle glows
+        for (let i = 0; i < 8; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height * 0.7;
+            this.add.image(x, y, 'particle')
+                .setScale(0.15 + Math.random() * 0.25)
+                .setAlpha(0.5 + Math.random() * 0.5);
+        }
+    }
+
+    _drawCastleBg() {
+        const { width, height } = this.cameras.main;
+        this.cameras.main.setBackgroundColor(0x100028);
+
+        // Stars (only upper sky)
+        for (let i = 0; i < 35; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height * 0.65;
+            const r = 0.4 + Math.random() * 1.1;
+            const star = this.add.circle(x, y, r, 0xffffff, 0.4 + Math.random() * 0.5);
+            this.tweens.add({
+                targets: star,
+                alpha: 0.05 + Math.random() * 0.2,
+                duration: 1200 + Math.random() * 2500,
+                yoyo: true, repeat: -1,
+                delay: Math.random() * 1500,
+            });
+        }
+
+        const g = this.add.graphics();
+
+        // Moon glow halos
+        g.fillStyle(0xfff8c0, 0.06); g.fillCircle(width * 0.82, 120, 110);
+        g.fillStyle(0xfff8c0, 0.08); g.fillCircle(width * 0.82, 120, 80);
+        // Moon disk
+        g.fillStyle(0xffeebb, 1);    g.fillCircle(width * 0.82, 120, 52);
+        // Craters
+        g.fillStyle(0xddbb88, 0.45); g.fillCircle(width * 0.82 - 16, 106, 9);
+        g.fillStyle(0xddbb88, 0.35); g.fillCircle(width * 0.82 + 20, 134, 6);
+        g.fillStyle(0xddbb88, 0.30); g.fillCircle(width * 0.82 + 4, 118, 4);
+        // Moonbeam column
+        g.fillStyle(0xffeebb, 0.03); g.fillRect(width * 0.82 - 38, 120, 76, height);
+
+        // Castle silhouette
+        g.fillStyle(0x080018, 1);
+
+        // Ground base
+        g.fillRect(0, height - 100, width, 100);
+        // Wall
+        g.fillRect(0, height - 185, width, 88);
+        // Wall battlements
+        for (let i = 0; i < Math.ceil(width / 46); i++) {
+            if (i % 2 === 0) g.fillRect(i * 46, height - 212, 28, 28);
+        }
+
+        // Left tower
+        g.fillRect(40, height - 390, 110, 250);
+        for (let i = 0; i < 4; i++) {
+            if (i % 2 === 0) g.fillRect(40 + i * 30, height - 412, 22, 24);
+        }
+
+        // Centre tower (tallest)
+        g.fillRect(width / 2 - 72, height - 460, 144, 320);
+        for (let i = 0; i < 5; i++) {
+            if (i % 2 === 0) g.fillRect(width / 2 - 72 + i * 32, height - 484, 24, 26);
+        }
+
+        // Right tower
+        g.fillRect(width - 150, height - 370, 110, 230);
+        for (let i = 0; i < 4; i++) {
+            if (i % 2 === 0) g.fillRect(width - 150 + i * 30, height - 392, 22, 24);
+        }
+
+        // Glowing windows (drawn on top)
+        const winColor = 0xff9900;
+        g.fillStyle(winColor, 0.55); g.fillRect(82, height - 348, 26, 36); g.fillCircle(95, height - 348, 13);
+        g.fillStyle(winColor, 0.5);  g.fillRect(width / 2 - 17, height - 418, 34, 48); g.fillCircle(width / 2, height - 418, 17);
+        g.fillStyle(winColor, 0.55); g.fillRect(width - 112, height - 326, 26, 36); g.fillCircle(width - 99, height - 326, 13);
+
+        // Torch flames (animated)
+        const torchPositions = [
+            { x: 160,          y: height - 205 },
+            { x: width / 2,    y: height - 220 },
+            { x: width - 160,  y: height - 205 },
+        ];
+        torchPositions.forEach(pos => {
+            const tg = this.add.graphics();
+            tg.fillStyle(0x553311, 1);
+            tg.fillRect(pos.x - 3, pos.y + 2, 6, 16);
+
+            const flame = this.add.graphics();
+            flame.fillStyle(0xff7700, 0.95);
+            flame.fillEllipse(pos.x, pos.y - 6, 13, 22);
+            flame.fillStyle(0xffdd00, 0.85);
+            flame.fillEllipse(pos.x, pos.y - 8, 7, 14);
+
+            this.tweens.add({
+                targets: flame,
+                scaleX: { from: 0.75, to: 1.2 },
+                scaleY: { from: 0.9, to: 1.15 },
+                x: { from: pos.x - 2, to: pos.x + 2 },
+                duration: 110 + Math.random() * 90,
+                yoyo: true, repeat: -1,
+                ease: 'Sine.InOut',
+            });
+        });
+    }
+
+    _drawGalaxyBg() {
+        const { width, height } = this.cameras.main;
+        this.cameras.main.setBackgroundColor(0x080010);
+
+        // Nebula clouds
+        const g = this.add.graphics();
+        [
+            { x: width * 0.18, y: height * 0.30, rx: 210, ry: 120, c: 0xff44aa, a: 0.11 },
+            { x: width * 0.72, y: height * 0.50, rx: 190, ry: 105, c: 0x9922ff, a: 0.10 },
+            { x: width * 0.50, y: height * 0.18, rx: 260, ry: 130, c: 0xff6688, a: 0.08 },
+            { x: width * 0.88, y: height * 0.28, rx: 140, ry: 85,  c: 0xcc44ff, a: 0.13 },
+            { x: width * 0.35, y: height * 0.70, rx: 170, ry: 95,  c: 0xff2288, a: 0.07 },
+        ].forEach(n => {
+            g.fillStyle(n.c, n.a);
+            g.fillEllipse(n.x, n.y, n.rx * 2, n.ry * 2);
+        });
+
+        // Colourful stars
+        const starPalette = [0xffffff, 0xff99cc, 0xcc88ff, 0x88ddff, 0xffee66, 0xff44aa];
+        for (let i = 0; i < 90; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const r = 0.3 + Math.random() * 1.4;
+            const c = starPalette[Math.floor(Math.random() * starPalette.length)];
+            const star = this.add.circle(x, y, r, c, 0.5 + Math.random() * 0.5);
+            this.tweens.add({
+                targets: star,
+                alpha: 0.05 + Math.random() * 0.2,
+                duration: 700 + Math.random() * 2500,
+                yoyo: true, repeat: -1,
+                delay: Math.random() * 2500,
+            });
+        }
+
+        // Rainbow comet (fires once at start, then loops every ~5 s)
+        this._spawnRainbowComet();
+        this.time.addEvent({ delay: 5500, callback: this._spawnRainbowComet, callbackScope: this, loop: true });
+    }
+
+    _spawnRainbowComet() {
+        const { width, height } = this.cameras.main;
+        // Randomise start/end along the top-right → bottom-left diagonal
+        const startX = width * (0.55 + Math.random() * 0.45);
+        const startY = -20;
+        const angle  = 0.9 + Math.random() * 0.4;   // radians ~50°-70° below horizontal
+        const dist   = width * 1.3;
+        const endX   = startX - dist * Math.cos(angle);
+        const endY   = startY + dist * Math.sin(angle);
+        const dur    = 1800 + Math.random() * 700;
+
+        const rainbow = [0xff3333, 0xff9900, 0xffee00, 0x44ee44, 0x44aaff, 0xaa44ff, 0xff44cc];
+        const segments = 10;
+        for (let i = 0; i < segments; i++) {
+            const r    = Math.max(1, 5 - i * 0.38);
+            const col  = rainbow[i % rainbow.length];
+            const dot  = this.add.circle(startX, startY, r, col, 1 - i * 0.08).setDepth(3);
+            this.tweens.add({
+                targets:  dot,
+                x:        endX,
+                y:        endY,
+                alpha:    0,
+                duration: dur,
+                delay:    i * 30,
+                ease:     'Linear',
+                onComplete: () => dot.destroy(),
+            });
+        }
     }
 
     _createLangButton() {
