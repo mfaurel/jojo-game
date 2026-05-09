@@ -25,7 +25,7 @@ export class MathVictoryScene extends Scene {
 
         // Phase 0 — dim overlay
         const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0)
-            .setDepth(0);
+            .setDepth(0).setScrollFactor(0);
         this.tweens.add({ targets: overlay, alpha: 0.65, duration: 300 });
 
         // Phase 1 — BRAVO (300ms)

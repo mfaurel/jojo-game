@@ -35,7 +35,7 @@ export class MathProblemScene extends Scene {
     create() {
         const { width, height } = this.cameras.main;
 
-        this.add.rectangle(width/2, height/2, width, height, 0x000000, 0.7);
+        this.add.rectangle(width/2, height/2, width, height, 0x000000, 0.7).setScrollFactor(0);
 
         this._drawCharacter();
 

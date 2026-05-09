@@ -17,7 +17,7 @@ export class RewardPopup extends Scene {
         const cx = width / 2;
         const cy = height / 2;
 
-        this.add.rectangle(cx, cy, width, height, 0x000000, 0.85).setDepth(100);
+        this.add.rectangle(cx, cy, width, height, 0x000000, 0.85).setDepth(100).setScrollFactor(0);
 
         const panel = this.add.nineslice(cx, cy, 'ui_panel', 0, 500, 440, 40, 40, 40, 40).setDepth(101).setScale(0);
 

@@ -52,8 +52,21 @@ const config = {
 const StartGame = (parent) => {
     const game = new Game({ ...config, parent });
 
-    // Mobile browsers report stale viewport size during rotation — refresh after the
-    // browser has finished updating the layout.
+    const centreScene = (scene) => {
+        if (scene.cameras?.main) scene.cameras.main.centerOn(512, 384);
+    };
+
+    game.scale.on('resize', () => {
+        game.scene.scenes.forEach(s => { if (s.sys.settings.active) centreScene(s); });
+    });
+
+    game.events.on('ready', () => {
+        game.scene.scenes.forEach(scene => {
+            scene.events.on('create', () => centreScene(scene));
+            scene.events.on('wake',   () => centreScene(scene));
+        });
+    });
+
     window.addEventListener('orientationchange', () => {
         setTimeout(() => game.scale.refresh(), 300);
     });

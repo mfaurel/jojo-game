@@ -425,8 +425,8 @@ export class CollectionScene extends Scene {
 
     _showFullPicture(asset) {
         const { width, height } = this.cameras.main;
-        const bg  = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.9).setDepth(100);
-        const img = this.add.image(width / 2, height / 2, asset).setDepth(101);
+        const bg  = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.9).setDepth(100).setScrollFactor(0);
+        const img = this.add.image(width / 2, height / 2, asset).setDepth(101).setScrollFactor(0);
         const scale = Math.min(width / img.width, height / img.height) * 0.85;
         img.setScale(scale);
         bg.setInteractive().on('pointerup', () => { bg.destroy(); img.destroy(); });

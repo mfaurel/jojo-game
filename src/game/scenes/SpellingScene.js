@@ -41,7 +41,8 @@ export class SpellingScene extends Scene {
     }
 
     _drawOverlay() {
-        this.add.rectangle(512, 384, 1024, 768, 0x000000, 0.6);
+        const { width, height } = this.cameras.main;
+        this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.6).setScrollFactor(0);
     }
 
     _drawCharacter() {

@@ -90,7 +90,7 @@ export class MainMenu extends Scene {
         const { width, height } = this.cameras.main;
         this.cameras.main.setBackgroundColor(0x8b5a2b);
         this.add.image(width / 2, height / 2, 'jojopixelart_spelling')
-            .setDisplaySize(width, height);
+            .setDisplaySize(width, height).setScrollFactor(0);
     }
 
     _drawNightBg() {
@@ -101,7 +101,7 @@ export class MainMenu extends Scene {
             const x = Math.random() * width;
             const y = Math.random() * height;
             const r = 0.4 + Math.random() * 1.6;
-            const star = this.add.circle(x, y, r, 0xffffff, 0.3 + Math.random() * 0.7);
+            const star = this.add.circle(x, y, r, 0xffffff, 0.3 + Math.random() * 0.7).setScrollFactor(0);
             this.tweens.add({
                 targets: star,
                 alpha: 0.05 + Math.random() * 0.15,
@@ -116,7 +116,8 @@ export class MainMenu extends Scene {
             const y = Math.random() * height * 0.7;
             this.add.image(x, y, 'particle')
                 .setScale(0.15 + Math.random() * 0.25)
-                .setAlpha(0.5 + Math.random() * 0.5);
+                .setAlpha(0.5 + Math.random() * 0.5)
+                .setScrollFactor(0);
         }
     }
 
@@ -134,7 +135,7 @@ export class MainMenu extends Scene {
 
         // Moon on its own Graphics object so we can tween it independently.
         // All coordinates are relative to the object's origin (centre of moon).
-        const moonGfx = this.add.graphics();
+        const moonGfx = this.add.graphics().setScrollFactor(0);
         moonGfx.fillStyle(0xfff8c0, 0.06); moonGfx.fillCircle(0, 0, 110);
         moonGfx.fillStyle(0xfff8c0, 0.08); moonGfx.fillCircle(0, 0, 80);
         moonGfx.fillStyle(0xffeebb, 1);    moonGfx.fillCircle(0, 0, 52);
@@ -158,7 +159,7 @@ export class MainMenu extends Scene {
         });
 
         // Castle silhouette + windows (static, drawn after moon so it occludes it)
-        const g = this.add.graphics();
+        const g = this.add.graphics().setScrollFactor(0);
         g.fillStyle(0x080018, 1);
 
         g.fillRect(0, height - 100, width, 100);
@@ -194,7 +195,7 @@ export class MainMenu extends Scene {
             { x: width - 160, y: height - 205 },
         ];
         torchPositions.forEach(pos => {
-            const tg = this.add.graphics();
+            const tg = this.add.graphics().setScrollFactor(0);
             tg.fillStyle(0x553311, 1);
             tg.fillRect(pos.x - 3, pos.y + 2, 6, 16);
             tg.fillStyle(0xff7700, 0.95);
@@ -209,7 +210,7 @@ export class MainMenu extends Scene {
         this.cameras.main.setBackgroundColor(0x080010);
 
         // Nebula clouds
-        const g = this.add.graphics();
+        const g = this.add.graphics().setScrollFactor(0);
         [
             { x: width * 0.18, y: height * 0.30, rx: 210, ry: 120, c: 0xff44aa, a: 0.11 },
             { x: width * 0.72, y: height * 0.50, rx: 190, ry: 105, c: 0x9922ff, a: 0.10 },
@@ -228,7 +229,7 @@ export class MainMenu extends Scene {
             const y = Math.random() * height;
             const r = 0.3 + Math.random() * 1.4;
             const c = starPalette[Math.floor(Math.random() * starPalette.length)];
-            const star = this.add.circle(x, y, r, c, 0.5 + Math.random() * 0.5);
+            const star = this.add.circle(x, y, r, c, 0.5 + Math.random() * 0.5).setScrollFactor(0);
             this.tweens.add({
                 targets: star,
                 alpha: 0.05 + Math.random() * 0.2,
@@ -259,7 +260,7 @@ export class MainMenu extends Scene {
         for (let i = 0; i < segments; i++) {
             const r    = Math.max(1, 5 - i * 0.38);
             const col  = rainbow[i % rainbow.length];
-            const dot  = this.add.circle(startX, startY, r, col, 1 - i * 0.08).setDepth(3);
+            const dot  = this.add.circle(startX, startY, r, col, 1 - i * 0.08).setDepth(3).setScrollFactor(0);
             this.tweens.add({
                 targets:  dot,
                 x:        endX,
@@ -349,7 +350,7 @@ export class MainMenu extends Scene {
         ITEMS.forEach(item => addToInventory(item.id));
 
         const { width, height } = this.cameras.main;
-        const flash = this.add.rectangle(width / 2, height / 2, width, height, 0xffd700, 0.35).setDepth(50);
+        const flash = this.add.rectangle(width / 2, height / 2, width, height, 0xffd700, 0.35).setDepth(50).setScrollFactor(0);
         this.tweens.add({ targets: flash, alpha: 0, duration: 600, onComplete: () => flash.destroy() });
 
         const msg = this.add.text(width / 2, height / 2, t('cheatUnlocked'), {
