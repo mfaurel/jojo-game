@@ -27,7 +27,7 @@ export class MathWorldSelectScene extends Scene {
             });
         }
 
-        this.add.text(width / 2, 55, t('mathWorldTitle'), {
+        this.add.text(512, 55, t('mathWorldTitle'), {
             fontSize: '44px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffd700',
@@ -35,7 +35,7 @@ export class MathWorldSelectScene extends Scene {
             strokeThickness: 6,
         }).setOrigin(0.5);
 
-        this.add.text(width / 2, 118, t('chooseMathWorld'), {
+        this.add.text(512, 118, t('chooseMathWorld'), {
             fontSize: '24px',
             color: '#ddaaff',
             stroke: '#000',
