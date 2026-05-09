@@ -2,6 +2,8 @@ import { Scene } from 'phaser';
 import { audio } from '../systems/AudioManager.js';
 import { getWord } from '../data/WordData.js';
 import { MEMORY_LEVELS, saveMemoryProgress } from '../data/MemoryData.js';
+import { CARD_BACK_ITEMS } from '../data/ItemData.js';
+import { getInventory, addToInventory, getEquipment } from '../data/LevelData.js';
 import { LootManager } from '../systems/LootManager.js';
 import { t } from '../data/I18n.js';
 
@@ -21,6 +23,8 @@ export class MemoryScene extends Scene {
         this._firstCard = null;
         this._locked   = false;
         this._matched  = 0;
+
+        this._backId = getEquipment().card_back ?? 'card_back_jolyne';
 
         this.cameras.main.setBackgroundColor(0x0a1830);
         this.cameras.main.fadeIn(300);
@@ -92,20 +96,9 @@ export class MemoryScene extends Scene {
         const r         = size / 2 - 10;
         const container = this.add.container(x, y);
 
-        // Back face
-        const backGfx = this.add.graphics();
-        backGfx.fillStyle(0x1a3a6a, 1);
-        backGfx.fillRoundedRect(-size / 2, -size / 2, size, size, 12);
-        backGfx.lineStyle(3, 0x4488cc, 1);
-        backGfx.strokeRoundedRect(-size / 2, -size / 2, size, size, 12);
-        // Decorative dots
-        backGfx.fillStyle(0xffd700, 0.35);
-        backGfx.fillCircle(0, 0, size * 0.18);
-        backGfx.fillStyle(0x88bbff, 0.6);
-        for (let i = 0; i < 5; i++) {
-            const a = (i / 5) * Math.PI * 2;
-            backGfx.fillCircle(Math.cos(a) * size * 0.20, Math.sin(a) * size * 0.20, 3.5);
-        }
+        // Back face (design based on equipped card_back)
+        const backObjects = this._buildBackFace(size);
+        backObjects.forEach(o => container.add(o));
 
         // Front face
         const frontGfx = this.add.graphics();
@@ -117,23 +110,22 @@ export class MemoryScene extends Scene {
         if (concept) concept.drawPicture(frontGfx, 0, 0, r);
         frontGfx.setVisible(false);
 
-        // Green overlay shown when the pair is matched (Graphics has no setTint)
+        // Green overlay shown on match (Graphics has no setTint)
         const matchOverlay = this.add.graphics();
         matchOverlay.fillStyle(0x44ff44, 0.28);
         matchOverlay.fillRoundedRect(-size / 2, -size / 2, size, size, 12);
         matchOverlay.setVisible(false);
 
-        // Invisible hit area so the full card is tappable
+        // Invisible hit area
         const hit = this.add.rectangle(0, 0, size, size, 0x000000, 0)
             .setInteractive({ useHandCursor: true });
 
-        container.add([backGfx, frontGfx, matchOverlay, hit]);
+        container.add([frontGfx, matchOverlay, hit]);
 
-        const card = { container, backGfx, frontGfx, matchOverlay, wordKey, matched: false, faceUp: false };
+        const card = { container, backObjects, frontGfx, matchOverlay, wordKey, matched: false, faceUp: false };
 
         hit.on('pointerover', () => {
-            if (!card.matched && !card.faceUp && !this._locked)
-                container.setScale(1.06);
+            if (!card.matched && !card.faceUp && !this._locked) container.setScale(1.06);
         });
         hit.on('pointerout', () => {
             if (!card.matched && !card.faceUp) container.setScale(1);
@@ -142,6 +134,67 @@ export class MemoryScene extends Scene {
 
         return card;
     }
+
+    // ── Card back designs ─────────────────────────────────────────────────────
+
+    _buildBackFace(size) {
+        const id = this._backId;
+
+        if (id === 'card_back_jolyne') {
+            // Dark purple frame
+            const border = this.add.graphics();
+            border.fillStyle(0x1a0a3a, 1);
+            border.fillRoundedRect(-size / 2, -size / 2, size, size, 12);
+            border.lineStyle(3, 0x8844ff, 1);
+            border.strokeRoundedRect(-size / 2, -size / 2, size, size, 12);
+
+            // Jolyne pixel art, scaled to fit inside the border
+            const img = this.add.image(0, 0, 'jojo_pixel')
+                .setDisplaySize(size - 14, size - 14);
+
+            return [border, img];
+        }
+
+        if (id === 'card_back_stars') {
+            const g = this.add.graphics();
+            // Night sky background
+            g.fillStyle(0x050520, 1);
+            g.fillRoundedRect(-size / 2, -size / 2, size, size, 12);
+            // Stars
+            for (let i = 0; i < 14; i++) {
+                const sx = (Math.random() - 0.5) * (size - 20);
+                const sy = (Math.random() - 0.5) * (size - 20);
+                g.fillStyle(0xffffff, 0.4 + Math.random() * 0.6);
+                g.fillCircle(sx, sy, 0.8 + Math.random() * 2);
+            }
+            // Moon
+            g.fillStyle(0xffeedd, 0.9);
+            g.fillCircle(size * 0.22, -size * 0.24, size * 0.13);
+            // Crescent shadow
+            g.fillStyle(0x050520, 1);
+            g.fillCircle(size * 0.27, -size * 0.26, size * 0.10);
+            g.lineStyle(2, 0x6644cc, 1);
+            g.strokeRoundedRect(-size / 2, -size / 2, size, size, 12);
+            return [g];
+        }
+
+        // card_back_rainbow
+        const g = this.add.graphics();
+        g.fillStyle(0x100020, 1);
+        g.fillRoundedRect(-size / 2, -size / 2, size, size, 12);
+        const colors = [0xff4444, 0xff9900, 0xffee00, 0x44ee44, 0x44aaff, 0xaa44ff];
+        const bandH  = (size - 24) / colors.length;
+        const bandW  = size - 20;
+        colors.forEach((c, i) => {
+            g.fillStyle(c, 0.8);
+            g.fillRoundedRect(-bandW / 2, -size / 2 + 10 + i * bandH, bandW, bandH - 2, 3);
+        });
+        g.lineStyle(3, 0xff44cc, 1);
+        g.strokeRoundedRect(-size / 2, -size / 2, size, size, 12);
+        return [g];
+    }
+
+    // ── Input & state machine ─────────────────────────────────────────────────
 
     _onCardTap(card) {
         if (this._locked) return;
@@ -204,7 +257,7 @@ export class MemoryScene extends Scene {
             duration: 140,
             ease: 'Linear',
             onComplete: () => {
-                card.backGfx.setVisible(!toFaceUp);
+                card.backObjects.forEach(o => o.setVisible(!toFaceUp));
                 card.frontGfx.setVisible(toFaceUp);
                 this.tweens.add({
                     targets: card.container,
@@ -219,15 +272,13 @@ export class MemoryScene extends Scene {
     _shake(target) {
         const ox = target.x;
         this.tweens.add({
-            targets: target,
-            x: ox + 10,
-            duration: 55,
-            yoyo: true,
-            repeat: 3,
-            ease: 'Linear',
+            targets: target, x: ox + 10, duration: 55,
+            yoyo: true, repeat: 3, ease: 'Linear',
             onComplete: () => { target.x = ox; },
         });
     }
+
+    // ── Victory & memory-specific loot ────────────────────────────────────────
 
     _victory() {
         this._locked = true;
@@ -235,7 +286,7 @@ export class MemoryScene extends Scene {
         saveMemoryProgress(this.levelIndex);
         this._starRain();
 
-        const wonItem = LootManager.rollLoot();
+        const wonItem = this._rollMemoryLoot();
         this.time.delayedCall(1400, () => {
             if (wonItem) {
                 this.scene.launch('RewardPopup', {
@@ -247,6 +298,21 @@ export class MemoryScene extends Scene {
             }
         });
     }
+
+    _rollMemoryLoot() {
+        const inv = getInventory();
+        // Prefer unowned card backs first
+        const unowned = CARD_BACK_ITEMS.filter(i => !inv.includes(i.id));
+        if (unowned.length > 0) {
+            const item = unowned[Math.floor(Math.random() * unowned.length)];
+            addToInventory(item.id);
+            return item;
+        }
+        // All card backs owned → fall back to general loot
+        return LootManager.rollLoot();
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
 
     _starRain() {
         for (let i = 0; i < 22; i++) {

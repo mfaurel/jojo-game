@@ -29,6 +29,13 @@ export const ITEMS = [
     { id: 'item_R_wand',   category: 'item_right', nameKey: 'item_wand',        rarity: 'EPIC',     asset: 'wand_star',   emoji: '⭐' },
 ];
 
+// Card backs — exclusive to the Memory game loot pool
+export const CARD_BACK_ITEMS = [
+    { id: 'card_back_jolyne',  category: 'card_back', nameKey: 'item_card_back_jolyne',  rarity: 'COMMON' },
+    { id: 'card_back_stars',   category: 'card_back', nameKey: 'item_card_back_stars',   rarity: 'RARE'   },
+    { id: 'card_back_rainbow', category: 'card_back', nameKey: 'item_card_back_rainbow', rarity: 'EPIC'   },
+];
+
 export const SPECIAL_REWARDS = {
     MATH_ALL:     { id: 'special_math',     nameKey: 'special_math',     asset: 'jojopixelart_maths'   },
     SPELLING_ALL: { id: 'special_spelling', nameKey: 'special_spelling', asset: 'jojopixelart_spelling' }

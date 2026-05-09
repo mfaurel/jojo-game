@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { ITEMS, RARITY, SPECIAL_REWARDS } from '../data/ItemData.js';
+import { ITEMS, RARITY, SPECIAL_REWARDS, CARD_BACK_ITEMS } from '../data/ItemData.js';
 import { getInventory, getEquipment, setEquipment } from '../data/LevelData.js';
 import { t } from '../data/I18n.js';
 
@@ -7,6 +7,7 @@ const TABS = [
     { labelKey: 'tabSpelling', categories: ['skin'] },
     { labelKey: 'tabMath',     categories: ['item_left', 'item_right'] },
     { labelKey: 'tabBonus',    categories: ['background'] },
+    { labelKey: 'tabMemory',   categories: ['card_back'] },
 ];
 
 export class CollectionScene extends Scene {
@@ -53,7 +54,7 @@ export class CollectionScene extends Scene {
 
     _drawTabs() {
         const { width } = this.cameras.main;
-        const tabW = 260;
+        const tabW = TABS.length <= 3 ? 260 : 220;
         const gap  = 16;
         const totalW = TABS.length * tabW + (TABS.length - 1) * gap;
         const startX = (width - totalW) / 2;
@@ -88,9 +89,10 @@ export class CollectionScene extends Scene {
         const inventory = getInventory();
         const equipment = getEquipment();
 
-        if (this.activeTab === 0) this._drawSkinTab(inventory, equipment);
+        if (this.activeTab === 0)      this._drawSkinTab(inventory, equipment);
         else if (this.activeTab === 1) this._drawMathTab(inventory, equipment);
-        else this._drawBonusTab(inventory, equipment);
+        else if (this.activeTab === 2) this._drawBonusTab(inventory, equipment);
+        else                           this._drawMemoryTab(inventory, equipment);
     }
 
     // ── Tab 0: Skins ─────────────────────────────────────────────────────────
@@ -246,10 +248,56 @@ export class CollectionScene extends Scene {
             }
         } else if (item.category === 'background') {
             this._drawBgPreview(cx, cy, item.id);
+        } else if (item.category === 'card_back') {
+            this._drawCardBackPreview(cx, cy, item.id);
         } else if (item.emoji) {
             this.add.text(cx, cy, item.emoji, { fontSize: '40px' }).setOrigin(0.5);
         } else {
             this.add.text(cx, cy, '📦', { fontSize: '32px' }).setOrigin(0.5);
+        }
+    }
+
+    _drawCardBackPreview(cx, cy, id) {
+        const W = 64, H = 88;
+
+        if (id === 'card_back_jolyne') {
+            const g = this.add.graphics();
+            g.fillStyle(0x1a0a3a, 1);
+            g.fillRoundedRect(cx - W / 2, cy - H / 2, W, H, 8);
+            g.lineStyle(2, 0x8844ff, 1);
+            g.strokeRoundedRect(cx - W / 2, cy - H / 2, W, H, 8);
+            if (this.textures.exists('jojo_pixel')) {
+                this.add.image(cx, cy, 'jojo_pixel').setDisplaySize(W - 8, H - 8);
+            }
+        } else if (id === 'card_back_stars') {
+            const g = this.add.graphics();
+            g.fillStyle(0x050520, 1);
+            g.fillRoundedRect(cx - W / 2, cy - H / 2, W, H, 8);
+            for (let i = 0; i < 12; i++) {
+                const sx = cx - W / 2 + 4 + Math.random() * (W - 8);
+                const sy = cy - H / 2 + 4 + Math.random() * (H - 8);
+                g.fillStyle(0xffffff, 0.5 + Math.random() * 0.5);
+                g.fillCircle(sx, sy, 0.8 + Math.random() * 1.5);
+            }
+            g.fillStyle(0xffeedd, 0.9);
+            g.fillCircle(cx + W * 0.22, cy - H * 0.22, W * 0.13);
+            g.fillStyle(0x050520, 1);
+            g.fillCircle(cx + W * 0.27, cy - H * 0.24, W * 0.10);
+            g.lineStyle(2, 0x6644cc, 1);
+            g.strokeRoundedRect(cx - W / 2, cy - H / 2, W, H, 8);
+        } else {
+            // card_back_rainbow
+            const g = this.add.graphics();
+            g.fillStyle(0x100020, 1);
+            g.fillRoundedRect(cx - W / 2, cy - H / 2, W, H, 8);
+            const colors = [0xff4444, 0xff9900, 0xffee00, 0x44ee44, 0x44aaff, 0xaa44ff];
+            const bandH  = (H - 12) / colors.length;
+            colors.forEach((c, i) => {
+                g.fillStyle(c, 0.85);
+                g.fillRoundedRect(cx - W / 2 + 5, cy - H / 2 + 6 + i * bandH, W - 10, bandH - 2, 2);
+            });
+            g.lineStyle(2, 0xff44cc, 1);
+            g.strokeRoundedRect(cx - W / 2, cy - H / 2, W, H, 8);
         }
     }
 
@@ -319,6 +367,31 @@ export class CollectionScene extends Scene {
         // Border
         g.lineStyle(1, 0x888888, 0.8);
         g.strokeRect(cx - W/2, cy - H/2, W, H);
+    }
+
+    // ── Tab 3: Memory card backs ──────────────────────────────────────────────
+
+    _drawMemoryTab(inventory, equipment) {
+        const { width } = this.cameras.main;
+        const items  = CARD_BACK_ITEMS;
+        const cardW  = 200;
+        const cardH  = 260;
+        const gap    = 36;
+        const totalW = items.length * cardW + (items.length - 1) * gap;
+        const startX = (width - totalW) / 2;
+        const cy     = 330;
+
+        this.add.text(width / 2, 135, t('chooseCardBack'), {
+            fontSize: '18px',
+            color: '#ffddaa',
+        }).setOrigin(0.5);
+
+        items.forEach((item, idx) => {
+            const cx        = startX + idx * (cardW + gap) + cardW / 2;
+            const isUnlocked = inventory.includes(item.id);
+            const isEquipped = equipment.card_back === item.id;
+            this._drawItemCard(cx, cy, cardW, cardH, item, isUnlocked, isEquipped, inventory, equipment);
+        });
     }
 
     // ── Special Rewards ───────────────────────────────────────────────────────

@@ -125,6 +125,11 @@ const STRINGS = {
         tabSpelling:         '🏰 Orthographe',
         tabMath:             '❄️ Mathématiques',
         tabBonus:            '🌟 Bonus',
+        tabMemory:           '🃏 Mémoire',
+        chooseCardBack:      'Dos des cartes Mémoire',
+        item_card_back_jolyne:  'Jolyne',
+        item_card_back_stars:   'Nuit Cosmos',
+        item_card_back_rainbow: 'Arc-en-ciel',
 
         // ── Reward popup ─────────────────────────────────────────────────────
         newContent:   'NOUVEAU CONTENU !',
@@ -277,6 +282,11 @@ const STRINGS = {
         tabSpelling:         '🏰 Spelling',
         tabMath:             '❄️ Mathematics',
         tabBonus:            '🌟 Bonus',
+        tabMemory:           '🃏 Memory',
+        chooseCardBack:      'Memory card back',
+        item_card_back_jolyne:  'Jolyne',
+        item_card_back_stars:   'Cosmos Night',
+        item_card_back_rainbow: 'Rainbow',
 
         newContent:   'NEW CONTENT!',
         great:        'AMAZING!',
@@ -427,6 +437,11 @@ const STRINGS = {
         tabSpelling:         '🏰 Ortografía',
         tabMath:             '❄️ Matemáticas',
         tabBonus:            '🌟 Bonus',
+        tabMemory:           '🃏 Memoria',
+        chooseCardBack:      'Dorso de las cartas',
+        item_card_back_jolyne:  'Jolyne',
+        item_card_back_stars:   'Noche Cosmos',
+        item_card_back_rainbow: 'Arco Iris',
 
         newContent:   '¡NUEVO CONTENIDO!',
         great:        '¡GENIAL!',

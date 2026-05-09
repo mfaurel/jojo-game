@@ -119,11 +119,12 @@ export function getInventory() {
     try {
         const inv = JSON.parse(localStorage.getItem(INVENTORY_KEY));
         if (inv && Array.isArray(inv)) {
-            if (!inv.includes('skin_default')) inv.push('skin_default');
-            if (!inv.includes('bg_night')) inv.push('bg_night');
+            if (!inv.includes('skin_default'))     inv.push('skin_default');
+            if (!inv.includes('bg_night'))         inv.push('bg_night');
+            if (!inv.includes('card_back_jolyne')) inv.push('card_back_jolyne');
             return inv;
         }
-        return ['skin_default', 'bg_night'];
+        return ['skin_default', 'bg_night', 'card_back_jolyne'];
     } catch {
         return ['skin_default', 'bg_night'];
     }
@@ -145,10 +146,11 @@ export function getEquipment() {
             skin: 'skin_default',
             background: 'bg_night',
             item_left: null,
-            item_right: null
+            item_right: null,
+            card_back: 'card_back_jolyne',
         };
     } catch {
-        return { skin: 'skin_default', background: 'bg_night', item_left: null, item_right: null };
+        return { skin: 'skin_default', background: 'bg_night', item_left: null, item_right: null, card_back: 'card_back_jolyne' };
     }
 }
 
