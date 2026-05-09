@@ -274,7 +274,14 @@ export class MainMenu extends Scene {
     }
 
     _createFullscreenButton() {
-        const icon = () => this.scale.isFullscreen ? '⊡' : '⛶';
+        const supportsFullscreen = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
+        const gameContainer = document.getElementById('game-container');
+        let fakeFs = false;
+
+        const icon = () => {
+            const active = supportsFullscreen ? this.scale.isFullscreen : fakeFs;
+            return active ? '⊡' : '⛶';
+        };
 
         const btn = this.add.text(64, 35, icon(), {
             fontSize: '26px',
@@ -287,10 +294,16 @@ export class MainMenu extends Scene {
         btn.on('pointerover', () => btn.setStyle({ color: '#ffd700' }));
         btn.on('pointerout',  () => btn.setStyle({ color: '#ffffff' }));
         btn.on('pointerup',   () => {
-            if (this.scale.isFullscreen) {
-                this.scale.stopFullscreen();
-            } else {
-                this.scale.startFullscreen();
+            if (supportsFullscreen) {
+                if (this.scale.isFullscreen) {
+                    this.scale.stopFullscreen();
+                } else {
+                    this.scale.startFullscreen();
+                }
+            } else if (gameContainer) {
+                fakeFs = !fakeFs;
+                gameContainer.classList.toggle('fake-fullscreen', fakeFs);
+                this.scale.refresh();
             }
             this.time.delayedCall(150, () => btn.setText(icon()));
         });
