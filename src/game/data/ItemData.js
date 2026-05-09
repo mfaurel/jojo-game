@@ -15,9 +15,10 @@ export const ITEMS = [
     { id: 'skin_gold',    category: 'skin',       nameKey: 'item_skin_gold',    rarity: 'EPIC',     asset: 'jojo_pixel', tint: 0xffd700   },
 
     // --- BACKGROUNDS (Main Menu) ---
-    { id: 'bg_night',   category: 'background', nameKey: 'item_bg_night',     rarity: 'COMMON',    asset: 'bg_night',   bgColor: 0x1a1a5e },
-    { id: 'bg_castle',  category: 'background', nameKey: 'item_bg_castle',    rarity: 'RARE',      asset: 'bg_castle',  bgColor: 0x2a0055 },
-    { id: 'bg_galaxy',  category: 'background', nameKey: 'item_bg_galaxy',    rarity: 'LEGENDARY', asset: 'bg_galaxy',  bgColor: 0x000022 },
+    { id: 'bg_night',    category: 'background', nameKey: 'item_bg_night',    rarity: 'COMMON',    asset: 'bg_night',              bgColor: 0x1a1a5e },
+    { id: 'bg_castle',  category: 'background', nameKey: 'item_bg_castle',   rarity: 'RARE',      asset: 'bg_castle',             bgColor: 0x2a0055 },
+    { id: 'bg_galaxy',  category: 'background', nameKey: 'item_bg_galaxy',   rarity: 'LEGENDARY', asset: 'bg_galaxy',             bgColor: 0x000022 },
+    { id: 'bg_spelling', category: 'background', nameKey: 'item_bg_spelling', rarity: 'EPIC',     asset: 'jojopixelart_spelling', bgColor: 0x8b5a2b },
 
     // --- MATH ITEMS (Left Arm) ---
     { id: 'item_L_shield', category: 'item_left',  nameKey: 'item_shield',      rarity: 'COMMON',   asset: 'shield_wood', emoji: '🛡️' },

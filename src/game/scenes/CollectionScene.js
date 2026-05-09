@@ -257,7 +257,18 @@ export class CollectionScene extends Scene {
         const W = 80, H = 50;
         const g = this.add.graphics();
 
-        if (id === 'bg_castle') {
+        if (id === 'bg_spelling') {
+            if (this.textures.exists('jojopixelart_spelling')) {
+                const mask = this.add.graphics();
+                mask.fillRect(cx - W / 2, cy - H / 2, W, H);
+                const img = this.add.image(cx, cy, 'jojopixelart_spelling')
+                    .setDisplaySize(W, H)
+                    .setMask(mask.createGeometryMask());
+                g.lineStyle(1, 0x888888, 0.8);
+                g.strokeRect(cx - W / 2, cy - H / 2, W, H);
+            }
+            return;
+        } else if (id === 'bg_castle') {
             // Deep purple sky
             g.fillStyle(0x100028, 1); g.fillRect(cx - W/2, cy - H/2, W, H);
             // Moon

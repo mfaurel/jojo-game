@@ -16,6 +16,8 @@ export class MainMenu extends Scene {
             this._drawCastleBg();
         } else if (equip.background === 'bg_galaxy') {
             this._drawGalaxyBg();
+        } else if (equip.background === 'bg_spelling') {
+            this._drawSpellingBg();
         } else {
             this._drawNightBg();
         }
@@ -74,6 +76,13 @@ export class MainMenu extends Scene {
     }
 
     // ── Background themes ─────────────────────────────────────────────────────
+
+    _drawSpellingBg() {
+        const { width, height } = this.cameras.main;
+        this.cameras.main.setBackgroundColor(0x8b5a2b);
+        this.add.image(width / 2, height / 2, 'jojopixelart_spelling')
+            .setDisplaySize(width, height);
+    }
 
     _drawNightBg() {
         const { width, height } = this.cameras.main;
