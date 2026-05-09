@@ -17,7 +17,7 @@ export class MathProblemScene extends Scene {
 
         if (this.operation === 'sub') {
             this.num1   = Math.floor(Math.random() * numMax) + 1;
-            this.num2   = Math.floor(Math.random() * (this.num1 + 1));
+            this.num2   = Math.floor(Math.random() * this.num1) + 1;
             this.answer = this.num1 - this.num2;
         } else {
             this.num1   = Math.floor(Math.random() * numMax) + 1;
