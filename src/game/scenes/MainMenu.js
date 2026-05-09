@@ -106,97 +106,83 @@ export class MainMenu extends Scene {
         const { width, height } = this.cameras.main;
         this.cameras.main.setBackgroundColor(0x100028);
 
-        // Stars (only upper sky)
+        // Static stars — no twinkling
         for (let i = 0; i < 35; i++) {
             const x = Math.random() * width;
             const y = Math.random() * height * 0.65;
             const r = 0.4 + Math.random() * 1.1;
-            const star = this.add.circle(x, y, r, 0xffffff, 0.4 + Math.random() * 0.5);
-            this.tweens.add({
-                targets: star,
-                alpha: 0.05 + Math.random() * 0.2,
-                duration: 1200 + Math.random() * 2500,
-                yoyo: true, repeat: -1,
-                delay: Math.random() * 1500,
-            });
+            this.add.circle(x, y, r, 0xffffff, 0.4 + Math.random() * 0.5);
         }
 
+        // Moon on its own Graphics object so we can tween it independently.
+        // All coordinates are relative to the object's origin (centre of moon).
+        const moonGfx = this.add.graphics();
+        moonGfx.fillStyle(0xfff8c0, 0.06); moonGfx.fillCircle(0, 0, 110);
+        moonGfx.fillStyle(0xfff8c0, 0.08); moonGfx.fillCircle(0, 0, 80);
+        moonGfx.fillStyle(0xffeebb, 1);    moonGfx.fillCircle(0, 0, 52);
+        moonGfx.fillStyle(0xddbb88, 0.45); moonGfx.fillCircle(-16, -14, 9);
+        moonGfx.fillStyle(0xddbb88, 0.35); moonGfx.fillCircle( 20,  14, 6);
+        moonGfx.fillStyle(0xddbb88, 0.30); moonGfx.fillCircle(  4,  -2, 4);
+        // Moonbeam column travels with the moon
+        moonGfx.fillStyle(0xffeebb, 0.03); moonGfx.fillRect(-38, 0, 76, height);
+
+        moonGfx.x = width * 0.82;
+        moonGfx.y = 120;
+
+        // Slow drift across the sky — 60 s one way, back, repeat
+        this.tweens.add({
+            targets:  moonGfx,
+            x:        width * 0.18,
+            duration: 60000,
+            ease:     'Sine.InOut',
+            yoyo:     true,
+            repeat:   -1,
+        });
+
+        // Castle silhouette + windows (static, drawn after moon so it occludes it)
         const g = this.add.graphics();
-
-        // Moon glow halos
-        g.fillStyle(0xfff8c0, 0.06); g.fillCircle(width * 0.82, 120, 110);
-        g.fillStyle(0xfff8c0, 0.08); g.fillCircle(width * 0.82, 120, 80);
-        // Moon disk
-        g.fillStyle(0xffeebb, 1);    g.fillCircle(width * 0.82, 120, 52);
-        // Craters
-        g.fillStyle(0xddbb88, 0.45); g.fillCircle(width * 0.82 - 16, 106, 9);
-        g.fillStyle(0xddbb88, 0.35); g.fillCircle(width * 0.82 + 20, 134, 6);
-        g.fillStyle(0xddbb88, 0.30); g.fillCircle(width * 0.82 + 4, 118, 4);
-        // Moonbeam column
-        g.fillStyle(0xffeebb, 0.03); g.fillRect(width * 0.82 - 38, 120, 76, height);
-
-        // Castle silhouette
         g.fillStyle(0x080018, 1);
 
-        // Ground base
         g.fillRect(0, height - 100, width, 100);
-        // Wall
         g.fillRect(0, height - 185, width, 88);
-        // Wall battlements
         for (let i = 0; i < Math.ceil(width / 46); i++) {
             if (i % 2 === 0) g.fillRect(i * 46, height - 212, 28, 28);
         }
 
-        // Left tower
         g.fillRect(40, height - 390, 110, 250);
         for (let i = 0; i < 4; i++) {
             if (i % 2 === 0) g.fillRect(40 + i * 30, height - 412, 22, 24);
         }
 
-        // Centre tower (tallest)
         g.fillRect(width / 2 - 72, height - 460, 144, 320);
         for (let i = 0; i < 5; i++) {
             if (i % 2 === 0) g.fillRect(width / 2 - 72 + i * 32, height - 484, 24, 26);
         }
 
-        // Right tower
         g.fillRect(width - 150, height - 370, 110, 230);
         for (let i = 0; i < 4; i++) {
             if (i % 2 === 0) g.fillRect(width - 150 + i * 30, height - 392, 22, 24);
         }
 
-        // Glowing windows (drawn on top)
         const winColor = 0xff9900;
         g.fillStyle(winColor, 0.55); g.fillRect(82, height - 348, 26, 36); g.fillCircle(95, height - 348, 13);
         g.fillStyle(winColor, 0.5);  g.fillRect(width / 2 - 17, height - 418, 34, 48); g.fillCircle(width / 2, height - 418, 17);
         g.fillStyle(winColor, 0.55); g.fillRect(width - 112, height - 326, 26, 36); g.fillCircle(width - 99, height - 326, 13);
 
-        // Torch flames (animated)
+        // Static torch flames — no animation
         const torchPositions = [
-            { x: 160,          y: height - 205 },
-            { x: width / 2,    y: height - 220 },
-            { x: width - 160,  y: height - 205 },
+            { x: 160,         y: height - 205 },
+            { x: width / 2,   y: height - 220 },
+            { x: width - 160, y: height - 205 },
         ];
         torchPositions.forEach(pos => {
             const tg = this.add.graphics();
             tg.fillStyle(0x553311, 1);
             tg.fillRect(pos.x - 3, pos.y + 2, 6, 16);
-
-            const flame = this.add.graphics();
-            flame.fillStyle(0xff7700, 0.95);
-            flame.fillEllipse(pos.x, pos.y - 6, 13, 22);
-            flame.fillStyle(0xffdd00, 0.85);
-            flame.fillEllipse(pos.x, pos.y - 8, 7, 14);
-
-            this.tweens.add({
-                targets: flame,
-                scaleX: { from: 0.75, to: 1.2 },
-                scaleY: { from: 0.9, to: 1.15 },
-                x: { from: pos.x - 2, to: pos.x + 2 },
-                duration: 110 + Math.random() * 90,
-                yoyo: true, repeat: -1,
-                ease: 'Sine.InOut',
-            });
+            tg.fillStyle(0xff7700, 0.95);
+            tg.fillEllipse(pos.x, pos.y - 6, 13, 22);
+            tg.fillStyle(0xffdd00, 0.85);
+            tg.fillEllipse(pos.x, pos.y - 8, 7, 14);
         });
     }
 
