@@ -73,7 +73,7 @@ export class RewardPopup extends Scene {
             blendMode: 'ADD',
             lifespan: 1000,
             quantity: 40,
-        }).explode().setDepth(103);
+        }).setDepth(103).explode();
     }
 
     _buildItemImage(cx, cy) {

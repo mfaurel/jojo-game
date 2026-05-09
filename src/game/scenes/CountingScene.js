@@ -76,14 +76,17 @@ export class CountingScene extends Scene {
     }
 
     _generateRound() {
-        const level   = this._level;
-        const pool    = this._shuffle([...level.pool]);
-        const types   = pool.slice(0, level.types);
-        const counts  = types.map(wordKey => ({
-            wordKey,
-            count: 1 + Math.floor(Math.random() * level.maxCount),
-        }));
-        const quiz = counts[Math.floor(Math.random() * counts.length)];
+        const level = this._level;
+        const pool  = this._shuffle([...level.pool]);
+        const types = pool.slice(0, level.types);
+
+        // Pick `types.length` distinct counts in [1, maxCount]
+        const allCounts = [];
+        for (let n = 1; n <= level.maxCount; n++) allCounts.push(n);
+        const pickedCounts = this._shuffle(allCounts).slice(0, level.types);
+
+        const counts = types.map((wordKey, i) => ({ wordKey, count: pickedCounts[i] }));
+        const quiz   = counts[Math.floor(Math.random() * counts.length)];
         return { counts, quiz };
     }
 
