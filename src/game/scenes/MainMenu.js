@@ -68,6 +68,7 @@ export class MainMenu extends Scene {
         });
 
         this._createLangButton();
+        this._createFullscreenButton();
 
         this._initCheatCode();
     }
@@ -266,6 +267,29 @@ export class MainMenu extends Scene {
                 onComplete: () => dot.destroy(),
             });
         }
+    }
+
+    _createFullscreenButton() {
+        const icon = () => this.scale.isFullscreen ? '⊡' : '⛶';
+
+        const btn = this.add.text(64, 35, icon(), {
+            fontSize: '26px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#ffffff',
+            backgroundColor: '#334455',
+            padding: { x: 12, y: 6 },
+        }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+
+        btn.on('pointerover', () => btn.setStyle({ color: '#ffd700' }));
+        btn.on('pointerout',  () => btn.setStyle({ color: '#ffffff' }));
+        btn.on('pointerup',   () => {
+            if (this.scale.isFullscreen) {
+                this.scale.stopFullscreen();
+            } else {
+                this.scale.startFullscreen();
+            }
+            this.time.delayedCall(150, () => btn.setText(icon()));
+        });
     }
 
     _createLangButton() {

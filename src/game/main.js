@@ -21,7 +21,8 @@ const config = {
     backgroundColor: '#1a1a5e',
     scale: {
         mode: Scale.FIT,
-        autoCenter: Scale.CENTER_BOTH
+        autoCenter: Scale.CENTER_BOTH,
+        fullscreenTarget: 'game-container',
     },
     scene: [
         Boot,

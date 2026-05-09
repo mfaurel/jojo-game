@@ -13,3 +13,9 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+#game-container:fullscreen,
+#game-container:-webkit-full-screen {
+    width: 100% !important;
+    height: 100% !important;
+}
