@@ -26,7 +26,7 @@ export class MathDungeon extends Scene {
 
         this._drawEnvironment(width, height);
 
-        this.lines = this.add.graphics();
+        this.lines = this.add.graphics().setScrollFactor(0);
 
         this._createWorldParticles(width, height);
 
@@ -45,15 +45,15 @@ export class MathDungeon extends Scene {
         const vanishingY = h * 0.5;
         const wc = this.worldConfig;
 
-        const ceiling = this.add.graphics();
+        const ceiling = this.add.graphics().setScrollFactor(0);
         ceiling.fillGradientStyle(wc.skyTop, wc.skyTop, wc.skyBottom, wc.skyBottom, 1);
         ceiling.fillRect(0, 0, w, vanishingY);
 
-        const floor = this.add.graphics();
+        const floor = this.add.graphics().setScrollFactor(0);
         floor.fillGradientStyle(wc.floorTop, wc.floorTop, wc.floorBottom, wc.floorBottom, 1);
         floor.fillRect(0, vanishingY, w, h - vanishingY);
 
-        const fog = this.add.graphics();
+        const fog = this.add.graphics().setScrollFactor(0);
         const fc = wc.fogColor;
         fog.fillGradientStyle(fc, fc, fc, fc, 0, 0, 0.8, 0.8);
         fog.fillCircle(w / 2, vanishingY, 150);
@@ -75,7 +75,7 @@ export class MathDungeon extends Scene {
                 frequency: 100,
                 blendMode: 'ADD'
             });
-            snow.setDepth(5);
+            snow.setDepth(5).setScrollFactor(0);
         } else if (type === 'candy') {
             const candy = this.add.particles(0, 0, 'particle', {
                 x: { min: 0, max: w },
@@ -88,7 +88,7 @@ export class MathDungeon extends Scene {
                 frequency: 70,
                 blendMode: 'ADD'
             });
-            candy.setDepth(5);
+            candy.setDepth(5).setScrollFactor(0);
         } else if (type === 'petal') {
             const petal = this.add.particles(0, 0, 'particle', {
                 x: { min: 0, max: w },
@@ -101,7 +101,7 @@ export class MathDungeon extends Scene {
                 frequency: 130,
                 blendMode: 'ADD'
             });
-            petal.setDepth(5);
+            petal.setDepth(5).setScrollFactor(0);
         } else if (type === 'ember') {
             const ember = this.add.particles(0, 0, 'particle', {
                 x: { min: 0, max: w },
@@ -114,7 +114,7 @@ export class MathDungeon extends Scene {
                 frequency: 55,
                 blendMode: 'ADD'
             });
-            ember.setDepth(5);
+            ember.setDepth(5).setScrollFactor(0);
         } else if (type === 'bubble') {
             const bubble = this.add.particles(0, h + 10, 'particle', {
                 x: { min: 0, max: w },
@@ -126,7 +126,7 @@ export class MathDungeon extends Scene {
                 frequency: 100,
                 blendMode: 'ADD'
             });
-            bubble.setDepth(5);
+            bubble.setDepth(5).setScrollFactor(0);
         } else if (type === 'spark') {
             const spark = this.add.particles(0, 0, 'particle', {
                 x: { min: 0, max: w },
@@ -139,19 +139,19 @@ export class MathDungeon extends Scene {
                 frequency: 45,
                 blendMode: 'ADD'
             });
-            spark.setDepth(5);
+            spark.setDepth(5).setScrollFactor(0);
         }
     }
 
     _createUI(w, h) {
         // Score HUD background
-        this.add.rectangle(135, 42, 250, 58, 0x000000, 0.5).setDepth(199);
+        this.add.rectangle(135, 42, 250, 58, 0x000000, 0.5).setDepth(199).setScrollFactor(0);
 
         this.add.text(18, 16, t('pointsLabel'), {
             fontSize: '15px',
             color: '#aaccff',
             fontFamily: 'Arial Black',
-        }).setDepth(200);
+        }).setDepth(200).setScrollFactor(0);
 
         this.scoreText = this.add.text(18, 34, `0 / ${this.worldConfig.pointsNeeded}`, {
             fontSize: '22px',
@@ -159,13 +159,13 @@ export class MathDungeon extends Scene {
             color: '#ffd700',
             stroke: '#000',
             strokeThickness: 3,
-        }).setDepth(200);
+        }).setDepth(200).setScrollFactor(0);
 
         // Progress bar track
-        this.add.rectangle(135, 73, 222, 12, 0x333333).setDepth(200);
+        this.add.rectangle(135, 73, 222, 12, 0x333333).setDepth(200).setScrollFactor(0);
         // Progress bar fill (origin 0, 0.5 so it grows from the left)
         this.progressBar = this.add.rectangle(24, 73, 0, 12, 0x00ff88)
-            .setOrigin(0, 0.5).setDepth(201);
+            .setOrigin(0, 0.5).setDepth(201).setScrollFactor(0);
 
         // World name badge top-centre
         this.add.text(w / 2, 12, t(this.worldConfig.nameKey), {
@@ -174,14 +174,14 @@ export class MathDungeon extends Scene {
             color: '#ffffff',
             stroke: '#000',
             strokeThickness: 3,
-        }).setOrigin(0.5, 0).setDepth(200);
+        }).setOrigin(0.5, 0).setDepth(200).setScrollFactor(0);
 
         const backBtn = this.add.text(w * 0.95, h * 0.05, 'Menu', {
             fontSize: 'clamp(18px, 3.5vw, 24px)',
             color: '#ffffff',
             backgroundColor: '#004488',
             padding: { x: 15, y: 8 }
-        }).setOrigin(1, 0).setInteractive({ useHandCursor: true }).setDepth(200);
+        }).setOrigin(1, 0).setInteractive({ useHandCursor: true }).setDepth(200).setScrollFactor(0);
 
         backBtn.on('pointerup', () => this.scene.start('MathWorldSelectScene'));
     }
@@ -250,10 +250,10 @@ export class MathDungeon extends Scene {
             blendMode: 'ADD',
             frequency: 20,
             follow: null
-        });
+        }).setScrollFactor(0);
 
         // Left arm — shield if equipped, teddy bear by default
-        this.teddyArm = this.add.container(w * 0.2, h * 0.85);
+        this.teddyArm = this.add.container(w * 0.2, h * 0.85).setScrollFactor(0);
         const leftG = this.add.graphics();
         if (equip.item_left === 'item_L_shield') {
             this._drawShield(leftG);
@@ -266,7 +266,7 @@ export class MathDungeon extends Scene {
         this.teddyArm.setDepth(150);
 
         // Right arm — sword if equipped, wand by default
-        this.wandArm = this.add.container(w * 0.8, h * 0.85);
+        this.wandArm = this.add.container(w * 0.8, h * 0.85).setScrollFactor(0);
         const rightG = this.add.graphics();
         const showWand = !equip.item_right || equip.item_right === 'item_R_wand';
         if (equip.item_right === 'item_R_sword') {
@@ -490,7 +490,7 @@ export class MathDungeon extends Scene {
         const monsters = this.worldConfig.monsters;
         const name = monsters[Math.floor(Math.random() * monsters.length)];
 
-        const container = this.add.container(width / 2, height / 2).setScale(0.01);
+        const container = this.add.container(width / 2, height / 2).setScale(0.01).setScrollFactor(0);
 
         const shadow = this.add.ellipse(0, 80, 120, 40, 0x000000, 0.2);
         container.add(shadow);
@@ -1001,7 +1001,7 @@ export class MathDungeon extends Scene {
             lifespan: 1000,
             quantity: 30,
             blendMode: 'ADD'
-        }).explode();
+        }).setScrollFactor(0).explode();
 
         this.tweens.add({
             targets: container,
@@ -1017,7 +1017,7 @@ export class MathDungeon extends Scene {
 
     _spawnChest() {
         const { width, height } = this.cameras.main;
-        const container = this.add.container(width / 2, height / 2).setScale(0.01);
+        const container = this.add.container(width / 2, height / 2).setScale(0.01).setScrollFactor(0);
 
         const aura = this.add.circle(0, 0, 100, 0xffd700, 0.2);
         this.tweens.add({ targets: aura, scale: 1.5, alpha: 0, duration: 1500, repeat: -1 });
@@ -1080,7 +1080,7 @@ export class MathDungeon extends Scene {
         const y = height * 0.1 + Math.random() * (height * 0.3);
         const star = this.add.text(x, y, '✨', {
             fontSize: `${Math.floor(Math.random() * 20 + 20)}px`
-        }).setDepth(2).setAlpha(0);
+        }).setDepth(2).setAlpha(0).setScrollFactor(0);
 
         this.tweens.add({
             targets: star,
