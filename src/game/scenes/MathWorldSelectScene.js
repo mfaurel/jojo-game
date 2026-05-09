@@ -54,80 +54,116 @@ export class MathWorldSelectScene extends Scene {
     }
 
     _buildWorldCards() {
-        const progress = getMathProgress();
-        const cardW = 200;
-        const cardH = 170;
-        const gap = 40;
-        const totalW = MATH_WORLDS.length * cardW + (MATH_WORLDS.length - 1) * gap;
-        const startX = (1024 - totalW) / 2;
-        const cy = 450;
+        const progress  = getMathProgress();
+        const cardW     = 200;
+        const cardH     = 155;
+        const gap       = 40;
+        const totalW    = 3 * cardW + 2 * gap;   // 680
+        const startX    = (1024 - totalW) / 2;    // 172
 
-        MATH_WORLDS.forEach((world, i) => {
+        const addWorlds = MATH_WORLDS.filter(w => (w.operation ?? 'add') === 'add');
+        const subWorlds = MATH_WORLDS.filter(w => w.operation === 'sub');
+
+        // ── Section header: Addition ─────────────────────────────────────────
+        this.add.text(512, 162, t('additionSection'), {
+            fontSize: '20px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#aaddff',
+            stroke: '#000',
+            strokeThickness: 3,
+        }).setOrigin(0.5);
+
+        addWorlds.forEach((world, i) => {
             const cx = startX + i * (cardW + gap) + cardW / 2;
-            const done = !!progress[world.id];
-            const unlocked = getMathUnlocked(world.id);
-
-            const bgColor = unlocked ? world.btnColor : 0x444444;
-            const bg = this.add.rectangle(cx, cy, cardW, cardH, bgColor, 1)
-                .setDepth(10);
-            if (unlocked) bg.setInteractive({ useHandCursor: true });
-
-            if (done) {
-                const border = this.add.rectangle(cx, cy, cardW + 6, cardH + 6, 0xffd700, 1)
-                    .setDepth(9);
-                this.tweens.add({
-                    targets: border,
-                    alpha: 0.4,
-                    duration: 900,
-                    yoyo: true,
-                    repeat: -1,
-                    ease: 'Sine.InOut',
-                });
-            }
-
-            this.add.text(cx, cy - 52, world.emoji, { fontSize: '40px' })
-                .setOrigin(0.5).setDepth(11);
-
-            this.add.text(cx, cy + 4, t(world.nameKey), {
-                fontSize: '15px',
-                fontFamily: 'Arial Black, Arial, sans-serif',
-                color: '#ffffff',
-                stroke: '#000',
-                strokeThickness: 3,
-            }).setOrigin(0.5).setDepth(11);
-
-            this.add.text(cx, cy + 28, t('worldLabel', i + 1), {
-                fontSize: '12px',
-                color: '#aaccff',
-            }).setOrigin(0.5).setDepth(11);
-
-            this.add.text(cx, cy + 50, `1–${world.numMax} + 1–${world.numMax}`, {
-                fontSize: '12px',
-                color: '#ffddaa',
-            }).setOrigin(0.5).setDepth(11);
-
-            if (done) {
-                this.add.text(cx + cardW / 2 - 14, cy - cardH / 2 + 10, '★', {
-                    fontSize: '18px',
-                    color: '#ffd700',
-                }).setOrigin(0.5).setDepth(12);
-            }
-
-            if (!unlocked) {
-                this.add.rectangle(cx, cy, cardW, cardH, 0x000000, 0.5).setDepth(13);
-                this.add.text(cx, cy - 18, '🔒', { fontSize: '36px' })
-                    .setOrigin(0.5).setDepth(14);
-                this.add.text(cx, cy + 35, t('completePrevWorld'), {
-                    fontSize: '11px',
-                    color: '#ffaaaa',
-                    align: 'center',
-                }).setOrigin(0.5).setDepth(14);
-            } else {
-                bg.on('pointerover', () => bg.setFillStyle(world.btnColor + 0x101010, 1));
-                bg.on('pointerout',  () => bg.setFillStyle(world.btnColor, 1));
-                bg.on('pointerup',   () => this._startWorld(i));
-            }
+            this._buildCard(world, cx, 278, cardW, cardH, progress);
         });
+
+        // ── Divider ──────────────────────────────────────────────────────────
+        const div = this.add.graphics();
+        div.lineStyle(1, 0x445566, 0.6);
+        div.lineBetween(80, 375, 944, 375);
+
+        // ── Section header: Soustraction ─────────────────────────────────────
+        this.add.text(512, 390, t('subtractionSection'), {
+            fontSize: '20px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#ffddaa',
+            stroke: '#000',
+            strokeThickness: 3,
+        }).setOrigin(0.5);
+
+        subWorlds.forEach((world, i) => {
+            const cx = startX + i * (cardW + gap) + cardW / 2;
+            this._buildCard(world, cx, 510, cardW, cardH, progress);
+        });
+    }
+
+    _buildCard(world, cx, cy, cardW, cardH, progress) {
+        const done      = !!progress[world.id];
+        const unlocked  = getMathUnlocked(world.id);
+        const bgColor   = unlocked ? world.btnColor : 0x444444;
+
+        if (done) {
+            const border = this.add.rectangle(cx, cy, cardW + 6, cardH + 6, 0xffd700, 1)
+                .setDepth(9);
+            this.tweens.add({
+                targets: border,
+                alpha: 0.4,
+                duration: 900,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.InOut',
+            });
+        }
+
+        const bg = this.add.rectangle(cx, cy, cardW, cardH, bgColor, 1).setDepth(10);
+        if (unlocked) bg.setInteractive({ useHandCursor: true });
+
+        this.add.text(cx, cy - 44, world.emoji, { fontSize: '38px' })
+            .setOrigin(0.5).setDepth(11);
+
+        this.add.text(cx, cy + 6, t(world.nameKey), {
+            fontSize: '14px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#ffffff',
+            stroke: '#000',
+            strokeThickness: 3,
+        }).setOrigin(0.5).setDepth(11);
+
+        this.add.text(cx, cy + 26, t('worldLabel', world.id + 1), {
+            fontSize: '12px',
+            color: '#aaccff',
+        }).setOrigin(0.5).setDepth(11);
+
+        const formula = world.operation === 'sub'
+            ? `1–${world.numMax} − 0–${world.numMax}`
+            : `1–${world.numMax} + 1–${world.numMax}`;
+        this.add.text(cx, cy + 46, formula, {
+            fontSize: '11px',
+            color: '#ffddaa',
+        }).setOrigin(0.5).setDepth(11);
+
+        if (done) {
+            this.add.text(cx + cardW / 2 - 14, cy - cardH / 2 + 10, '★', {
+                fontSize: '18px',
+                color: '#ffd700',
+            }).setOrigin(0.5).setDepth(12);
+        }
+
+        if (!unlocked) {
+            this.add.rectangle(cx, cy, cardW, cardH, 0x000000, 0.5).setDepth(13);
+            this.add.text(cx, cy - 18, '🔒', { fontSize: '36px' })
+                .setOrigin(0.5).setDepth(14);
+            this.add.text(cx, cy + 32, t('completePrevWorld'), {
+                fontSize: '11px',
+                color: '#ffaaaa',
+                align: 'center',
+            }).setOrigin(0.5).setDepth(14);
+        } else {
+            bg.on('pointerover', () => bg.setFillStyle(world.btnColor + 0x101010, 1));
+            bg.on('pointerout',  () => bg.setFillStyle(world.btnColor, 1));
+            bg.on('pointerup',   () => this._startWorld(world.id));
+        }
     }
 
     _startWorld(worldIndex) {

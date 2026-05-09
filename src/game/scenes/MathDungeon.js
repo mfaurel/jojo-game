@@ -89,8 +89,7 @@ export class MathDungeon extends Scene {
                 blendMode: 'ADD'
             });
             candy.setDepth(5);
-        } else {
-            // petal
+        } else if (type === 'petal') {
             const petal = this.add.particles(0, 0, 'particle', {
                 x: { min: 0, max: w },
                 y: -10,
@@ -103,6 +102,44 @@ export class MathDungeon extends Scene {
                 blendMode: 'ADD'
             });
             petal.setDepth(5);
+        } else if (type === 'ember') {
+            const ember = this.add.particles(0, 0, 'particle', {
+                x: { min: 0, max: w },
+                y: -10,
+                lifespan: 3000,
+                speedY: { min: 80, max: 200 },
+                speedX: { min: -50, max: 50 },
+                scale: { start: 0.18, end: 0.04 },
+                alpha: { start: 1, end: 0 },
+                frequency: 55,
+                blendMode: 'ADD'
+            });
+            ember.setDepth(5);
+        } else if (type === 'bubble') {
+            const bubble = this.add.particles(0, h + 10, 'particle', {
+                x: { min: 0, max: w },
+                lifespan: 5000,
+                speedY: { min: -100, max: -30 },
+                speedX: { min: -15, max: 15 },
+                scale: { start: 0.05, end: 0.2 },
+                alpha: { start: 0.6, end: 0 },
+                frequency: 100,
+                blendMode: 'ADD'
+            });
+            bubble.setDepth(5);
+        } else if (type === 'spark') {
+            const spark = this.add.particles(0, 0, 'particle', {
+                x: { min: 0, max: w },
+                y: { min: 0, max: h },
+                lifespan: 2500,
+                speedY: { min: -40, max: 40 },
+                speedX: { min: -40, max: 40 },
+                scale: { start: 0.1, end: 0 },
+                alpha: { start: 0.9, end: 0 },
+                frequency: 45,
+                blendMode: 'ADD'
+            });
+            spark.setDepth(5);
         }
     }
 
@@ -479,7 +516,8 @@ export class MathDungeon extends Scene {
             onComplete: () => {
                 this.scene.pause();
                 this.scene.launch('MathProblemScene', {
-                    numMax: this.worldConfig.numMax,
+                    numMax:    this.worldConfig.numMax,
+                    operation: this.worldConfig.operation ?? 'add',
                     monsterName: name,
                     onSuccess: () => {
                         const newScore = this.score + 200;
@@ -693,6 +731,265 @@ export class MathDungeon extends Scene {
             g.lineStyle(3, 0x1a1a1a, 1);
             g.lineBetween(-8, -94, -20, -122);
             g.lineBetween(8, -94, 20, -122);
+        } else if (name === 'monster_dragon') {
+            // Wings
+            g.fillStyle(0x440000, 1);
+            g.fillTriangle(-20, -20, -130, -100, -80, 60);
+            g.fillTriangle(20, -20, 130, -100, 80, 60);
+            // Body
+            g.fillStyle(0x660000, 1);
+            g.fillEllipse(0, 40, 120, 140);
+            g.fillStyle(0x880000, 1);
+            g.fillEllipse(-8, 30, 95, 115);
+            // Neck
+            g.fillStyle(0x770000, 1);
+            g.fillRect(-16, -80, 32, 70);
+            // Head
+            g.fillStyle(0x990000, 1);
+            g.fillEllipse(0, -100, 60, 48);
+            // Snout
+            g.fillStyle(0x660000, 1);
+            g.fillRect(0, -108, 42, 18);
+            // Fire breath
+            g.fillStyle(0xff6600, 0.9);
+            g.fillTriangle(42, -104, 60, -114, 105, -96);
+            g.fillTriangle(42, -100, 58, -90, 108, -108);
+            g.fillStyle(0xffcc00, 0.8);
+            g.fillTriangle(48, -102, 62, -100, 96, -100);
+            // Eye
+            g.fillStyle(0xffff00, 1);
+            g.fillCircle(-12, -100, 8);
+            g.fillStyle(0x000000, 1);
+            g.fillCircle(-12, -100, 4);
+        } else if (name === 'monster_lava_golem') {
+            // Stone body
+            g.fillStyle(0x2d1a1a, 1);
+            g.fillRect(-70, -100, 140, 200);
+            g.fillStyle(0x4a2010, 1);
+            g.fillRect(-60, -90, 120, 180);
+            // Glowing cracks
+            g.lineStyle(4, 0xff6600, 0.9);
+            g.lineBetween(-30, -60, 10, -20);
+            g.lineBetween(-10, -20, -35, 25);
+            g.lineBetween(-35, 25, 20, 65);
+            g.lineBetween(-50, 35, -5, 70);
+            g.lineStyle(2, 0xffaa00, 0.6);
+            g.lineBetween(-22, -52, 6, -14);
+            g.lineBetween(-4, -14, -26, 20);
+            // Eye slots
+            g.fillStyle(0xff4400, 1);
+            g.fillRect(-35, -72, 22, 18);
+            g.fillRect(13, -72, 22, 18);
+            g.fillStyle(0xffaa00, 0.7);
+            g.fillRect(-29, -68, 12, 10);
+            g.fillRect(17, -68, 12, 10);
+        } else if (name === 'monster_phoenix') {
+            // Tail feathers
+            g.fillStyle(0xff2200, 1);
+            g.fillTriangle(-18, 68, 2, 28, 22, 78);
+            g.fillStyle(0xff6600, 1);
+            g.fillTriangle(-28, 72, -4, 38, 6, 82);
+            g.fillStyle(0xffaa00, 1);
+            g.fillTriangle(12, 70, 22, 38, 36, 75);
+            // Wings
+            g.fillStyle(0xcc2200, 1);
+            g.fillTriangle(-15, -20, -115, -80, -90, 55);
+            g.fillTriangle(15, -20, 115, -80, 90, 55);
+            g.fillStyle(0xff6600, 1);
+            g.fillTriangle(-15, -20, -88, -58, -72, 40);
+            g.fillTriangle(15, -20, 88, -58, 72, 40);
+            // Body
+            g.fillStyle(0xdd4400, 1);
+            g.fillEllipse(0, 14, 78, 105);
+            g.fillStyle(0xff6600, 1);
+            g.fillEllipse(-6, 6, 58, 80);
+            // Head
+            g.fillStyle(0xff5500, 1);
+            g.fillCircle(0, -54, 34);
+            // Crest feathers
+            g.fillStyle(0xffcc00, 1);
+            g.fillTriangle(-6, -84, 0, -112, 6, -84);
+            g.fillTriangle(-16, -80, -8, -106, 0, -80);
+            g.fillTriangle(6, -80, 14, -106, 16, -80);
+            // Eye + beak
+            g.fillStyle(0xffee00, 1);
+            g.fillCircle(-11, -57, 7);
+            g.fillStyle(0x000000, 1);
+            g.fillCircle(-11, -57, 3);
+            g.fillStyle(0xffcc00, 1);
+            g.fillTriangle(6, -54, 26, -50, 6, -44);
+        } else if (name === 'monster_shark') {
+            // Body
+            g.fillStyle(0x5b7d8a, 1);
+            g.fillEllipse(0, 0, 180, 78);
+            g.fillStyle(0x7ab0c0, 1);
+            g.fillEllipse(-8, -6, 148, 58);
+            // Belly
+            g.fillStyle(0xddeeff, 1);
+            g.fillEllipse(5, 16, 115, 28);
+            // Dorsal fin
+            g.fillStyle(0x4a6a77, 1);
+            g.fillTriangle(-8, -38, 18, -38, 8, -110);
+            // Pectoral fins
+            g.fillTriangle(-50, 8, -92, 58, -18, 48);
+            g.fillTriangle(50, 8, 92, 48, 18, 48);
+            // Tail
+            g.fillTriangle(-80, -6, -115, -52, -115, 42);
+            // Eye
+            g.fillStyle(0x000000, 1);
+            g.fillCircle(52, -16, 8);
+            g.fillStyle(0xffffff, 1);
+            g.fillCircle(54, -18, 3);
+            // Teeth
+            g.fillStyle(0xffffff, 1);
+            for (let i = 0; i < 5; i++) {
+                g.fillTriangle(-18 + i * 12, 4, -10 + i * 12, 4, -14 + i * 12, 22);
+            }
+        } else if (name === 'monster_octopus') {
+            // Tentacles (behind head)
+            g.fillStyle(0x5533aa, 1);
+            g.fillRoundedRect(-58, 5, 22, 95, 11);
+            g.fillRoundedRect(-28, 10, 20, 100, 10);
+            g.fillRoundedRect(8, 10, 20, 100, 10);
+            g.fillRoundedRect(36, 5, 22, 95, 11);
+            // Suckers
+            g.fillStyle(0xaa88ff, 1);
+            for (let i = 0; i < 4; i++) {
+                g.fillCircle(-47, 22 + i * 20, 5);
+                g.fillCircle(-18, 28 + i * 20, 5);
+                g.fillCircle(18, 28 + i * 20, 5);
+                g.fillCircle(47, 22 + i * 20, 5);
+            }
+            // Head
+            g.fillStyle(0x5533aa, 1);
+            g.fillEllipse(0, -42, 125, 105);
+            g.fillStyle(0x7755cc, 1);
+            g.fillEllipse(-8, -48, 92, 78);
+            // Eyes
+            g.fillStyle(0xffeedd, 1);
+            g.fillCircle(-20, -52, 15);
+            g.fillCircle(20, -52, 15);
+            g.fillStyle(0x1a0044, 1);
+            g.fillCircle(-20, -52, 7);
+            g.fillCircle(20, -52, 7);
+            g.fillStyle(0xffffff, 1);
+            g.fillCircle(-22, -54, 3);
+            g.fillCircle(18, -54, 3);
+        } else if (name === 'monster_jellyfish') {
+            // Trailing tentacles
+            g.lineStyle(3, 0xaabbff, 0.5);
+            g.lineBetween(-42, 0, -62, 105);
+            g.lineBetween(-58, -8, -75, 92);
+            g.lineBetween(42, 0, 62, 105);
+            g.lineBetween(58, -8, 75, 92);
+            // Oral arms
+            g.lineStyle(8, 0x7788ee, 0.7);
+            g.lineBetween(-14, 2, -24, 82);
+            g.lineBetween(2, 2, 10, 86);
+            g.lineBetween(16, 2, 6, 78);
+            // Bell/dome
+            g.fillStyle(0x5588ff, 0.8);
+            g.fillEllipse(0, -42, 140, 100);
+            g.fillStyle(0x88aaff, 0.6);
+            g.fillEllipse(-5, -50, 100, 65);
+            // Bioluminescent spots
+            g.fillStyle(0xccddff, 0.85);
+            g.fillCircle(-25, -52, 7);
+            g.fillCircle(16, -56, 5);
+            g.fillCircle(32, -44, 6);
+            g.fillCircle(-8, -36, 4);
+        } else if (name === 'monster_alien') {
+            // Large head
+            g.fillStyle(0x44bb44, 1);
+            g.fillEllipse(0, -52, 114, 134);
+            g.fillStyle(0x66dd66, 1);
+            g.fillEllipse(-8, -60, 82, 100);
+            // Large eyes
+            g.fillStyle(0x0a0a1a, 1);
+            g.fillEllipse(-22, -58, 40, 28);
+            g.fillEllipse(22, -58, 40, 28);
+            g.fillStyle(0x3333ff, 0.5);
+            g.fillCircle(-22, -58, 12);
+            g.fillCircle(22, -58, 12);
+            // Mouth slit
+            g.lineStyle(3, 0x228822, 1);
+            g.lineBetween(-14, -22, 14, -22);
+            // Thin body
+            g.fillStyle(0x44bb44, 1);
+            g.fillRect(-20, 18, 40, 58);
+            // Arms
+            g.fillRect(-54, 22, 34, 12);
+            g.fillRect(20, 22, 34, 12);
+            // Antennae
+            g.lineStyle(3, 0x44bb44, 1);
+            g.lineBetween(-14, -112, -28, -148);
+            g.lineBetween(14, -112, 28, -148);
+            g.fillStyle(0x88ff88, 1);
+            g.fillCircle(-28, -148, 7);
+            g.fillCircle(28, -148, 7);
+        } else if (name === 'monster_robot') {
+            // Head
+            g.fillStyle(0x667788, 1);
+            g.fillRect(-38, -112, 76, 68);
+            g.fillStyle(0x001122, 1);
+            g.fillRect(-28, -102, 56, 32);
+            g.fillStyle(0x00ffff, 1);
+            g.fillRect(-20, -94, 16, 15);
+            g.fillRect(4, -94, 16, 15);
+            // Antenna
+            g.fillStyle(0x889999, 1);
+            g.fillRect(-3, -144, 6, 34);
+            g.fillCircle(0, -147, 7);
+            g.fillStyle(0xff4444, 1);
+            g.fillCircle(0, -147, 4);
+            // Body
+            g.fillStyle(0x556677, 1);
+            g.fillRect(-55, -44, 110, 118);
+            g.fillStyle(0x445566, 1);
+            g.fillRect(-38, -34, 76, 80);
+            // Buttons
+            g.fillStyle(0xff4444, 1); g.fillCircle(-18, -14, 6);
+            g.fillStyle(0x44ff44, 1); g.fillCircle(0, -14, 6);
+            g.fillStyle(0x4444ff, 1); g.fillCircle(18, -14, 6);
+            // Arms
+            g.fillStyle(0x667788, 1);
+            g.fillRect(-86, -40, 31, 80);
+            g.fillRect(55, -40, 31, 80);
+            g.fillCircle(-70, 46, 16);
+            g.fillCircle(70, 46, 16);
+            // Legs
+            g.fillStyle(0x556677, 1);
+            g.fillRect(-40, 74, 30, 50);
+            g.fillRect(10, 74, 30, 50);
+            g.fillRect(-48, 118, 46, 18);
+            g.fillRect(2, 118, 46, 18);
+        } else if (name === 'monster_ufo') {
+            // Light beam
+            g.fillStyle(0xffffaa, 0.14);
+            g.fillTriangle(-50, 22, 50, 22, 105, 210);
+            // Saucer body
+            g.fillStyle(0xaabbcc, 1);
+            g.fillEllipse(0, 12, 200, 60);
+            g.fillStyle(0xbbccdd, 1);
+            g.fillEllipse(-4, 6, 158, 44);
+            // Dome
+            g.fillStyle(0x4488cc, 0.75);
+            g.fillEllipse(0, -26, 82, 72);
+            g.fillStyle(0x66aaee, 0.5);
+            g.fillEllipse(-7, -32, 50, 46);
+            // Rim lights
+            const rimColors = [0xff4444, 0x44ff44, 0x4488ff, 0xffff44, 0xff44ff];
+            for (let i = 0; i < 5; i++) {
+                const a = (i / 5) * Math.PI * 2;
+                g.fillStyle(rimColors[i], 1);
+                g.fillCircle(Math.cos(a) * 75, Math.sin(a) * 20 + 12, 7);
+            }
+            // Alien silhouette inside dome
+            g.fillStyle(0x44bb44, 0.85);
+            g.fillCircle(0, -26, 18);
+            g.fillStyle(0x0a0a1a, 1);
+            g.fillEllipse(-7, -28, 14, 9);
+            g.fillEllipse(7, -28, 14, 9);
         }
     }
 
@@ -747,8 +1044,9 @@ export class MathDungeon extends Scene {
             onComplete: () => {
                 this.scene.pause();
                 this.scene.launch('MathProblemScene', {
-                    isChest: true,
-                    numMax: this.worldConfig.numMax,
+                    isChest:   true,
+                    numMax:    this.worldConfig.numMax,
+                    operation: this.worldConfig.operation ?? 'add',
                     onSuccess: () => {
                         const newScore = this.score + 200;
                         this._updateScoreHUD(newScore);

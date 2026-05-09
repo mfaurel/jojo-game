@@ -37,6 +37,13 @@ const STRINGS = {
         world_toundra:    'La Toundra',
         world_sucre:      'Le Pays Sucré',
         world_prairie:    'La Prairie',
+        world_volcan:     'Le Volcan',
+        world_ocean:      "L'Océan",
+        world_espace:     "L'Espace",
+
+        // ── Section labels ───────────────────────────────────────────────────
+        additionSection:     'Addition ➕',
+        subtractionSection:  'Soustraction ➖',
 
         // ── Monster names ────────────────────────────────────────────────────
         monster_snowman:     'Bonhomme de Neige',
@@ -48,6 +55,15 @@ const STRINGS = {
         monster_bee:         'Abeille',
         monster_butterfly:   'Papillon',
         monster_ladybug:     'Coccinelle',
+        monster_dragon:      'Dragon',
+        monster_lava_golem:  'Golem de Lave',
+        monster_phoenix:     'Phénix',
+        monster_shark:       'Requin',
+        monster_octopus:     'Pieuvre',
+        monster_jellyfish:   'Méduse',
+        monster_alien:       'Alien',
+        monster_robot:       'Robot',
+        monster_ufo:         'OVNI',
 
         // ── Rarity labels ────────────────────────────────────────────────────
         rarity_common:    'Commun',
@@ -146,6 +162,12 @@ const STRINGS = {
         world_toundra:    'The Tundra',
         world_sucre:      'Candy Land',
         world_prairie:    'The Meadow',
+        world_volcan:     'The Volcano',
+        world_ocean:      'The Ocean',
+        world_espace:     'Space',
+
+        additionSection:     'Addition ➕',
+        subtractionSection:  'Subtraction ➖',
 
         monster_snowman:     'Snowman',
         monster_ice_golem:   'Ice Golem',
@@ -156,6 +178,15 @@ const STRINGS = {
         monster_bee:         'Bee',
         monster_butterfly:   'Butterfly',
         monster_ladybug:     'Ladybug',
+        monster_dragon:      'Dragon',
+        monster_lava_golem:  'Lava Golem',
+        monster_phoenix:     'Phoenix',
+        monster_shark:       'Shark',
+        monster_octopus:     'Octopus',
+        monster_jellyfish:   'Jellyfish',
+        monster_alien:       'Alien',
+        monster_robot:       'Robot',
+        monster_ufo:         'UFO',
 
         rarity_common:    'Common',
         rarity_uncommon:  'Uncommon',
@@ -247,6 +278,12 @@ const STRINGS = {
         world_toundra:    'La Tundra',
         world_sucre:      'El País Dulce',
         world_prairie:    'La Pradera',
+        world_volcan:     'El Volcán',
+        world_ocean:      'El Océano',
+        world_espace:     'El Espacio',
+
+        additionSection:     'Suma ➕',
+        subtractionSection:  'Resta ➖',
 
         monster_snowman:     'Muñeco de Nieve',
         monster_ice_golem:   'Gólem de Hielo',
@@ -257,6 +294,15 @@ const STRINGS = {
         monster_bee:         'Abeja',
         monster_butterfly:   'Mariposa',
         monster_ladybug:     'Mariquita',
+        monster_dragon:      'Dragón',
+        monster_lava_golem:  'Gólem de Lava',
+        monster_phoenix:     'Fénix',
+        monster_shark:       'Tiburón',
+        monster_octopus:     'Pulpo',
+        monster_jellyfish:   'Medusa',
+        monster_alien:       'Alien',
+        monster_robot:       'Robot',
+        monster_ufo:         'OVNI',
 
         rarity_common:    'Común',
         rarity_uncommon:  'Poco Común',

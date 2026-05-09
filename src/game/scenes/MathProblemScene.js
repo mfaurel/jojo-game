@@ -11,12 +11,20 @@ export class MathProblemScene extends Scene {
 
     init(data) {
         this.onSuccess = data.onSuccess;
-        this.isChest = data.isChest || false;
-        const numMax = data.numMax ?? 5;
+        this.isChest   = data.isChest   || false;
+        this.operation = data.operation ?? 'add';
+        const numMax   = data.numMax    ?? 5;
 
-        this.num1 = Math.floor(Math.random() * numMax) + 1;
-        this.num2 = Math.floor(Math.random() * numMax) + 1;
-        this.answer = this.num1 + this.num2;
+        if (this.operation === 'sub') {
+            this.num1   = Math.floor(Math.random() * numMax) + 1;
+            this.num2   = Math.floor(Math.random() * (this.num1 + 1));
+            this.answer = this.num1 - this.num2;
+        } else {
+            this.num1   = Math.floor(Math.random() * numMax) + 1;
+            this.num2   = Math.floor(Math.random() * numMax) + 1;
+            this.answer = this.num1 + this.num2;
+        }
+
         this.currentInput = '';
         this._inputLocked = false;
         this.monsterName  = data.monsterName ?? null;
@@ -74,7 +82,8 @@ export class MathProblemScene extends Scene {
             }).setOrigin(0.5, 0);
         }
 
-        this.add.text(px, panelTop + 115, `${this.num1} + ${this.num2} =`, {
+        const opSymbol = this.operation === 'sub' ? '−' : '+';
+        this.add.text(px, panelTop + 115, `${this.num1} ${opSymbol} ${this.num2} =`, {
             fontSize: '60px',
             fontFamily: 'Arial Black',
             color: '#ff6600',
