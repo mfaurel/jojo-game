@@ -138,6 +138,26 @@ const STRINGS = {
         confirmQuit: 'Êtes-vous sûr ?',
         confirmYes:  'Oui',
         confirmNo:   'Non',
+
+        // ── Memory game ──────────────────────────────────────────────────────
+        btnMemory:       '🃏 Mémoire',
+        memoryTitle:     'Jeu de Mémoire',
+        memoryInstruct:  'Retrouve les paires !',
+        memoryChoose:    'Choisis un niveau !',
+        memoryRow1:      'Grille 4×2',
+        memoryRow2:      'Grille 4×3',
+        memoryRow3:      'Grille 4×4',
+        memoryProgress:  (d, t) => `⭐ ${d} / ${t} niveaux`,
+
+        // ── Counting game ────────────────────────────────────────────────────
+        btnCounting:      '🔢 Mémo-Chiffres',
+        countingTitle:    'Mémo-Chiffres',
+        countingChoose:   'Choisis un niveau !',
+        countingMemoise:  'Mémorise !',
+        countingQuestion: 'Combien ?',
+        countingCorrect:  'Bravo ! 🌟',
+        countingProgress: (d, t) => `⭐ ${d} / ${t} niveaux`,
+        countingScore:    (d) => `${d} / 8`,
     },
 
     en: {
@@ -268,6 +288,26 @@ const STRINGS = {
         confirmQuit: 'Are you sure?',
         confirmYes:  'Yes',
         confirmNo:   'No',
+
+        // ── Memory game ──────────────────────────────────────────────────────
+        btnMemory:       '🃏 Memory',
+        memoryTitle:     'Memory Game',
+        memoryInstruct:  'Find the pairs!',
+        memoryChoose:    'Choose a level!',
+        memoryRow1:      '4×2 Grid',
+        memoryRow2:      '4×3 Grid',
+        memoryRow3:      '4×4 Grid',
+        memoryProgress:  (d, t) => `⭐ ${d} / ${t} levels`,
+
+        // ── Counting game ────────────────────────────────────────────────────
+        btnCounting:      '🔢 Count-Memo',
+        countingTitle:    'Count-Memo',
+        countingChoose:   'Choose a level!',
+        countingMemoise:  'Memorise!',
+        countingQuestion: 'How many?',
+        countingCorrect:  'Bravo! 🌟',
+        countingProgress: (d, t) => `⭐ ${d} / ${t} levels`,
+        countingScore:    (d) => `${d} / 8`,
     },
 
     es: {
@@ -398,6 +438,26 @@ const STRINGS = {
         confirmQuit: '¿Estás seguro?',
         confirmYes:  'Sí',
         confirmNo:   'No',
+
+        // ── Memory game ──────────────────────────────────────────────────────
+        btnMemory:       '🃏 Memoria',
+        memoryTitle:     'Juego de Memoria',
+        memoryInstruct:  '¡Encuentra las parejas!',
+        memoryChoose:    '¡Elige un nivel!',
+        memoryRow1:      'Cuadrícula 4×2',
+        memoryRow2:      'Cuadrícula 4×3',
+        memoryRow3:      'Cuadrícula 4×4',
+        memoryProgress:  (d, t) => `⭐ ${d} / ${t} niveles`,
+
+        // ── Counting game ────────────────────────────────────────────────────
+        btnCounting:      '🔢 Memo-Números',
+        countingTitle:    'Memo-Números',
+        countingChoose:   '¡Elige un nivel!',
+        countingMemoise:  '¡Memoriza!',
+        countingQuestion: '¿Cuántos?',
+        countingCorrect:  '¡Bravo! 🌟',
+        countingProgress: (d, t) => `⭐ ${d} / ${t} niveles`,
+        countingScore:    (d) => `${d} / 8`,
     },
 };
 

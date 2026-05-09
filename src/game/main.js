@@ -2,6 +2,10 @@ import { Boot }          from './scenes/Boot';
 import { Preloader }      from './scenes/Preloader';
 import { MainMenu }       from './scenes/MainMenu';
 import { SpellingMenu }   from './scenes/SpellingMenu';
+import { MemoryMenuScene } from './scenes/MemoryMenuScene';
+import { MemoryScene }    from './scenes/MemoryScene';
+import { CountingMenuScene } from './scenes/CountingMenuScene';
+import { CountingScene }  from './scenes/CountingScene';
 import { MathWorldSelectScene } from './scenes/MathWorldSelectScene';
 import { MathDungeon }    from './scenes/MathDungeon';
 import { MathProblemScene } from './scenes/MathProblemScene';
@@ -29,6 +33,10 @@ const config = {
         Preloader,
         MainMenu,
         SpellingMenu,
+        MemoryMenuScene,
+        MemoryScene,
+        CountingMenuScene,
+        CountingScene,
         MathWorldSelectScene,
         MathDungeon,
         MathProblemScene,

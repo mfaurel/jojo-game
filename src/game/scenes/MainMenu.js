@@ -37,31 +37,40 @@ export class MainMenu extends Scene {
             strokeThickness: 3,
         }).setOrigin(0.5);
 
-        this._createChoiceButton(512, 380, t('btnSpelling'), 0x2a2a88, () => {
+        // 2×2 grid of mode buttons (centers at 256 / 768 to ensure 62 px gap for 430 px wide buttons)
+        this._createChoiceButton(256, 360, t('btnSpelling'), 0x2a2a88, 430, () => {
             this.scene.start('SpellingMenu');
         });
 
-        this._createChoiceButton(512, 540, t('btnMath'), 0x2266aa, () => {
+        this._createChoiceButton(768, 360, t('btnMath'), 0x2266aa, 430, () => {
             this.scene.start('MathWorldSelectScene');
+        });
+
+        this._createChoiceButton(256, 520, t('btnMemory'), 0x1a4a6a, 430, () => {
+            this.scene.start('MemoryMenuScene');
+        });
+
+        this._createChoiceButton(768, 520, t('btnCounting'), 0x1a6a2a, 430, () => {
+            this.scene.start('CountingMenuScene');
         });
 
         const spellingDone = LEVELS.filter(l => getProgress()[l.id]).length;
         if (spellingDone > 0) {
-            this.add.text(512, 430, t('spellingProgress', spellingDone, LEVELS.length), {
-                fontSize: '20px',
+            this.add.text(256, 408, t('spellingProgress', spellingDone, LEVELS.length), {
+                fontSize: '18px',
                 color: '#ffd700',
                 stroke: '#000',
-                strokeThickness: 3,
+                strokeThickness: 2,
             }).setOrigin(0.5, 0);
         }
 
         const mathDone = MATH_WORLDS.filter((_, i) => getMathProgress()[i]).length;
         if (mathDone > 0) {
-            this.add.text(512, 590, t('mathProgress', mathDone, MATH_WORLDS.length), {
-                fontSize: '20px',
+            this.add.text(768, 408, t('mathProgress', mathDone, MATH_WORLDS.length), {
+                fontSize: '18px',
                 color: '#ffd700',
                 stroke: '#000',
-                strokeThickness: 3,
+                strokeThickness: 2,
             }).setOrigin(0.5, 0);
         }
 
@@ -372,8 +381,15 @@ export class MainMenu extends Scene {
         bg.on('pointerup', callback);
     }
 
-    _createChoiceButton(x, y, label, color, callback) {
-        const btnW = 450;
+    _createChoiceButton(x, y, label, color, widthOrCallback, callback) {
+        // widthOrCallback lets callers pass (x, y, label, color, callback) or
+        // (x, y, label, color, width, callback)
+        let btnW, cb;
+        if (typeof widthOrCallback === 'function') {
+            btnW = 450; cb = widthOrCallback;
+        } else {
+            btnW = widthOrCallback; cb = callback;
+        }
         const btnH = 120;
 
         let bg;
@@ -385,8 +401,9 @@ export class MainMenu extends Scene {
 
         bg.setInteractive({ useHandCursor: true });
 
+        const fontSize = btnW < 450 ? '34px' : '44px';
         const txt = this.add.text(x, y, label, {
-            fontSize: '44px',
+            fontSize,
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffffff',
             stroke: '#000',
@@ -395,6 +412,6 @@ export class MainMenu extends Scene {
 
         bg.on('pointerover', () => { if (bg.setFillStyle) bg.setFillStyle(color + 0x111111); bg.setScale(1.05); txt.setScale(1.05); });
         bg.on('pointerout',  () => { if (bg.setFillStyle) bg.setFillStyle(color); bg.setScale(1); txt.setScale(1); });
-        bg.on('pointerup',   () => { this.cameras.main.fadeOut(500, 0, 0, 0); this.cameras.main.once('camerafadeoutcomplete', callback); });
+        bg.on('pointerup',   () => { this.cameras.main.fadeOut(500, 0, 0, 0); this.cameras.main.once('camerafadeoutcomplete', cb); });
     }
 }

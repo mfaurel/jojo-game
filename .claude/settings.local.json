@@ -11,7 +11,11 @@
       "Bash(Measure-Object)",
       "Bash(Select-Object -ExpandProperty Count)",
       "Bash(Get-ChildItem -Path \"C:\\\\workspace\\\\jojo-game\\\\src\\\\game\" -Recurse -File)",
-      "Bash(Select-Object FullName)"
+      "Bash(Select-Object FullName)",
+      "Bash(Get-ChildItem -Path \"C:\\\\workspace\\\\jojo-game\\\\src\" -Recurse -File)",
+      "Bash(Get-ChildItem -Path \"C:\\\\workspace\\\\jojo-game\\\\src\\\\game\" -Recurse -Include \"*.js\")",
+      "Bash(ConvertTo-Csv -NoTypeInformation)",
+      "Bash(Select-Object -Skip 1)"
     ]
   }
 }
