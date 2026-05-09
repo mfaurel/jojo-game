@@ -636,7 +636,7 @@ const WORD_CONCEPTS = {
             gfx.beginPath(); gfx.arc(cx, cy-r*0.3, r*0.07, 0.3, Math.PI-0.3); gfx.strokePath();
         }
     },
-    MAMA: {
+    MAMAN: {
         fr: { answer: 'MAMAN', letters: ['M','A','M','A','P','N'] },
         en: { answer: 'MOMMY', letters: ['M','A','M','O','M','Y'] },
         es: { answer: 'MAMA', letters: ['M','A','M','A','P','E'] },
