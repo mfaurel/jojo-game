@@ -15,7 +15,11 @@
       "Bash(Get-ChildItem -Path \"C:\\\\workspace\\\\jojo-game\\\\src\" -Recurse -File)",
       "Bash(Get-ChildItem -Path \"C:\\\\workspace\\\\jojo-game\\\\src\\\\game\" -Recurse -Include \"*.js\")",
       "Bash(ConvertTo-Csv -NoTypeInformation)",
-      "Bash(Select-Object -Skip 1)"
+      "Bash(Select-Object -Skip 1)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173)",
+      "mcp__plugin_playwright_playwright__browser_resize",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_evaluate"
     ]
   }
 }

@@ -24,7 +24,7 @@ const config = {
     parent: 'game-container',
     backgroundColor: '#1a1a5e',
     scale: {
-        mode: Scale.FIT,
+        mode: Scale.EXPAND,
         autoCenter: Scale.CENTER_BOTH,
         fullscreenTarget: 'game-container',
     },
