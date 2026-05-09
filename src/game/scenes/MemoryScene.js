@@ -117,13 +117,19 @@ export class MemoryScene extends Scene {
         if (concept) concept.drawPicture(frontGfx, 0, 0, r);
         frontGfx.setVisible(false);
 
+        // Green overlay shown when the pair is matched (Graphics has no setTint)
+        const matchOverlay = this.add.graphics();
+        matchOverlay.fillStyle(0x44ff44, 0.28);
+        matchOverlay.fillRoundedRect(-size / 2, -size / 2, size, size, 12);
+        matchOverlay.setVisible(false);
+
         // Invisible hit area so the full card is tappable
         const hit = this.add.rectangle(0, 0, size, size, 0x000000, 0)
             .setInteractive({ useHandCursor: true });
 
-        container.add([backGfx, frontGfx, hit]);
+        container.add([backGfx, frontGfx, matchOverlay, hit]);
 
-        const card = { container, backGfx, frontGfx, wordKey, matched: false, faceUp: false };
+        const card = { container, backGfx, frontGfx, matchOverlay, wordKey, matched: false, faceUp: false };
 
         hit.on('pointerover', () => {
             if (!card.matched && !card.faceUp && !this._locked)
@@ -169,8 +175,8 @@ export class MemoryScene extends Scene {
                 duration: 200,
                 ease: 'Back.Out',
                 onComplete: () => {
-                    a.frontGfx.setTint(0x88ff88);
-                    b.frontGfx.setTint(0x88ff88);
+                    a.matchOverlay.setVisible(true);
+                    b.matchOverlay.setVisible(true);
                     this._locked = false;
                     if (this._matched === this._level.words.length) {
                         this.time.delayedCall(400, () => this._victory());

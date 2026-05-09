@@ -69,6 +69,62 @@ export class CastleScene extends Scene {
             }).setScrollFactor(0).setDepth(30);
             this.starIcons.push(star);
         }
+
+        const menuBtn = this.add.text(14, 14, t('menuBtn'), {
+            fontSize: '20px',
+            color: '#ffffff',
+            backgroundColor: '#2a2a88',
+            padding: { x: 10, y: 5 },
+        }).setOrigin(0, 0).setScrollFactor(0).setDepth(30)
+            .setInteractive({ useHandCursor: true });
+
+        menuBtn.on('pointerup', () => this._showConfirmQuit());
+    }
+
+    _showConfirmQuit() {
+        const cx = 512, cy = 384;
+        const elems = [];
+        const dismiss = () => elems.forEach(e => { if (e.active) e.destroy(); });
+
+        elems.push(
+            this.add.rectangle(cx, cy, 1024, 768, 0x000000, 0.75)
+                .setScrollFactor(0).setDepth(50).setInteractive()
+        );
+
+        const panel = this.add.graphics().setScrollFactor(0).setDepth(51);
+        panel.fillStyle(0x1a1a5e, 1);
+        panel.fillRoundedRect(cx - 200, cy - 80, 400, 160, 16);
+        panel.lineStyle(3, 0x4444aa, 1);
+        panel.strokeRoundedRect(cx - 200, cy - 80, 400, 160, 16);
+        elems.push(panel);
+
+        elems.push(
+            this.add.text(cx, cy - 32, t('confirmQuit'), {
+                fontSize: '28px',
+                fontFamily: 'Arial Black, Arial, sans-serif',
+                color: '#ffffff',
+                stroke: '#000',
+                strokeThickness: 4,
+            }).setOrigin(0.5).setScrollFactor(0).setDepth(52)
+        );
+
+        const makeBtn = (bx, color, labelKey, onClick) => {
+            const bg = this.add.rectangle(bx, cy + 38, 140, 52, color, 1)
+                .setScrollFactor(0).setDepth(52).setInteractive({ useHandCursor: true });
+            const txt = this.add.text(bx, cy + 38, t(labelKey), {
+                fontSize: '24px',
+                fontFamily: 'Arial Black, Arial, sans-serif',
+                color: '#ffffff',
+            }).setOrigin(0.5).setScrollFactor(0).setDepth(53);
+            bg.on('pointerup', onClick);
+            elems.push(bg, txt);
+        };
+
+        makeBtn(cx - 80, 0x226622, 'confirmYes', () => {
+            dismiss();
+            this.scene.start('SpellingMenu');
+        });
+        makeBtn(cx + 80, 0x882222, 'confirmNo', () => dismiss());
     }
 
     onGateUnlocked() {
