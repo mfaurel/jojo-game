@@ -1,8 +1,9 @@
-// Central definition of all 5 levels.
+// Central definition of all spelling levels.
 // words[i] maps 1-to-1 with GATE_POSITIONS[i] from MapData.js.
 // nameKey references an i18n key in I18n.js.
 
 export const LEVELS = [
+    // ── Row 1 (always unlocked) ──────────────────────────────────────────────
     {
         id: 0,
         nameKey: 'level_chateau',
@@ -43,7 +44,54 @@ export const LEVELS = [
         btnColor: 0x381850,
         words: ['VELO', 'AUTO', 'BAIN', 'FOUR', 'VASE'],
     },
+
+    // ── Row 2 (level 5 always unlocked; 6–9 unlock one-by-one) ───────────────
+    {
+        id: 5,
+        nameKey: 'level_famille',
+        emoji: '👨‍👩‍👧',
+        bg: 0x2a1040,
+        btnColor: 0xcc4477,
+        words: ['PAPA', 'MAMA', 'BEBE', 'TATA', 'PAPI'],
+    },
+    {
+        id: 6,
+        nameKey: 'level_couleurs',
+        emoji: '🌈',
+        bg: 0x0a1040,
+        btnColor: 0x7744cc,
+        words: ['BLEU', 'ROSE', 'NOIR', 'VERT', 'GRIS'],
+    },
+    {
+        id: 7,
+        nameKey: 'level_corps',
+        emoji: '🤸',
+        bg: 0x1a2010,
+        btnColor: 0xcc6622,
+        words: ['NEZ', 'BRAS', 'MAIN', 'PIED', 'TETE'],
+    },
+    {
+        id: 8,
+        nameKey: 'level_fruits',
+        emoji: '🍎',
+        bg: 0x0a2010,
+        btnColor: 0x448822,
+        words: ['KIWI', 'POIRE', 'POMME', 'FIGUE', 'PRUNE'],
+    },
+    {
+        id: 9,
+        nameKey: 'level_ferme',
+        emoji: '🐄',
+        bg: 0x1a1008,
+        btnColor: 0x885522,
+        words: ['VACHE', 'LAPIN', 'POULE', 'CHIEN', 'PONEY'],
+    },
 ];
+
+export function getSpellingUnlocked(levelId) {
+    if (levelId <= 5) return true;
+    return !!getProgress()[levelId - 1];
+}
 
 const SAVE_KEY = 'jolyne_progress';
 const INVENTORY_KEY = 'jolyne_inventory';

@@ -32,6 +32,14 @@ const STRINGS = {
         level_nature:     'La Nature',
         level_cuisine:    'La Cuisine',
         level_maison:     'La Maison',
+        level_famille:    'La Famille',
+        level_couleurs:   'Les Couleurs',
+        level_corps:      'Le Corps',
+        level_fruits:     'Les Fruits',
+        level_ferme:      'La Ferme',
+
+        spellingRow1:     'Niveaux 1 à 5',
+        spellingRow2:     'Niveaux 6 à 10',
 
         // ── Math world names ─────────────────────────────────────────────────
         world_toundra:    'La Toundra',
@@ -159,6 +167,14 @@ const STRINGS = {
         level_nature:     'Nature',
         level_cuisine:    'The Kitchen',
         level_maison:     'The House',
+        level_famille:    'The Family',
+        level_couleurs:   'Colors',
+        level_corps:      'The Body',
+        level_fruits:     'Fruits',
+        level_ferme:      'The Farm',
+
+        spellingRow1:     'Levels 1 to 5',
+        spellingRow2:     'Levels 6 to 10',
 
         world_toundra:    'The Tundra',
         world_sucre:      'Candy Land',
@@ -276,6 +292,14 @@ const STRINGS = {
         level_nature:     'La Naturaleza',
         level_cuisine:    'La Cocina',
         level_maison:     'La Casa',
+        level_famille:    'La Familia',
+        level_couleurs:   'Los Colores',
+        level_corps:      'El Cuerpo',
+        level_fruits:     'Las Frutas',
+        level_ferme:      'La Granja',
+
+        spellingRow1:     'Niveles 1 a 5',
+        spellingRow2:     'Niveles 6 a 10',
 
         world_toundra:    'La Tundra',
         world_sucre:      'El País Dulce',

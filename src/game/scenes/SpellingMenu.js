@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { LEVELS, getProgress, getEquipment } from '../data/LevelData.js';
+import { LEVELS, getProgress, getSpellingUnlocked, getEquipment } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
 import { t } from '../data/I18n.js';
 
@@ -44,9 +44,9 @@ export class SpellingMenu extends Scene {
             strokeThickness: 3,
         }).setOrigin(0.5);
 
-        this._drawCharacter(512, 248);
+        this._drawCharacter(512, 210);
 
-        this.add.text(512, 340, t('chooseLevel'), {
+        this.add.text(512, 290, t('chooseLevel'), {
             fontSize: '26px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffffff',
@@ -69,67 +69,106 @@ export class SpellingMenu extends Scene {
     _buildLevelCards() {
         const progress = getProgress();
         const cardW = 175;
-        const cardH = 120;
+        const cardH = 105;
         const gap   = 9;
-        const totalW = LEVELS.length * cardW + (LEVELS.length - 1) * gap;
-        const startX = (1024 - totalW) / 2;
-        const cy     = 490;
+        const row1Levels = LEVELS.slice(0, 5);
+        const row2Levels = LEVELS.slice(5);
+        const totalW  = 5 * cardW + 4 * gap;
+        const startX  = (1024 - totalW) / 2;
 
-        LEVELS.forEach((level, i) => {
+        // ── Row 1 header ──────────────────────────────────────────────────────
+        this.add.text(512, 332, t('spellingRow1'), {
+            fontSize: '16px',
+            color: '#aaddff',
+            stroke: '#000',
+            strokeThickness: 2,
+        }).setOrigin(0.5).setDepth(10);
+
+        row1Levels.forEach((level, i) => {
             const cx = startX + i * (cardW + gap) + cardW / 2;
-            const done = !!progress[level.id];
+            this._buildCard(level, cx, 400, cardW, cardH, progress, true);
+        });
 
-            const bg = this.add.rectangle(cx, cy, cardW, cardH, level.btnColor, 1)
-                .setInteractive()
-                .setDepth(10);
+        // ── Divider ───────────────────────────────────────────────────────────
+        const div = this.add.graphics().setDepth(9);
+        div.lineStyle(1, 0x445566, 0.6);
+        div.lineBetween(80, 460, 944, 460);
 
-            // Completed glow border
-            if (done) {
-                const border = this.add.rectangle(cx, cy, cardW + 6, cardH + 6, 0xffd700, 1)
-                    .setDepth(9);
-                this.tweens.add({
-                    targets: border,
-                    alpha: 0.4,
-                    duration: 900,
-                    yoyo: true,
-                    repeat: -1,
-                    ease: 'Sine.InOut',
-                });
-            }
+        // ── Row 2 header ──────────────────────────────────────────────────────
+        this.add.text(512, 475, t('spellingRow2'), {
+            fontSize: '16px',
+            color: '#ffddaa',
+            stroke: '#000',
+            strokeThickness: 2,
+        }).setOrigin(0.5).setDepth(10);
 
-            // Hover effect
+        row2Levels.forEach((level, i) => {
+            const cx = startX + i * (cardW + gap) + cardW / 2;
+            this._buildCard(level, cx, 545, cardW, cardH, progress, false);
+        });
+    }
+
+    _buildCard(level, cx, cy, cardW, cardH, progress, alwaysUnlocked) {
+        const done     = !!progress[level.id];
+        const unlocked = alwaysUnlocked || getSpellingUnlocked(level.id);
+        const color    = unlocked ? level.btnColor : 0x444444;
+
+        if (done) {
+            const border = this.add.rectangle(cx, cy, cardW + 6, cardH + 6, 0xffd700, 1)
+                .setDepth(9);
+            this.tweens.add({
+                targets: border,
+                alpha: 0.4,
+                duration: 900,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.InOut',
+            });
+        }
+
+        const bg = this.add.rectangle(cx, cy, cardW, cardH, color, 1).setDepth(10);
+
+        if (unlocked) {
+            bg.setInteractive({ useHandCursor: true });
             bg.on('pointerover', () => bg.setFillStyle(level.btnColor + 0x101010, 1));
             bg.on('pointerout',  () => bg.setFillStyle(level.btnColor, 1));
-            bg.on('pointerup',   () => this._startLevel(i));
+            bg.on('pointerup',   () => this._startLevel(level.id));
+        }
 
-            // Emoji
-            this.add.text(cx, cy - 34, level.emoji, {
-                fontSize: '34px',
-            }).setOrigin(0.5).setDepth(11);
+        this.add.text(cx, cy - 28, level.emoji, {
+            fontSize: '28px',
+        }).setOrigin(0.5).setDepth(11);
 
-            // Level name
-            this.add.text(cx, cy + 3, t(level.nameKey), {
-                fontSize: '15px',
-                fontFamily: 'Arial Black, Arial, sans-serif',
-                color: '#ffffff',
-                stroke: '#000',
-                strokeThickness: 3,
-            }).setOrigin(0.5).setDepth(11);
+        if (!unlocked) {
+            this.add.rectangle(cx, cy, cardW, cardH, 0x000000, 0.5).setDepth(13);
+            this.add.text(cx, cy - 8, '🔒', { fontSize: '28px' }).setOrigin(0.5).setDepth(14);
+            this.add.text(cx, cy + 24, t('completePrevWorld'), {
+                fontSize: '10px',
+                color: '#ffaaaa',
+                align: 'center',
+            }).setOrigin(0.5).setDepth(14);
+            return;
+        }
 
-            // "NIVEAU X"
-            this.add.text(cx, cy + 25, t('levelLabel', i + 1), {
-                fontSize: '12px',
-                color: '#aaccff',
-            }).setOrigin(0.5).setDepth(11);
+        this.add.text(cx, cy + 4, t(level.nameKey), {
+            fontSize: '14px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#ffffff',
+            stroke: '#000',
+            strokeThickness: 3,
+        }).setOrigin(0.5).setDepth(11);
 
-            // Star if completed
-            if (done) {
-                this.add.text(cx + cardW / 2 - 14, cy - cardH / 2 + 10, '★', {
-                    fontSize: '18px',
-                    color: '#ffd700',
-                }).setOrigin(0.5).setDepth(12);
-            }
-        });
+        this.add.text(cx, cy + 24, t('levelLabel', level.id + 1), {
+            fontSize: '11px',
+            color: '#aaccff',
+        }).setOrigin(0.5).setDepth(11);
+
+        if (done) {
+            this.add.text(cx + cardW / 2 - 14, cy - cardH / 2 + 10, '★', {
+                fontSize: '18px',
+                color: '#ffd700',
+            }).setOrigin(0.5).setDepth(12);
+        }
     }
 
     _startLevel(levelIndex) {

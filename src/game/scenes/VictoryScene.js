@@ -52,7 +52,7 @@ export class VictoryScene extends Scene {
 
         const progress = getProgress();
         let allDone = true;
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < LEVELS.length; i++) {
             if (!progress[i]) { allDone = false; break; }
         }
         if (allDone) {
