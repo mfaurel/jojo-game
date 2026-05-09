@@ -50,7 +50,15 @@ const config = {
 };
 
 const StartGame = (parent) => {
-    return new Game({ ...config, parent });
+    const game = new Game({ ...config, parent });
+
+    // Mobile browsers report stale viewport size during rotation — refresh after the
+    // browser has finished updating the layout.
+    window.addEventListener('orientationchange', () => {
+        setTimeout(() => game.scale.refresh(), 300);
+    });
+
+    return game;
 };
 
 export default StartGame;
