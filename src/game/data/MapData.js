@@ -146,7 +146,6 @@ export const LEVEL_MAPS = [
         playerStart: { col: 14, row: 1 },
         goalTile:    { col:  2, row: 1 },
     },
-];
 
     // ── Level 5 (La Famille) — Z shape ────────────────────────────────────────
     // Right along top row with 3 gates → right connector down → left along middle with 2 gates → left connector down → goal
@@ -287,6 +286,7 @@ export const LEVEL_MAPS = [
         playerStart: { col:  1, row: 1 },
         goalTile:    { col: 14, row: 7 },
     },
+];
 
 // Backward-compat aliases — point to level 0's data
 export const MAP_GRID       = LEVEL_MAPS[0].grid;
