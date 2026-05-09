@@ -133,6 +133,11 @@ const STRINGS = {
         // ── HUD / misc ───────────────────────────────────────────────────────
         pointsLabel:   'Points',
         cheatUnlocked: '✨ TOUT DÉBLOQUÉ ! ✨',
+
+        // ── Confirmation dialog ──────────────────────────────────────────────
+        confirmQuit: 'Êtes-vous sûr ?',
+        confirmYes:  'Oui',
+        confirmNo:   'Non',
     },
 
     en: {
@@ -258,6 +263,11 @@ const STRINGS = {
 
         pointsLabel:   'Points',
         cheatUnlocked: '✨ ALL UNLOCKED! ✨',
+
+        // ── Confirmation dialog ──────────────────────────────────────────────
+        confirmQuit: 'Are you sure?',
+        confirmYes:  'Yes',
+        confirmNo:   'No',
     },
 
     es: {
@@ -383,6 +393,11 @@ const STRINGS = {
 
         pointsLabel:   'Puntos',
         cheatUnlocked: '✨ ¡TODO DESBLOQUEADO! ✨',
+
+        // ── Confirmation dialog ──────────────────────────────────────────────
+        confirmQuit: '¿Estás seguro?',
+        confirmYes:  'Sí',
+        confirmNo:   'No',
     },
 };
 

@@ -36,6 +36,7 @@ export class SpellingScene extends Scene {
         this._drawSlots();
         this._drawLetterPool();
         this._drawInstructions();
+        this._drawMenuButton();
         this._drawCloseButton();
     }
 
@@ -202,6 +203,24 @@ export class SpellingScene extends Scene {
         }).setOrigin(0.5);
     }
 
+    _drawMenuButton() {
+        let btn;
+        if (this.textures.exists('ui_button_red')) {
+            btn = this.add.image(114, 88, 'ui_button_red').setDisplaySize(80, 44);
+        } else {
+            btn = this.add.rectangle(114, 88, 80, 44, 0x2a2a88, 1);
+        }
+        btn.setInteractive({ useHandCursor: true })
+            .on('pointerup',   () => this._showConfirmQuit())
+            .on('pointerover', () => btn.setScale(1.1))
+            .on('pointerout',  () => btn.setScale(1));
+        this.add.text(114, 88, t('menuBtn'), {
+            fontSize: '18px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#fff',
+        }).setOrigin(0.5);
+    }
+
     _drawCloseButton() {
         let btn;
         if (this.textures.exists('ui_button_red')) {
@@ -209,13 +228,65 @@ export class SpellingScene extends Scene {
         } else {
             btn = this.add.rectangle(910, 88, 44, 44, 0x880000, 1);
         }
-        
+
         btn.setInteractive()
-            .on('pointerup', () => this._close())
+            .on('pointerup', () => this._showConfirmQuit())
             .on('pointerover', () => btn.setScale(1.1))
             .on('pointerout',  () => btn.setScale(1));
 
         this.add.text(910, 88, '✕', { fontSize: '22px', color: '#fff' }).setOrigin(0.5);
+    }
+
+    _showConfirmQuit() {
+        const cx = 512, cy = 384;
+        const elems = [];
+
+        elems.push(this.add.rectangle(cx, cy, 1024, 768, 0x000000, 0.75).setDepth(50));
+
+        if (this.textures.exists('ui_panel')) {
+            elems.push(this.add.nineslice(cx, cy, 'ui_panel', 0, 380, 200, 40, 40, 40, 40).setDepth(51));
+        } else {
+            const g = this.add.graphics().setDepth(51);
+            g.fillStyle(0x3a0060, 0.97);
+            g.fillRoundedRect(cx - 190, cy - 100, 380, 200, 18);
+            g.lineStyle(4, 0xffd700, 1);
+            g.strokeRoundedRect(cx - 190, cy - 100, 380, 200, 18);
+            elems.push(g);
+        }
+
+        elems.push(this.add.text(cx, cy - 38, t('confirmQuit'), {
+            fontSize: '28px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#ffffff',
+            stroke: '#000',
+            strokeThickness: 4,
+        }).setOrigin(0.5).setDepth(52));
+
+        const dismiss = () => elems.forEach(e => e.destroy());
+
+        const makeBtn = (bx, color, labelKey, onClick) => {
+            let btn;
+            if (this.textures.exists('ui_button_red')) {
+                btn = this.add.image(bx, cy + 38, 'ui_button_red').setDisplaySize(130, 52).setTint(color).setDepth(52);
+            } else {
+                btn = this.add.rectangle(bx, cy + 38, 130, 52, color, 1).setDepth(52);
+            }
+            btn.setInteractive({ useHandCursor: true })
+                .on('pointerover', () => btn.setScale(1.1))
+                .on('pointerout',  () => btn.setScale(1))
+                .on('pointerup',   onClick);
+            elems.push(btn);
+            elems.push(this.add.text(bx, cy + 38, t(labelKey), {
+                fontSize: '22px',
+                fontFamily: 'Arial Black, Arial, sans-serif',
+                color: '#fff',
+                stroke: '#000',
+                strokeThickness: 3,
+            }).setOrigin(0.5).setDepth(53));
+        };
+
+        makeBtn(cx - 80, 0x228822, 'confirmYes', () => { dismiss(); this._close(); });
+        makeBtn(cx + 80, 0x882222, 'confirmNo',  () => dismiss());
     }
 
     _selectLetter(tile) {

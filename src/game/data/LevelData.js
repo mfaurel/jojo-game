@@ -52,7 +52,7 @@ export const LEVELS = [
         emoji: '👨‍👩‍👧',
         bg: 0x2a1040,
         btnColor: 0xcc4477,
-        words: ['PAPA', 'MAMA', 'BEBE', 'TATA', 'PAPI'],
+        words: ['PAPA', 'MAMAN', 'BEBE', 'TATA', 'PAPI'],
     },
     {
         id: 6,

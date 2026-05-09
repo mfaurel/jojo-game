@@ -9,7 +9,9 @@
       "Bash(git *)",
       "Bash(Get-ChildItem -Recurse -File)",
       "Bash(Measure-Object)",
-      "Bash(Select-Object -ExpandProperty Count)"
+      "Bash(Select-Object -ExpandProperty Count)",
+      "Bash(Get-ChildItem -Path \"C:\\\\workspace\\\\jojo-game\\\\src\\\\game\" -Recurse -File)",
+      "Bash(Select-Object FullName)"
     ]
   }
 }
