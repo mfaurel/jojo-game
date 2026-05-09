@@ -8,7 +8,8 @@ export class RewardPopup extends Scene {
     }
 
     init(data) {
-        this.item = data.item;
+        this.item    = data.item;
+        this.onClose = data.onClose ?? null;
     }
 
     create() {
@@ -48,7 +49,10 @@ export class RewardPopup extends Scene {
             padding: { x: 20, y: 10 },
         }).setOrigin(0.5).setDepth(102).setInteractive({ useHandCursor: true }).setAlpha(0);
 
-        btn.on('pointerup', () => this.scene.stop());
+        btn.on('pointerup', () => {
+            this.scene.stop();
+            if (this.onClose) this.onClose();
+        });
 
         this.tweens.add({
             targets: panel,

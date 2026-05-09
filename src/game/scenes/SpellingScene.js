@@ -382,7 +382,7 @@ export class SpellingScene extends Scene {
     }
 
     _close() {
-        this.scene.stop('SpellingScene');
         this.scene.resume('CastleScene');
+        this.scene.stop('SpellingScene');
     }
 }

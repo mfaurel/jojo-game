@@ -447,9 +447,9 @@ export class VictoryScene extends Scene {
 
         if (this.wonItem) {
             this.time.delayedCall(800, () => {
-                this.scene.launch('RewardPopup', { item: this.wonItem });
-                this.scene.get('RewardPopup').events.once('shutdown', () => {
-                    this.scene.start('SpellingMenu');
+                this.scene.launch('RewardPopup', {
+                    item:    this.wonItem,
+                    onClose: () => this.scene.start('SpellingMenu'),
                 });
             });
         } else {

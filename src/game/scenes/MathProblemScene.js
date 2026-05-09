@@ -191,8 +191,8 @@ export class MathProblemScene extends Scene {
             onComplete: () => {
                 this.time.delayedCall(1200, () => {
                     this.onSuccess();
-                    this.scene.stop();
                     this.scene.resume('MathDungeon');
+                    this.scene.stop();
                 });
             }
         });

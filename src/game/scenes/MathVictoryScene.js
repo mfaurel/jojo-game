@@ -96,8 +96,10 @@ export class MathVictoryScene extends Scene {
         // Phase 5 — reward popup or continue button (1800ms)
         this.time.delayedCall(1800, () => {
             if (this.wonItem) {
-                this.scene.launch('RewardPopup', { item: this.wonItem });
-                this.scene.get('RewardPopup').events.once('shutdown', () => this._exitToWorldSelect());
+                this.scene.launch('RewardPopup', {
+                    item:    this.wonItem,
+                    onClose: () => this._exitToWorldSelect(),
+                });
             } else {
                 const btnBg = this.add.rectangle(width / 2, height * 0.78, 240, 58, this.worldConfig.btnColor, 1)
                     .setInteractive({ useHandCursor: true })

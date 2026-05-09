@@ -6,7 +6,10 @@
       "Bash(xargs wc *)",
       "Bash(xargs -I {} bash -c \"echo '=== {} ===' && wc -l {}\")",
       "Bash(git -C C:/workspace/jojo-game diff HEAD src/game/scenes/MathVictoryScene.js)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(Get-ChildItem -Recurse -File)",
+      "Bash(Measure-Object)",
+      "Bash(Select-Object -ExpandProperty Count)"
     ]
   }
 }
