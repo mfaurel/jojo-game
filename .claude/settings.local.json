@@ -25,7 +25,10 @@
       "Bash(Get-ChildItem -Path \"C:\\\\workspace\\\\jojo-game\" -Recurse -Depth 2)",
       "Bash(Get-ChildItem -Path \"C:\\\\workspace\\\\jojo-game\" -Recurse -File)",
       "Bash(Select-Object -ExpandProperty FullName)",
-      "Bash(Sort-Object)"
+      "Bash(Sort-Object)",
+      "Bash(npm install *)",
+      "Bash(npm ci *)",
+      "Bash(npm view *)"
     ]
   }
 }

@@ -2,43 +2,39 @@
 
 ## Context
 
-The game is a functional Phaser 4 + Vite 6 PWA. The goal is to wrap it as a real Android app, publish it on the Google Play Store, and add: Google Sign-In with cloud saves, AdMob advertising, and two IAP tiers (name unlock + premium bundle). Sign-in is optional — the game must be fully playable offline.
+The game is a functional Phaser 4 + Vite 6 PWA (confirmed: `"phaser": "4.0.0"`, `"vite": "^6.3.1"`).  
+Goal: wrap as a real Android app via Capacitor, publish on Google Play, and add Google Sign-In + cloud saves, AdMob ads, and two IAP tiers. Sign-in is optional; the game must be fully playable offline.
 
 ---
 
-## Manual Setup (Developer does these in external dashboards first)
+## Manual Setup (external dashboards — done before any build)
 
 ### Google Play Console
-1. Create developer account (play.google.com/console, $25 one-time).
-2. New app → "Le Château de Jolyne", Free, Game.
-3. Choose **Application ID**: `fr.esante.lechateaudejolyne` (used everywhere).
-4. App content → declare **Designed for Families**, COPPA compliant, age 5–8. This is required before any build upload.
-5. In-app products → create two one-time products:
-   - `unlock_child_name` — name customization (~1 €)
-   - `premium_bundle` — name + cosmetics pack 1 (~3–5 €)
+1. Create developer account, new app "Le Château de Jolyne", Free, Game.
+2. Application ID: `fr.esante.lechateaudejolyne` (used everywhere).
+3. App content → declare Designed for Families, COPPA, age 5–8.
+4. In-app products → two one-time products:
+   - `unlock_child_name` (~1 €)
+   - `premium_bundle` (~3–5 €)
 
-### Firebase Project
-1. console.firebase.google.com → new project `jojo-game`.
-2. Authentication → enable **Google** sign-in provider.
-3. Firestore → create database, region `europe-west1`, production mode.
-4. Project Settings → add **Android app** (package = `fr.esante.lechateaudejolyne`). Download `google-services.json` → place at `android/app/google-services.json` after Capacitor generates the Android folder.
-5. Project Settings → add **Web app**. Copy the `firebaseConfig` object.
-6. Deploy Firestore security rules (see Phase 5 below).
+### Firebase
+1. New project `jojo-game`, enable Google Auth, create Firestore (`europe-west1`, production mode).
+2. Add Android app (package `fr.esante.lechateaudejolyne`); download `google-services.json` → `android/app/google-services.json`.
+3. Add Web app; copy `firebaseConfig` object into `src/game/services/firebase.js`.
+4. Deploy Firestore security rules (see Phase 5).
 
 ### AdMob
-1. admob.google.com → link to Firebase project above.
-2. Add Android app → get **AdMob App ID** (`ca-app-pub-XXXXXXXX~YYYYYYYYYY`).
-3. Create ad units:
-   - **Banner** "MainMenu Banner" → ad unit ID
-   - **Rewarded** "Hint Reward" → ad unit ID
-4. Mark app as COPPA / Designed for Families (forces non-personalized ads).
-5. Keep Google's test IDs for development (in code, switched via `import.meta.env.DEV`).
+1. Link to Firebase project; add Android app → get **AdMob App ID**.
+2. Create ad units: Banner "MainMenu Banner", Rewarded "Hint Reward".
+3. Mark COPPA / Designed for Families (forces non-personalized ads).
+4. Use Google test IDs in dev, switched via `import.meta.env.DEV` (Vite production builds set this to `false`).
 
 ---
 
 ## Phase 1 — Capacitor Setup
 
-### Packages to install
+### Install
+
 ```
 npm install @capacitor/core @capacitor/cli @capacitor/android
 npm install @capacitor/app @capacitor/splash-screen @capacitor/status-bar
@@ -47,19 +43,21 @@ npm install @codetrix-studio/capacitor-google-auth
 npm install @capgo/native-purchases
 npm install firebase
 ```
-Pin all `@capacitor/*` to the same major version (currently 6.x).
+
+Pin all `@capacitor/*` to the same major (currently 6.x).
 
 ### New file: `capacitor.config.ts` (project root)
+
 ```ts
 import { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'fr.esante.lechateaudejolyne',
   appName: 'Le Château de Jolyne',
   webDir: 'dist',
-  server: { androidScheme: 'https' },  // required: localStorage fails on API ≥31 without this
+  server: { androidScheme: 'https' },  // localStorage broken on API ≥31 without this
   plugins: {
     SplashScreen: { launchShowDuration: 2000, backgroundColor: '#000000', showSpinner: false },
-    StatusBar: { style: 'Dark', backgroundColor: '#000000' },
+    StatusBar:    { style: 'Dark', backgroundColor: '#000000' },
   },
 };
 export default config;
@@ -68,11 +66,13 @@ export default config;
 ### Run once
 ```
 npx cap add android
-# Then place google-services.json at android/app/google-services.json
+# then place google-services.json at android/app/google-services.json
 ```
 
 ### Modify `vite/config.prod.mjs`
-In `manualChunks`, add Firebase alongside Phaser:
+
+In the existing `manualChunks` object (currently only `phaser`), add:
+
 ```js
 manualChunks: {
   phaser:   ['phaser'],
@@ -84,14 +84,14 @@ manualChunks: {
 ```
 npm run build
 npx cap sync android
-npx cap open android   # then Build → Generate Signed Bundle in Android Studio
+npx cap open android   # then Build → Generate Signed Bundle
 ```
 
 ---
 
 ## Phase 2 — Android Native Config
 
-After `npx cap add android`, edit these generated files:
+After `npx cap add android`:
 
 **`android/app/src/main/AndroidManifest.xml`**
 - Add `android:screenOrientation="portrait"` to `<activity>`.
@@ -103,101 +103,146 @@ After `npx cap add android`, edit these generated files:
 
 **`android/app/build.gradle`**
 - `minSdkVersion 22`, `targetSdkVersion 34`, `compileSdkVersion 34`
-- Add dependency: `implementation 'com.google.android.gms:play-services-ads:23.0.0'`
+- Add: `implementation 'com.google.android.gms:play-services-ads:23.0.0'`
 
-**App icons**: generate all mipmap densities (48/72/96/144/192 px) from `public/icon-512.png`.
-
-**Splash screen**: solid `#000000` PNG at `android/app/src/main/res/drawable/splash.png`.
+**Assets**: generate mipmap icons (48/72/96/144/192 px) from `public/icon-512.png`; solid `#000000` PNG for splash.
 
 ---
 
 ## Phase 3 — New Service Files (`src/game/services/`)
 
+```
+src/game/services/
+  firebase.js
+  NameService.js
+  SaveService.js
+  AuthService.js
+  AdService.js
+  IAPService.js
+  BackButtonHandler.js
+```
+
 ### `firebase.js`
-Initializes Firebase app; exports `auth` and `db`.
-Uses modular Firebase v10 SDK (`firebase/app`, `firebase/auth`, `firebase/firestore`).
-Contains the `firebaseConfig` object copied from Firebase console Web app.
+Initializes modular Firebase v10 SDK; exports `auth` (Firebase Auth) and `db` (Firestore).  
+Paste `firebaseConfig` from Firebase Console Web app here.
 
 ### `NameService.js`
-Single responsibility: get/set child name and unlock status.
-- `getChildName()` → `localStorage['jolyne_child_name']` || `'Jolyne'`
-- `setChildName(name)` → trims to 20 chars
-- `isNameUnlocked()` → `localStorage['jolyne_name_unlocked'] === 'true'`
-- `unlockName()` → sets flag
+```js
+export const getChildName  = () => localStorage.getItem('jolyne_child_name')?.slice(0,20) || 'Jolyne';
+export const setChildName  = (n) => localStorage.setItem('jolyne_child_name', String(n).slice(0,20));
+export const isNameUnlocked= () => localStorage.getItem('jolyne_name_unlocked') === 'true';
+export const unlockName    = () => localStorage.setItem('jolyne_name_unlocked', 'true');
+```
 
 ### `SaveService.js`
-Wraps all 6 existing `localStorage` keys (`jolyne_progress`, `jolyne_inventory`, `jolyne_equipment`, `jolyne_memory_progress`, `jolyne_counting_progress`, `math_progress`) plus the two new name keys.
-- `buildSaveSnapshot()` → reads all keys, returns one object with `updatedAt: Date.now()`
-- `applySaveSnapshot(data)` → writes all keys back from a cloud/restored object
-- `loadFromCloud()` → Firestore `getDoc(users/{uid}/saves/gamestate)`
-- `saveToCloud(data)` → Firestore `setDoc(..., data, { merge: true })`
-- `syncSave()` → `saveToCloud(buildSaveSnapshot())` — called after each level completion
+Wraps all localStorage keys without touching existing data modules.
 
-**Merge strategy on login**: cloud wins if `cloudData.updatedAt > localSnapshot.updatedAt`; otherwise upload local.
+Confirmed keys (from codebase):
+- `jolyne_progress`, `jolyne_inventory`, `jolyne_equipment` (LevelData.js)
+- `jolyne_memory_progress` (MemoryData.js)
+- `jolyne_counting_progress` (CountingData.js)
+- `math_progress` (MathWorldData.js)
+- `jolyne_lang` (I18n.js)
+- `jolyne_easter_star` (MainMenu.js)
+- `jolyne_child_name`, `jolyne_name_unlocked` (NameService.js — new)
 
-**Existing data modules are untouched** — `SaveService` reads from localStorage that they already write to.
+```js
+export function buildSaveSnapshot() {
+  const keys = ['jolyne_progress','jolyne_inventory','jolyne_equipment',
+                 'jolyne_memory_progress','jolyne_counting_progress','math_progress',
+                 'jolyne_lang','jolyne_easter_star','jolyne_child_name','jolyne_name_unlocked'];
+  const snap = { updatedAt: Date.now() };
+  keys.forEach(k => { const v = localStorage.getItem(k); if (v !== null) snap[k] = v; });
+  return snap;
+}
+
+export function applySaveSnapshot(data) {
+  const { updatedAt, ...keys } = data;
+  Object.entries(keys).forEach(([k, v]) => localStorage.setItem(k, v));
+}
+
+export async function loadFromCloud() { /* Firestore getDoc users/{uid}/saves/gamestate */ }
+export async function saveToCloud(data) { /* Firestore setDoc with merge:true */ }
+export async function syncSave() { return saveToCloud(buildSaveSnapshot()); }
+```
+
+**Merge on login**: if `cloud.updatedAt > buildSaveSnapshot().updatedAt` → applySaveSnapshot(cloud), else syncSave().
 
 ### `AuthService.js`
-- `signInWithGoogle()` → `GoogleAuth.signIn()` → `signInWithCredential(auth, credential)` → apply/upload save
-- `signOutUser()` → flush save → `signOut(auth)`
+- `signInWithGoogle()` → `GoogleAuth.signIn()` → `signInWithCredential` → merge/upload save
+- `signOutUser()` → `syncSave()` → `signOut(auth)`
 - `getCurrentUser()` → `auth.currentUser`
-- Firebase `onAuthStateChanged` listener registered in `src/game/main.js` applies cloud save on login
 
-Note: add SHA-1 certificate fingerprint to Firebase console (get via `keytool -list -v -keystore release.keystore`).
+Note: add SHA-1 fingerprint to Firebase Console after generating keystore.
 
 ### `AdService.js`
-- `initAds()` → `AdMob.initialize({ initializeForChild: true })` — COPPA mode
-- `showBanner()` / `hideBanner()` → Banner ad at bottom of screen, `npa: '1'` (non-personalized, always)
-- `showRewardedAd()` → returns Promise; resolves on reward, rejects on failure
-- All ad unit IDs switched between test (dev) and real (prod) via `import.meta.env.DEV`
+- `initAds()` → `AdMob.initialize({ initializeForChild: true })` — forces COPPA mode
+- `showBanner()` / `hideBanner()` — banner at bottom, `npa: '1'` always
+- `showRewardedAd()` → returns Promise; resolves on reward, rejects on failure/no fill
+- Ad unit IDs: `import.meta.env.DEV ? TEST_ID : PROD_ID`
 
 ### `IAPService.js`
 - `initIAP()` → `NativePurchases.setup()`
-- `purchaseProduct(sku)` → triggers Play Billing for `'unlock_child_name'` or `'premium_bundle'`
-- `restorePurchases()` → checks for existing purchases and sets localStorage flags
-- After successful `premium_bundle` purchase: call `unlockName()` and set `jolyne_cosmetics1_unlocked = 'true'`
+- `purchaseProduct(sku)` → Play Billing for `'unlock_child_name'` or `'premium_bundle'`
+- `restorePurchases()` → checks existing purchases, sets localStorage flags
+- After `premium_bundle` purchase: `unlockName()` + `localStorage.setItem('jolyne_cosmetics1_unlocked','true')`
 
 ### `BackButtonHandler.js`
-- `initBackButton(game)` → `App.addListener('backButton', ...)` 
-- Routes back button to parent scene based on a static map (SpellingMenu→MainMenu, CastleScene→SpellingMenu, etc.)
-- On MainMenu: launches `ExitConfirmScene` (small overlay with "Quitter le jeu ?" + Yes/No buttons)
+Uses `App.addListener('backButton', ...)` from `@capacitor/app`.
+
+Full back-navigation map:
+```
+SpellingMenu       → MainMenu
+SpellingScene      → (stop self, resume CastleScene — already handled by _close())
+CastleScene        → SpellingMenu
+MemoryMenuScene    → MainMenu
+MemoryScene        → MemoryMenuScene
+CountingMenuScene  → MainMenu
+CountingScene      → CountingMenuScene
+MathWorldSelectScene → MainMenu
+MathDungeon        → MathWorldSelectScene
+MathProblemScene   → (stop self, resume MathDungeon — handled by _showSuccess/_close)
+MathVictoryScene   → MathWorldSelectScene
+CollectionScene    → MainMenu
+MainMenu           → launch ExitConfirmScene
+```
 
 ---
 
 ## Phase 4 — New Scene Files
 
 ### `src/game/scenes/ParentalGateScene.js`
-Overlay scene (semi-transparent dark background) showing a random single-digit addition challenge (e.g., "3 + 7 = ?") with 4 answer buttons. Required before any IAP trigger.
-- On correct answer → `this.scene.stop()` then `this.onSuccess()`
-- On wrong answer → shake animation on button, no hints
-- Launched via: `scene.launch('ParentalGateScene', { onSuccess: () => IAPService.purchaseProduct('unlock_child_name') })`
+Overlay (semi-transparent dark bg) with a random single-digit addition (0–9 + 0–9).  
+4 answer buttons. On correct → `this.scene.stop(); this.scene.get('...').onSuccess()`.  
+On wrong → shake animation, no hints. Launched via `scene.launch('ParentalGateScene', { onSuccess })`.
 
 ### `src/game/scenes/ExitConfirmScene.js`
-Minimal overlay: "Quitter ?" + "Oui" (calls `App.exitApp()`) + "Non" (stops self). Launched by `BackButtonHandler` from `MainMenu`.
+Minimal overlay: "Quitter ?" + "Oui" (calls `App.exitApp()`) + "Non" (stops self).  
+`App.exitApp()` is a no-op on browser/web — only exits on Android.
 
 ---
 
 ## Phase 5 — Firestore Structure & Rules
 
-**Document path**: `users/{uid}/saves/gamestate`
+Document path: `users/{uid}/saves/gamestate`
 
 ```json
 {
   "updatedAt": 1714000000000,
-  "childName": "Emma",
-  "namePurchased": true,
-  "premiumPurchased": false,
-  "lang": "fr",
-  "progress": { "0": true, "1": true },
-  "memory":   { "0": true },
-  "counting": {},
-  "math":     {},
-  "inventory": ["skin_default", "bg_castle"],
-  "equipment": { "skin": "skin_default", "background": "bg_castle", "item_left": null, "item_right": null, "card_back": "card_back_jolyne" }
+  "jolyne_child_name": "Emma",
+  "jolyne_name_unlocked": "true",
+  "jolyne_progress": "{...}",
+  "jolyne_inventory": "[...]",
+  "jolyne_equipment": "{...}",
+  "jolyne_memory_progress": "{...}",
+  "jolyne_counting_progress": "{...}",
+  "math_progress": "{...}",
+  "jolyne_lang": "fr",
+  "jolyne_easter_star": "true"
 }
 ```
 
-**Security rules** (`firestore.rules`):
+**`firestore.rules`** (deploy with Firebase CLI):
 ```
 rules_version = '2';
 service cloud.firestore {
@@ -215,19 +260,52 @@ service cloud.firestore {
 ## Phase 6 — Existing Files to Modify
 
 ### `src/game/data/I18n.js`
-1. Import `getChildName` from `NameService.js`.
-2. In `t()`, after resolving the string, add: `.replace(/\{name\}/g, getChildName())`
-3. Replace every literal `"Jolyne"` in the string table with `"{name}"` (affects ~14 strings across fr/en/es).
+
+**1. Import NameService** at top:
+```js
+import { getChildName } from '../services/NameService.js';
+```
+
+**2. Patch `t()` to interpolate `{name}`** on the final resolved string (works for both plain strings and function-return values):
+
+```js
+export function t(key, ...args) {
+  const lang = getLang();
+  const val = (STRINGS[lang] ?? STRINGS.fr)[key] ?? STRINGS.fr[key];
+  if (val === undefined) return key;
+  const result = typeof val === 'function' ? val(...args) : val;
+  return typeof result === 'string' ? result.replace(/\{name\}/g, getChildName()) : result;
+}
+```
+
+**3. Replace literal `'Jolyne'` in string values with `'{name}'`** in all three locales.
+
+Affected string keys (scan each locale):
+- `gameTitle` — "Le Monde de Jolyne" → "Le Monde de {name}"
+- `spellingTitle` — "Le Château de Jolyne" → "Le Château de {name}"
+- `spellingSubtitle` — "Apprends à épeler en français !" (fr has no Jolyne; en: "Learn to spell" — no Jolyne either; skip)
+- `helpJolyne` — "Aide Jolyne ! ✨" → "Aide {name} ! ✨"
+- `chooseSkin` — "Choisir un personnage pour Jolyne" → "…pour {name}"
+- `item_bg_spelling` — "Classe de Jolyne" → "Classe de {name}"
+- `item_skin_default` — "Jolyne Pixel" → "{name} Pixel"
+
+That's 7 keys × 3 locales = ~21 occurrences, though not all locales use "Jolyne" in every string. Scan with `grep -n 'Jolyne' src/game/data/I18n.js` and replace each occurrence.
+
+> Default `getChildName()` returns `'Jolyne'`, so without IAP the game looks identical to today.
 
 ### `src/game/main.js`
-Add after `const game = new Game(config)`:
+
+Add imports at top:
 ```js
 import { initAds }        from './services/AdService.js';
 import { initIAP }        from './services/IAPService.js';
 import { initBackButton } from './services/BackButtonHandler.js';
 import { auth }           from './services/firebase.js';
 import { loadFromCloud, applySaveSnapshot, buildSaveSnapshot, syncSave } from './services/SaveService.js';
+```
 
+Inside `StartGame()`, after `const game = new Game({ ...config, parent })`:
+```js
 initAds();
 initIAP();
 initBackButton(game);
@@ -239,74 +317,156 @@ auth.onAuthStateChanged(async user => {
   }
 });
 ```
-Register `ParentalGateScene` and `ExitConfirmScene` in the scenes array.
+
+Add `ParentalGateScene` and `ExitConfirmScene` to the `scene` array in `config`.
 
 ### `src/game/scenes/MainMenu.js`
-1. In `create()`: call `showBanner()` after UI is drawn.
-2. In each button's navigation handler: call `hideBanner()` before `this.scene.start(...)`.
-3. Add small top-right "Sign In" / username button: optional, non-blocking. Shows `👤 Prénom` if signed in, `🔐` if not.
+
+1. In `create()`: call `showBanner()` from AdService after UI is drawn.
+2. Before each `this.scene.start(...)` call in button handlers: call `hideBanner()`.
+3. Add small top-right sign-in button (optional, non-blocking): shows username if signed in, lock icon if not.
 
 ### `src/game/scenes/CollectionScene.js`
-In the Bonus tab, add a "Personnaliser le prénom" row:
-- If `isNameUnlocked()` → show an `<input>` HTML overlay for name entry (positioned over canvas, destroyed on blur/enter).
-- If not unlocked → show a purchase button that launches `ParentalGateScene` → `IAPService.purchaseProduct('unlock_child_name')`.
-- Also show "Pack Premium" button for `premium_bundle` purchase.
 
-### `src/game/scenes/SpellingScene.js` and `MathProblemScene.js`
-After `_failCount >= 2`, show a hint button:
+In `_drawBonusTab()`, after the background items, add a "Personnaliser le prénom" section:
+- If `isNameUnlocked()` → show an HTML overlay `<input>` (positioned over canvas via `document.createElement`, destroyed on blur/Enter) that calls `setChildName()`.
+- If not unlocked → show a purchase button that launches `ParentalGateScene` → `IAPService.purchaseProduct('unlock_child_name')`.
+- Show a second "Pack Premium" button for `premium_bundle`.
+
+### `src/game/scenes/SpellingScene.js`
+
+The existing code already calls `_showFirstLetterHint()` automatically at `_failCount >= 2` (line 425–427 in `_showRetry()`). **Replace** the auto-hint call with an opt-in rewarded ad button:
+
+Current (`_showRetry()` lines ~421–427):
+```js
+if (this._failCount >= 2) {
+    this._showFirstLetterHint();
+}
+```
+
+Replace with:
+```js
+if (this._failCount >= 2 && !this._hintButtonShown) {
+    this._showHintButton();
+}
+```
+
+Add `_showHintButton()`:
 ```js
 _showHintButton() {
-  const btn = this.add.text(512, 700, '💡 Indice (vidéo)', { ... }).setInteractive();
+  this._hintButtonShown = true;
+  const btn = this.add.text(512, 700, '💡 Indice', { fontSize: '26px', color: '#ffd700',
+    backgroundColor: '#3a0060', padding: { x: 16, y: 8 } })
+    .setOrigin(0.5).setDepth(15).setInteractive({ useHandCursor: true });
   btn.on('pointerup', async () => {
     btn.destroy();
-    try { await showRewardedAd(); } catch { /* ad unavailable — give hint anyway */ }
-    this._revealHint();
+    try { await showRewardedAd(); } catch { /* no ad fill — give hint anyway */ }
+    this._showFirstLetterHint();
   });
 }
 ```
-This is opt-in, value-providing, and never interrupts gameplay — compliant with Play Family policy.
+
+Import `showRewardedAd` from `AdService.js` at the top of `SpellingScene.js`.  
+Initialize `this._hintButtonShown = false` in `init()`.
+
+### `src/game/scenes/MathProblemScene.js`
+
+No fail count currently exists. Add `this._failCount = 0` in `init()`.  
+In `_handleInput()`, after `this.cameras.main.shake(150, 0.005)` on wrong answer:
+```js
+this._failCount++;
+if (this._failCount >= 2 && !this._hintButtonShown) this._showHintButton();
+```
+
+Add `_showHintButton()` (reveals the correct answer after rewarded ad, same pattern as SpellingScene).
 
 ### `index.html`
-Add to `<style>` or `style.css` on `#game-container`: `touch-action: none;` — eliminates 300ms tap delay on Android WebView.
+
+Add `touch-action: none;` to `#game-container` in `public/style.css` — eliminates 300 ms tap delay on Android WebView.
+
+---
+
+## Dependency / Data Flow
+
+```
+npm run build → dist/
+     ↓
+npx cap sync android → android/ (Capacitor copies dist)
+     ↓
+Android Studio → signed AAB → Play Console
+
+Runtime (Android):
+  StartGame()
+    ├─ initAds()           AdMob SDK init (COPPA mode)
+    ├─ initIAP()           Play Billing setup
+    ├─ initBackButton()    Capacitor App back listener
+    └─ auth.onAuthStateChanged
+          └─ if signed in: loadFromCloud() ↔ Firestore
+                           vs buildSaveSnapshot() ↔ localStorage
+
+localStorage keys:          Firestore: users/{uid}/saves/gamestate
+  jolyne_progress             (same keys, serialized as strings)
+  jolyne_inventory
+  jolyne_equipment
+  jolyne_memory_progress
+  jolyne_counting_progress
+  math_progress
+  jolyne_lang
+  jolyne_easter_star
+  jolyne_child_name   ← new
+  jolyne_name_unlocked← new
+
+IAP flow:
+  CollectionScene Bonus tab
+    → ParentalGateScene (random addition gate)
+        → IAPService.purchaseProduct('unlock_child_name')
+            → unlockName() → NameService
+                → I18n.t() uses getChildName() for {name} tokens
+```
 
 ---
 
 ## Phase 7 — Implementation Order
 
-1. Install packages, create `capacitor.config.ts`, run `npx cap add android` → verify empty game loads in emulator.
-2. Update `vite/config.prod.mjs` (manualChunks). Run build + sync. Verify.
-3. Create `NameService.js`. Update `I18n.js` with `{name}` tokens. Test in browser — default shows "Jolyne".
-4. Create `firebase.js` + `SaveService.js`. Test save/load round-trip in browser.
-5. Create `AuthService.js`. Add sign-in button to `MainMenu`. Test sign-in in Android emulator.
-6. Create `AdService.js`. Add banner to `MainMenu`. Test with Google test ad IDs in emulator.
-7. Create `ParentalGateScene.js` + `ExitConfirmScene.js`. Register in `main.js`.
-8. Create `IAPService.js`. Wire gate → IAP → unlock. Test with Play Store test account.
-9. Create `BackButtonHandler.js`. Test all scene back-navigation paths.
-10. Add hint button + rewarded ad to `SpellingScene` and `MathProblemScene`.
-11. Name customization UI in `CollectionScene`.
-12. Generate release keystore: `keytool -genkey -v -keystore release.keystore -alias jojo-key -keyalg RSA -keysize 2048 -validity 10000`. **Keep this file and its password safe — losing it blocks future updates.**
-13. Set AdMob App ID in `AndroidManifest.xml`. Configure icons + splash screen.
+1. Install packages, create `capacitor.config.ts`, run `npx cap add android`. Verify blank game loads in emulator.
+2. Update `vite/config.prod.mjs` manualChunks. Build + sync. Verify.
+3. Create `NameService.js`. Update `I18n.js` ({name} tokens + patched `t()`). Test in browser: default shows "Jolyne".
+4. Create `firebase.js` + `SaveService.js`. Test save/load round-trip in browser console.
+5. Create `AuthService.js`. Add sign-in button to `MainMenu.js`. Test in Android emulator.
+6. Create `AdService.js`. Add banner to `MainMenu`. Test with Google test IDs in emulator.
+7. Create `ParentalGateScene.js` + `ExitConfirmScene.js`. Register in `main.js` scene array.
+8. Create `IAPService.js`. Wire ParentalGate → IAP → unlock. Test with Play Store test account.
+9. Create `BackButtonHandler.js`. Test all scene back-navigation paths on device.
+10. Add `_showHintButton()` + rewarded ad to `SpellingScene` and `MathProblemScene`.
+11. Name customization UI in `CollectionScene` Bonus tab.
+12. Generate release keystore: `keytool -genkey -v -keystore release.keystore -alias jojo-key -keyalg RSA -keysize 2048 -validity 10000`. **Keep this file safe — losing it blocks future updates.**
+13. Set AdMob App ID in `AndroidManifest.xml`. Generate icons + splash screen.
 14. Build release AAB via Android Studio → upload to Play Console internal testing track. Test on physical device.
-15. Complete Play Console content declarations (privacy policy URL, content rating questionnaire, Designed for Families declaration).
+15. Complete Play Console declarations (privacy policy URL, content rating questionnaire, Designed for Families).
 
 ---
 
 ## Critical Files
 
-| File | Why it matters |
+| File | Change |
 |---|---|
-| `src/game/data/I18n.js` | All "Jolyne" strings live here — single edit point for name personalization |
-| `src/game/main.js` | Bootstrap point for all new services |
-| `src/game/scenes/MainMenu.js` | Only place banner ad shows; also sign-in entry point |
-| `src/game/scenes/CollectionScene.js` | IAP purchase UI entry point |
-| `vite/config.prod.mjs` | Controls build output consumed by Capacitor |
-| `android/app/google-services.json` | Generated by Firebase setup step; required for Google Auth + Firestore |
+| `src/game/data/I18n.js` | Add `{name}` tokens in all 3 locales; patch `t()` to call `getChildName()` |
+| `src/game/main.js` | Add 5 service imports + init calls inside `StartGame()` |
+| `src/game/scenes/MainMenu.js` | `showBanner()` / `hideBanner()` around navigations; sign-in button |
+| `src/game/scenes/CollectionScene.js` | Name customization + IAP purchase UI in Bonus tab |
+| `src/game/scenes/SpellingScene.js` | Replace auto-hint at `_failCount≥2` with opt-in rewarded ad button |
+| `src/game/scenes/MathProblemScene.js` | Add `_failCount` + hint button (same pattern) |
+| `vite/config.prod.mjs` | Add `firebase` manualChunk |
+| `public/style.css` | `touch-action: none` on `#game-container` |
+| `capacitor.config.ts` | New file |
+| `android/app/google-services.json` | Placed after `npx cap add android` |
+| `firestore.rules` | New file for deploy |
 
 ---
 
 ## Verification
 
-- Browser (`npm run dev`): game works, name shows "Jolyne" by default, no ads/IAP (they are no-ops on web).
-- Android emulator: game loads, banner test ad shows, back button navigates correctly, sign-in flow works.
-- Physical device: touch targets work, orientation locked to portrait, audio plays on first tap.
-- Play Console internal test: purchase flows complete (test card), save syncs across devices after sign-in, rewarded ad triggers hint.
+- **Browser** (`npm run dev`): game runs, name shows "Jolyne" by default, ads/IAP are no-ops (Capacitor plugins return errors gracefully on web).
+- **Android emulator**: game loads, banner test ad shows, back button navigates correctly, sign-in flow completes.
+- **Physical device**: touch targets work, orientation locked to portrait, audio plays on first tap.
+- **Play Console internal test**: purchase flows complete (test card), save syncs across devices after sign-in, rewarded ad triggers hint in SpellingScene.
