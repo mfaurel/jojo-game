@@ -28,7 +28,9 @@
       "Bash(Sort-Object)",
       "Bash(npm install *)",
       "Bash(npm ci *)",
-      "Bash(npm view *)"
+      "Bash(npm *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\workspace\\\\jojo-game\" -Recurse -ErrorAction SilentlyContinue)",
+      "Bash(npx vitest *)"
     ]
   }
 }
