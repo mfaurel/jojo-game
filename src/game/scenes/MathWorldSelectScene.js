@@ -10,20 +10,40 @@ export class MathWorldSelectScene extends Scene {
     create() {
         const { width, height } = this.cameras.main;
 
-        this.cameras.main.setBackgroundColor(0x1a1a5e);
+        this.cameras.main.setBackgroundColor(0x08080f);
 
-        for (let i = 0; i < 60; i++) {
-            const x = Math.random() * width;
-            const y = Math.random() * height * 0.65;
-            const r = 1 + Math.random() * 2;
-            const star = this.add.circle(x, y, r, 0xffffff, 0.6 + Math.random() * 0.4);
+        // Graph-paper grid background
+        const gridGfx = this.add.graphics();
+        gridGfx.lineStyle(1, 0x1a2a1a, 0.35);
+        for (let x = 0; x < width; x += 48) gridGfx.lineBetween(x, 0, x, height);
+        for (let y = 0; y < height; y += 48) gridGfx.lineBetween(0, y, width, y);
+
+        // Yellow math glow at center
+        const glow = this.add.graphics();
+        glow.fillGradientStyle(0xffdd00, 0xffdd00, 0x08080f, 0x08080f, 0.22, 0.22, 0, 0);
+        glow.fillCircle(width / 2, height / 2, 380);
+        glow.setAlpha(0.45);
+
+        // Floating math symbols
+        const symbols = ['∑', 'π', '÷', '×', '=', '+', '−', '²', '√', '∞', '7', '3', '9', '%', '!'];
+        for (let i = 0; i < 20; i++) {
+            const sx = 40 + Math.random() * (width - 80);
+            const sy = 40 + Math.random() * (height - 80);
+            const sym = symbols[Math.floor(Math.random() * symbols.length)];
+            const alpha = 0.08 + Math.random() * 0.14;
+            const fsize = Math.floor(18 + Math.random() * 28);
+            const symTxt = this.add.text(sx, sy, sym, {
+                fontSize: `${fsize}px`,
+                fontFamily: 'Arial Black, monospace',
+                color: '#ffd700',
+            }).setAlpha(alpha).setOrigin(0.5);
             this.tweens.add({
-                targets: star,
-                alpha: 0.1 + Math.random() * 0.3,
-                duration: 1000 + Math.random() * 2000,
+                targets: symTxt,
+                alpha: alpha * 0.2,
+                duration: 1800 + Math.random() * 2400,
                 yoyo: true,
                 repeat: -1,
-                delay: Math.random() * 1500,
+                delay: Math.random() * 2000,
             });
         }
 
@@ -119,7 +139,7 @@ export class MathWorldSelectScene extends Scene {
         const bg = this.add.rectangle(cx, cy, cardW, cardH, bgColor, 1).setDepth(10);
         if (unlocked) bg.setInteractive({ useHandCursor: true });
 
-        this.add.text(cx, cy - 44, world.emoji, { fontSize: '38px' })
+        this.add.text(cx, cy - 36, world.emoji, { fontSize: '34px' })
             .setOrigin(0.5).setDepth(11);
 
         this.add.text(cx, cy + 6, t(world.nameKey), {

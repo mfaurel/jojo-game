@@ -50,11 +50,11 @@ export class MainMenu extends Scene {
             hideBanner(); this.scene.start('SpellingMenu');
         });
 
-        this._createChoiceButton(768, 360, t('btnMath'), 0x2266aa, 430, () => {
+        this._createChoiceButton(768, 360, t('btnMath'), 0xaa8800, 430, () => {
             hideBanner(); this.scene.start('MathWorldSelectScene');
         });
 
-        this._createChoiceButton(256, 520, t('btnMemory'), 0x1a4a6a, 430, () => {
+        this._createChoiceButton(256, 520, t('btnMemory'), 0xcc5500, 430, () => {
             hideBanner(); this.scene.start('MemoryMenuScene');
         });
 

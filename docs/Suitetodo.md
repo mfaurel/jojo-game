@@ -1,10 +1,4 @@
 En cours : 
-- When resizing the browser window, it's not recentering automatically
-- On the main screen, completed levels are outside the box
-- On the spelling world, the box for the arrows are not well done as the boxes are overlapping. Make the arrow better (like the arrow of a gameboy emulator for example) 
-- On the spelling world, please put the menu on the top right of the screen
-
-Corriger les bugs
 - On the math world, it should be "Le monde des maths". You can also replace by another world than "monde". Give me propositions
 - On the main screen, change the color of each world so they are different (only blue for the spelling, yellow for math, orange for memory for example)
 - On the math world, I want to have a specific background with an yellow glow about mathematics
@@ -14,6 +8,14 @@ Corriger les bugs
 - On the math world, stop adding points on the top left, just say 1 to 6th rounds
 - On the math world, you can remove the floating jolyne
 - On the math world, I want you to propose some adjustment so the children thinks we are moving in a dungeon. Add some proper movement and make it better
+
+
+
+
+
+
+Corriger les bugs
+- On the spelling world, remove the menu on the top left when innputing the world. We already have a cross onn top right, it's redundant
 - On the memory world, I want to have a specific background with an orange glow about memory. Be artistic
 - On the memory world, you can unlock the first level of each row. Add some emoji in the box so we know what is the theme
 - On the memory world and surely on other worlds, the raining stars when winning are cropped
@@ -21,12 +23,15 @@ Corriger les bugs
 - On the memory counting world, add a word when it's good or bad with a benevolent word
 - On the memory counting world, on the top left, adjust the numbers of the rounds 
 - On my collection, center the collection
-- On my collection, TODO
-- On my collection, 
-- On my collection, 
-
-
-
+- On my collection, I want the order on top to be Orthographe, Mathématiques, Mémoire then Bonus
+- On my collection, I want the "Récompenses spéciales" to be only on bonus 
+- On my collection, on "Orthographe" tab, increase a little bit the picture of each jolyne
+- On my collection, change the color of the string "Robe rose" in pink.
+- On my collection, change the color of the string "Princesse d'or" in yellow.
+- On my collection, on "Mathématiques" tab, it has to be selected by default abd I want to be able to select the default items in left and right arm : in right arm, a wand and a bear in the left arm
+- On my collection, on "Mathématiques" tab, imagine two other items for left and right arm that will be implemented in the game and that are cute (candy cane for example and another one)
+- On my collection, on "Mathématiques" tab, remove the two emoji on the left of "Bras"
+- On my collection, on "Memory" tab, increase the size of the back of the cards
 
 
 

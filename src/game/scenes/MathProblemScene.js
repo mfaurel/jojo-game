@@ -38,9 +38,8 @@ export class MathProblemScene extends Scene {
     create() {
         const { width, height } = this.cameras.main;
 
-        this.add.rectangle(width/2, height/2, width, height, 0x000000, 0.7).setScrollFactor(0);
-
-        this._drawCharacter();
+        this.add.rectangle(width/2, height/2, width, height, 0x000000, 0.7)
+            .setScrollFactor(0);
 
         this.successParticles = this.add.particles(width/2, height/2, 'particle', {
             speed: { min: 100, max: 400 },
@@ -50,7 +49,7 @@ export class MathProblemScene extends Scene {
             quantity: 50,
             blendMode: 'ADD',
             emitting: false
-        });
+        }).setScrollFactor(0);
 
         const panelW = Math.min(width * 0.85, 600);
         const panelH = Math.min(height * 0.92, 680);
@@ -59,9 +58,10 @@ export class MathProblemScene extends Scene {
         const panelTop = py - panelH / 2;
 
         if (this.textures.exists('ui_panel')) {
-            this.add.nineslice(px, py, 'ui_panel', 0, panelW, panelH, 40, 40, 40, 40);
+            this.add.nineslice(px, py, 'ui_panel', 0, panelW, panelH, 40, 40, 40, 40)
+                .setScrollFactor(0);
         } else {
-            const panel = this.add.graphics();
+            const panel = this.add.graphics().setScrollFactor(0);
             panel.fillStyle(0xffffff, 1);
             panel.fillRoundedRect(px - panelW/2, py - panelH/2, panelW, panelH, 30);
             panel.lineStyle(8, 0x00aaff, 1);
@@ -73,7 +73,7 @@ export class MathProblemScene extends Scene {
             fontSize: '30px',
             fontFamily: 'Arial Black',
             color: '#004488'
-        }).setOrigin(0.5, 0);
+        }).setOrigin(0.5, 0).setScrollFactor(0);
 
         if (this.monsterName) {
             this.add.text(px, panelTop + 78, t('versus', t(this.monsterName)), {
@@ -82,7 +82,7 @@ export class MathProblemScene extends Scene {
                 color: '#cc4400',
                 stroke: '#000',
                 strokeThickness: 2
-            }).setOrigin(0.5, 0);
+            }).setOrigin(0.5, 0).setScrollFactor(0);
         }
 
         const opSymbol = this.operation === 'sub' ? '−' : '+';
@@ -92,9 +92,9 @@ export class MathProblemScene extends Scene {
             color: '#ff6600',
             stroke: '#000',
             strokeThickness: 4
-        }).setOrigin(0.5, 0);
+        }).setOrigin(0.5, 0).setScrollFactor(0);
 
-        const inputBg = this.add.graphics();
+        const inputBg = this.add.graphics().setScrollFactor(0);
         inputBg.fillStyle(0x00aaff, 0.1);
         inputBg.fillRoundedRect(px - 80, panelTop + 210, 160, 88, 15);
 
@@ -102,14 +102,13 @@ export class MathProblemScene extends Scene {
             fontSize: '65px',
             fontFamily: 'Arial Black',
             color: '#00aaff'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5).setScrollFactor(0);
 
         const keypadCy = panelTop + 360;
         this._drawKeypad(px, keypadCy, panelW, panelH - 380);
     }
 
     _drawKeypad(cx, cy, panelWidth, availableHeight) {
-        // gap must satisfy: 2*gap*0.9 + gap*0.42 <= availableHeight  →  gap <= availableHeight/2.22
         const gap = Math.floor(Math.min(panelWidth * 0.18, availableHeight / 2.22));
         const keyR = Math.floor(gap * 0.42);
         const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '⌫'];
@@ -127,20 +126,21 @@ export class MathProblemScene extends Scene {
 
     _createKey(x, y, label, color, isBack, size) {
         size = size ?? Math.min(this.cameras.main.width * 0.12, 45);
-        
+
         let bg;
         if (this.textures.exists('ui_button')) {
-            bg = this.add.image(x, y, isBack ? 'ui_button_red' : 'ui_button').setDisplaySize(size * 2, size * 2);
+            bg = this.add.image(x, y, isBack ? 'ui_button_red' : 'ui_button')
+                .setDisplaySize(size * 2, size * 2).setScrollFactor(0);
         } else {
-            bg = this.add.circle(x, y, size, color, 1);
+            bg = this.add.circle(x, y, size, color, 1).setScrollFactor(0);
         }
         bg.setInteractive({ useHandCursor: true });
-        
+
         const txt = this.add.text(x, y, label, {
             fontSize: '32px',
             fontFamily: 'Arial Black',
             color: '#ffffff'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5).setScrollFactor(0);
 
         bg.on('pointerover', () => bg.setScale(1.1));
         bg.on('pointerout', () => bg.setScale(1));
@@ -166,7 +166,6 @@ export class MathProblemScene extends Scene {
         } else if (this.currentInput.length >= this.answer.toString().length) {
             this._inputLocked = true;
             this._failCount++;
-            this.cameras.main.shake(150, 0.005);
             const { width, height } = this.cameras.main;
             const msg = this.add.text(width / 2, height / 2 - 60, t('tryAgainMath'), {
                 fontSize: '40px',
@@ -174,7 +173,7 @@ export class MathProblemScene extends Scene {
                 color: '#ffd700',
                 stroke: '#000',
                 strokeThickness: 6,
-            }).setOrigin(0.5).setDepth(100);
+            }).setOrigin(0.5).setDepth(100).setScrollFactor(0);
             this.time.delayedCall(900, () => {
                 msg.destroy();
                 this.currentInput = '';
@@ -189,14 +188,14 @@ export class MathProblemScene extends Scene {
 
     _showSuccess() {
         this.successParticles.explode(60);
-        
+
         const bravo = this.add.text(this.cameras.main.width/2, this.cameras.main.height/2, t('superText'), {
             fontSize: '80px',
             fontFamily: 'Arial Black',
             color: '#ffd700',
             stroke: '#000',
             strokeThickness: 12
-        }).setOrigin(0.5).setScale(0).setDepth(1000);
+        }).setOrigin(0.5).setScale(0).setDepth(1000).setScrollFactor(0);
 
         this.tweens.add({
             targets: bravo,
@@ -223,34 +222,13 @@ export class MathProblemScene extends Scene {
             color: '#ffd700',
             backgroundColor: '#003366',
             padding: { x: 16, y: 8 },
-        }).setOrigin(0.5).setDepth(50).setInteractive({ useHandCursor: true });
+        }).setOrigin(0.5).setDepth(50).setInteractive({ useHandCursor: true }).setScrollFactor(0);
 
         btn.on('pointerup', async () => {
             btn.destroy();
             try { await showRewardedAd(); } catch {}
-            // Reveal the correct answer in the input display
             this.inputText.setText(String(this.answer));
             this.inputText.setStyle({ color: '#00ff88' });
         });
-    }
-
-    _drawCharacter() {
-        const { height } = this.cameras.main;
-
-        if (this.textures.exists('jojo_pixel')) {
-            const skinItem = ITEMS.find(i => i.id === (this.equip.skin ?? 'skin_default'));
-            const char = this.add.image(120, height - 120, 'jojo_pixel').setDisplaySize(180, 180);
-            if (skinItem?.tint) char.setTint(skinItem.tint);
-
-
-            this.tweens.add({
-                targets: char,
-                y: height - 130,
-                duration: 900,
-                yoyo: true,
-                repeat: -1,
-                ease: 'Sine.InOut'
-            });
-        }
     }
 }

@@ -108,10 +108,11 @@ const STRINGS = {
         continueBtn:         'Continuer →',
 
         // ── Math world select ────────────────────────────────────────────────
-        mathWorldTitle:    '🔢 Les Mondes des Maths',
+        mathWorldTitle:    '🔢 Le Donjon des Maths',
         chooseMathWorld:   'Choisis ton monde !',
         completePrevWorld: 'Terminer le\nmonde précédent',
         worldLabel:        (n) => `MONDE ${n}`,
+        roundLabel:        (n, tot) => `⚔️ Manche ${n} / ${tot}`,
 
         // ── Collection screen ────────────────────────────────────────────────
         collectionTitle:     'Ma Collection ✨',
@@ -270,10 +271,11 @@ const STRINGS = {
         worldComplete:       (n) => `World ${n} complete!`,
         continueBtn:         'Continue →',
 
-        mathWorldTitle:    '🔢 Math Worlds',
+        mathWorldTitle:    '🔢 The Math Dungeon',
         chooseMathWorld:   'Choose your world!',
         completePrevWorld: 'Complete the\nprevious world',
         worldLabel:        (n) => `WORLD ${n}`,
+        roundLabel:        (n, tot) => `⚔️ Round ${n} / ${tot}`,
 
         collectionTitle:     'My Collection ✨',
         backMenu:            '⬅ Menu',
@@ -428,10 +430,11 @@ const STRINGS = {
         worldComplete:       (n) => `¡Mundo ${n} completado!`,
         continueBtn:         'Continuar →',
 
-        mathWorldTitle:    '🔢 Mundos de Matemáticas',
+        mathWorldTitle:    '🔢 El Calabozo de Mates',
         chooseMathWorld:   '¡Elige tu mundo!',
         completePrevWorld: 'Completa el\nmundo anterior',
         worldLabel:        (n) => `MUNDO ${n}`,
+        roundLabel:        (n, tot) => `⚔️ Manche ${n} / ${tot}`,
 
         collectionTitle:     'Mi Colección ✨',
         backMenu:            '⬅ Menú',

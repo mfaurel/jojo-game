@@ -14,9 +14,10 @@ export class MathDungeon extends Scene {
     }
 
     init(data) {
-        this.worldIndex = data.worldIndex ?? 0;
+        this.worldIndex  = data.worldIndex ?? 0;
         this.worldConfig = MATH_WORLDS[this.worldIndex];
-        this.score = 0;
+        this.roundCount  = 0;
+        this.totalRounds = Math.round(this.worldConfig.pointsNeeded / 200);
     }
 
     create() {
@@ -33,6 +34,9 @@ export class MathDungeon extends Scene {
         this.worldGroup = this.add.group();
 
         this._drawArms(width, height);
+
+        // Torch flame graphics (updated every frame)
+        this.torchGfx = this.add.graphics().setScrollFactor(0).setDepth(7);
 
         this._createUI(width, height);
 
@@ -53,11 +57,45 @@ export class MathDungeon extends Scene {
         floor.fillGradientStyle(wc.floorTop, wc.floorTop, wc.floorBottom, wc.floorBottom, 1);
         floor.fillRect(0, vanishingY, w, h - vanishingY);
 
-        const fog = this.add.graphics().setScrollFactor(0);
+        // Stone wall side panels
+        const walls = this.add.graphics().setScrollFactor(0).setDepth(2);
+        walls.fillStyle(0x111008, 1);
+        walls.fillRect(0, 0, w * 0.17, h);
+        walls.fillRect(w * 0.83, 0, w * 0.17, h);
+
+        // Brickwork texture on walls
+        walls.lineStyle(1, 0x221a08, 0.55);
+        for (let row = 0; row < Math.ceil(h / 42); row++) {
+            const yy = row * 42;
+            const xOff = (row % 2) * 22;
+            for (let col = -1; col < 5; col++) {
+                walls.strokeRect(xOff + col * 44, yy, 44, 42);
+                walls.strokeRect(w * 0.83 + xOff + col * 44, yy, 44, 42);
+            }
+        }
+
+        // Subtle corner darkness
+        const corner = this.add.graphics().setScrollFactor(0).setDepth(3);
+        corner.fillStyle(0x000000, 1);
+        corner.fillGradientStyle(0x000000, 0x000000, 0x000000, 0x000000, 0.7, 0, 0.7, 0);
+        corner.fillRect(0, 0, w * 0.17, h);
+        corner.fillGradientStyle(0x000000, 0x000000, 0x000000, 0x000000, 0, 0.7, 0, 0.7);
+        corner.fillRect(w * 0.83, 0, w * 0.17, h);
+
+        // Torch holders (static wall fixtures)
+        const torchHolders = this.add.graphics().setScrollFactor(0).setDepth(6);
+        torchHolders.fillStyle(0x3a2a10, 1);
+        const lx = w * 0.175, rx = w * 0.825, ty = h * 0.36;
+        torchHolders.fillRect(lx - 4, ty, 8, 20);
+        torchHolders.fillRect(lx - 8, ty + 18, 16, 6);
+        torchHolders.fillRect(rx - 4, ty, 8, 20);
+        torchHolders.fillRect(rx - 8, ty + 18, 16, 6);
+
+        const fog = this.add.graphics().setScrollFactor(0).setDepth(4);
         const fc = wc.fogColor;
         fog.fillGradientStyle(fc, fc, fc, fc, 0, 0, 0.8, 0.8);
-        fog.fillCircle(w / 2, vanishingY, 150);
-        fog.setAlpha(0.4);
+        fog.fillCircle(w / 2, vanishingY, 160);
+        fog.setAlpha(0.35);
     }
 
     _createWorldParticles(w, h) {
@@ -144,28 +182,17 @@ export class MathDungeon extends Scene {
     }
 
     _createUI(w, h) {
-        // Score HUD background
-        this.add.rectangle(135, 42, 250, 58, 0x000000, 0.5).setDepth(199).setScrollFactor(0);
+        // Round counter HUD (top-left)
+        this.add.rectangle(95, 30, 176, 40, 0x000000, 0.55)
+            .setDepth(199).setScrollFactor(0);
 
-        this.add.text(18, 16, t('pointsLabel'), {
-            fontSize: '15px',
-            color: '#aaccff',
-            fontFamily: 'Arial Black',
-        }).setDepth(200).setScrollFactor(0);
-
-        this.scoreText = this.add.text(18, 34, `0 / ${this.worldConfig.pointsNeeded}`, {
-            fontSize: '22px',
+        this.roundText = this.add.text(14, 10, t('roundLabel', 0, this.totalRounds), {
+            fontSize: '20px',
             fontFamily: 'Arial Black',
             color: '#ffd700',
             stroke: '#000',
             strokeThickness: 3,
         }).setDepth(200).setScrollFactor(0);
-
-        // Progress bar track
-        this.add.rectangle(135, 73, 222, 12, 0x333333).setDepth(200).setScrollFactor(0);
-        // Progress bar fill (origin 0, 0.5 so it grows from the left)
-        this.progressBar = this.add.rectangle(24, 73, 0, 12, 0x00ff88)
-            .setOrigin(0, 0.5).setDepth(201).setScrollFactor(0);
 
         // World name badge top-centre
         this.add.text(w / 2, 12, t(this.worldConfig.nameKey), {
@@ -176,27 +203,24 @@ export class MathDungeon extends Scene {
             strokeThickness: 3,
         }).setOrigin(0.5, 0).setDepth(200).setScrollFactor(0);
 
-        const backBtn = this.add.text(w * 0.95, h * 0.05, 'Menu', {
-            fontSize: 'clamp(18px, 3.5vw, 24px)',
+        const backBtn = this.add.text(w - 14, 14, 'Menu', {
+            fontSize: '20px',
             color: '#ffffff',
             backgroundColor: '#004488',
-            padding: { x: 15, y: 8 }
+            padding: { x: 12, y: 6 }
         }).setOrigin(1, 0).setInteractive({ useHandCursor: true }).setDepth(200).setScrollFactor(0);
 
         backBtn.on('pointerup', () => this.scene.start('MathWorldSelectScene'));
     }
 
-    _updateScoreHUD(newScore) {
-        this.score = newScore;
-        this.scoreText.setText(`${newScore} / ${this.worldConfig.pointsNeeded}`);
-        const fraction = Math.min(newScore / this.worldConfig.pointsNeeded, 1);
-        this.progressBar.width = 222 * fraction;
-        if (fraction < 0.5) this.progressBar.setFillStyle(0x00ff88);
-        else if (fraction < 0.85) this.progressBar.setFillStyle(0xffdd00);
-        else this.progressBar.setFillStyle(0xff8800);
+    _updateRoundHUD(newRound) {
+        this.roundCount = newRound;
+        this.roundText.setText(t('roundLabel', newRound, this.totalRounds));
     }
 
     update(time, delta) {
+        this._updateTorches(time);
+
         if (!this.isWalking) return;
 
         this.distance += delta * 0.35;
@@ -210,21 +234,55 @@ export class MathDungeon extends Scene {
         this._animateArms(time);
     }
 
+    _updateTorches(time) {
+        if (!this.torchGfx) return;
+        const { width, height } = this.cameras.main;
+        const flicker = Math.sin(time * 0.012) * 0.35 + Math.sin(time * 0.019) * 0.25 + 0.7;
+        const r = 18 + flicker * 10;
+        const lx = width * 0.175;
+        const rx = width * 0.825;
+        const ty = height * 0.345;
+
+        this.torchGfx.clear();
+
+        // Warm glow halos on walls
+        this.torchGfx.fillStyle(0xff6600, 0.12 * flicker);
+        this.torchGfx.fillCircle(lx, ty, r * 2.8);
+        this.torchGfx.fillCircle(rx, ty, r * 2.8);
+
+        // Outer flame (orange)
+        this.torchGfx.fillStyle(0xff6600, 0.75 * flicker);
+        this.torchGfx.fillEllipse(lx, ty - r * 0.3, r * 1.1, r * 1.8);
+        this.torchGfx.fillEllipse(rx, ty - r * 0.3, r * 1.1, r * 1.8);
+
+        // Inner flame (yellow)
+        this.torchGfx.fillStyle(0xffdd00, 0.9 * flicker);
+        this.torchGfx.fillEllipse(lx, ty - r * 0.5, r * 0.6, r * 1.2);
+        this.torchGfx.fillEllipse(rx, ty - r * 0.5, r * 0.6, r * 1.2);
+
+        // White-hot core
+        this.torchGfx.fillStyle(0xffffff, 0.6 * flicker);
+        this.torchGfx.fillCircle(lx, ty - r * 0.5, r * 0.22);
+        this.torchGfx.fillCircle(rx, ty - r * 0.5, r * 0.22);
+    }
+
     _updatePerspective() {
         const { width, height } = this.cameras.main;
         const vX = width / 2;
-        const vY = height / 2;
+        const bob = this.isWalking ? Math.sin(this.distance * 0.08) * 6 : 0;
+        const vY = height * 0.5 + bob;
         const gc = this.worldConfig.gridColor;
 
         this.lines.clear();
 
+        // Corner rays to vanishing point
         this.lines.lineStyle(2, gc, 0.2);
-
         this.lines.lineBetween(0, 0, vX, vY);
         this.lines.lineBetween(width, 0, vX, vY);
         this.lines.lineBetween(0, height, vX, vY);
         this.lines.lineBetween(width, height, vX, vY);
 
+        // Receding depth rectangles
         const offset = (this.distance % 150) / 150;
         for (let i = 0; i < 8; i++) {
             const z = i - offset;
@@ -235,6 +293,27 @@ export class MathDungeon extends Scene {
             if (rw < 5000) {
                 this.lines.lineStyle(1.5, gc, 0.3 * (1 - i / 8));
                 this.lines.strokeRect(vX - rw / 2, vY - rh / 2, rw, rh);
+            }
+        }
+
+        // Scrolling floor grid lines (give sense of forward movement)
+        const floorOffset = (this.distance % 80) / 80;
+        for (let i = 0; i < 8; i++) {
+            const zFrac = (i + floorOffset) / 8;
+            const y = vY + (height - vY) * zFrac;
+            if (y > vY && y <= height) {
+                this.lines.lineStyle(1, gc, 0.14 * (1 - zFrac * 0.6));
+                this.lines.lineBetween(0, y, width, y);
+            }
+        }
+
+        // Scrolling ceiling grid lines (mirror of floor)
+        for (let i = 0; i < 6; i++) {
+            const zFrac = (i + floorOffset) / 6;
+            const y = vY - vY * zFrac;
+            if (y < vY && y >= 0) {
+                this.lines.lineStyle(1, gc, 0.10 * (1 - zFrac * 0.6));
+                this.lines.lineBetween(0, y, width, y);
             }
         }
     }
@@ -468,14 +547,18 @@ export class MathDungeon extends Scene {
 
     _animateArms(time) {
         const { width, height } = this.cameras.main;
-        const swayX = Math.sin(time / 250) * 15;
-        const swayY = Math.cos(time / 200) * 10;
+        // Walking: arms swing in opposite phase; idle: gentle bob only
+        const walk = Math.sin(this.distance * 0.09);
+        const swingX = this.isWalking ? walk * 22 : Math.sin(time / 1400) * 6;
+        const swingY = this.isWalking
+            ? Math.abs(walk) * 14 + Math.cos(time / 800) * 4
+            : Math.cos(time / 1000) * 6;
 
-        this.wandArm.x = (width * 0.85) + swayX;
-        this.wandArm.y = (height * 0.85) + swayY;
+        this.wandArm.x  = width  * 0.82 + swingX;
+        this.wandArm.y  = height * 0.88 + swingY + (this.isWalking ? -walk * 10 : 0);
 
-        this.teddyArm.x = (width * 0.15) - swayX;
-        this.teddyArm.y = (height * 0.85) + swayY;
+        this.teddyArm.x = width  * 0.18 - swingX;
+        this.teddyArm.y = height * 0.88 + swingY + (this.isWalking ?  walk * 10 : 0);
     }
 
     _triggerEncounter() {
@@ -520,9 +603,9 @@ export class MathDungeon extends Scene {
                     operation: this.worldConfig.operation ?? 'add',
                     monsterName: name,
                     onSuccess: () => {
-                        const newScore = this.score + 200;
-                        this._updateScoreHUD(newScore);
-                        if (newScore >= this.worldConfig.pointsNeeded) {
+                        const newRound = this.roundCount + 1;
+                        this._updateRoundHUD(newRound);
+                        if (newRound >= this.totalRounds) {
                             this._triggerWorldComplete();
                         } else {
                             this._handleMonsterDefeat(container);
@@ -1048,9 +1131,9 @@ export class MathDungeon extends Scene {
                     numMax:    this.worldConfig.numMax,
                     operation: this.worldConfig.operation ?? 'add',
                     onSuccess: () => {
-                        const newScore = this.score + 200;
-                        this._updateScoreHUD(newScore);
-                        if (newScore >= this.worldConfig.pointsNeeded) {
+                        const newRound = this.roundCount + 1;
+                        this._updateRoundHUD(newRound);
+                        if (newRound >= this.totalRounds) {
                             this._triggerWorldComplete();
                         } else {
                             this._addDecoration();
