@@ -1,13 +1,11 @@
 En cours : 
-- On the math world, the emoji are cropped at the top of each box "La toundra" ..., fix it by replacing correctly the emoji a little lower
-- On the math world, there's a button "Indice" that appears but it does nothing. Remove it
-- On the math world, when you resize the screen during a game, it gets glitched. The button menu is not moving and there are still black bars on right and left
-- On the math world, make the walking longer by 2 more seconds
-- On the main screen, I want that the counting stars get "Mathématiques" in the second row.
-- On the spelling world, remove the menu on the top left when innputing the world. We already have a cross onn top right, it's redundant
 
 Corriger les bugs
-
+- On the math world, the emoji are cropped at the top of each box "La toundra" ..., fix it by replacing correctly the emoji a little lower. It has been fixed on the spelling world so correct it in the math world
+- On the main screen, add back at the row ageter "Mémoire", the number of star in "Mémo-chiffres"
+- On the spelling world, when failing three times, don't get the button "indice" but color all the letters that need to be input in green instead of orange to help.
+- On the math world, when you resize the screen during a game, it gets glitched. The button menu is not moving and there are still black bars on right and left. The right arm and menu are correctly going to the right but the main background in blue for "The tundra" is not being resized
+- On the math world, make the walking faster by 1 more seconds
 - On all the worlds, the lock is bad cropped on top in locked levels. Fix it.
 - On the memory world, I want to have a specific background with an orange glow about memory. Be artistic
 - On the memory world, you can unlock the first level of each row. Add some emoji in the box so we know what is the theme
