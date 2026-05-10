@@ -2,6 +2,8 @@ import { Scene } from 'phaser';
 import { getEquipment, addToInventory, getProgress, LEVELS } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
 import { getMathProgress, MATH_WORLDS } from '../data/MathWorldData.js';
+import { getMemoryProgress, MEMORY_LEVELS } from '../data/MemoryData.js';
+import { getCountingProgress, COUNTING_LEVELS } from '../data/CountingData.js';
 import { t, cycleLang, getLang } from '../data/I18n.js';
 
 export class MainMenu extends Scene {
@@ -78,6 +80,7 @@ export class MainMenu extends Scene {
             this.scene.start('CollectionScene');
         });
 
+        this._drawLeaderboard();
         this._createLangButton();
         this._createFullscreenButton();
 
@@ -372,6 +375,57 @@ export class MainMenu extends Scene {
                 });
             },
         });
+    }
+
+    _drawLeaderboard() {
+        const spellingStars  = Object.values(getProgress()).filter(Boolean).length;
+        const memoryStars    = Object.values(getMemoryProgress()).filter(Boolean).length;
+        const countingStars  = Object.values(getCountingProgress()).filter(Boolean).length;
+        const mathStars      = Object.values(getMathProgress()).filter(Boolean).length;
+
+        const maxSpelling  = LEVELS.length;           // 10
+        const maxMemory    = MEMORY_LEVELS.length;    // 9
+        const maxCounting  = COUNTING_LEVELS.length;  // 5
+        const maxMath      = MATH_WORLDS.length;      // 6
+
+        const total    = spellingStars + memoryStars + countingStars + mathStars;
+        const maxTotal = maxSpelling + maxMemory + maxCounting + maxMath;
+
+        const px = 10, py = 608, pw = 215, ph = 155;
+
+        const bg = this.add.graphics();
+        bg.fillStyle(0x000000, 0.55);
+        bg.fillRoundedRect(px, py, pw, ph, 10);
+        bg.lineStyle(1, 0xffd700, 0.4);
+        bg.strokeRoundedRect(px, py, pw, ph, 10);
+
+        const base = { fontSize: '15px', fontFamily: 'Arial, sans-serif', color: '#ffffff', stroke: '#000', strokeThickness: 2 };
+        const gold = { ...base, fontSize: '16px', color: '#ffd700', fontFamily: 'Arial Black, Arial, sans-serif' };
+
+        this.add.text(px + pw / 2, py + 14, '⭐ Mes étoiles', gold).setOrigin(0.5, 0.5);
+
+        const sep = this.add.graphics();
+        sep.lineStyle(1, 0xffd700, 0.3);
+        sep.lineBetween(px + 6, py + 27, px + pw - 6, py + 27);
+
+        const rows = [
+            { label: '🏰 Orthographe', val: spellingStars,  max: maxSpelling },
+            { label: '🃏 Mémoire',     val: memoryStars,    max: maxMemory },
+            { label: '🔢 Chiffres',    val: countingStars,  max: maxCounting },
+            { label: '➕ Maths',       val: mathStars,      max: maxMath },
+        ];
+
+        rows.forEach((row, i) => {
+            const y = py + 42 + i * 22;
+            this.add.text(px + 10, y, row.label, base).setOrigin(0, 0.5);
+            this.add.text(px + pw - 10, y, `${row.val}/${row.max} ⭐`, base).setOrigin(1, 0.5);
+        });
+
+        const sep2 = this.add.graphics();
+        sep2.lineStyle(1, 0xffd700, 0.3);
+        sep2.lineBetween(px + 6, py + 130, px + pw - 6, py + 130);
+
+        this.add.text(px + pw / 2, py + 143, `Total : ${total} / ${maxTotal} ⭐`, gold).setOrigin(0.5, 0.5);
     }
 
     _createSmallButton(x, y, label, color, callback) {
