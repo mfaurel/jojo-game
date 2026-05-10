@@ -6,6 +6,10 @@ import { getMemoryProgress, MEMORY_LEVELS } from '../data/MemoryData.js';
 import { getCountingProgress, COUNTING_LEVELS } from '../data/CountingData.js';
 import { t, cycleLang, getLang } from '../data/I18n.js';
 
+const EASTER_KEY = 'jolyne_easter_star';
+function getEasterStar()  { try { return localStorage.getItem(EASTER_KEY) === 'true'; } catch { return false; } }
+function saveEasterStar() { try { localStorage.setItem(EASTER_KEY, 'true'); } catch {} }
+
 export class MainMenu extends Scene {
     constructor() {
         super('MainMenu');
@@ -76,9 +80,7 @@ export class MainMenu extends Scene {
             }).setOrigin(0.5, 0);
         }
 
-        this._createSmallButton(900, 710, t('btnCollection'), 0xaa00aa, () => {
-            this.scene.start('CollectionScene');
-        });
+        this._createCollectionButton();
 
         this._drawLeaderboard();
         this._createLangButton();
@@ -388,8 +390,9 @@ export class MainMenu extends Scene {
         const maxCounting  = COUNTING_LEVELS.length;  // 5
         const maxMath      = MATH_WORLDS.length;      // 6
 
-        const total    = spellingStars + memoryStars + countingStars + mathStars;
-        const maxTotal = maxSpelling + maxMemory + maxCounting + maxMath;
+        const easterStar = getEasterStar() ? 1 : 0;
+        const total    = spellingStars + memoryStars + countingStars + mathStars + easterStar;
+        const maxTotal = maxSpelling + maxMemory + maxCounting + maxMath + easterStar;
 
         const px = 10, py = 608, pw = 215, ph = 155;
 
@@ -426,6 +429,28 @@ export class MainMenu extends Scene {
         sep2.lineBetween(px + 6, py + 130, px + pw - 6, py + 130);
 
         this.add.text(px + pw / 2, py + 143, `Total : ${total} / ${maxTotal} ⭐`, gold).setOrigin(0.5, 0.5);
+    }
+
+    _createCollectionButton() {
+        const earned = getEasterStar();
+
+        this._createSmallButton(900, 710, t('btnCollection'), 0xaa00aa, () => {
+            saveEasterStar();
+            this.scene.start('CollectionScene');
+        });
+
+        if (earned) {
+            const star = this.add.text(1008, 698, '⭐', { fontSize: '20px' })
+                .setOrigin(0.5).setDepth(5);
+            this.tweens.add({
+                targets: star,
+                scale: 1.25,
+                duration: 900,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.InOut',
+            });
+        }
     }
 
     _createSmallButton(x, y, label, color, callback) {
