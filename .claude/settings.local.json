@@ -30,7 +30,8 @@
       "Bash(npm ci *)",
       "Bash(npm *)",
       "Bash(Get-ChildItem -Path \"C:\\\\workspace\\\\jojo-game\" -Recurse -ErrorAction SilentlyContinue)",
-      "Bash(npx vitest *)"
+      "Bash(npx vitest *)",
+      "Bash(dir C:\\\\workspace\\\\jojo-game\\\\src\\\\game *)"
     ]
   }
 }
