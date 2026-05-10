@@ -4,6 +4,7 @@ import { t } from '../data/I18n.js';
 import { audio } from '../systems/AudioManager.js';
 import { getEquipment } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
+import { showRewardedAd } from '../services/AdService.js';
 
 export class SpellingScene extends Scene {
     constructor() {
@@ -19,8 +20,9 @@ export class SpellingScene extends Scene {
         this.tiles     = [];
         this.slotTexts = [];
         this.slots     = [];
-        this._locked   = false; // prevent input during success/retry animation
-        this._failCount = 0;
+        this._locked          = false;
+        this._failCount       = 0;
+        this._hintButtonShown = false;
         
         const equip = getEquipment();
         const skinItem = ITEMS.find(i => i.id === (equip.skin ?? 'skin_default'));
@@ -422,9 +424,26 @@ export class SpellingScene extends Scene {
             msg.destroy();
             this._resetAttempt();
             this._locked = false;
-            if (this._failCount >= 2) {
-                this._showFirstLetterHint();
+            if (this._failCount >= 2 && !this._hintButtonShown) {
+                this._showHintButton();
             }
+        });
+    }
+
+    _showHintButton() {
+        this._hintButtonShown = true;
+        const btn = this.add.text(512, 700, '💡 Indice', {
+            fontSize: '26px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#ffd700',
+            backgroundColor: '#3a0060',
+            padding: { x: 16, y: 8 },
+        }).setOrigin(0.5).setDepth(15).setInteractive({ useHandCursor: true });
+
+        btn.on('pointerup', async () => {
+            btn.destroy();
+            try { await showRewardedAd(); } catch {}
+            this._showFirstLetterHint();
         });
     }
 

@@ -5,6 +5,8 @@ import { getMathProgress, MATH_WORLDS } from '../data/MathWorldData.js';
 import { getMemoryProgress, MEMORY_LEVELS } from '../data/MemoryData.js';
 import { getCountingProgress, COUNTING_LEVELS } from '../data/CountingData.js';
 import { t, cycleLang, getLang } from '../data/I18n.js';
+import { showBanner, hideBanner } from '../services/AdService.js';
+import { getCurrentUser, signInWithGoogle, signOutUser } from '../services/AuthService.js';
 
 const EASTER_KEY = 'jolyne_easter_star';
 function getEasterStar()  { try { return localStorage.getItem(EASTER_KEY) === 'true'; } catch { return false; } }
@@ -45,19 +47,19 @@ export class MainMenu extends Scene {
 
         // 2×2 grid of mode buttons (centers at 256 / 768 to ensure 62 px gap for 430 px wide buttons)
         this._createChoiceButton(256, 360, t('btnSpelling'), 0x2a2a88, 430, () => {
-            this.scene.start('SpellingMenu');
+            hideBanner(); this.scene.start('SpellingMenu');
         });
 
         this._createChoiceButton(768, 360, t('btnMath'), 0x2266aa, 430, () => {
-            this.scene.start('MathWorldSelectScene');
+            hideBanner(); this.scene.start('MathWorldSelectScene');
         });
 
         this._createChoiceButton(256, 520, t('btnMemory'), 0x1a4a6a, 430, () => {
-            this.scene.start('MemoryMenuScene');
+            hideBanner(); this.scene.start('MemoryMenuScene');
         });
 
         this._createChoiceButton(768, 520, t('btnCounting'), 0x1a6a2a, 430, () => {
-            this.scene.start('CountingMenuScene');
+            hideBanner(); this.scene.start('CountingMenuScene');
         });
 
         const spellingDone = LEVELS.filter(l => getProgress()[l.id]).length;
@@ -85,8 +87,11 @@ export class MainMenu extends Scene {
         this._drawLeaderboard();
         this._createLangButton();
         this._createFullscreenButton();
+        this._createSignInButton();
 
         this._initCheatCode();
+
+        showBanner();
     }
 
     // ── Background themes ─────────────────────────────────────────────────────
@@ -436,6 +441,7 @@ export class MainMenu extends Scene {
 
         this._createSmallButton(900, 710, t('btnCollection'), 0xaa00aa, () => {
             saveEasterStar();
+            hideBanner();
             this.scene.start('CollectionScene');
         });
 
@@ -472,6 +478,30 @@ export class MainMenu extends Scene {
         }).setOrigin(0.5);
 
         bg.on('pointerup', callback);
+    }
+
+    _createSignInButton() {
+        const user  = getCurrentUser();
+        const label = user ? `👤 ${user.displayName?.split(' ')[0] ?? '…'}` : '🔐';
+        const btn   = this.add.text(512, 35, label, {
+            fontSize: '20px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#ffffff',
+            backgroundColor: '#334455',
+            padding: { x: 12, y: 6 },
+        }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+
+        btn.on('pointerover', () => btn.setStyle({ color: '#ffd700' }));
+        btn.on('pointerout',  () => btn.setStyle({ color: '#ffffff' }));
+        btn.on('pointerup',   async () => {
+            if (user) {
+                await signOutUser();
+            } else {
+                try { await signInWithGoogle(); } catch {}
+            }
+            this.cameras.main.fadeOut(300, 0, 0, 0);
+            this.cameras.main.once('camerafadeoutcomplete', () => this.scene.restart());
+        });
     }
 
     _createChoiceButton(x, y, label, color, widthOrCallback, callback) {
