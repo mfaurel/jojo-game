@@ -127,6 +127,39 @@ describe('leaderboard i18n', () => {
     });
 });
 
+describe('roundLabel', () => {
+    it('produces a string containing round numbers in all three locales', () => {
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            const result = t('roundLabel', 3, 6);
+            expect(typeof result).toBe('string');
+            expect(result).toContain('3');
+            expect(result).toContain('6');
+        }
+    });
+
+    it('contains the sword emoji in all three locales', () => {
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            expect(t('roundLabel', 1, 6)).toContain('⚔️');
+        }
+    });
+});
+
+describe('mathWorldTitle', () => {
+    it('contains the math emoji in all three locales', () => {
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            expect(t('mathWorldTitle')).toContain('🔢');
+        }
+    });
+
+    it('is different in each locale', () => {
+        const titles = ['fr', 'en', 'es'].map(lang => { setLang(lang); return t('mathWorldTitle'); });
+        expect(new Set(titles).size).toBe(3);
+    });
+});
+
 describe('button emojis', () => {
     it('btnMath uses 🔢 in all three locales', () => {
         for (const lang of ['fr', 'en', 'es']) {

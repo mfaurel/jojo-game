@@ -38,7 +38,6 @@ export class SpellingScene extends Scene {
         this._drawSlots();
         this._drawLetterPool();
         this._drawInstructions();
-        this._drawMenuButton();
         this._drawCloseButton();
     }
 

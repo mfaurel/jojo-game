@@ -139,7 +139,7 @@ export class MathWorldSelectScene extends Scene {
         const bg = this.add.rectangle(cx, cy, cardW, cardH, bgColor, 1).setDepth(10);
         if (unlocked) bg.setInteractive({ useHandCursor: true });
 
-        this.add.text(cx, cy - 36, world.emoji, { fontSize: '34px' })
+        this.add.text(cx, cy - 24, world.emoji, { fontSize: '34px' })
             .setOrigin(0.5).setDepth(11);
 
         this.add.text(cx, cy + 6, t(world.nameKey), {

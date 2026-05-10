@@ -40,8 +40,21 @@ describe('MATH_WORLDS', () => {
         }
     });
 
+    it('each world yields exactly 6 rounds (pointsNeeded / 200)', () => {
+        for (const world of MATH_WORLDS) {
+            expect(Math.round(world.pointsNeeded / 200)).toBe(6);
+        }
+    });
+
     it('numMax increases with world difficulty', () => {
         expect(MATH_WORLDS[0].numMax).toBeLessThan(MATH_WORLDS[5].numMax);
+    });
+
+    it('has 3 addition worlds and 3 subtraction worlds', () => {
+        const addCount = MATH_WORLDS.filter(w => (w.operation ?? 'add') === 'add').length;
+        const subCount = MATH_WORLDS.filter(w => w.operation === 'sub').length;
+        expect(addCount).toBe(3);
+        expect(subCount).toBe(3);
     });
 });
 

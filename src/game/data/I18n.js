@@ -139,8 +139,9 @@ const STRINGS = {
         great:        'GÉNIAL !',
 
         // ── Leaderboard ──────────────────────────────────────────────────────
-        leaderboardTitle: '⭐ Mes étoiles',
-        leaderboardTotal: (tt, m) => `Total : ${tt} / ${m} ⭐`,
+        leaderboardTitle:   '⭐ Mes étoiles',
+        leaderboardTotal:   (tt, m) => `Total : ${tt} / ${m} ⭐`,
+        leaderboardMathRow: '🔢 Mathématiques',
 
         // ── HUD / misc ───────────────────────────────────────────────────────
         pointsLabel:   'Points',
@@ -299,8 +300,9 @@ const STRINGS = {
         newContent:   'NEW CONTENT!',
         great:        'AMAZING!',
 
-        leaderboardTitle: '⭐ My Stars',
-        leaderboardTotal: (tt, m) => `Total: ${tt} / ${m} ⭐`,
+        leaderboardTitle:   '⭐ My Stars',
+        leaderboardTotal:   (tt, m) => `Total: ${tt} / ${m} ⭐`,
+        leaderboardMathRow: '🔢 Mathematics',
 
         pointsLabel:   'Points',
         cheatUnlocked: '✨ ALL UNLOCKED! ✨',
@@ -458,8 +460,9 @@ const STRINGS = {
         newContent:   '¡NUEVO CONTENIDO!',
         great:        '¡GENIAL!',
 
-        leaderboardTitle: '⭐ Mis Estrellas',
-        leaderboardTotal: (tt, m) => `Total: ${tt} / ${m} ⭐`,
+        leaderboardTitle:   '⭐ Mis Estrellas',
+        leaderboardTotal:   (tt, m) => `Total: ${tt} / ${m} ⭐`,
+        leaderboardMathRow: '🔢 Matemáticas',
 
         pointsLabel:   'Puntos',
         cheatUnlocked: '✨ ¡TODO DESBLOQUEADO! ✨',

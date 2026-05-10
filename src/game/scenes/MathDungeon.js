@@ -8,7 +8,7 @@ export class MathDungeon extends Scene {
         super('MathDungeon');
         this.distance = 0;
         this.isWalking = true;
-        this.encounterThreshold = 150;
+        this.encounterThreshold = 850;
         this.nextEncounter = 150;
         this.decorations = [];
     }
@@ -41,27 +41,31 @@ export class MathDungeon extends Scene {
         this._createUI(width, height);
 
         this.distance = 0;
-        this.nextEncounter = 100;
+        this.nextEncounter = 800;
         this.isWalking = true;
+
+        this.scale.on('resize', this._onResize, this);
+        this.events.once('shutdown', () => this.scale.off('resize', this._onResize, this));
     }
 
     _drawEnvironment(w, h) {
         const vanishingY = h * 0.5;
         const wc = this.worldConfig;
+        const PAD = 800;
 
         const ceiling = this.add.graphics().setScrollFactor(0);
         ceiling.fillGradientStyle(wc.skyTop, wc.skyTop, wc.skyBottom, wc.skyBottom, 1);
-        ceiling.fillRect(0, 0, w, vanishingY);
+        ceiling.fillRect(-PAD, -PAD, w + PAD * 2, vanishingY + PAD);
 
         const floor = this.add.graphics().setScrollFactor(0);
         floor.fillGradientStyle(wc.floorTop, wc.floorTop, wc.floorBottom, wc.floorBottom, 1);
-        floor.fillRect(0, vanishingY, w, h - vanishingY);
+        floor.fillRect(-PAD, vanishingY, w + PAD * 2, h - vanishingY + PAD);
 
         // Stone wall side panels
         const walls = this.add.graphics().setScrollFactor(0).setDepth(2);
         walls.fillStyle(0x111008, 1);
-        walls.fillRect(0, 0, w * 0.17, h);
-        walls.fillRect(w * 0.83, 0, w * 0.17, h);
+        walls.fillRect(-PAD, -PAD, w * 0.17 + PAD, h + PAD * 2);
+        walls.fillRect(w * 0.83, -PAD, w * 0.17 + PAD, h + PAD * 2);
 
         // Brickwork texture on walls
         walls.lineStyle(1, 0x221a08, 0.55);
@@ -78,9 +82,9 @@ export class MathDungeon extends Scene {
         const corner = this.add.graphics().setScrollFactor(0).setDepth(3);
         corner.fillStyle(0x000000, 1);
         corner.fillGradientStyle(0x000000, 0x000000, 0x000000, 0x000000, 0.7, 0, 0.7, 0);
-        corner.fillRect(0, 0, w * 0.17, h);
+        corner.fillRect(-PAD, -PAD, w * 0.17 + PAD, h + PAD * 2);
         corner.fillGradientStyle(0x000000, 0x000000, 0x000000, 0x000000, 0, 0.7, 0, 0.7);
-        corner.fillRect(w * 0.83, 0, w * 0.17, h);
+        corner.fillRect(w * 0.83, -PAD, w * 0.17 + PAD, h + PAD * 2);
 
         // Torch holders (static wall fixtures)
         const torchHolders = this.add.graphics().setScrollFactor(0).setDepth(6);
@@ -195,7 +199,7 @@ export class MathDungeon extends Scene {
         }).setDepth(200).setScrollFactor(0);
 
         // World name badge top-centre
-        this.add.text(w / 2, 12, t(this.worldConfig.nameKey), {
+        this.worldNameText = this.add.text(w / 2, 12, t(this.worldConfig.nameKey), {
             fontSize: '20px',
             fontFamily: 'Arial Black',
             color: '#ffffff',
@@ -203,14 +207,20 @@ export class MathDungeon extends Scene {
             strokeThickness: 3,
         }).setOrigin(0.5, 0).setDepth(200).setScrollFactor(0);
 
-        const backBtn = this.add.text(w - 14, 14, 'Menu', {
+        this.menuBtn = this.add.text(w - 14, 14, 'Menu', {
             fontSize: '20px',
             color: '#ffffff',
             backgroundColor: '#004488',
             padding: { x: 12, y: 6 }
         }).setOrigin(1, 0).setInteractive({ useHandCursor: true }).setDepth(200).setScrollFactor(0);
 
-        backBtn.on('pointerup', () => this.scene.start('MathWorldSelectScene'));
+        this.menuBtn.on('pointerup', () => this.scene.start('MathWorldSelectScene'));
+    }
+
+    _onResize() {
+        const { width } = this.cameras.main;
+        if (this.worldNameText) this.worldNameText.setX(width / 2);
+        if (this.menuBtn)       this.menuBtn.setX(width - 14);
     }
 
     _updateRoundHUD(newRound) {
