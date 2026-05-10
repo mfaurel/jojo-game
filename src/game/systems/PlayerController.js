@@ -113,26 +113,47 @@ export class PlayerController {
     }
 
     _buildDPad() {
-        const buttons = [
-            { symbol: '▲', dx:  0, dy: -1, bx: 80,  by: 660 },
-            { symbol: '▼', dx:  0, dy:  1, bx: 80,  by: 718 },
-            { symbol: '◄', dx: -1, dy:  0, bx: 22,  by: 689 },
-            { symbol: '►', dx:  1, dy:  0, bx: 138, by: 689 },
+        const cx = 95, cy = 678;
+        const step = 56;
+        const btnSize = 52;
+
+        // Cross-shaped background (GameBoy style)
+        const cross = this.scene.add.graphics().setScrollFactor(0).setDepth(19);
+        cross.fillStyle(0x111122, 0.85);
+        cross.fillRoundedRect(cx - btnSize / 2, cy - step - btnSize / 2, btnSize, step * 2 + btnSize, 10);
+        cross.fillRoundedRect(cx - step - btnSize / 2, cy - btnSize / 2, step * 2 + btnSize, btnSize, 10);
+        cross.fillStyle(0x2a2a44, 1);
+        cross.fillCircle(cx, cy, 14);
+
+        const directions = [
+            { dx:  0, dy: -1, bx: cx,        by: cy - step },
+            { dx:  0, dy:  1, bx: cx,        by: cy + step },
+            { dx: -1, dy:  0, bx: cx - step, by: cy        },
+            { dx:  1, dy:  0, bx: cx + step, by: cy        },
         ];
 
-        buttons.forEach(({ symbol, dx, dy, bx, by }) => {
-            const bg = this.scene.add.rectangle(bx, by, 70, 70, 0x000000, 0.45)
+        directions.forEach(({ dx, dy, bx, by }) => {
+            const btn = this.scene.add.rectangle(bx, by, btnSize, btnSize, 0x1a1a33, 0.01)
                 .setScrollFactor(0)
                 .setDepth(20)
                 .setInteractive()
-                .on('pointerdown', () => this.tryMove(dx, dy))
-                .on('pointerover', () => bg.setFillStyle(0x222222, 0.7))
-                .on('pointerout',  () => bg.setFillStyle(0x000000, 0.45));
+                .on('pointerdown', () => { this.tryMove(dx, dy); btn.setFillStyle(0x4455aa, 0.55); })
+                .on('pointerup',   () => btn.setFillStyle(0x1a1a33, 0.01))
+                .on('pointerout',  () => btn.setFillStyle(0x1a1a33, 0.01))
+                .on('pointerover', () => btn.setFillStyle(0x334466, 0.35));
 
-            this.scene.add.text(bx, by, symbol, {
-                fontSize: '30px',
-                color: '#ffffff',
-            }).setOrigin(0.5).setScrollFactor(0).setDepth(21);
+            const g = this.scene.add.graphics().setScrollFactor(0).setDepth(21);
+            g.fillStyle(0xffffff, 0.85);
+            const s = 13;
+            if (dy === -1) {
+                g.fillTriangle(bx, by - s, bx - s, by + s * 0.6, bx + s, by + s * 0.6);
+            } else if (dy === 1) {
+                g.fillTriangle(bx, by + s, bx - s, by - s * 0.6, bx + s, by - s * 0.6);
+            } else if (dx === -1) {
+                g.fillTriangle(bx - s, by, bx + s * 0.6, by - s, bx + s * 0.6, by + s);
+            } else {
+                g.fillTriangle(bx + s, by, bx - s * 0.6, by - s, bx - s * 0.6, by + s);
+            }
         });
     }
 

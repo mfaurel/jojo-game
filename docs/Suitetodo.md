@@ -1,10 +1,10 @@
 En cours : 
-
-  Corriger les bugs
 - When resizing the browser window, it's not recentering automatically
 - On the main screen, completed levels are outside the box
 - On the spelling world, the box for the arrows are not well done as the boxes are overlapping. Make the arrow better (like the arrow of a gameboy emulator for example) 
 - On the spelling world, please put the menu on the top right of the screen
+
+Corriger les bugs
 - On the math world, it should be "Le monde des maths". You can also replace by another world than "monde". Give me propositions
 - On the main screen, change the color of each world so they are different (only blue for the spelling, yellow for math, orange for memory for example)
 - On the math world, I want to have a specific background with an yellow glow about mathematics
@@ -20,7 +20,10 @@ En cours :
 - On the memory counting world, I want to have a specific background with a green glow about memory counting. Be artistic
 - On the memory counting world, add a word when it's good or bad with a benevolent word
 - On the memory counting world, on the top left, adjust the numbers of the rounds 
+- On my collection, center the collection
 - On my collection, TODO
+- On my collection, 
+- On my collection, 
 
 
 

@@ -99,8 +99,13 @@ const StartGame = (parent) => {
         });
     });
 
+    window.addEventListener('resize', () => {
+        game.scale.refresh();
+        centreAll();
+    });
+
     window.addEventListener('orientationchange', () => {
-        setTimeout(() => game.scale.refresh(), 300);
+        setTimeout(() => { game.scale.refresh(); centreAll(); }, 300);
     });
 
     return game;

@@ -66,22 +66,22 @@ export class MainMenu extends Scene {
 
         const spellingDone = LEVELS.filter(l => getProgress()[l.id]).length;
         if (spellingDone > 0) {
-            this.add.text(256, 408, t('spellingProgress', spellingDone, LEVELS.length), progressStyle).setOrigin(0.5, 0);
+            this.add.text(256, 400, t('spellingProgress', spellingDone, LEVELS.length), progressStyle).setOrigin(0.5, 0.5);
         }
 
         const mathDone = MATH_WORLDS.filter((_, i) => getMathProgress()[i]).length;
         if (mathDone > 0) {
-            this.add.text(768, 408, t('mathProgress', mathDone, MATH_WORLDS.length), progressStyle).setOrigin(0.5, 0);
+            this.add.text(768, 400, t('mathProgress', mathDone, MATH_WORLDS.length), progressStyle).setOrigin(0.5, 0.5);
         }
 
         const memoryDone = MEMORY_LEVELS.filter((_, i) => getMemoryProgress()[i]).length;
         if (memoryDone > 0) {
-            this.add.text(256, 568, t('memoryProgress', memoryDone, MEMORY_LEVELS.length), progressStyle).setOrigin(0.5, 0);
+            this.add.text(256, 560, t('memoryProgress', memoryDone, MEMORY_LEVELS.length), progressStyle).setOrigin(0.5, 0.5);
         }
 
         const countingDone = COUNTING_LEVELS.filter((_, i) => getCountingProgress()[i]).length;
         if (countingDone > 0) {
-            this.add.text(768, 568, t('countingProgress', countingDone, COUNTING_LEVELS.length), progressStyle).setOrigin(0.5, 0);
+            this.add.text(768, 560, t('countingProgress', countingDone, COUNTING_LEVELS.length), progressStyle).setOrigin(0.5, 0.5);
         }
 
         this._createCollectionButton();

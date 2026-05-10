@@ -63,19 +63,19 @@ export class CastleScene extends Scene {
 
         this.starIcons = [];
         for (let i = 0; i < this.totalGates; i++) {
-            const star = this.add.text(860 + i * 30, 8, '☆', {
+            const star = this.add.text(10 + i * 30, 8, '☆', {
                 fontSize: '22px',
                 color: '#555577',
             }).setScrollFactor(0).setDepth(30);
             this.starIcons.push(star);
         }
 
-        const menuBtn = this.add.text(14, 14, t('menuBtn'), {
+        const menuBtn = this.add.text(1010, 14, t('menuBtn'), {
             fontSize: '20px',
             color: '#ffffff',
             backgroundColor: '#2a2a88',
             padding: { x: 10, y: 5 },
-        }).setOrigin(0, 0).setScrollFactor(0).setDepth(30)
+        }).setOrigin(1, 0).setScrollFactor(0).setDepth(30)
             .setInteractive({ useHandCursor: true });
 
         menuBtn.on('pointerup', () => this._showConfirmQuit());
