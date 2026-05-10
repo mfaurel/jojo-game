@@ -100,3 +100,33 @@ describe('t()', () => {
         expect(t('bravo')).not.toBe(frVal);
     });
 });
+
+describe('button emojis', () => {
+    it('btnMath uses 🔢 in all three locales', () => {
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            expect(t('btnMath')).toContain('🔢');
+        }
+    });
+
+    it('btnMath does not use ❄️ in any locale', () => {
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            expect(t('btnMath')).not.toContain('❄️');
+        }
+    });
+
+    it('btnCounting uses 🧮 in all three locales', () => {
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            expect(t('btnCounting')).toContain('🧮');
+        }
+    });
+
+    it('btnMath and btnCounting use different emojis', () => {
+        setLang('fr');
+        const mathEmoji  = t('btnMath').slice(0, 2);
+        const countEmoji = t('btnCounting').slice(0, 2);
+        expect(mathEmoji).not.toBe(countEmoji);
+    });
+});

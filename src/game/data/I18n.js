@@ -5,7 +5,7 @@ const STRINGS = {
         gameTitle:        'Le Monde de {name}',
         gameSubtitle:     'Choisis ton aventure !',
         btnSpelling:      '🏰 Orthographe',
-        btnMath:          '❄️ Mathématiques',
+        btnMath:          '🔢 Mathématiques',
         btnCollection:    '🎁 Collection',
         spellingProgress: (d, t) => `⭐ ${d} / ${t} niveaux`,
         mathProgress:     (d, t) => `⭐ ${d} / ${t} mondes`,
@@ -157,7 +157,7 @@ const STRINGS = {
         memoryProgress:  (d, t) => `⭐ ${d} / ${t} niveaux`,
 
         // ── Counting game ────────────────────────────────────────────────────
-        btnCounting:      '🔢 Mémo-Chiffres',
+        btnCounting:      '🧮 Mémo-Chiffres',
         countingTitle:    'Mémo-Chiffres',
         countingChoose:   'Choisis un niveau !',
         countingMemoise:  'Mémorise !',
@@ -171,7 +171,7 @@ const STRINGS = {
         gameTitle:        "{name}'s World",
         gameSubtitle:     'Choose your adventure!',
         btnSpelling:      '🏰 Spelling',
-        btnMath:          '❄️ Mathematics',
+        btnMath:          '🔢 Mathematics',
         btnCollection:    '🎁 Collection',
         spellingProgress: (d, t) => `⭐ ${d} / ${t} levels`,
         mathProgress:     (d, t) => `⭐ ${d} / ${t} worlds`,
@@ -312,7 +312,7 @@ const STRINGS = {
         memoryProgress:  (d, t) => `⭐ ${d} / ${t} levels`,
 
         // ── Counting game ────────────────────────────────────────────────────
-        btnCounting:      '🔢 Count-Memo',
+        btnCounting:      '🧮 Count-Memo',
         countingTitle:    'Count-Memo',
         countingChoose:   'Choose a level!',
         countingMemoise:  'Memorise!',
@@ -326,7 +326,7 @@ const STRINGS = {
         gameTitle:        'El Mundo de {name}',
         gameSubtitle:     '¡Elige tu aventura!',
         btnSpelling:      '🏰 Ortografía',
-        btnMath:          '❄️ Matemáticas',
+        btnMath:          '🔢 Matemáticas',
         btnCollection:    '🎁 Colección',
         spellingProgress: (d, t) => `⭐ ${d} / ${t} niveles`,
         mathProgress:     (d, t) => `⭐ ${d} / ${t} mundos`,
@@ -467,7 +467,7 @@ const STRINGS = {
         memoryProgress:  (d, t) => `⭐ ${d} / ${t} niveles`,
 
         // ── Counting game ────────────────────────────────────────────────────
-        btnCounting:      '🔢 Memo-Números',
+        btnCounting:      '🧮 Memo-Números',
         countingTitle:    'Memo-Números',
         countingChoose:   '¡Elige un nivel!',
         countingMemoise:  '¡Memoriza!',

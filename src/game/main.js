@@ -78,10 +78,19 @@ const StartGame = (parent) => {
     const centreScene = (scene) => {
         if (scene.cameras?.main) scene.cameras.main.centerOn(512, 384);
     };
-
-    game.scale.on('resize', () => {
+    const centreAll = () => {
         game.scene.scenes.forEach(s => { if (s.sys.settings.active) centreScene(s); });
-    });
+    };
+
+    game.scale.on('resize', centreAll);
+
+    // Chrome completes fullscreen transitions asynchronously; a second delayed
+    // refresh ensures correct centering in both directions.
+    const onFullscreenChange = () => setTimeout(() => { game.scale.refresh(); centreAll(); }, 120);
+    game.scale.on('enterfullscreen', onFullscreenChange);
+    game.scale.on('leavefullscreen', onFullscreenChange);
+    document.addEventListener('fullscreenchange',       onFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', onFullscreenChange);
 
     game.events.on('ready', () => {
         game.scene.scenes.forEach(scene => {

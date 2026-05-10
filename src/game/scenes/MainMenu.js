@@ -62,24 +62,26 @@ export class MainMenu extends Scene {
             hideBanner(); this.scene.start('CountingMenuScene');
         });
 
+        const progressStyle = { fontSize: '18px', color: '#ffd700', stroke: '#000', strokeThickness: 2 };
+
         const spellingDone = LEVELS.filter(l => getProgress()[l.id]).length;
         if (spellingDone > 0) {
-            this.add.text(256, 408, t('spellingProgress', spellingDone, LEVELS.length), {
-                fontSize: '18px',
-                color: '#ffd700',
-                stroke: '#000',
-                strokeThickness: 2,
-            }).setOrigin(0.5, 0);
+            this.add.text(256, 408, t('spellingProgress', spellingDone, LEVELS.length), progressStyle).setOrigin(0.5, 0);
         }
 
         const mathDone = MATH_WORLDS.filter((_, i) => getMathProgress()[i]).length;
         if (mathDone > 0) {
-            this.add.text(768, 408, t('mathProgress', mathDone, MATH_WORLDS.length), {
-                fontSize: '18px',
-                color: '#ffd700',
-                stroke: '#000',
-                strokeThickness: 2,
-            }).setOrigin(0.5, 0);
+            this.add.text(768, 408, t('mathProgress', mathDone, MATH_WORLDS.length), progressStyle).setOrigin(0.5, 0);
+        }
+
+        const memoryDone = MEMORY_LEVELS.filter((_, i) => getMemoryProgress()[i]).length;
+        if (memoryDone > 0) {
+            this.add.text(256, 568, t('memoryProgress', memoryDone, MEMORY_LEVELS.length), progressStyle).setOrigin(0.5, 0);
+        }
+
+        const countingDone = COUNTING_LEVELS.filter((_, i) => getCountingProgress()[i]).length;
+        if (countingDone > 0) {
+            this.add.text(768, 568, t('countingProgress', countingDone, COUNTING_LEVELS.length), progressStyle).setOrigin(0.5, 0);
         }
 
         this._createCollectionButton();
@@ -399,7 +401,7 @@ export class MainMenu extends Scene {
         const total    = spellingStars + memoryStars + countingStars + mathStars + easterStar;
         const maxTotal = maxSpelling + maxMemory + maxCounting + maxMath + easterStar;
 
-        const px = 10, py = 608, pw = 215, ph = 155;
+        const px = 10, py = 608, pw = 240, ph = 155;
 
         const bg = this.add.graphics();
         bg.fillStyle(0x000000, 0.55);
@@ -417,10 +419,10 @@ export class MainMenu extends Scene {
         sep.lineBetween(px + 6, py + 27, px + pw - 6, py + 27);
 
         const rows = [
-            { label: '🏰 Orthographe', val: spellingStars,  max: maxSpelling },
-            { label: '🃏 Mémoire',     val: memoryStars,    max: maxMemory },
-            { label: '🔢 Chiffres',    val: countingStars,  max: maxCounting },
-            { label: '➕ Maths',       val: mathStars,      max: maxMath },
+            { label: '🏰 Orthographe',   val: spellingStars,  max: maxSpelling },
+            { label: '🃏 Mémoire',       val: memoryStars,    max: maxMemory },
+            { label: '🧮 Chiffres',      val: countingStars,  max: maxCounting },
+            { label: '➕ Mathématiques', val: mathStars,      max: maxMath },
         ];
 
         rows.forEach((row, i) => {
@@ -460,24 +462,38 @@ export class MainMenu extends Scene {
     }
 
     _createSmallButton(x, y, label, color, callback) {
-        const btnW = 220;
-        const btnH = 60;
+        const btnW = 240;
+        const btnH = 58;
+        const r = 14;
 
-        let bg;
-        if (this.textures.exists('ui_panel')) {
-            bg = this.add.nineslice(x, y, 'ui_panel', 0, btnW, btnH, 40, 40, 40, 40).setTint(color);
-        } else {
-            bg = this.add.rectangle(x, y, btnW, btnH, color, 1);
-        }
+        const shadow = this.add.graphics();
+        shadow.fillStyle(0x000000, 0.35);
+        shadow.fillRoundedRect(x - btnW / 2 + 4, y - btnH / 2 + 5, btnW, btnH, r);
 
-        bg.setInteractive({ useHandCursor: true });
+        const gfx = this.add.graphics();
+        const draw = (hover) => {
+            gfx.clear();
+            gfx.fillStyle(color, 1);
+            gfx.fillRoundedRect(x - btnW / 2, y - btnH / 2, btnW, btnH, r);
+            gfx.fillStyle(0xffffff, hover ? 0.22 : 0.14);
+            gfx.fillRoundedRect(x - btnW / 2 + 3, y - btnH / 2 + 3, btnW - 6, btnH * 0.45, { tl: r - 1, tr: r - 1, bl: 0, br: 0 });
+            gfx.lineStyle(2, 0xffd700, hover ? 0.9 : 0.55);
+            gfx.strokeRoundedRect(x - btnW / 2, y - btnH / 2, btnW, btnH, r);
+        };
+        draw(false);
+
         this.add.text(x, y, label, {
             fontSize: '22px',
             fontFamily: 'Arial Black, Arial, sans-serif',
-            color: '#ffffff'
+            color: '#ffffff',
+            stroke: '#1a0033',
+            strokeThickness: 3,
         }).setOrigin(0.5);
 
-        bg.on('pointerup', callback);
+        const hit = this.add.rectangle(x, y, btnW, btnH, 0x000000, 0).setInteractive({ useHandCursor: true });
+        hit.on('pointerover', () => draw(true));
+        hit.on('pointerout',  () => draw(false));
+        hit.on('pointerup',   callback);
     }
 
     _createSignInButton() {
@@ -505,36 +521,54 @@ export class MainMenu extends Scene {
     }
 
     _createChoiceButton(x, y, label, color, widthOrCallback, callback) {
-        // widthOrCallback lets callers pass (x, y, label, color, callback) or
-        // (x, y, label, color, width, callback)
         let btnW, cb;
-        if (typeof widthOrCallback === 'function') {
-            btnW = 450; cb = widthOrCallback;
-        } else {
-            btnW = widthOrCallback; cb = callback;
-        }
+        if (typeof widthOrCallback === 'function') { btnW = 450; cb = widthOrCallback; }
+        else { btnW = widthOrCallback; cb = callback; }
         const btnH = 120;
+        const r = 18;
 
-        let bg;
-        if (this.textures.exists('ui_panel')) {
-            bg = this.add.nineslice(x, y, 'ui_panel', 0, btnW, btnH, 40, 40, 40, 40).setTint(color);
-        } else {
-            bg = this.add.rectangle(x, y, btnW, btnH, color, 1).setStrokeStyle(6, 0xffffff);
-        }
+        // Drop shadow
+        const shadow = this.add.graphics();
+        shadow.fillStyle(0x000000, 0.35);
+        shadow.fillRoundedRect(x - btnW / 2 + 5, y - btnH / 2 + 7, btnW, btnH, r);
 
-        bg.setInteractive({ useHandCursor: true });
+        // Button body — redrawn on hover
+        const gfx = this.add.graphics();
+        const draw = (hover) => {
+            gfx.clear();
+            // Base fill
+            gfx.fillStyle(color, 1);
+            gfx.fillRoundedRect(x - btnW / 2, y - btnH / 2, btnW, btnH, r);
+            // Glass highlight (top half)
+            gfx.fillStyle(0xffffff, hover ? 0.20 : 0.13);
+            gfx.fillRoundedRect(x - btnW / 2 + 3, y - btnH / 2 + 3, btnW - 6, btnH * 0.46,
+                { tl: r - 1, tr: r - 1, bl: 0, br: 0 });
+            // Depth shadow (bottom half)
+            gfx.fillStyle(0x000000, hover ? 0.16 : 0.24);
+            gfx.fillRoundedRect(x - btnW / 2 + 3, y + btnH * 0.08, btnW - 6, btnH * 0.38,
+                { tl: 0, tr: 0, bl: r - 1, br: r - 1 });
+            // Gold outer border
+            gfx.lineStyle(2.5, 0xffd700, hover ? 0.95 : 0.60);
+            gfx.strokeRoundedRect(x - btnW / 2, y - btnH / 2, btnW, btnH, r);
+            // White inner border
+            gfx.lineStyle(1, 0xffffff, hover ? 0.40 : 0.18);
+            gfx.strokeRoundedRect(x - btnW / 2 + 2, y - btnH / 2 + 2, btnW - 4, btnH - 4, r - 1);
+        };
+        draw(false);
 
         const fontSize = btnW < 450 ? '34px' : '44px';
         const txt = this.add.text(x, y, label, {
             fontSize,
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffffff',
-            stroke: '#000',
-            strokeThickness: 4
+            stroke: '#1a0033',
+            strokeThickness: 5,
         }).setOrigin(0.5);
 
-        bg.on('pointerover', () => { if (bg.setFillStyle) bg.setFillStyle(color + 0x111111); bg.setScale(1.05); txt.setScale(1.05); });
-        bg.on('pointerout',  () => { if (bg.setFillStyle) bg.setFillStyle(color); bg.setScale(1); txt.setScale(1); });
-        bg.on('pointerup',   () => { this.cameras.main.fadeOut(500, 0, 0, 0); this.cameras.main.once('camerafadeoutcomplete', cb); });
+        // Transparent hit area on top (receives pointer events)
+        const hit = this.add.rectangle(x, y, btnW, btnH, 0x000000, 0).setInteractive({ useHandCursor: true });
+        hit.on('pointerover', () => { draw(true);  txt.setScale(1.04); });
+        hit.on('pointerout',  () => { draw(false); txt.setScale(1); });
+        hit.on('pointerup',   () => { this.cameras.main.fadeOut(500, 0, 0, 0); this.cameras.main.once('camerafadeoutcomplete', cb); });
     }
 }
