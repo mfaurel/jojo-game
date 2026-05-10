@@ -122,6 +122,6 @@ export function saveMathProgress(worldId) {
 }
 
 export function getMathUnlocked(worldId) {
-    if (worldId === 0) return true;
+    if (worldId === 0 || worldId === 3) return true;
     return getMathProgress()[worldId - 1] === true;
 }

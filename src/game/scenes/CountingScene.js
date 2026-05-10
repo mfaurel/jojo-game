@@ -5,7 +5,7 @@ import { COUNTING_LEVELS, saveCountingProgress } from '../data/CountingData.js';
 import { LootManager } from '../systems/LootManager.js';
 import { t } from '../data/I18n.js';
 
-const ROUNDS_TO_WIN = 8;
+const TOTAL_ROUNDS = 6;
 
 export class CountingScene extends Scene {
     constructor() {
@@ -19,6 +19,7 @@ export class CountingScene extends Scene {
     create() {
         this._level      = COUNTING_LEVELS[this.levelIndex];
         this._score      = 0;
+        this._round      = 0;
         this._objs       = [];   // Graphics instances shown in Phase 1
         this._buttons    = [];   // Number buttons shown in Phase 3
         this._locked     = false;
@@ -68,6 +69,7 @@ export class CountingScene extends Scene {
     // ── Round management ──────────────────────────────────────────────────────
 
     _nextRound() {
+        this._round++;
         this._clearObjects();
         this._clearButtons();
         this._locked = false;
@@ -243,25 +245,20 @@ export class CountingScene extends Scene {
         this._locked = true;
         this._clearPhaseLabel();
 
+        const isLast = this._round >= TOTAL_ROUNDS;
+
         if (chosen === correct) {
-            // Correct!
             this._score++;
             this._updateScore();
             audio.playGateUnlock();
             this._highlightButton(chosen, 0x44ff44);
             this._burstAt(512, 340);
-
-            if (this._score >= ROUNDS_TO_WIN) {
-                this.time.delayedCall(700, () => this._victory());
-            } else {
-                this.time.delayedCall(900, () => this._nextRound());
-            }
+            this.time.delayedCall(900, () => isLast ? this._endGame() : this._nextRound());
         } else {
-            // Wrong — show correct answer then advance
             audio.playWrong();
             this._highlightButton(chosen, 0xff4444);
             this._highlightButton(correct, 0x44ff44);
-            this.time.delayedCall(1500, () => this._nextRound());
+            this.time.delayedCall(1500, () => isLast ? this._endGame() : this._nextRound());
         }
     }
 
@@ -272,16 +269,40 @@ export class CountingScene extends Scene {
         });
     }
 
-    // ── Victory ───────────────────────────────────────────────────────────────
+    // ── End game ─────────────────────────────────────────────────────────────
 
-    _victory() {
+    _endGame() {
         this._locked = true;
-        audio.playVictory();
-        saveCountingProgress(this.levelIndex);
-        this._starRain();
+        this._clearObjects();
+        this._clearButtons();
+        this._clearPhaseLabel();
 
-        const wonItem = LootManager.rollLoot();
-        this.time.delayedCall(1400, () => {
+        const perfect = this._score === TOTAL_ROUNDS;
+
+        if (perfect) {
+            audio.playVictory();
+            saveCountingProgress(this.levelIndex);
+            this._starRain();
+        }
+
+        this.add.text(512, 290, `${this._score} / ${TOTAL_ROUNDS}`, {
+            fontSize: '90px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#ffd700',
+            stroke: '#000',
+            strokeThickness: 8,
+        }).setOrigin(0.5).setDepth(10);
+
+        this.add.text(512, 410, perfect ? 'Bravo !' : 'Ca sera mieux la prochaine fois !', {
+            fontSize: '34px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#ffffff',
+            stroke: '#000',
+            strokeThickness: 5,
+        }).setOrigin(0.5).setDepth(10);
+
+        const wonItem = perfect ? LootManager.rollLoot() : null;
+        this.time.delayedCall(perfect ? 2000 : 3000, () => {
             if (wonItem) {
                 this.scene.launch('RewardPopup', {
                     item: wonItem,
