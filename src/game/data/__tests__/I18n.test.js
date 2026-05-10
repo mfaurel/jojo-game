@@ -101,6 +101,32 @@ describe('t()', () => {
     });
 });
 
+describe('leaderboard i18n', () => {
+    it('leaderboardTitle is translated in all three locales', () => {
+        const titles = [];
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            titles.push(t('leaderboardTitle'));
+        }
+        expect(titles[0]).toContain('⭐');
+        expect(titles[1]).toContain('⭐');
+        expect(titles[2]).toContain('⭐');
+        expect(new Set(titles).size).toBe(3);
+    });
+
+    it('leaderboardTotal is a function producing the right format', () => {
+        setLang('fr');
+        expect(t('leaderboardTotal', 7, 30)).toContain('7');
+        expect(t('leaderboardTotal', 7, 30)).toContain('30');
+        expect(t('leaderboardTotal', 7, 30)).toContain('⭐');
+    });
+
+    it('leaderboardTotal works in English', () => {
+        setLang('en');
+        expect(t('leaderboardTotal', 5, 30)).toMatch(/5.*30/);
+    });
+});
+
 describe('button emojis', () => {
     it('btnMath uses 🔢 in all three locales', () => {
         for (const lang of ['fr', 'en', 'es']) {

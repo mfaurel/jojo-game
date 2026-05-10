@@ -110,6 +110,27 @@ describe('LEVEL_MAPS', () => {
     });
 });
 
+describe('level 0 single-path invariant', () => {
+    const grid = LEVEL_MAPS[0].grid;
+
+    it('row 1 is all walls (no dead-end rooms above start row)', () => {
+        expect(grid[1].every(t => t === TILE.WALL)).toBe(true);
+    });
+
+    it('row 3 has only col 14 open (right connector, no side rooms)', () => {
+        const open = grid[3].map((t, i) => t !== TILE.WALL ? i : -1).filter(i => i >= 0);
+        expect(open).toEqual([14]);
+    });
+
+    it('row 9 col 1 is a wall (no dead-end left of bottom path)', () => {
+        expect(grid[9][1]).toBe(TILE.WALL);
+    });
+
+    it('row 9 col 2 is a floor (left edge of bottom path intact)', () => {
+        expect(grid[9][2]).toBe(TILE.FLOOR);
+    });
+});
+
 describe('backward-compat aliases', () => {
     it('GATE_POSITIONS matches LEVEL_MAPS[0]', () => {
         expect(GATE_POSITIONS).toEqual(LEVEL_MAPS[0].gatePositions);

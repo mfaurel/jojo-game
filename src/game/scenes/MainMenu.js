@@ -401,7 +401,7 @@ export class MainMenu extends Scene {
         const total    = spellingStars + memoryStars + countingStars + mathStars + easterStar;
         const maxTotal = maxSpelling + maxMemory + maxCounting + maxMath + easterStar;
 
-        const px = 10, py = 608, pw = 240, ph = 155;
+        const px = 10, py = 608, pw = 270, ph = 155;
 
         const bg = this.add.graphics();
         bg.fillStyle(0x000000, 0.55);
@@ -412,17 +412,17 @@ export class MainMenu extends Scene {
         const base = { fontSize: '15px', fontFamily: 'Arial, sans-serif', color: '#ffffff', stroke: '#000', strokeThickness: 2 };
         const gold = { ...base, fontSize: '16px', color: '#ffd700', fontFamily: 'Arial Black, Arial, sans-serif' };
 
-        this.add.text(px + pw / 2, py + 14, '⭐ Mes étoiles', gold).setOrigin(0.5, 0.5);
+        this.add.text(px + pw / 2, py + 14, t('leaderboardTitle'), gold).setOrigin(0.5, 0.5);
 
         const sep = this.add.graphics();
         sep.lineStyle(1, 0xffd700, 0.3);
         sep.lineBetween(px + 6, py + 27, px + pw - 6, py + 27);
 
         const rows = [
-            { label: '🏰 Orthographe',   val: spellingStars,  max: maxSpelling },
-            { label: '🃏 Mémoire',       val: memoryStars,    max: maxMemory },
-            { label: '🧮 Chiffres',      val: countingStars,  max: maxCounting },
-            { label: '➕ Mathématiques', val: mathStars,      max: maxMath },
+            { label: t('btnSpelling'),  val: spellingStars,  max: maxSpelling },
+            { label: t('btnMemory'),    val: memoryStars,    max: maxMemory },
+            { label: t('btnCounting'),  val: countingStars,  max: maxCounting },
+            { label: t('btnMath'),      val: mathStars,      max: maxMath },
         ];
 
         rows.forEach((row, i) => {
@@ -435,7 +435,7 @@ export class MainMenu extends Scene {
         sep2.lineStyle(1, 0xffd700, 0.3);
         sep2.lineBetween(px + 6, py + 130, px + pw - 6, py + 130);
 
-        this.add.text(px + pw / 2, py + 143, `Total : ${total} / ${maxTotal} ⭐`, gold).setOrigin(0.5, 0.5);
+        this.add.text(px + pw / 2, py + 143, t('leaderboardTotal', total, maxTotal), gold).setOrigin(0.5, 0.5);
     }
 
     _createCollectionButton() {

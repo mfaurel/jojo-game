@@ -82,12 +82,13 @@ export class CastleScene extends Scene {
     }
 
     _showConfirmQuit() {
-        const cx = 512, cy = 384;
+        const { width, height } = this.cameras.main;
+        const cx = width / 2, cy = height / 2;
         const elems = [];
         const dismiss = () => elems.forEach(e => { if (e.active) e.destroy(); });
 
         elems.push(
-            this.add.rectangle(cx, cy, 1024, 768, 0x000000, 0.75)
+            this.add.rectangle(cx, cy, width, height, 0x000000, 0.75)
                 .setScrollFactor(0).setDepth(50).setInteractive()
         );
 

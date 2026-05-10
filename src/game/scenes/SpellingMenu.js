@@ -137,6 +137,7 @@ export class SpellingMenu extends Scene {
 
         this.add.text(cx, cy - 28, level.emoji, {
             fontSize: '28px',
+            padding: { top: 8, bottom: 4 },
         }).setOrigin(0.5).setDepth(11);
 
         if (!unlocked) {
@@ -181,42 +182,56 @@ export class SpellingMenu extends Scene {
     _drawCastle() {
         const g = this.add.graphics();
 
-        g.fillStyle(0x2a1a6a, 1);
-        g.fillRect(0, 620, 1024, 148);
+        // Ground — dark hill extending to canvas bottom
+        g.fillStyle(0x0e0830, 1);
+        g.fillRect(0, 308, 1024, 460);
 
-        g.fillStyle(0x3a2a7a, 1);
-        g.fillRect(312, 460, 400, 160);
+        // ── Curtain wall ──────────────────────────────────────────────────────
+        g.fillStyle(0x221362, 1);
+        g.fillRect(140, 252, 744, 56);
+        for (let i = 0; i <= 19; i++) {
+            if (i % 2 === 0) g.fillRect(140 + i * 39, 232, 22, 21);
+        }
 
-        g.fillRect(250, 400, 100, 220);
-        g.fillRect(674, 400, 100, 220);
+        // ── Left tower ────────────────────────────────────────────────────────
+        g.fillStyle(0x1c1056, 1);
+        g.fillRect(110, 188, 122, 120);
+        for (let i = 0; i < 4; i++) {
+            if (i % 2 === 0) g.fillRect(110 + i * 32, 170, 20, 19);
+        }
+        g.fillStyle(0xffffff, 1); g.fillRect(169, 148, 3, 24);
+        g.fillStyle(0xcc1133, 1); g.fillTriangle(172, 148, 172, 172, 192, 160);
 
+        // ── Right tower ───────────────────────────────────────────────────────
+        g.fillStyle(0x1c1056, 1);
+        g.fillRect(792, 188, 122, 120);
+        for (let i = 0; i < 4; i++) {
+            if (i % 2 === 0) g.fillRect(792 + i * 32, 170, 20, 19);
+        }
+        g.fillStyle(0xffffff, 1); g.fillRect(851, 148, 3, 24);
+        g.fillStyle(0xcc1133, 1); g.fillTriangle(854, 148, 854, 172, 874, 160);
+
+        // ── Central keep ──────────────────────────────────────────────────────
+        g.fillStyle(0x170e4e, 1);
+        g.fillRect(386, 158, 252, 150);
         for (let i = 0; i < 7; i++) {
-            g.fillRect(312 + i * 58, 440, 30, 22);
+            if (i % 2 === 0) g.fillRect(386 + i * 36, 140, 22, 19);
         }
-        for (let i = 0; i < 3; i++) {
-            g.fillRect(250 + i * 35, 378, 22, 24);
-            g.fillRect(674 + i * 35, 378, 22, 24);
-        }
+        g.fillStyle(0xffffff, 1); g.fillRect(510, 137, 3, 25);
+        g.fillStyle(0xcc1133, 1); g.fillTriangle(513, 137, 513, 162, 532, 149);
 
-        g.fillStyle(0x111122, 1);
-        g.fillRect(448, 520, 128, 100);
-        g.fillCircle(512, 520, 64);
+        // ── Gate arch ─────────────────────────────────────────────────────────
+        g.fillStyle(0x060612, 1);
+        g.fillRect(464, 252, 96, 56);
+        g.fillCircle(512, 252, 48);
 
-        g.fillStyle(0x8899ff, 0.5);
-        g.fillRect(280, 430, 30, 40);
-        g.fillCircle(295, 430, 15);
-        g.fillRect(704, 430, 30, 40);
-        g.fillCircle(719, 430, 15);
-
-        g.fillStyle(0xff4466, 1);
-        g.fillTriangle(250, 370, 250, 340, 278, 355);
-        g.fillStyle(0xffffff, 1);
-        g.fillRect(248, 330, 4, 45);
-
-        g.fillStyle(0xff4466, 1);
-        g.fillTriangle(774, 370, 774, 340, 746, 355);
-        g.fillStyle(0xffffff, 1);
-        g.fillRect(772, 330, 4, 45);
+        // ── Windows ───────────────────────────────────────────────────────────
+        g.fillStyle(0xffaa33, 0.8);
+        g.fillCircle(448, 204, 11);
+        g.fillCircle(576, 204, 11);
+        g.fillStyle(0xffaa33, 0.6);
+        g.fillCircle(171, 235, 9);
+        g.fillCircle(853, 235, 9);
     }
 
     _drawCharacter(cx, cy) {
