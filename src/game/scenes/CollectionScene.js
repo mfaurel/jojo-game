@@ -2,6 +2,8 @@ import { Scene } from 'phaser';
 import { ITEMS, RARITY, SPECIAL_REWARDS, CARD_BACK_ITEMS } from '../data/ItemData.js';
 import { getInventory, getEquipment, setEquipment } from '../data/LevelData.js';
 import { t } from '../data/I18n.js';
+import { isNameUnlocked, getChildName, setChildName } from '../services/NameService.js';
+import { purchaseProduct } from '../services/IAPService.js';
 
 const TABS = [
     { labelKey: 'tabSpelling', categories: ['skin'] },
@@ -181,6 +183,108 @@ export class CollectionScene extends Scene {
             const isEquipped = equipment.background === item.id;
             this._drawItemCard(cx, cy, cardW, cardH, item, isUnlocked, isEquipped, inventory, equipment);
         });
+
+        this._drawNameCustomization(width);
+    }
+
+    // ── Name customization (Bonus tab) ────────────────────────────────────────
+
+    _drawNameCustomization(width) {
+        const sectionY = 490;
+
+        this.add.text(width / 2, sectionY, '— Personnaliser le prénom —', {
+            fontSize: '16px',
+            color: '#888888',
+        }).setOrigin(0.5);
+
+        if (isNameUnlocked()) {
+            const current = getChildName();
+            const label = this.add.text(width / 2, sectionY + 36, `Prénom : ${current}`, {
+                fontSize: '20px',
+                fontFamily: 'Arial Black',
+                color: '#ffd700',
+            }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+
+            label.on('pointerup', () => this._openNameInput(label));
+        } else {
+            const btnName = this._makePurchaseButton(width / 2 - 130, sectionY + 42,
+                '✏️ Prénom (~1 €)', 0x4422aa, () => {
+                    this.scene.launch('ParentalGateScene', {
+                        onSuccess: async () => {
+                            try {
+                                await purchaseProduct('unlock_child_name');
+                                this.scene.start('CollectionScene', { tab: 2 });
+                            } catch {}
+                        },
+                    });
+                });
+
+            this._makePurchaseButton(width / 2 + 130, sectionY + 42,
+                '🌟 Pack Premium (~5 €)', 0x885500, () => {
+                    this.scene.launch('ParentalGateScene', {
+                        onSuccess: async () => {
+                            try {
+                                await purchaseProduct('premium_bundle');
+                                this.scene.start('CollectionScene', { tab: 2 });
+                            } catch {}
+                        },
+                    });
+                });
+        }
+    }
+
+    _makePurchaseButton(x, y, label, color, onClick) {
+        const bg = this.add.rectangle(x, y, 240, 52, color, 1)
+            .setStrokeStyle(2, 0xffd700)
+            .setInteractive({ useHandCursor: true });
+
+        this.add.text(x, y, label, {
+            fontSize: '15px',
+            fontFamily: 'Arial Black',
+            color: '#ffffff',
+        }).setOrigin(0.5);
+
+        bg.on('pointerover', () => bg.setAlpha(0.8));
+        bg.on('pointerout',  () => bg.setAlpha(1));
+        bg.on('pointerup',   onClick);
+        return bg;
+    }
+
+    _openNameInput(labelText) {
+        const input = document.createElement('input');
+        input.type        = 'text';
+        input.maxLength   = 20;
+        input.value       = getChildName();
+        input.placeholder = 'Prénom…';
+
+        Object.assign(input.style, {
+            position:   'absolute',
+            top:        '50%',
+            left:       '50%',
+            transform:  'translate(-50%, -50%)',
+            fontSize:   '24px',
+            padding:    '10px 16px',
+            borderRadius: '8px',
+            border:     '3px solid #ffd700',
+            background: '#1a0a2e',
+            color:      '#ffd700',
+            outline:    'none',
+            zIndex:     '1000',
+            textAlign:  'center',
+        });
+
+        document.body.appendChild(input);
+        input.focus();
+
+        const commit = () => {
+            const name = input.value.trim();
+            if (name) setChildName(name);
+            input.remove();
+            labelText.setText(`Prénom : ${getChildName()}`);
+        };
+
+        input.addEventListener('keydown', e => { if (e.key === 'Enter') commit(); });
+        input.addEventListener('blur', commit);
     }
 
     // ── Generic card renderer ─────────────────────────────────────────────────

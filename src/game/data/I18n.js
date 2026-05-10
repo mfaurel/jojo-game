@@ -1,6 +1,8 @@
+import { getChildName } from '../services/NameService.js';
+
 const STRINGS = {
     fr: {
-        gameTitle:        'Le Monde de Jolyne',
+        gameTitle:        'Le Monde de {name}',
         gameSubtitle:     'Choisis ton aventure !',
         btnSpelling:      '🏰 Orthographe',
         btnMath:          '❄️ Mathématiques',
@@ -8,7 +10,7 @@ const STRINGS = {
         spellingProgress: (d, t) => `⭐ ${d} / ${t} niveaux`,
         mathProgress:     (d, t) => `⭐ ${d} / ${t} mondes`,
 
-        spellingTitle:    'Le Château de Jolyne',
+        spellingTitle:    'Le Château de {name}',
         spellingSubtitle: 'Apprends à épeler en français !',
         chooseLevel:      'Choisis ton niveau !',
         levelLabel:       (n) => `NIVEAU ${n}`,
@@ -19,7 +21,7 @@ const STRINGS = {
         bravo:            'BRAVO ! 🌟',
         tryAgain:         'Essaie encore ! 💛',
 
-        helpJolyne:       'Aide Jolyne ! ✨',
+        helpJolyne:       'Aide {name} ! ✨',
         magicChest:       'Coffre Magique ! 🎁',
         versus:           (name) => `⚔️ contre ${name}`,
         superText:        'SUPER ! 🌟',
@@ -81,13 +83,13 @@ const STRINGS = {
         rarity_legendary: 'Légendaire',
 
         // ── Item names ───────────────────────────────────────────────────────
-        item_skin_default: 'Jolyne Pixel',
+        item_skin_default: '{name} Pixel',
         item_skin_pink:    'Robe Rose',
         item_skin_gold:    "Princesse d'Or",
         item_bg_night:     'Nuit Étoilée',
         item_bg_castle:    'Château Royal',
         item_bg_galaxy:    'Galaxie Rose',
-        item_bg_spelling:  'Classe de Jolyne',
+        item_bg_spelling:  'Classe de {name}',
         item_shield:       'Bouclier de Bois',
         item_magic_glove:  'Gant Magique',
         item_sword:        'Épée de Fer',
@@ -114,7 +116,7 @@ const STRINGS = {
         // ── Collection screen ────────────────────────────────────────────────
         collectionTitle:     'Ma Collection ✨',
         backMenu:            '⬅ Menu',
-        chooseSkin:          'Choisir un personnage pour Jolyne',
+        chooseSkin:          'Choisir un personnage pour {name}',
         mathEquipment:       'Équipement pour le jeu de Mathématiques',
         leftArm:             '🛡️ Bras Gauche',
         rightArm:            '⚔️ Bras Droit',
@@ -166,7 +168,7 @@ const STRINGS = {
     },
 
     en: {
-        gameTitle:        "Jolyne's World",
+        gameTitle:        "{name}'s World",
         gameSubtitle:     'Choose your adventure!',
         btnSpelling:      '🏰 Spelling',
         btnMath:          '❄️ Mathematics',
@@ -174,7 +176,7 @@ const STRINGS = {
         spellingProgress: (d, t) => `⭐ ${d} / ${t} levels`,
         mathProgress:     (d, t) => `⭐ ${d} / ${t} worlds`,
 
-        spellingTitle:    "Jolyne's Castle",
+        spellingTitle:    "{name}'s Castle",
         spellingSubtitle: 'Learn to spell in English!',
         chooseLevel:      'Choose your level!',
         levelLabel:       (n) => `LEVEL ${n}`,
@@ -185,7 +187,7 @@ const STRINGS = {
         bravo:            'BRAVO! 🌟',
         tryAgain:         'Try again! 💛',
 
-        helpJolyne:       'Help Jolyne! ✨',
+        helpJolyne:       'Help {name}! ✨',
         magicChest:       'Magic Chest! 🎁',
         versus:           (name) => `⚔️ vs ${name}`,
         superText:        'SUPER! 🌟',
@@ -241,13 +243,13 @@ const STRINGS = {
         rarity_epic:      'Epic',
         rarity_legendary: 'Legendary',
 
-        item_skin_default: 'Jolyne Pixel',
+        item_skin_default: '{name} Pixel',
         item_skin_pink:    'Pink Dress',
         item_skin_gold:    'Golden Princess',
         item_bg_night:     'Starry Night',
         item_bg_castle:    'Royal Castle',
         item_bg_galaxy:    'Pink Galaxy',
-        item_bg_spelling:  "Jolyne's Classroom",
+        item_bg_spelling:  "{name}'s Classroom",
         item_shield:       'Wooden Shield',
         item_magic_glove:  'Magic Glove',
         item_sword:        'Iron Sword',
@@ -271,7 +273,7 @@ const STRINGS = {
 
         collectionTitle:     'My Collection ✨',
         backMenu:            '⬅ Menu',
-        chooseSkin:          "Choose Jolyne's outfit",
+        chooseSkin:          "Choose {name}'s outfit",
         mathEquipment:       'Equipment for the Math game',
         leftArm:             '🛡️ Left Arm',
         rightArm:            '⚔️ Right Arm',
@@ -321,7 +323,7 @@ const STRINGS = {
     },
 
     es: {
-        gameTitle:        'El Mundo de Jolyne',
+        gameTitle:        'El Mundo de {name}',
         gameSubtitle:     '¡Elige tu aventura!',
         btnSpelling:      '🏰 Ortografía',
         btnMath:          '❄️ Matemáticas',
@@ -329,7 +331,7 @@ const STRINGS = {
         spellingProgress: (d, t) => `⭐ ${d} / ${t} niveles`,
         mathProgress:     (d, t) => `⭐ ${d} / ${t} mundos`,
 
-        spellingTitle:    'El Castillo de Jolyne',
+        spellingTitle:    'El Castillo de {name}',
         spellingSubtitle: '¡Aprende a deletrear en español!',
         chooseLevel:      '¡Elige tu nivel!',
         levelLabel:       (n) => `NIVEL ${n}`,
@@ -340,7 +342,7 @@ const STRINGS = {
         bravo:            '¡BRAVO! 🌟',
         tryAgain:         '¡Inténtalo! 💛',
 
-        helpJolyne:       '¡Ayuda a Jolyne! ✨',
+        helpJolyne:       '¡Ayuda a {name}! ✨',
         magicChest:       '¡Cofre Mágico! 🎁',
         versus:           (name) => `⚔️ contra ${name}`,
         superText:        '¡SUPER! 🌟',
@@ -396,13 +398,13 @@ const STRINGS = {
         rarity_epic:      'Épico',
         rarity_legendary: 'Legendario',
 
-        item_skin_default: 'Jolyne Pixel',
+        item_skin_default: '{name} Pixel',
         item_skin_pink:    'Vestido Rosa',
         item_skin_gold:    'Princesa de Oro',
         item_bg_night:     'Noche Estrellada',
         item_bg_castle:    'Castillo Real',
         item_bg_galaxy:    'Galaxia Rosa',
-        item_bg_spelling:  'Clase de Jolyne',
+        item_bg_spelling:  'Clase de {name}',
         item_shield:       'Escudo de Madera',
         item_magic_glove:  'Guante Mágico',
         item_sword:        'Espada de Hierro',
@@ -426,7 +428,7 @@ const STRINGS = {
 
         collectionTitle:     'Mi Colección ✨',
         backMenu:            '⬅ Menú',
-        chooseSkin:          'Elige el personaje de Jolyne',
+        chooseSkin:          'Elige el personaje de {name}',
         mathEquipment:       'Equipamiento para Matemáticas',
         leftArm:             '🛡️ Brazo Izquierdo',
         rightArm:            '⚔️ Brazo Derecho',
@@ -498,5 +500,6 @@ export function t(key, ...args) {
     const lang = getLang();
     const val = (STRINGS[lang] ?? STRINGS.fr)[key] ?? STRINGS.fr[key];
     if (val === undefined) return key;
-    return typeof val === 'function' ? val(...args) : val;
+    const result = typeof val === 'function' ? val(...args) : val;
+    return typeof result === 'string' ? result.replace(/\{name\}/g, getChildName()) : result;
 }

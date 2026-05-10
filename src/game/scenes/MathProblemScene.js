@@ -3,6 +3,7 @@ import { getEquipment } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
 import { audio } from '../systems/AudioManager.js';
 import { t } from '../data/I18n.js';
+import { showRewardedAd } from '../services/AdService.js';
 
 export class MathProblemScene extends Scene {
     constructor() {
@@ -25,9 +26,11 @@ export class MathProblemScene extends Scene {
             this.answer = this.num1 + this.num2;
         }
 
-        this.currentInput = '';
-        this._inputLocked = false;
-        this.monsterName  = data.monsterName ?? null;
+        this.currentInput     = '';
+        this._inputLocked     = false;
+        this._failCount       = 0;
+        this._hintButtonShown = false;
+        this.monsterName      = data.monsterName ?? null;
 
         this.equip = getEquipment();
     }
@@ -162,6 +165,7 @@ export class MathProblemScene extends Scene {
             this._showSuccess();
         } else if (this.currentInput.length >= this.answer.toString().length) {
             this._inputLocked = true;
+            this._failCount++;
             this.cameras.main.shake(150, 0.005);
             const { width, height } = this.cameras.main;
             const msg = this.add.text(width / 2, height / 2 - 60, t('tryAgainMath'), {
@@ -176,6 +180,9 @@ export class MathProblemScene extends Scene {
                 this.currentInput = '';
                 this.inputText.setText('?');
                 this._inputLocked = false;
+                if (this._failCount >= 2 && !this._hintButtonShown) {
+                    this._showHintButton();
+                }
             });
         }
     }
@@ -204,6 +211,26 @@ export class MathProblemScene extends Scene {
                     this.scene.stop();
                 });
             }
+        });
+    }
+
+    _showHintButton() {
+        this._hintButtonShown = true;
+        const { width, height } = this.cameras.main;
+        const btn = this.add.text(width / 2, height - 40, '💡 Indice', {
+            fontSize: '24px',
+            fontFamily: 'Arial Black',
+            color: '#ffd700',
+            backgroundColor: '#003366',
+            padding: { x: 16, y: 8 },
+        }).setOrigin(0.5).setDepth(50).setInteractive({ useHandCursor: true });
+
+        btn.on('pointerup', async () => {
+            btn.destroy();
+            try { await showRewardedAd(); } catch {}
+            // Reveal the correct answer in the input display
+            this.inputText.setText(String(this.answer));
+            this.inputText.setStyle({ color: '#00ff88' });
         });
     }
 

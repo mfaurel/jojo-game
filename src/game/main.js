@@ -15,7 +15,14 @@ import { SpellingScene }  from './scenes/SpellingScene';
 import { VictoryScene }   from './scenes/VictoryScene';
 import { RewardPopup }    from './scenes/RewardPopup';
 import { CollectionScene } from './scenes/CollectionScene';
+import { ParentalGateScene } from './scenes/ParentalGateScene';
+import { ExitConfirmScene }  from './scenes/ExitConfirmScene';
 import { AUTO, Game, Scale } from 'phaser';
+import { initAds }        from './services/AdService.js';
+import { initIAP }        from './services/IAPService.js';
+import { initBackButton } from './services/BackButtonHandler.js';
+import { auth }           from './services/firebase.js';
+import { loadFromCloud, applySaveSnapshot, buildSaveSnapshot, syncSave } from './services/SaveService.js';
 
 const config = {
     type: AUTO,
@@ -46,11 +53,27 @@ const config = {
         VictoryScene,
         RewardPopup,
         CollectionScene,
+        ParentalGateScene,
+        ExitConfirmScene,
     ]
 };
 
 const StartGame = (parent) => {
     const game = new Game({ ...config, parent });
+
+    initAds();
+    initIAP();
+    initBackButton(game);
+    auth.onAuthStateChanged(async user => {
+        if (user) {
+            const cloud = await loadFromCloud();
+            if (cloud && cloud.updatedAt > (buildSaveSnapshot().updatedAt || 0)) {
+                applySaveSnapshot(cloud);
+            } else {
+                await syncSave();
+            }
+        }
+    });
 
     const centreScene = (scene) => {
         if (scene.cameras?.main) scene.cameras.main.centerOn(512, 384);
