@@ -142,7 +142,7 @@ export class SpellingMenu extends Scene {
 
         if (!unlocked) {
             this.add.rectangle(cx, cy, cardW, cardH, 0x000000, 0.5).setDepth(13);
-            this.add.text(cx, cy - 8, '🔒', { fontSize: '28px' }).setOrigin(0.5).setDepth(14);
+            this.add.text(cx, cy - 4, '🔒', { fontSize: '28px', padding: { top: 8, bottom: 4 } }).setOrigin(0.5).setDepth(14);
             this.add.text(cx, cy + 24, t('completePrevWorld'), {
                 fontSize: '10px',
                 color: '#ffaaaa',

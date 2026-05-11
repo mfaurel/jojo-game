@@ -160,6 +160,58 @@ describe('mathWorldTitle', () => {
     });
 });
 
+describe('counting i18n keys', () => {
+    it('countingScore is a function returning a string with both numbers', () => {
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            const result = t('countingScore', 3, 6);
+            expect(typeof result).toBe('string');
+            expect(result).toContain('3');
+            expect(result).toContain('6');
+        }
+    });
+
+    it('countingRound is a function returning a string with both numbers', () => {
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            const result = t('countingRound', 2, 6);
+            expect(typeof result).toBe('string');
+            expect(result).toContain('2');
+            expect(result).toContain('6');
+        }
+    });
+
+    it('countingGood is a non-empty string in all three locales', () => {
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            const result = t('countingGood');
+            expect(typeof result).toBe('string');
+            expect(result.length).toBeGreaterThan(0);
+            expect(result).not.toBe('countingGood');
+        }
+    });
+
+    it('countingBad is a non-empty string in all three locales', () => {
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            const result = t('countingBad');
+            expect(typeof result).toBe('string');
+            expect(result.length).toBeGreaterThan(0);
+            expect(result).not.toBe('countingBad');
+        }
+    });
+
+    it('item_bear is a non-empty string in all three locales', () => {
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            const result = t('item_bear');
+            expect(typeof result).toBe('string');
+            expect(result.length).toBeGreaterThan(0);
+            expect(result).not.toBe('item_bear');
+        }
+    });
+});
+
 describe('button emojis', () => {
     it('btnMath uses 🔢 in all three locales', () => {
         for (const lang of ['fr', 'en', 'es']) {

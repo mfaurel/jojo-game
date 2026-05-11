@@ -4,7 +4,6 @@ import { t } from '../data/I18n.js';
 import { audio } from '../systems/AudioManager.js';
 import { getEquipment } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
-import { showRewardedAd } from '../services/AdService.js';
 
 export class SpellingScene extends Scene {
     constructor() {
@@ -299,6 +298,7 @@ export class SpellingScene extends Scene {
         tile.used = true;
         tile.bg.setAlpha(0.35);
         tile.txt.setAlpha(0.35);
+        if (tile.isHinted && tile.bg.clearTint) tile.bg.clearTint();
 
         this.attempt.push(tile);
         const idx = this.attempt.length - 1;
@@ -424,39 +424,28 @@ export class SpellingScene extends Scene {
             this._resetAttempt();
             this._locked = false;
             if (this._failCount >= 2 && !this._hintButtonShown) {
-                this._showHintButton();
+                this._showGreenHint();
             }
         });
     }
 
-    _showHintButton() {
+    _showGreenHint() {
         this._hintButtonShown = true;
-        const btn = this.add.text(512, 700, '💡 Indice', {
-            fontSize: '26px',
-            fontFamily: 'Arial Black, Arial, sans-serif',
-            color: '#ffd700',
-            backgroundColor: '#3a0060',
-            padding: { x: 16, y: 8 },
-        }).setOrigin(0.5).setDepth(15).setInteractive({ useHandCursor: true });
-
-        btn.on('pointerup', async () => {
-            btn.destroy();
-            try { await showRewardedAd(); } catch {}
-            this._showFirstLetterHint();
-        });
-    }
-
-    _showFirstLetterHint() {
-        const tile = this.tiles.find(t => t.letter === this.answer[0] && !t.used);
-        if (!tile) return;
-        this.tweens.add({
-            targets: tile.bg,
-            alpha: 0.4,
-            duration: 300,
-            yoyo: true,
-            repeat: 4,
-            ease: 'Sine.InOut',
-            onComplete: () => tile.bg.setAlpha(1),
+        // Color all letter tiles that are part of the answer in green
+        const needed = [...this.answer];
+        this.tiles.forEach(tile => {
+            if (!tile.used) {
+                const idx = needed.indexOf(tile.letter);
+                if (idx !== -1) {
+                    needed.splice(idx, 1);
+                    tile.isHinted = true;
+                    if (tile.bg.setTint) {
+                        tile.bg.setTint(0x44dd44);
+                    } else {
+                        tile.bg.setFillStyle(0x22aa22, 1);
+                    }
+                }
+            }
         });
     }
 

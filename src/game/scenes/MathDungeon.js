@@ -8,7 +8,7 @@ export class MathDungeon extends Scene {
         super('MathDungeon');
         this.distance = 0;
         this.isWalking = true;
-        this.encounterThreshold = 850;
+        this.encounterThreshold = 500;
         this.nextEncounter = 150;
         this.decorations = [];
     }
@@ -24,10 +24,11 @@ export class MathDungeon extends Scene {
         const { width, height } = this.cameras.main;
 
         this.cameras.main.setBackgroundColor(this.worldConfig.skyTop);
+        this._envObjects = [];
 
         this._drawEnvironment(width, height);
 
-        this.lines = this.add.graphics().setScrollFactor(0);
+        this.lines = this.add.graphics().setScrollFactor(0).setDepth(1);
 
         this._createWorldParticles(width, height);
 
@@ -41,7 +42,7 @@ export class MathDungeon extends Scene {
         this._createUI(width, height);
 
         this.distance = 0;
-        this.nextEncounter = 800;
+        this.nextEncounter = 450;
         this.isWalking = true;
 
         this.scale.on('resize', this._onResize, this);
@@ -49,17 +50,25 @@ export class MathDungeon extends Scene {
     }
 
     _drawEnvironment(w, h) {
+        // Destroy previous env objects on resize
+        if (this._envObjects) {
+            this._envObjects.forEach(o => { if (o?.active) o.destroy(); });
+        }
+        this._envObjects = [];
+
         const vanishingY = h * 0.5;
         const wc = this.worldConfig;
         const PAD = 800;
 
-        const ceiling = this.add.graphics().setScrollFactor(0);
+        const ceiling = this.add.graphics().setScrollFactor(0).setDepth(0);
         ceiling.fillGradientStyle(wc.skyTop, wc.skyTop, wc.skyBottom, wc.skyBottom, 1);
         ceiling.fillRect(-PAD, -PAD, w + PAD * 2, vanishingY + PAD);
+        this._envObjects.push(ceiling);
 
-        const floor = this.add.graphics().setScrollFactor(0);
+        const floor = this.add.graphics().setScrollFactor(0).setDepth(0);
         floor.fillGradientStyle(wc.floorTop, wc.floorTop, wc.floorBottom, wc.floorBottom, 1);
         floor.fillRect(-PAD, vanishingY, w + PAD * 2, h - vanishingY + PAD);
+        this._envObjects.push(floor);
 
         // Stone wall side panels
         const walls = this.add.graphics().setScrollFactor(0).setDepth(2);
@@ -77,6 +86,7 @@ export class MathDungeon extends Scene {
                 walls.strokeRect(w * 0.83 + xOff + col * 44, yy, 44, 42);
             }
         }
+        this._envObjects.push(walls);
 
         // Subtle corner darkness
         const corner = this.add.graphics().setScrollFactor(0).setDepth(3);
@@ -85,6 +95,7 @@ export class MathDungeon extends Scene {
         corner.fillRect(-PAD, -PAD, w * 0.17 + PAD, h + PAD * 2);
         corner.fillGradientStyle(0x000000, 0x000000, 0x000000, 0x000000, 0, 0.7, 0, 0.7);
         corner.fillRect(w * 0.83, -PAD, w * 0.17 + PAD, h + PAD * 2);
+        this._envObjects.push(corner);
 
         // Torch holders (static wall fixtures)
         const torchHolders = this.add.graphics().setScrollFactor(0).setDepth(6);
@@ -94,12 +105,14 @@ export class MathDungeon extends Scene {
         torchHolders.fillRect(lx - 8, ty + 18, 16, 6);
         torchHolders.fillRect(rx - 4, ty, 8, 20);
         torchHolders.fillRect(rx - 8, ty + 18, 16, 6);
+        this._envObjects.push(torchHolders);
 
         const fog = this.add.graphics().setScrollFactor(0).setDepth(4);
         const fc = wc.fogColor;
         fog.fillGradientStyle(fc, fc, fc, fc, 0, 0, 0.8, 0.8);
         fog.fillCircle(w / 2, vanishingY, 160);
         fog.setAlpha(0.35);
+        this._envObjects.push(fog);
     }
 
     _createWorldParticles(w, h) {
@@ -218,7 +231,8 @@ export class MathDungeon extends Scene {
     }
 
     _onResize() {
-        const { width } = this.cameras.main;
+        const { width, height } = this.cameras.main;
+        this._drawEnvironment(width, height);
         if (this.worldNameText) this.worldNameText.setX(width / 2);
         if (this.menuBtn)       this.menuBtn.setX(width - 14);
     }

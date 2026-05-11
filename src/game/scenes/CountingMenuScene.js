@@ -10,9 +10,7 @@ export class CountingMenuScene extends Scene {
     }
 
     create() {
-        this.cameras.main.setBackgroundColor(0x0b1a08);
-
-        this._drawStars();
+        this._drawBackground();
 
         this.add.text(512, 44, t('countingTitle'), {
             fontSize: '44px',
@@ -24,7 +22,7 @@ export class CountingMenuScene extends Scene {
 
         this.add.text(512, 96, t('countingChoose'), {
             fontSize: '24px',
-            color: '#ddffaa',
+            color: '#aaffcc',
             stroke: '#000',
             strokeThickness: 3,
         }).setOrigin(0.5);
@@ -49,6 +47,61 @@ export class CountingMenuScene extends Scene {
             padding: { x: 10, y: 5 },
         }).setOrigin(0, 0).setInteractive({ useHandCursor: true });
         backBtn.on('pointerup', () => this.scene.start('MainMenu'));
+    }
+
+    _drawBackground() {
+        const { width, height } = this.cameras.main;
+        this.cameras.main.setBackgroundColor(0x030d05);
+
+        const g = this.add.graphics();
+
+        // Green glow layers — "counting numbers in nature" feel
+        const glows = [
+            { x: width * 0.5,  y: height * 0.50, r: 340, c: 0x00cc44, a: 0.04 },
+            { x: width * 0.5,  y: height * 0.50, r: 210, c: 0x22dd55, a: 0.07 },
+            { x: width * 0.5,  y: height * 0.50, r: 120, c: 0x44ff88, a: 0.09 },
+            { x: width * 0.20, y: height * 0.30, r: 110, c: 0x00aa33, a: 0.05 },
+            { x: width * 0.80, y: height * 0.70, r: 100, c: 0x00cc44, a: 0.05 },
+        ];
+        glows.forEach(gl => {
+            g.fillStyle(gl.c, gl.a);
+            g.fillCircle(gl.x, gl.y, gl.r);
+        });
+
+        // Floating digit dots (number theme)
+        const digits = ['1', '2', '3', '4', '5'];
+        for (let i = 0; i < 16; i++) {
+            const sx = 40 + Math.random() * (width - 80);
+            const sy = 40 + Math.random() * (height - 80);
+            const d  = digits[Math.floor(Math.random() * digits.length)];
+            const alpha = 0.05 + Math.random() * 0.10;
+            const fsize = Math.floor(20 + Math.random() * 30);
+            const dt = this.add.text(sx, sy, d, {
+                fontSize: `${fsize}px`,
+                fontFamily: 'Arial Black, monospace',
+                color: '#44ff88',
+            }).setAlpha(alpha).setOrigin(0.5);
+            this.tweens.add({
+                targets: dt, alpha: alpha * 0.15,
+                duration: 1600 + Math.random() * 2200,
+                yoyo: true, repeat: -1, delay: Math.random() * 2000,
+            });
+        }
+
+        // Stars with cool green tint
+        for (let i = 0; i < 40; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const r = 0.5 + Math.random() * 1.5;
+            const cool = Math.random() < 0.3;
+            const c = cool ? 0x88ffcc : 0xffffff;
+            const s = this.add.circle(x, y, r, c, 0.3 + Math.random() * 0.4);
+            this.tweens.add({
+                targets: s, alpha: 0.03 + Math.random() * 0.10,
+                duration: 1200 + Math.random() * 2500,
+                yoyo: true, repeat: -1, delay: Math.random() * 2000,
+            });
+        }
     }
 
     _buildCards(progress) {
@@ -84,14 +137,13 @@ export class CountingMenuScene extends Scene {
 
             if (locked) {
                 this.add.rectangle(cx, cy, cardW, cardH, 0x000000, 0.55).setDepth(12);
-                this.add.text(cx, cy - 10, '🔒', { fontSize: '30px' }).setOrigin(0.5).setDepth(13);
+                this.add.text(cx, cy - 8, '🔒', { fontSize: '30px', padding: { top: 8, bottom: 4 } }).setOrigin(0.5).setDepth(13);
                 this.add.text(cx, cy + 28, t('completePrevWorld'), {
                     fontSize: '11px', color: '#ffaaaa', align: 'center',
                 }).setOrigin(0.5).setDepth(13);
                 return;
             }
 
-            // Difficulty indicators
             const stars = level.types === 1 ? '★' : level.types === 2 ? '★★' : '★★★';
             this.add.text(cx, cy - 58, stars, {
                 fontSize: '22px',
@@ -108,7 +160,6 @@ export class CountingMenuScene extends Scene {
                 strokeThickness: 3,
             }).setOrigin(0.5).setDepth(10);
 
-            // Show type count + max count info
             const infoLine = `${level.types} 🔢 → ${level.maxCount}`;
             this.add.text(cx, cy + 16, infoLine, {
                 fontSize: '16px',
@@ -130,19 +181,5 @@ export class CountingMenuScene extends Scene {
         this.cameras.main.once('camerafadeoutcomplete', () => {
             this.scene.start('CountingScene', { levelIndex: levelId });
         });
-    }
-
-    _drawStars() {
-        for (let i = 0; i < 40; i++) {
-            const x = Math.random() * 1024;
-            const y = Math.random() * 768;
-            const r = 0.5 + Math.random() * 1.5;
-            const s = this.add.circle(x, y, r, 0xffffff, 0.4 + Math.random() * 0.5);
-            this.tweens.add({
-                targets: s, alpha: 0.05 + Math.random() * 0.1,
-                duration: 1200 + Math.random() * 2500,
-                yoyo: true, repeat: -1, delay: Math.random() * 2000,
-            });
-        }
     }
 }

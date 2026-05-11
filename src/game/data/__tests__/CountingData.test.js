@@ -41,6 +41,18 @@ describe('COUNTING_LEVELS', () => {
             expect(COUNTING_LEVELS[i].maxCount).toBeGreaterThanOrEqual(COUNTING_LEVELS[i - 1].maxCount);
         }
     });
+
+    it('showTime for all levels is at most 4000ms', () => {
+        for (const level of COUNTING_LEVELS) {
+            expect(level.showTime).toBeLessThanOrEqual(4000);
+        }
+    });
+
+    it('showTime for all levels is at least 1000ms', () => {
+        for (const level of COUNTING_LEVELS) {
+            expect(level.showTime).toBeGreaterThanOrEqual(1000);
+        }
+    });
 });
 
 describe('getCountingProgress / saveCountingProgress', () => {

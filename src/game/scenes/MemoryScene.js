@@ -26,10 +26,10 @@ export class MemoryScene extends Scene {
 
         this._backId = getEquipment().card_back ?? 'card_back_jolyne';
 
-        this.cameras.main.setBackgroundColor(0x0a1830);
+        this.cameras.main.setBackgroundColor(0x08040f);
         this.cameras.main.fadeIn(300);
 
-        this._drawStars();
+        this._drawBackground();
 
         this.add.text(512, 38, t('memoryTitle'), {
             fontSize: '32px',
@@ -57,12 +57,30 @@ export class MemoryScene extends Scene {
         this._buildCards(level);
     }
 
-    _drawStars() {
+    _drawBackground() {
+        const { width, height } = this.cameras.main;
+        const g = this.add.graphics();
+
+        // Orange glow layers
+        const glows = [
+            { x: width * 0.5,  y: height * 0.5,  r: 300, c: 0xff5500, a: 0.04 },
+            { x: width * 0.5,  y: height * 0.5,  r: 180, c: 0xff7700, a: 0.06 },
+            { x: width * 0.5,  y: height * 0.5,  r: 100, c: 0xffaa00, a: 0.09 },
+            { x: width * 0.2,  y: height * 0.25, r: 90,  c: 0xff4400, a: 0.04 },
+            { x: width * 0.8,  y: height * 0.75, r: 80,  c: 0xff6600, a: 0.04 },
+        ];
+        glows.forEach(gl => {
+            g.fillStyle(gl.c, gl.a);
+            g.fillCircle(gl.x, gl.y, gl.r);
+        });
+
         for (let i = 0; i < 40; i++) {
-            const x = Math.random() * 1024;
-            const y = Math.random() * 768;
+            const x = Math.random() * width;
+            const y = Math.random() * height;
             const r = 0.5 + Math.random() * 1.5;
-            const s = this.add.circle(x, y, r, 0xffffff, 0.3 + Math.random() * 0.5);
+            const warm = Math.random() < 0.3;
+            const c = warm ? 0xffbb44 : 0xffffff;
+            const s = this.add.circle(x, y, r, c, 0.3 + Math.random() * 0.5);
             this.tweens.add({
                 targets: s, alpha: 0.05 + Math.random() * 0.1,
                 duration: 1200 + Math.random() * 2000,
@@ -319,11 +337,11 @@ export class MemoryScene extends Scene {
             this.time.delayedCall(i * 80, () => {
                 const x    = 60 + Math.random() * 904;
                 const icon = ['⭐', '✨', '🌟'][Math.floor(Math.random() * 3)];
-                const s    = this.add.text(x, -30, icon, {
+                const s    = this.add.text(x, -60, icon, {
                     fontSize: (22 + Math.random() * 26) + 'px',
-                }).setAlpha(0.9).setDepth(20);
+                }).setAlpha(0.9).setDepth(25).setScrollFactor(0);
                 this.tweens.add({
-                    targets: s, y: 830,
+                    targets: s, y: 900,
                     duration: 2400 + Math.random() * 2000,
                     ease: 'Linear',
                     onComplete: () => s.destroy(),

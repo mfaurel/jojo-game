@@ -401,7 +401,7 @@ export class MainMenu extends Scene {
         const total    = spellingStars + memoryStars + countingStars + mathStars + easterStar;
         const maxTotal = maxSpelling + maxMemory + maxCounting + maxMath + easterStar;
 
-        const px = 10, py = 608, pw = 270, ph = 133;
+        const px = 10, py = 595, pw = 270, ph = 158;
 
         const bg = this.add.graphics();
         bg.fillStyle(0x000000, 0.55);
@@ -419,9 +419,10 @@ export class MainMenu extends Scene {
         sep.lineBetween(px + 6, py + 27, px + pw - 6, py + 27);
 
         const rows = [
-            { label: t('btnSpelling'),      val: spellingStars,              max: maxSpelling },
-            { label: t('leaderboardMathRow'), val: mathStars + countingStars, max: maxMath + maxCounting },
-            { label: t('btnMemory'),        val: memoryStars,                max: maxMemory },
+            { label: t('btnSpelling'),         val: spellingStars,  max: maxSpelling },
+            { label: t('leaderboardMathRow'),  val: mathStars,      max: maxMath },
+            { label: t('btnMemory'),           val: memoryStars,    max: maxMemory },
+            { label: t('btnCounting'),         val: countingStars,  max: maxCounting },
         ];
 
         rows.forEach((row, i) => {
@@ -432,9 +433,9 @@ export class MainMenu extends Scene {
 
         const sep2 = this.add.graphics();
         sep2.lineStyle(1, 0xffd700, 0.3);
-        sep2.lineBetween(px + 6, py + 108, px + pw - 6, py + 108);
+        sep2.lineBetween(px + 6, py + 128, px + pw - 6, py + 128);
 
-        this.add.text(px + pw / 2, py + 121, t('leaderboardTotal', total, maxTotal), gold).setOrigin(0.5, 0.5);
+        this.add.text(px + pw / 2, py + 142, t('leaderboardTotal', total, maxTotal), gold).setOrigin(0.5, 0.5);
     }
 
     _createCollectionButton() {

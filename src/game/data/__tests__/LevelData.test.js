@@ -94,6 +94,8 @@ describe('getInventory', () => {
         expect(inv).toContain('skin_default');
         expect(inv).toContain('bg_night');
         expect(inv).toContain('card_back_jolyne');
+        expect(inv).toContain('item_L_teddy');
+        expect(inv).toContain('item_R_wand');
     });
 
     it('always injects mandatory defaults even if missing from storage', () => {
@@ -102,6 +104,8 @@ describe('getInventory', () => {
         expect(inv).toContain('skin_default');
         expect(inv).toContain('bg_night');
         expect(inv).toContain('card_back_jolyne');
+        expect(inv).toContain('item_L_teddy');
+        expect(inv).toContain('item_R_wand');
         expect(inv).toContain('skin_pink');
     });
 
@@ -131,8 +135,8 @@ describe('getEquipment / setEquipment', () => {
         const eq = getEquipment();
         expect(eq.skin).toBe('skin_default');
         expect(eq.background).toBe('bg_night');
-        expect(eq.item_left).toBeNull();
-        expect(eq.item_right).toBeNull();
+        expect(eq.item_left).toBe('item_L_teddy');
+        expect(eq.item_right).toBe('item_R_wand');
         expect(eq.card_back).toBe('card_back_jolyne');
     });
 
@@ -145,7 +149,7 @@ describe('getEquipment / setEquipment', () => {
         setEquipment('skin', 'skin_gold');
         const eq = getEquipment();
         expect(eq.background).toBe('bg_night');
-        expect(eq.item_left).toBeNull();
+        expect(eq.item_left).toBe('item_L_teddy');
     });
 
     it('handles corrupted equipment storage gracefully', () => {

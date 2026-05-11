@@ -8,8 +8,8 @@ import { purchaseProduct } from '../services/IAPService.js';
 const TABS = [
     { labelKey: 'tabSpelling', categories: ['skin'] },
     { labelKey: 'tabMath',     categories: ['item_left', 'item_right'] },
-    { labelKey: 'tabBonus',    categories: ['background'] },
     { labelKey: 'tabMemory',   categories: ['card_back'] },
+    { labelKey: 'tabBonus',    categories: ['background'] },
 ];
 
 export class CollectionScene extends Scene {
@@ -18,7 +18,7 @@ export class CollectionScene extends Scene {
     }
 
     init(data) {
-        this.activeTab = data?.tab ?? 0;
+        this.activeTab = data?.tab ?? 1;
     }
 
     create() {
@@ -51,7 +51,6 @@ export class CollectionScene extends Scene {
 
         this._drawTabs();
         this._drawTabContent();
-        this._drawSpecialRewards();
     }
 
     _drawTabs() {
@@ -93,8 +92,8 @@ export class CollectionScene extends Scene {
 
         if (this.activeTab === 0)      this._drawSkinTab(inventory, equipment);
         else if (this.activeTab === 1) this._drawMathTab(inventory, equipment);
-        else if (this.activeTab === 2) this._drawBonusTab(inventory, equipment);
-        else                           this._drawMemoryTab(inventory, equipment);
+        else if (this.activeTab === 2) this._drawMemoryTab(inventory, equipment);
+        else                           this._drawBonusTab(inventory, equipment);
     }
 
     // ── Tab 0: Skins ─────────────────────────────────────────────────────────
@@ -185,6 +184,7 @@ export class CollectionScene extends Scene {
         });
 
         this._drawNameCustomization(width);
+        this._drawSpecialRewards();
     }
 
     // ── Name customization (Bonus tab) ────────────────────────────────────────
@@ -311,7 +311,7 @@ export class CollectionScene extends Scene {
         this.add.text(cx, cy + cardH / 2 - 42, t(item.nameKey), {
             fontSize: '14px',
             fontFamily: 'Arial Black',
-            color: rarityColor,
+            color: item.nameColor ?? rarityColor,
         }).setOrigin(0.5);
 
         // Rarity label
@@ -322,7 +322,7 @@ export class CollectionScene extends Scene {
 
         // Status badge
         if (isEquipped) {
-            this.add.text(cx, cy + cardH / 2 - 6, t('equipped'), {
+            this.add.text(cx, cy + cardH / 2 - 14, t('equipped'), {
                 fontSize: '13px',
                 fontFamily: 'Arial Black',
                 color: '#00ff88',
@@ -335,7 +335,7 @@ export class CollectionScene extends Scene {
                 setEquipment(item.category, item.id);
                 this.scene.start('CollectionScene', { tab: this.activeTab });
             });
-            this.add.text(cx, cy + cardH / 2 - 6, t('equip'), {
+            this.add.text(cx, cy + cardH / 2 - 14, t('equip'), {
                 fontSize: '13px',
                 color: '#aaaaff',
             }).setOrigin(0.5);
@@ -345,7 +345,7 @@ export class CollectionScene extends Scene {
     _drawItemPreview(cx, cy, item) {
         if (item.category === 'skin') {
             if (this.textures.exists('jojo_pixel')) {
-                const img = this.add.image(cx, cy, 'jojo_pixel').setDisplaySize(60, 60);
+                const img = this.add.image(cx, cy, 'jojo_pixel').setDisplaySize(80, 80);
                 if (item.tint) img.setTint(item.tint);
             } else {
                 this.add.text(cx, cy, '🧒', { fontSize: '36px' }).setOrigin(0.5);

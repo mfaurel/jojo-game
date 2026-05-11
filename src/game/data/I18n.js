@@ -90,6 +90,7 @@ const STRINGS = {
         item_bg_castle:    'Château Royal',
         item_bg_galaxy:    'Galaxie Rose',
         item_bg_spelling:  'Classe de {name}',
+        item_bear:         'Ourson',
         item_shield:       'Bouclier de Bois',
         item_magic_glove:  'Gant Magique',
         item_sword:        'Épée de Fer',
@@ -170,7 +171,10 @@ const STRINGS = {
         countingQuestion: 'Combien ?',
         countingCorrect:  'Bravo ! 🌟',
         countingProgress: (d, t) => `⭐ ${d} / ${t} niveaux`,
-        countingScore:    (d) => `${d} / 8`,
+        countingScore:    (d, tot) => `${d} / ${tot}`,
+        countingRound:    (n, tot) => `Manche ${n} / ${tot}`,
+        countingGood:     'Bravo ! Tu es formidable ! 🌟',
+        countingBad:      'Continue à essayer, tu vas y arriver ! 💛',
     },
 
     en: {
@@ -256,6 +260,7 @@ const STRINGS = {
         item_bg_castle:    'Royal Castle',
         item_bg_galaxy:    'Pink Galaxy',
         item_bg_spelling:  "{name}'s Classroom",
+        item_bear:         'Teddy Bear',
         item_shield:       'Wooden Shield',
         item_magic_glove:  'Magic Glove',
         item_sword:        'Iron Sword',
@@ -330,7 +335,10 @@ const STRINGS = {
         countingQuestion: 'How many?',
         countingCorrect:  'Bravo! 🌟',
         countingProgress: (d, t) => `⭐ ${d} / ${t} levels`,
-        countingScore:    (d) => `${d} / 8`,
+        countingScore:    (d, tot) => `${d} / ${tot}`,
+        countingRound:    (n, tot) => `Round ${n} / ${tot}`,
+        countingGood:     'Amazing! You are great! 🌟',
+        countingBad:      'Keep trying, you can do it! 💛',
     },
 
     es: {
@@ -416,6 +424,7 @@ const STRINGS = {
         item_bg_castle:    'Castillo Real',
         item_bg_galaxy:    'Galaxia Rosa',
         item_bg_spelling:  'Clase de {name}',
+        item_bear:         'Osito',
         item_shield:       'Escudo de Madera',
         item_magic_glove:  'Guante Mágico',
         item_sword:        'Espada de Hierro',
@@ -490,7 +499,10 @@ const STRINGS = {
         countingQuestion: '¿Cuántos?',
         countingCorrect:  '¡Bravo! 🌟',
         countingProgress: (d, t) => `⭐ ${d} / ${t} niveles`,
-        countingScore:    (d) => `${d} / 8`,
+        countingScore:    (d, tot) => `${d} / ${tot}`,
+        countingRound:    (n, tot) => `Manche ${n} / ${tot}`,
+        countingGood:     '¡Fantástico! ¡Eres increíble! 🌟',
+        countingBad:      '¡Sigue intentándolo, puedes hacerlo! 💛',
     },
 };
 

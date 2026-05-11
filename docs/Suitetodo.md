@@ -1,6 +1,4 @@
 En cours : 
-
-Corriger les bugs
 - On the math world, the emoji are cropped at the top of each box "La toundra" ..., fix it by replacing correctly the emoji a little lower. It has been fixed on the spelling world so correct it in the math world
 - On the main screen, add back at the row ageter "Mémoire", the number of star in "Mémo-chiffres"
 - On the spelling world, when failing three times, don't get the button "indice" but color all the letters that need to be input in green instead of orange to help.
@@ -22,6 +20,9 @@ Corriger les bugs
 - On my collection, change the color of the string "Princesse d'or" in yellow.
 - On my collection, on "Orthographe", "Mathematiques" and "Memory" tab, the word "Equiper" is too much low and touch the box. Same when you select it and it's written "Equipé"
 - On my collection, on "Mathématiques" tab, it has to be selected by default abd I want to be able to select the default items in left and right arm : in right arm, a wand and a bear in the left arm
+
+
+Corriger les bugs
 - On my collection, on "Mathématiques" tab, imagine two other items for left and right arm that will be implemented in the game and that are cute (candy cane for example and another one)
 - On my collection, on "Mathématiques" tab, remove the two emoji on the left of "Bras"
 - On my collection, on "Memory" tab, increase the size of the back of the cards

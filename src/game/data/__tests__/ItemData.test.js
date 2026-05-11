@@ -68,6 +68,29 @@ describe('ITEMS', () => {
             expect(validRarities.has(item.rarity)).toBe(true);
         }
     });
+
+    it('item_L_teddy exists as a COMMON left-arm item', () => {
+        const teddy = ITEMS.find(i => i.id === 'item_L_teddy');
+        expect(teddy).toBeDefined();
+        expect(teddy.category).toBe('item_left');
+        expect(teddy.rarity).toBe('COMMON');
+    });
+
+    it('item_R_wand exists as a COMMON right-arm item', () => {
+        const wand = ITEMS.find(i => i.id === 'item_R_wand');
+        expect(wand).toBeDefined();
+        expect(wand.category).toBe('item_right');
+        expect(wand.rarity).toBe('COMMON');
+    });
+
+    it('skin items with nameColor have it as a string', () => {
+        const skins = ITEMS.filter(i => i.category === 'skin' && i.nameColor != null);
+        expect(skins.length).toBeGreaterThan(0);
+        for (const skin of skins) {
+            expect(typeof skin.nameColor).toBe('string');
+            expect(skin.nameColor).toMatch(/^#[0-9a-fA-F]{6}$/);
+        }
+    });
 });
 
 describe('CARD_BACK_ITEMS', () => {

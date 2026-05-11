@@ -25,10 +25,10 @@ export class CountingScene extends Scene {
         this._locked     = false;
         this._roundData  = null;
 
-        this.cameras.main.setBackgroundColor(0x0b1a08);
+        this.cameras.main.setBackgroundColor(0x030d05);
         this.cameras.main.fadeIn(300);
 
-        this._drawStars();
+        this._drawBackground();
         this._drawHeader();
 
         const backBtn = this.add.text(18, 18, t('back'), {
@@ -45,6 +45,14 @@ export class CountingScene extends Scene {
     // ── Header / HUD ─────────────────────────────────────────────────────────
 
     _drawHeader() {
+        this._roundTxt = this.add.text(14, 38, '', {
+            fontSize: '20px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#ffd700',
+            stroke: '#000',
+            strokeThickness: 3,
+        }).setOrigin(0, 0.5);
+
         this.add.text(512, 38, t('countingTitle'), {
             fontSize: '30px',
             fontFamily: 'Arial Black, Arial, sans-serif',
@@ -53,7 +61,7 @@ export class CountingScene extends Scene {
             strokeThickness: 5,
         }).setOrigin(0.5);
 
-        this._scoreTxt = this.add.text(880, 38, t('countingScore', this._score), {
+        this._scoreTxt = this.add.text(880, 38, t('countingScore', this._score, TOTAL_ROUNDS), {
             fontSize: '26px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffffff',
@@ -63,7 +71,7 @@ export class CountingScene extends Scene {
     }
 
     _updateScore() {
-        this._scoreTxt.setText(t('countingScore', this._score));
+        this._scoreTxt.setText(t('countingScore', this._score, TOTAL_ROUNDS));
     }
 
     // ── Round management ──────────────────────────────────────────────────────
@@ -73,6 +81,7 @@ export class CountingScene extends Scene {
         this._clearObjects();
         this._clearButtons();
         this._locked = false;
+        if (this._roundTxt) this._roundTxt.setText(t('countingRound', this._round, TOTAL_ROUNDS));
         this._roundData = this._generateRound();
         this._phase1();
     }
@@ -293,12 +302,14 @@ export class CountingScene extends Scene {
             strokeThickness: 8,
         }).setOrigin(0.5).setDepth(10);
 
-        this.add.text(512, 410, perfect ? 'Bravo !' : 'Ca sera mieux la prochaine fois !', {
+        this.add.text(512, 410, perfect ? t('countingGood') : t('countingBad'), {
             fontSize: '34px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffffff',
             stroke: '#000',
             strokeThickness: 5,
+            wordWrap: { width: 800 },
+            align: 'center',
         }).setOrigin(0.5).setDepth(10);
 
         const wonItem = perfect ? LootManager.rollLoot() : null;
@@ -372,11 +383,11 @@ export class CountingScene extends Scene {
             this.time.delayedCall(i * 80, () => {
                 const x    = 60 + Math.random() * 904;
                 const icon = ['⭐', '✨', '🌟'][Math.floor(Math.random() * 3)];
-                const s    = this.add.text(x, -30, icon, {
+                const s    = this.add.text(x, -60, icon, {
                     fontSize: (22 + Math.random() * 26) + 'px',
-                }).setAlpha(0.9).setDepth(20);
+                }).setAlpha(0.9).setDepth(25).setScrollFactor(0);
                 this.tweens.add({
-                    targets: s, y: 830,
+                    targets: s, y: 900,
                     duration: 2400 + Math.random() * 2000,
                     ease: 'Linear',
                     onComplete: () => s.destroy(),
@@ -385,12 +396,30 @@ export class CountingScene extends Scene {
         }
     }
 
-    _drawStars() {
+    _drawBackground() {
+        const { width, height } = this.cameras.main;
+        const g = this.add.graphics();
+
+        // Green glow layers
+        const glows = [
+            { x: width * 0.5, y: height * 0.5,  r: 300, c: 0x00cc44, a: 0.04 },
+            { x: width * 0.5, y: height * 0.5,  r: 180, c: 0x22dd55, a: 0.06 },
+            { x: width * 0.5, y: height * 0.5,  r: 100, c: 0x44ff88, a: 0.08 },
+            { x: width * 0.2, y: height * 0.3,  r: 80,  c: 0x00aa33, a: 0.04 },
+            { x: width * 0.8, y: height * 0.7,  r: 80,  c: 0x00cc44, a: 0.04 },
+        ];
+        glows.forEach(gl => {
+            g.fillStyle(gl.c, gl.a);
+            g.fillCircle(gl.x, gl.y, gl.r);
+        });
+
         for (let i = 0; i < 30; i++) {
-            const x = Math.random() * 1024;
-            const y = Math.random() * 768;
+            const x = Math.random() * width;
+            const y = Math.random() * height;
             const r = 0.5 + Math.random() * 1.5;
-            const s = this.add.circle(x, y, r, 0xffffff, 0.2 + Math.random() * 0.4);
+            const cool = Math.random() < 0.3;
+            const c = cool ? 0x88ffcc : 0xffffff;
+            const s = this.add.circle(x, y, r, c, 0.2 + Math.random() * 0.4);
             this.tweens.add({
                 targets: s, alpha: 0.02,
                 duration: 1500 + Math.random() * 2000,

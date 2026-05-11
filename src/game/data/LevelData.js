@@ -122,9 +122,11 @@ export function getInventory() {
             if (!inv.includes('skin_default'))     inv.push('skin_default');
             if (!inv.includes('bg_night'))         inv.push('bg_night');
             if (!inv.includes('card_back_jolyne')) inv.push('card_back_jolyne');
+            if (!inv.includes('item_L_teddy'))     inv.push('item_L_teddy');
+            if (!inv.includes('item_R_wand'))      inv.push('item_R_wand');
             return inv;
         }
-        return ['skin_default', 'bg_night', 'card_back_jolyne'];
+        return ['skin_default', 'bg_night', 'card_back_jolyne', 'item_L_teddy', 'item_R_wand'];
     } catch {
         return ['skin_default', 'bg_night'];
     }
@@ -145,12 +147,12 @@ export function getEquipment() {
         return JSON.parse(localStorage.getItem(EQUIP_KEY)) || {
             skin: 'skin_default',
             background: 'bg_night',
-            item_left: null,
-            item_right: null,
+            item_left: 'item_L_teddy',
+            item_right: 'item_R_wand',
             card_back: 'card_back_jolyne',
         };
     } catch {
-        return { skin: 'skin_default', background: 'bg_night', item_left: null, item_right: null, card_back: 'card_back_jolyne' };
+        return { skin: 'skin_default', background: 'bg_night', item_left: 'item_L_teddy', item_right: 'item_R_wand', card_back: 'card_back_jolyne' };
     }
 }
 
