@@ -76,11 +76,33 @@ describe('ITEMS', () => {
         expect(teddy.rarity).toBe('COMMON');
     });
 
+    it('item_L_flower exists as an UNCOMMON left-arm item', () => {
+        const flower = ITEMS.find(i => i.id === 'item_L_flower');
+        expect(flower).toBeDefined();
+        expect(flower.category).toBe('item_left');
+        expect(flower.rarity).toBe('UNCOMMON');
+    });
+
     it('item_R_wand exists as a COMMON right-arm item', () => {
         const wand = ITEMS.find(i => i.id === 'item_R_wand');
         expect(wand).toBeDefined();
         expect(wand.category).toBe('item_right');
         expect(wand.rarity).toBe('COMMON');
+    });
+
+    it('item_R_candy exists as an UNCOMMON right-arm item', () => {
+        const candy = ITEMS.find(i => i.id === 'item_R_candy');
+        expect(candy).toBeDefined();
+        expect(candy.category).toBe('item_right');
+        expect(candy.rarity).toBe('UNCOMMON');
+    });
+
+    it('each item with an emoji has a string emoji', () => {
+        for (const item of ITEMS) {
+            if (item.emoji !== undefined) {
+                expect(typeof item.emoji).toBe('string');
+            }
+        }
     });
 
     it('skin items with nameColor have it as a string', () => {
@@ -110,6 +132,12 @@ describe('CARD_BACK_ITEMS', () => {
     it('card back ids are unique', () => {
         const ids = CARD_BACK_ITEMS.map(i => i.id);
         expect(new Set(ids).size).toBe(ids.length);
+    });
+
+    it('card_back_rainbow has rainbowName: true', () => {
+        const rainbow = CARD_BACK_ITEMS.find(i => i.id === 'card_back_rainbow');
+        expect(rainbow).toBeDefined();
+        expect(rainbow.rainbowName).toBe(true);
     });
 });
 

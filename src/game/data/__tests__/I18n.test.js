@@ -210,6 +210,34 @@ describe('counting i18n keys', () => {
             expect(result).not.toBe('item_bear');
         }
     });
+
+    it('item_flower is a non-empty string in all three locales', () => {
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            const result = t('item_flower');
+            expect(typeof result).toBe('string');
+            expect(result.length).toBeGreaterThan(0);
+            expect(result).not.toBe('item_flower');
+        }
+    });
+
+    it('item_candy_cane is a non-empty string in all three locales', () => {
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            const result = t('item_candy_cane');
+            expect(typeof result).toBe('string');
+            expect(result.length).toBeGreaterThan(0);
+            expect(result).not.toBe('item_candy_cane');
+        }
+    });
+
+    it('leftArm and rightArm have no emoji in any locale', () => {
+        for (const lang of ['fr', 'en', 'es']) {
+            setLang(lang);
+            expect(t('leftArm')).not.toMatch(/🛡️/);
+            expect(t('rightArm')).not.toMatch(/⚔️/);
+        }
+    });
 });
 
 describe('button emojis', () => {

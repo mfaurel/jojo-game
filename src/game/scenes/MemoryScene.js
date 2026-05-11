@@ -337,9 +337,9 @@ export class MemoryScene extends Scene {
             this.time.delayedCall(i * 80, () => {
                 const x    = 60 + Math.random() * 904;
                 const icon = ['⭐', '✨', '🌟'][Math.floor(Math.random() * 3)];
-                const s    = this.add.text(x, -60, icon, {
+                const s    = this.add.text(x, -120, icon, {
                     fontSize: (22 + Math.random() * 26) + 'px',
-                }).setAlpha(0.9).setDepth(25).setScrollFactor(0);
+                }).setAlpha(0.9).setDepth(25);
                 this.tweens.add({
                     targets: s, y: 900,
                     duration: 2400 + Math.random() * 2000,

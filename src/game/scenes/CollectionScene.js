@@ -308,11 +308,16 @@ export class CollectionScene extends Scene {
         this._drawItemPreview(cx, cy - 18, item);
 
         // Name
-        this.add.text(cx, cy + cardH / 2 - 42, t(item.nameKey), {
-            fontSize: '14px',
-            fontFamily: 'Arial Black',
-            color: item.nameColor ?? rarityColor,
-        }).setOrigin(0.5);
+        const nameY = cy + cardH / 2 - 42;
+        if (item.rainbowName) {
+            this._drawRainbowName(cx, nameY, t(item.nameKey));
+        } else {
+            this.add.text(cx, nameY, t(item.nameKey), {
+                fontSize: '14px',
+                fontFamily: 'Arial Black',
+                color: item.nameColor ?? rarityColor,
+            }).setOrigin(0.5);
+        }
 
         // Rarity label
         this.add.text(cx, cy + cardH / 2 - 24, t(RARITY[item.rarity].labelKey), {
@@ -478,12 +483,12 @@ export class CollectionScene extends Scene {
     _drawMemoryTab(inventory, equipment) {
         const { width } = this.cameras.main;
         const items  = CARD_BACK_ITEMS;
-        const cardW  = 200;
-        const cardH  = 260;
+        const cardW  = 240;
+        const cardH  = 310;
         const gap    = 36;
         const totalW = items.length * cardW + (items.length - 1) * gap;
         const startX = (width - totalW) / 2;
-        const cy     = 330;
+        const cy     = 350;
 
         this.add.text(width / 2, 135, t('chooseCardBack'), {
             fontSize: '18px',
@@ -524,6 +529,21 @@ export class CollectionScene extends Scene {
                 this.add.text(x, y, '🏆', { fontSize: '36px', alpha: 0.2 }).setOrigin(0.5);
                 this.add.text(x, y + 52, '???', { fontSize: '14px', color: '#444444' }).setOrigin(0.5);
             }
+        });
+    }
+
+    _drawRainbowName(cx, cy, text) {
+        const colors = ['#ff4444', '#ff9900', '#ffee00', '#44ee44', '#44aaff', '#aa44ff'];
+        const style  = { fontSize: '14px', fontFamily: 'Arial Black, Arial, sans-serif' };
+        // Measure total width using a hidden probe text
+        const probe  = this.add.text(-2000, -2000, text, style);
+        const totalW = probe.width;
+        probe.destroy();
+        // Render each character with its own color
+        let xOffset = cx - totalW / 2;
+        [...text].forEach((ch, i) => {
+            const ct = this.add.text(xOffset, cy, ch, { ...style, color: colors[i % colors.length] }).setOrigin(0, 0.5);
+            xOffset += ct.width;
         });
     }
 

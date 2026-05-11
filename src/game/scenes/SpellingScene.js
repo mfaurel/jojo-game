@@ -191,7 +191,7 @@ export class SpellingScene extends Scene {
                 if (!tile.used) this._selectLetter(tile);
             });
 
-            const tile = { bg, txt, letter, used: false, baseScale };
+            const tile = { bg, txt, letter, used: false, baseScale, isImage: this.textures.exists('ui_tile') };
             this.tiles.push(tile);
         });
     }
@@ -298,7 +298,6 @@ export class SpellingScene extends Scene {
         tile.used = true;
         tile.bg.setAlpha(0.35);
         tile.txt.setAlpha(0.35);
-        if (tile.isHinted && tile.bg.clearTint) tile.bg.clearTint();
 
         this.attempt.push(tile);
         const idx = this.attempt.length - 1;
@@ -431,7 +430,6 @@ export class SpellingScene extends Scene {
 
     _showGreenHint() {
         this._hintButtonShown = true;
-        // Color all letter tiles that are part of the answer in green
         const needed = [...this.answer];
         this.tiles.forEach(tile => {
             if (!tile.used) {
@@ -439,14 +437,18 @@ export class SpellingScene extends Scene {
                 if (idx !== -1) {
                     needed.splice(idx, 1);
                     tile.isHinted = true;
-                    if (tile.bg.setTint) {
-                        tile.bg.setTint(0x44dd44);
-                    } else {
-                        tile.bg.setFillStyle(0x22aa22, 1);
-                    }
+                    this._applyHintColor(tile);
                 }
             }
         });
+    }
+
+    _applyHintColor(tile) {
+        if (tile.isImage) {
+            tile.bg.setTint(0x00ff44);
+        } else {
+            tile.bg.setFillStyle(0x22cc44, 1);
+        }
     }
 
     _resetAttempt() {
@@ -455,6 +457,7 @@ export class SpellingScene extends Scene {
             tile.bg.setAlpha(1);
             tile.bg.setScale(tile.baseScale || 1);
             tile.txt.setAlpha(1);
+            if (tile.isHinted) this._applyHintColor(tile);
         });
         this.attempt = [];
         this.slotTexts.forEach(t => t.setText(''));

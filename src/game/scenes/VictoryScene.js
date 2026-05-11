@@ -488,12 +488,12 @@ export class VictoryScene extends Scene {
             this.time.delayedCall(i * 120, () => {
                 const x    = 60 + Math.random() * 904;
                 const icon = ['⭐', '✨', '🌟'][Math.floor(Math.random() * 3)];
-                const star = this.add.text(x, -30, icon, {
+                const star = this.add.text(x, -120, icon, {
                     fontSize: (24 + Math.random() * 24) + 'px',
-                }).setAlpha(0.9);
+                }).setAlpha(0.9).setDepth(25);
                 this.tweens.add({
                     targets: star,
-                    y: 830,
+                    y: 900,
                     duration: 2500 + Math.random() * 2000,
                     ease: 'Linear',
                     onComplete: () => star.destroy(),

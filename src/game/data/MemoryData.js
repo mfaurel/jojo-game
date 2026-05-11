@@ -33,6 +33,7 @@ export function saveMemoryProgress(levelId) {
 }
 
 export function isMemoryUnlocked(levelId) {
-    if (levelId === 0) return true;
+    // First level of each row (0, 3, 6) is always unlocked
+    if (levelId === 0 || levelId === 3 || levelId === 6) return true;
     return !!getMemoryProgress()[levelId - 1];
 }

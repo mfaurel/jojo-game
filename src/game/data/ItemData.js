@@ -22,11 +22,13 @@ export const ITEMS = [
 
     // --- MATH ITEMS (Left Arm) ---
     { id: 'item_L_teddy',  category: 'item_left',  nameKey: 'item_bear',        rarity: 'COMMON',   asset: 'teddy_bear',  emoji: '🐻' },
+    { id: 'item_L_flower', category: 'item_left',  nameKey: 'item_flower',      rarity: 'UNCOMMON', asset: 'flower',      emoji: '🌸' },
     { id: 'item_L_shield', category: 'item_left',  nameKey: 'item_shield',      rarity: 'COMMON',   asset: 'shield_wood', emoji: '🛡️' },
     { id: 'item_L_magic',  category: 'item_left',  nameKey: 'item_magic_glove', rarity: 'RARE',     asset: 'glove_magic', emoji: '🧤' },
 
     // --- MATH ITEMS (Right Arm) ---
     { id: 'item_R_wand',   category: 'item_right', nameKey: 'item_wand',        rarity: 'COMMON',   asset: 'wand_star',   emoji: '⭐' },
+    { id: 'item_R_candy',  category: 'item_right', nameKey: 'item_candy_cane',  rarity: 'UNCOMMON', asset: 'candy_cane',  emoji: '🍭' },
     { id: 'item_R_sword',  category: 'item_right', nameKey: 'item_sword',       rarity: 'UNCOMMON', asset: 'sword_iron',  emoji: '⚔️' },
 ];
 
@@ -34,7 +36,7 @@ export const ITEMS = [
 export const CARD_BACK_ITEMS = [
     { id: 'card_back_jolyne',  category: 'card_back', nameKey: 'item_card_back_jolyne',  rarity: 'COMMON' },
     { id: 'card_back_stars',   category: 'card_back', nameKey: 'item_card_back_stars',   rarity: 'RARE'   },
-    { id: 'card_back_rainbow', category: 'card_back', nameKey: 'item_card_back_rainbow', rarity: 'EPIC'   },
+    { id: 'card_back_rainbow', category: 'card_back', nameKey: 'item_card_back_rainbow', rarity: 'EPIC', rainbowName: true },
 ];
 
 export const SPECIAL_REWARDS = {

@@ -227,7 +227,7 @@ export class MathDungeon extends Scene {
             padding: { x: 12, y: 6 }
         }).setOrigin(1, 0).setInteractive({ useHandCursor: true }).setDepth(200).setScrollFactor(0);
 
-        this.menuBtn.on('pointerup', () => this.scene.start('MathWorldSelectScene'));
+        this.menuBtn.on('pointerup', () => this._showConfirmQuit());
     }
 
     _onResize() {
@@ -235,6 +235,52 @@ export class MathDungeon extends Scene {
         this._drawEnvironment(width, height);
         if (this.worldNameText) this.worldNameText.setX(width / 2);
         if (this.menuBtn)       this.menuBtn.setX(width - 14);
+    }
+
+    _showConfirmQuit() {
+        const { width, height } = this.cameras.main;
+        const cx = width / 2, cy = height / 2;
+        const elems = [];
+
+        elems.push(this.add.rectangle(cx, cy, width, height, 0x000000, 0.78)
+            .setDepth(300).setScrollFactor(0));
+
+        const g = this.add.graphics().setDepth(301).setScrollFactor(0);
+        g.fillStyle(0x1a0a2e, 0.97);
+        g.fillRoundedRect(cx - 190, cy - 100, 380, 200, 18);
+        g.lineStyle(4, 0x4488ff, 1);
+        g.strokeRoundedRect(cx - 190, cy - 100, 380, 200, 18);
+        elems.push(g);
+
+        elems.push(this.add.text(cx, cy - 38, t('confirmQuit'), {
+            fontSize: '28px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#ffffff',
+            stroke: '#000',
+            strokeThickness: 4,
+        }).setOrigin(0.5).setDepth(302).setScrollFactor(0));
+
+        const dismiss = () => elems.forEach(e => { if (e?.active) e.destroy(); });
+
+        [
+            { bx: cx - 80, color: 0x228822, key: 'confirmYes', fn: () => { dismiss(); this.scene.start('MathWorldSelectScene'); } },
+            { bx: cx + 80, color: 0x882222, key: 'confirmNo',  fn: () => dismiss() },
+        ].forEach(({ bx, color, key, fn }) => {
+            const btn = this.add.rectangle(bx, cy + 38, 130, 52, color, 1)
+                .setDepth(302).setScrollFactor(0)
+                .setInteractive({ useHandCursor: true })
+                .on('pointerover', () => btn.setAlpha(0.8))
+                .on('pointerout',  () => btn.setAlpha(1))
+                .on('pointerup',   fn);
+            elems.push(btn);
+            elems.push(this.add.text(bx, cy + 38, t(key), {
+                fontSize: '22px',
+                fontFamily: 'Arial Black, Arial, sans-serif',
+                color: '#fff',
+                stroke: '#000',
+                strokeThickness: 3,
+            }).setOrigin(0.5).setDepth(303).setScrollFactor(0));
+        });
     }
 
     _updateRoundHUD(newRound) {

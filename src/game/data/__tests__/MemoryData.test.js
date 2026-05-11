@@ -69,8 +69,16 @@ describe('getMemoryProgress / saveMemoryProgress', () => {
 });
 
 describe('isMemoryUnlocked', () => {
-    it('level 0 is always unlocked', () => {
+    it('level 0 is always unlocked (first of row 1)', () => {
         expect(isMemoryUnlocked(0)).toBe(true);
+    });
+
+    it('level 3 is always unlocked (first of row 2)', () => {
+        expect(isMemoryUnlocked(3)).toBe(true);
+    });
+
+    it('level 6 is always unlocked (first of row 3)', () => {
+        expect(isMemoryUnlocked(6)).toBe(true);
     });
 
     it('level 1 is locked without prior progress', () => {
@@ -82,10 +90,22 @@ describe('isMemoryUnlocked', () => {
         expect(isMemoryUnlocked(1)).toBe(true);
     });
 
+    it('level 4 is locked without completing level 3', () => {
+        expect(isMemoryUnlocked(4)).toBe(false);
+        saveMemoryProgress(3);
+        expect(isMemoryUnlocked(4)).toBe(true);
+    });
+
     it('level 5 requires level 4 completed', () => {
         expect(isMemoryUnlocked(5)).toBe(false);
         saveMemoryProgress(4);
         expect(isMemoryUnlocked(5)).toBe(true);
+    });
+
+    it('level 7 is locked without completing level 6', () => {
+        expect(isMemoryUnlocked(7)).toBe(false);
+        saveMemoryProgress(6);
+        expect(isMemoryUnlocked(7)).toBe(true);
     });
 
     it('level 8 requires level 7 completed', () => {

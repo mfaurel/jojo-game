@@ -31,13 +31,13 @@ export class CountingScene extends Scene {
         this._drawBackground();
         this._drawHeader();
 
-        const backBtn = this.add.text(18, 18, t('back'), {
+        const menuBtn = this.add.text(1006, 18, t('menuBtn'), {
             fontSize: '20px',
             color: '#ffffff',
             backgroundColor: '#224422',
-            padding: { x: 8, y: 4 },
-        }).setOrigin(0, 0).setInteractive({ useHandCursor: true });
-        backBtn.on('pointerup', () => this.scene.start('CountingMenuScene'));
+            padding: { x: 10, y: 5 },
+        }).setOrigin(1, 0).setInteractive({ useHandCursor: true });
+        menuBtn.on('pointerup', () => this._showConfirmQuit());
 
         this._nextRound();
     }
@@ -262,13 +262,80 @@ export class CountingScene extends Scene {
             audio.playGateUnlock();
             this._highlightButton(chosen, 0x44ff44);
             this._burstAt(512, 340);
+            this._showFeedback(true);
             this.time.delayedCall(900, () => isLast ? this._endGame() : this._nextRound());
         } else {
             audio.playWrong();
             this._highlightButton(chosen, 0xff4444);
             this._highlightButton(correct, 0x44ff44);
+            this._showFeedback(false);
             this.time.delayedCall(1500, () => isLast ? this._endGame() : this._nextRound());
         }
+    }
+
+    _showFeedback(isCorrect) {
+        const text   = isCorrect ? t('bravo') : t('countingBad').split('!')[0] + ' !';
+        const color  = isCorrect ? '#ffd700' : '#ffcc44';
+        const gColor = isCorrect ? 0x00cc44  : 0xff8800;
+        const dur    = isCorrect ? 800 : 1300;
+
+        const glow = this.add.rectangle(512, 390, 700, 110, gColor, 0.25).setDepth(20);
+        this.tweens.add({ targets: glow, alpha: 0, duration: dur, ease: 'Quad.Out', onComplete: () => glow.destroy() });
+
+        const lbl = this.add.text(512, 390, isCorrect ? 'Bravo ! ✓' : 'Continue !', {
+            fontSize: '52px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color,
+            stroke: '#000000',
+            strokeThickness: 6,
+        }).setOrigin(0.5).setDepth(21).setScale(0);
+        this.tweens.add({
+            targets: lbl, scaleX: 1, scaleY: 1, duration: 280, ease: 'Back.Out',
+            onComplete: () => this.time.delayedCall(dur - 280, () => { if (lbl.active) lbl.destroy(); }),
+        });
+    }
+
+    _showConfirmQuit() {
+        const cx = 512, cy = 384;
+        const elems = [];
+
+        elems.push(this.add.rectangle(cx, cy, 1024, 768, 0x000000, 0.75).setDepth(50));
+
+        const g = this.add.graphics().setDepth(51);
+        g.fillStyle(0x030d05, 0.97);
+        g.fillRoundedRect(cx - 190, cy - 100, 380, 200, 18);
+        g.lineStyle(4, 0x44cc44, 1);
+        g.strokeRoundedRect(cx - 190, cy - 100, 380, 200, 18);
+        elems.push(g);
+
+        elems.push(this.add.text(cx, cy - 38, t('confirmQuit'), {
+            fontSize: '28px',
+            fontFamily: 'Arial Black, Arial, sans-serif',
+            color: '#ffffff',
+            stroke: '#000',
+            strokeThickness: 4,
+        }).setOrigin(0.5).setDepth(52));
+
+        const dismiss = () => elems.forEach(e => { if (e?.active) e.destroy(); });
+
+        [
+            { bx: cx - 80, color: 0x228822, key: 'confirmYes', fn: () => { dismiss(); this.scene.start('CountingMenuScene'); } },
+            { bx: cx + 80, color: 0x882222, key: 'confirmNo',  fn: () => dismiss() },
+        ].forEach(({ bx, color, key, fn }) => {
+            const btn = this.add.rectangle(bx, cy + 38, 130, 52, color, 1).setDepth(52)
+                .setInteractive({ useHandCursor: true })
+                .on('pointerover', () => btn.setAlpha(0.8))
+                .on('pointerout',  () => btn.setAlpha(1))
+                .on('pointerup',   fn);
+            elems.push(btn);
+            elems.push(this.add.text(bx, cy + 38, t(key), {
+                fontSize: '22px',
+                fontFamily: 'Arial Black, Arial, sans-serif',
+                color: '#fff',
+                stroke: '#000',
+                strokeThickness: 3,
+            }).setOrigin(0.5).setDepth(53));
+        });
     }
 
     _highlightButton(value, color) {
@@ -383,9 +450,9 @@ export class CountingScene extends Scene {
             this.time.delayedCall(i * 80, () => {
                 const x    = 60 + Math.random() * 904;
                 const icon = ['⭐', '✨', '🌟'][Math.floor(Math.random() * 3)];
-                const s    = this.add.text(x, -60, icon, {
+                const s    = this.add.text(x, -120, icon, {
                     fontSize: (22 + Math.random() * 26) + 'px',
-                }).setAlpha(0.9).setDepth(25).setScrollFactor(0);
+                }).setAlpha(0.9).setDepth(25);
                 this.tweens.add({
                     targets: s, y: 900,
                     duration: 2400 + Math.random() * 2000,
