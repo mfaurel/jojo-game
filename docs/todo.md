@@ -10,18 +10,17 @@
 |---|-------------|-----------|--------|--------|
 | B1 | Bonus star (31st) clipped top-right in CollectionScene | `CollectionScene.js` | XS | ✅ Fixed — star moved to y=40 |
 | B2 | Stars clipped during Félicitations phase in VictoryScene | `VictoryScene.js` | XS | ✅ Fixed — `setOrigin(0.5, 0)` applied |
-| B3 | ⭐ star decoration on Collection button in MainMenu | `MainMenu.js` | XS | ✅ Fixed — star decoration removed from Collection button |
 | B5 | Collection layout not re-centered on fullscreen/resize | `CollectionScene.js` | XS | ✅ Fixed — `this.scale.on('resize', ...)` restarts scene |
 | B6 | Collection default active tab was Math (1) instead of Spelling (0) | `CollectionScene.js` | XS | ✅ Fixed — `data?.tab ?? 1` changed to `data?.tab ?? 0` |
-| B7 | Animated bonus star in top-right corner of CollectionScene | `CollectionScene.js` | S | ✅ Fixed — floating star removed; bonus triggered by clicking `collectionTitle` text |
-| B8 | "Classe" background (bg_spelling) in Bonus tab should be always unlocked and in Special Rewards | `CollectionScene.js`, `ItemData.js` | S | ✅ Fixed — bg_spelling removed from ITEMS backgrounds, added to SPECIAL_REWARDS with `alwaysUnlocked: true` |
-| B9 | First avatar in Spelling collection has no label | `CollectionScene.js`, `I18n.js` | XS | ✅ Fixed — `item_skin_default` i18n key updated to "Robe Classique" / "Classic Dress" / "Vestido Clásico" |
-| B10 | Math emoji icons cropped at top in collection | `CollectionScene.js` | XS | ✅ Fixed — emoji y offset shifted down by 8px |
 | B11 | Victory transition too fast in MemoryScene (mémo chiffres) | `MemoryScene.js` | XS | ✅ Fixed — `delayedCall` changed from 1400ms to 3000ms |
 | B12 | Achievement toast display duration | `AchievementToast.js` | XS | ✅ No change needed — already 3500ms |
 | B13 | Achievements grid not well centered in collection | `CollectionScene.js` | XS | ✅ Fixed — cardW adjusted to 450, colGap to 24, startY to 180 for better centering |
 
 ---
+| B8 | "Classe" background (bg_spelling) in Bonus tab should be always unlocked and in Special Rewards but shouldn't be a background
+| B10 | Math emoji icons cropped at top in collection | `CollectionScene.js` | XS | 
+Pourquoi un cadenas sur la page principale en haut au milieu ?
+No achievement shown when clicking onn collection. Achievement disappear quickly when changing language
 
 ## 2. Content & Assets
 

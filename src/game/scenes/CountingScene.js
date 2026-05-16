@@ -372,6 +372,7 @@ export class CountingScene extends Scene {
             }
             const rStars = checkAllStars();
             if (rStars?.wasNew) achResults.push({ id: 'all_stars', rewardItemId: rStars.rewardItemId });
+            this._showEnding = rStars?.showEnding ?? false;
         }
 
         this.add.text(512, 290, `${this._score} / ${TOTAL_ROUNDS}`, {
@@ -393,13 +394,17 @@ export class CountingScene extends Scene {
         }).setOrigin(0.5).setDepth(10);
 
         const wonItem = perfect ? LootManager.rollLoot() : null;
+        const showEnding = this._showEnding ?? false;
         this.time.delayedCall(perfect ? 2000 : 3000, () => {
             achResults.forEach((a, i) =>
                 this.time.delayedCall(i * 2200, () =>
                     showAchievementToast(this, a.id, a.rewardItemId)
                 )
             );
-            if (wonItem) {
+            if (showEnding) {
+                const toastDelay = achResults.length * 2200 + 800;
+                this.time.delayedCall(toastDelay, () => this.scene.start('EndingScene'));
+            } else if (wonItem) {
                 this.scene.launch('RewardPopup', {
                     item: wonItem,
                     onClose: () => this.scene.start('CountingMenuScene'),

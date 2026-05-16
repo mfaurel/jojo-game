@@ -17,6 +17,7 @@ import { RewardPopup }    from './scenes/RewardPopup';
 import { CollectionScene } from './scenes/CollectionScene';
 import { ParentalGateScene } from './scenes/ParentalGateScene';
 import { ExitConfirmScene }  from './scenes/ExitConfirmScene';
+import { EndingScene }       from './scenes/EndingScene';
 import { AUTO, Game, Scale } from 'phaser';
 import { initAds }        from './services/AdService.js';
 import { initIAP }        from './services/IAPService.js';
@@ -55,6 +56,7 @@ const config = {
         CollectionScene,
         ParentalGateScene,
         ExitConfirmScene,
+        EndingScene,
     ]
 };
 

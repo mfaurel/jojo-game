@@ -104,6 +104,14 @@ export class MathVictoryScene extends Scene {
                         showAchievementToast(this, a.id, a.rewardItemId)
                     )
                 );
+                if (this._showEnding) {
+                    const toastDelay = this._achResults.length * 2200 + 800;
+                    this.time.delayedCall(toastDelay, () => this.scene.start('EndingScene'));
+                    return;
+                }
+            } else if (this._showEnding) {
+                this.time.delayedCall(600, () => this.scene.start('EndingScene'));
+                return;
             }
             if (this.wonItem) {
                 this.scene.launch('RewardPopup', {
@@ -145,6 +153,7 @@ export class MathVictoryScene extends Scene {
         }
         const rStars = checkAllStars();
         if (rStars?.wasNew) this._achResults.push({ id: 'all_stars', rewardItemId: rStars.rewardItemId });
+        this._showEnding = rStars?.showEnding ?? false;
     }
 
     _exitToWorldSelect() {

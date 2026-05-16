@@ -320,6 +320,7 @@ export class MemoryScene extends Scene {
 
         const rStars = checkAllStars();
         if (rStars?.wasNew) achResults.push({ id: 'all_stars', rewardItemId: rStars.rewardItemId });
+        const showEnding = rStars?.showEnding ?? false;
 
         const wonItem = this._rollMemoryLoot();
         this.time.delayedCall(3000, () => {
@@ -328,7 +329,10 @@ export class MemoryScene extends Scene {
                     showAchievementToast(this, a.id, a.rewardItemId)
                 )
             );
-            if (wonItem) {
+            if (showEnding) {
+                const toastDelay = achResults.length * 2200 + 800;
+                this.time.delayedCall(toastDelay, () => this.scene.start('EndingScene'));
+            } else if (wonItem) {
                 this.scene.launch('RewardPopup', {
                     item: wonItem,
                     onClose: () => this.scene.start('MemoryMenuScene'),

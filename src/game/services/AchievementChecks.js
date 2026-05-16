@@ -10,7 +10,10 @@ export function checkAllStars() {
     const memDone      = MEMORY_LEVELS.every((_, i) => getMemoryProgress()[i]);
     const countDone    = COUNTING_LEVELS.every((_, i) => getCountingProgress()[i]);
     if (spellingDone && mathDone && memDone && countDone) {
-        return checkAndUnlock('all_stars');
+        const result = checkAndUnlock('all_stars');
+        const endingSeen = localStorage.getItem('jolyne_ending_seen') === '1';
+        const showEnding = result.wasNew && !endingSeen;
+        return { ...result, showEnding };
     }
     return null;
 }

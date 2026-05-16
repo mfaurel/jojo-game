@@ -76,6 +76,7 @@ export class VictoryScene extends Scene {
         }
         const rStars = checkAllStars();
         if (rStars?.wasNew) this._achResults.push({ id: 'all_stars', rewardItemId: rStars.rewardItemId });
+        this._showEnding = rStars?.showEnding ?? false;
     }
 
     _clearCinematicObjects() {
@@ -442,7 +443,13 @@ export class VictoryScene extends Scene {
                         showAchievementToast(this, a.id, a.rewardItemId)
                     )
                 );
+                if (this._showEnding) {
+                    const toastDelay = this._achResults.length * 2200 + 800;
+                    this.time.delayedCall(toastDelay, () => this.scene.start('EndingScene'));
+                }
             });
+        } else if (this._showEnding) {
+            this.time.delayedCall(700, () => this.scene.start('EndingScene'));
         }
 
         const title = this.add.text(512, 120, '🎉 FÉLICITATIONS ! 🎉', {

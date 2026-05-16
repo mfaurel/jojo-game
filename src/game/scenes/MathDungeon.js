@@ -27,7 +27,13 @@ export class MathDungeon extends Scene {
         document.body.style.backgroundColor = '#' + this.worldConfig.skyTop.toString(16).padStart(6, '0');
         this._envObjects = [];
 
+        // Parallax layer scroll offsets (updated in update())
+        this._parallaxOffsetFar  = 0;
+        this._parallaxOffsetMid  = 0;
+        this._parallaxOffsetNear = 0;
+
         this._drawEnvironment(width, height);
+        this._createParallaxLayers(width, height);
 
         this.lines = this.add.graphics().setScrollFactor(0).setDepth(1);
 
@@ -48,6 +54,9 @@ export class MathDungeon extends Scene {
 
         this.scale.on('resize', this._onResize, this);
         this.events.once('shutdown', () => this.scale.off('resize', this._onResize, this));
+
+        // Entrance animation: stone door split overlay + zoom-out
+        this._playEntranceAnimation(width, height);
     }
 
     _drawEnvironment(w, h) {
@@ -114,6 +123,181 @@ export class MathDungeon extends Scene {
         fog.fillCircle(w / 2, vanishingY, 160);
         fog.setAlpha(0.35);
         this._envObjects.push(fog);
+    }
+
+    // ─── Parallax Layers ─────────────────────────────────────────────────────
+
+    _createParallaxLayers(w, h) {
+        // Destroy previous layers on resize
+        if (this._parallaxLayers) {
+            this._parallaxLayers.forEach(l => { if (l?.active) l.destroy(); });
+        }
+        this._parallaxLayers = [];
+
+        const vanishingY = h * 0.5;
+
+        // FAR layer (depth 0.5): stone-wall brick texture behind the main corridor,
+        // visible as subtle bands in the background corridor opening.
+        const farGfx = this.add.graphics().setScrollFactor(0).setDepth(0);
+        this._drawParallaxFar(farGfx, w, h, vanishingY, 0);
+        this._parallaxLayers.push({ gfx: farGfx, speed: 0.08, drawFn: this._drawParallaxFar.bind(this) });
+
+        // MID layer (depth 1.5): arched doorway / pillar silhouettes on the sides,
+        // creating a sense of passing through connected chambers.
+        const midGfx = this.add.graphics().setScrollFactor(0).setDepth(1.5);
+        this._drawParallaxMid(midGfx, w, h, vanishingY, 0);
+        this._parallaxLayers.push({ gfx: midGfx, speed: 0.22, drawFn: this._drawParallaxMid.bind(this) });
+
+        // NEAR layer (depth 3.5): foreground rocks / shadow patches at the
+        // corridor sides — move fastest, reinforcing forward motion.
+        const nearGfx = this.add.graphics().setScrollFactor(0).setDepth(3.5);
+        this._drawParallaxNear(nearGfx, w, h, vanishingY, 0);
+        this._parallaxLayers.push({ gfx: nearGfx, speed: 0.55, drawFn: this._drawParallaxNear.bind(this) });
+    }
+
+    /** Far layer: faint repeating brick columns in the background opening */
+    _drawParallaxFar(gfx, w, h, vanishingY, scrollOffset) {
+        gfx.clear();
+        const TILE_W = 80;
+        const TILE_H = 40;
+        // Only draw bricks in the central "corridor" rectangle — the visible gap between side walls.
+        const corridorX = w * 0.17;
+        const corridorW = w * 0.66;
+        const corridorTop = vanishingY - h * 0.25;
+        const corridorH    = h * 0.5;
+
+        gfx.fillStyle(0x1a1408, 0.45);
+        gfx.fillRect(corridorX, corridorTop, corridorW, corridorH);
+
+        gfx.lineStyle(1, 0x302818, 0.5);
+        const rowStart = Math.floor(scrollOffset / TILE_H);
+        for (let row = rowStart - 1; row < rowStart + Math.ceil(corridorH / TILE_H) + 2; row++) {
+            const yy = corridorTop + (row * TILE_H) - (scrollOffset % TILE_H);
+            const xOff = (row % 2) * (TILE_W / 2);
+            for (let col = 0; col < Math.ceil(corridorW / TILE_W) + 1; col++) {
+                const xx = corridorX + xOff + col * TILE_W - (scrollOffset * 0.3 % TILE_W);
+                gfx.strokeRect(xx, yy, TILE_W, TILE_H);
+            }
+        }
+    }
+
+    /** Mid layer: dark arch / pillar silhouettes just inside the wall panels */
+    _drawParallaxMid(gfx, w, h, vanishingY, scrollOffset) {
+        gfx.clear();
+        // Pillar repeat interval
+        const INTERVAL = 220;
+        const pillarsVisible = Math.ceil(h / INTERVAL) + 2;
+        const baseOffset = scrollOffset % INTERVAL;
+
+        gfx.fillStyle(0x0a0806, 0.7);
+
+        for (let i = 0; i < pillarsVisible; i++) {
+            const yBase = (i * INTERVAL) - baseOffset - INTERVAL;
+
+            // Left pillar block
+            const lx = w * 0.16;
+            const pillarW = w * 0.05;
+            gfx.fillRect(lx, yBase, pillarW, INTERVAL * 0.55);
+
+            // Right pillar block (mirrored)
+            const rx = w * 0.83 - pillarW;
+            gfx.fillRect(rx, yBase, pillarW, INTERVAL * 0.55);
+
+            // Arch connecting each pillar pair (upper half of the gap)
+            // Draw a simple dark rounded arch shape
+            const archCx = w / 2;
+            const archTopY = yBase + INTERVAL * 0.05;
+            const archH    = INTERVAL * 0.35;
+            const archW    = w * 0.32;
+
+            gfx.fillStyle(0x0d0b09, 0.6);
+            // Arch as an ellipse top-half silhouette
+            gfx.beginPath();
+            gfx.arc(archCx, archTopY + archH * 0.5, archW, -Math.PI, 0, false);
+            gfx.closePath();
+            gfx.fillPath();
+
+            // Reset fill style for next pillar pair
+            gfx.fillStyle(0x0a0806, 0.7);
+        }
+    }
+
+    /** Near layer: foreground ground rocks and corner shadow blobs */
+    _drawParallaxNear(gfx, w, h, vanishingY, scrollOffset) {
+        gfx.clear();
+        const INTERVAL = 160;
+        const count = Math.ceil(h / INTERVAL) + 3;
+        const baseOffset = scrollOffset % INTERVAL;
+
+        for (let i = 0; i < count; i++) {
+            const t = (i * INTERVAL - baseOffset) / h;
+            // Fade rocks in as they approach the bottom of the screen
+            const alpha = Math.min(1, Math.max(0, (t - 0.3) * 1.8));
+            if (alpha <= 0) continue;
+
+            const yBase = i * INTERVAL - baseOffset;
+            // Scale rocks larger as they get closer (towards bottom)
+            const s = 0.4 + t * 0.8;
+
+            // Left-side rock cluster
+            gfx.fillStyle(0x1a1208, alpha * 0.85);
+            gfx.fillEllipse(w * 0.16, yBase + INTERVAL * 0.6, 55 * s, 28 * s);
+            gfx.fillStyle(0x251c0e, alpha * 0.55);
+            gfx.fillEllipse(w * 0.13, yBase + INTERVAL * 0.75, 36 * s, 18 * s);
+
+            // Right-side rock cluster
+            gfx.fillStyle(0x1a1208, alpha * 0.85);
+            gfx.fillEllipse(w * 0.84, yBase + INTERVAL * 0.6, 55 * s, 28 * s);
+            gfx.fillStyle(0x251c0e, alpha * 0.55);
+            gfx.fillEllipse(w * 0.87, yBase + INTERVAL * 0.75, 36 * s, 18 * s);
+
+            // Shadow drape on the floor
+            gfx.fillStyle(0x000000, alpha * 0.18);
+            gfx.fillRect(0, yBase + INTERVAL * 0.82, w * 0.2, 10 * s);
+            gfx.fillRect(w * 0.8, yBase + INTERVAL * 0.82, w * 0.2, 10 * s);
+        }
+    }
+
+    /** Entrance animation: stone-door split + zoom-out over ~1 second */
+    _playEntranceAnimation(w, h) {
+        // Zoom starts at 1.3, zooms out to 1.0
+        this.cameras.main.setZoom(1.3);
+        this.tweens.add({
+            targets: this.cameras.main,
+            zoom: 1.0,
+            duration: 900,
+            ease: 'Quad.Out'
+        });
+
+        // Stone door overlay: two panels that slide apart, then disappear
+        const topPanel = this.add.graphics().setScrollFactor(0).setDepth(500);
+        topPanel.fillStyle(0x1a1208, 1);
+        topPanel.fillRect(0, 0, w, h / 2 + 4);
+
+        const bottomPanel = this.add.graphics().setScrollFactor(0).setDepth(500);
+        bottomPanel.fillStyle(0x1a1208, 1);
+        bottomPanel.fillRect(0, h / 2 - 4, w, h / 2 + 4);
+
+        // Add a subtle stone-crack line where the doors meet
+        topPanel.lineStyle(3, 0x3a2e1a, 0.7);
+        topPanel.lineBetween(0, h / 2 + 2, w, h / 2 + 2);
+
+        this.tweens.add({
+            targets: topPanel,
+            y: -(h / 2 + 4),
+            duration: 800,
+            ease: 'Cubic.In',
+            delay: 80,
+            onComplete: () => { if (topPanel.active) topPanel.destroy(); }
+        });
+        this.tweens.add({
+            targets: bottomPanel,
+            y: h,
+            duration: 800,
+            ease: 'Cubic.In',
+            delay: 80,
+            onComplete: () => { if (bottomPanel.active) bottomPanel.destroy(); }
+        });
     }
 
     _createWorldParticles(w, h) {
@@ -234,6 +418,7 @@ export class MathDungeon extends Scene {
     _onResize() {
         const { width, height } = this.cameras.main;
         this._drawEnvironment(width, height);
+        this._createParallaxLayers(width, height);
         if (this.worldNameText) this.worldNameText.setX(width / 2);
         if (this.menuBtn)       this.menuBtn.setX(width - 14);
     }
@@ -292,6 +477,9 @@ export class MathDungeon extends Scene {
     update(time, delta) {
         this._updateTorches(time);
 
+        // Update parallax layers even when idle (e.g. gentle ambient sway)
+        this._updateParallaxLayers(delta);
+
         if (!this.isWalking) return;
 
         this.distance += delta * 0.35;
@@ -305,36 +493,87 @@ export class MathDungeon extends Scene {
         this._animateArms(time);
     }
 
+    _updateParallaxLayers(delta) {
+        if (!this._parallaxLayers || !this._parallaxLayers.length) return;
+        const { width, height } = this.cameras.main;
+        const vanishingY = height * 0.5;
+
+        // Advance scroll offsets based on walking speed and each layer's parallax speed
+        const scrollDelta = this.isWalking ? delta * 0.35 : 0;
+
+        this._parallaxLayers.forEach(layer => {
+            // Accumulate offset for this layer's speed factor
+            layer.offset = (layer.offset ?? 0) + scrollDelta * layer.speed;
+            layer.drawFn(layer.gfx, width, height, vanishingY, layer.offset);
+        });
+    }
+
     _updateTorches(time) {
         if (!this.torchGfx) return;
         const { width, height } = this.cameras.main;
-        const flicker = Math.sin(time * 0.012) * 0.35 + Math.sin(time * 0.019) * 0.25 + 0.7;
-        const r = 18 + flicker * 10;
+
+        // Multi-frequency sine flicker — three overlapping sine waves give an
+        // organic, non-repeating feel without any random jumps.
+        const f1 = Math.sin(time * 0.011) * 0.30;   // slow primary sway
+        const f2 = Math.sin(time * 0.019) * 0.18;   // medium flutter
+        const f3 = Math.sin(time * 0.047) * 0.09;   // fast micro-flicker
+        const flicker = f1 + f2 + f3 + 0.72;         // range ≈ 0.15 – 1.29, centred ~0.72
+
+        // Left and right torches flicker slightly out of phase with each other.
+        const f1R = Math.sin(time * 0.011 + 1.2) * 0.30;
+        const f2R = Math.sin(time * 0.019 + 0.6) * 0.18;
+        const f3R = Math.sin(time * 0.047 + 2.1) * 0.09;
+        const flickerR = f1R + f2R + f3R + 0.72;
+
+        const r  = 18 + flicker  * 10;
+        const rR = 18 + flickerR * 10;
+
         const lx = width * 0.175;
         const rx = width * 0.825;
         const ty = height * 0.345;
 
+        // Subtle lateral sway of the flame tip
+        const swayL = Math.sin(time * 0.013) * 3;
+        const swayR = Math.sin(time * 0.013 + 1.0) * 3;
+
         this.torchGfx.clear();
 
-        // Warm glow halos on walls
-        this.torchGfx.fillStyle(0xff6600, 0.12 * flicker);
-        this.torchGfx.fillCircle(lx, ty, r * 2.8);
-        this.torchGfx.fillCircle(rx, ty, r * 2.8);
+        // ── Wide warm wall-glow (pulsed by flicker) ──────────────────────────
+        // Left glow — two concentric circles to simulate light fall-off
+        this.torchGfx.fillStyle(0xff8800, Math.min(0.18, 0.14 * flicker));
+        this.torchGfx.fillCircle(lx, ty, r * 4.2);
+        this.torchGfx.fillStyle(0xff6600, Math.min(0.28, 0.22 * flicker));
+        this.torchGfx.fillCircle(lx, ty, r * 2.2);
 
-        // Outer flame (orange)
-        this.torchGfx.fillStyle(0xff6600, 0.75 * flicker);
-        this.torchGfx.fillEllipse(lx, ty - r * 0.3, r * 1.1, r * 1.8);
-        this.torchGfx.fillEllipse(rx, ty - r * 0.3, r * 1.1, r * 1.8);
+        // Right glow
+        this.torchGfx.fillStyle(0xff8800, Math.min(0.18, 0.14 * flickerR));
+        this.torchGfx.fillCircle(rx, ty, rR * 4.2);
+        this.torchGfx.fillStyle(0xff6600, Math.min(0.28, 0.22 * flickerR));
+        this.torchGfx.fillCircle(rx, ty, rR * 2.2);
 
-        // Inner flame (yellow)
-        this.torchGfx.fillStyle(0xffdd00, 0.9 * flicker);
-        this.torchGfx.fillEllipse(lx, ty - r * 0.5, r * 0.6, r * 1.2);
-        this.torchGfx.fillEllipse(rx, ty - r * 0.5, r * 0.6, r * 1.2);
+        // ── Outer flame (orange ellipse) ──────────────────────────────────────
+        this.torchGfx.fillStyle(0xff5500, Math.min(1, 0.78 * flicker));
+        this.torchGfx.fillEllipse(lx + swayL, ty - r * 0.3, r * 1.15, r * 2.0);
+        this.torchGfx.fillStyle(0xff5500, Math.min(1, 0.78 * flickerR));
+        this.torchGfx.fillEllipse(rx + swayR, ty - rR * 0.3, rR * 1.15, rR * 2.0);
 
-        // White-hot core
-        this.torchGfx.fillStyle(0xffffff, 0.6 * flicker);
-        this.torchGfx.fillCircle(lx, ty - r * 0.5, r * 0.22);
-        this.torchGfx.fillCircle(rx, ty - r * 0.5, r * 0.22);
+        // ── Middle flame (amber) ───────────────────────────────────────────────
+        this.torchGfx.fillStyle(0xff9900, Math.min(1, 0.88 * flicker));
+        this.torchGfx.fillEllipse(lx + swayL * 0.6, ty - r * 0.55, r * 0.75, r * 1.45);
+        this.torchGfx.fillStyle(0xff9900, Math.min(1, 0.88 * flickerR));
+        this.torchGfx.fillEllipse(rx + swayR * 0.6, ty - rR * 0.55, rR * 0.75, rR * 1.45);
+
+        // ── Inner flame (yellow) ──────────────────────────────────────────────
+        this.torchGfx.fillStyle(0xffdd00, Math.min(1, 0.92 * flicker));
+        this.torchGfx.fillEllipse(lx + swayL * 0.3, ty - r * 0.7, r * 0.55, r * 1.1);
+        this.torchGfx.fillStyle(0xffdd00, Math.min(1, 0.92 * flickerR));
+        this.torchGfx.fillEllipse(rx + swayR * 0.3, ty - rR * 0.7, rR * 0.55, rR * 1.1);
+
+        // ── White-hot core ────────────────────────────────────────────────────
+        this.torchGfx.fillStyle(0xffffff, Math.min(0.95, 0.65 * flicker));
+        this.torchGfx.fillCircle(lx, ty - r * 0.7, r * 0.24);
+        this.torchGfx.fillStyle(0xffffff, Math.min(0.95, 0.65 * flickerR));
+        this.torchGfx.fillCircle(rx, ty - rR * 0.7, rR * 0.24);
     }
 
     _updatePerspective() {

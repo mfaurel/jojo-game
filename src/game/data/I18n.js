@@ -204,6 +204,11 @@ const STRINGS = {
         ach_all_stars_desc:    'Tu as obtenu toutes les étoiles du jeu !',
         ach_unlocked:          '🏆 Succès débloqué !',
         ach_reward_granted:    '+ récompense',
+
+        // ── Ending cinematic ─────────────────────────────────────────────────
+        endingTitle:    'Félicitations ! Tu as tout débloqué !',
+        endingSubtitle: 'Tu es une vraie championne ! 🌟',
+        endingBtn:      '⬅ Retour à la Collection',
     },
 
     en: {
@@ -397,6 +402,11 @@ const STRINGS = {
         ach_all_stars_desc:    'You earned every star in the game!',
         ach_unlocked:          '🏆 Achievement unlocked!',
         ach_reward_granted:    '+ reward',
+
+        // ── Ending cinematic ─────────────────────────────────────────────────
+        endingTitle:    'Congratulations! You unlocked everything!',
+        endingSubtitle: 'You are a true champion! 🌟',
+        endingBtn:      '⬅ Back to Collection',
     },
 
     es: {
@@ -590,6 +600,11 @@ const STRINGS = {
         ach_all_stars_desc:    '¡Ganaste todas las estrellas del juego!',
         ach_unlocked:          '🏆 ¡Logro desbloqueado!',
         ach_reward_granted:    '+ recompensa',
+
+        // ── Ending cinematic ─────────────────────────────────────────────────
+        endingTitle:    '¡Felicidades! ¡Lo desbloqueaste todo!',
+        endingSubtitle: '¡Eres una verdadera campeona! 🌟',
+        endingBtn:      '⬅ Volver a la Colección',
     },
 };
 
@@ -598,7 +613,11 @@ const SUPPORTED = ['fr', 'en', 'es'];
 
 export function getLang() {
     const stored = localStorage.getItem(LANG_KEY);
-    return SUPPORTED.includes(stored) ? stored : 'fr';
+    if (SUPPORTED.includes(stored)) return stored;
+    // First launch: auto-detect from browser locale
+    const browser = (navigator.language ?? '').slice(0, 2).toLowerCase();
+    if (SUPPORTED.includes(browser)) return browser;
+    return 'fr';
 }
 
 export function setLang(lang) {
