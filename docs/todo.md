@@ -2,12 +2,13 @@
 
 > Reference docs: `docs/achievement_plann.md` · `docs/ANDROID_PLAN.md`
 
-| F2 | Browser locale auto-detect | `I18n.js` (`getLang`) | XS | ✅ Fixed — detects `navigator.language` on first launch |
-| F5 | End-game cinematic (all stars) | `EndingScene.js` | M | ✅ Done — star rain, Jolyne reveal, auto-return; triggered once on 100% |
-| F6 | MathDungeon atmosphere improvements | `MathDungeon.js` | M | ✅ Done — 3-layer parallax, stone-door entrance, triple-sine torch flicker |
+| F2 | Browser locale auto-detect | `I18n.js:524–527` (`getLang`) | XS | First launch uses `navigator.language.slice(0,2)` if it matches a SUPPORTED locale, falls back to `'fr'` |
+| F5 | End-game cinematic (all stars) | new `EndingScene.js` or extend `CollectionScene.js`; trigger when all 30+1 stars earned | M | Cinematic plays once on 100 % completion; not re-triggered |
+| F6 | MathDungeon atmosphere improvements | `MathDungeon.js` — parallax layers, entrance animation, smoother torch flicker | M | Children feel "in a dungeon"; validated with a child playtester |
 | B1 | Bonus star (31st) clipped top-right in CollectionScene | `CollectionScene.js` | XS | ✅ Fixed — star moved to y=40 |
 | B2 | Stars clipped during Félicitations phase in VictoryScene | `VictoryScene.js` | XS | ✅ Fixed — `setOrigin(0.5, 0)` applied |
-| B11 | Victory transition too fast in MemoryScene (mémo chiffres) | `MemoryScene.js` | XS | ✅ Fixed — `delayedCall` 1400ms → 3000ms |
+| B11 | Victory transition too fast in MemoryScene (mémo chiffres) | `MemoryScene.js` | XS | ✅ Fixed — `delayedCall` changed from 1400ms to 3000ms |
+
 
 ---
 
@@ -15,17 +16,26 @@
 
 | # | Description | Key files | Effort | Status |
 |---|-------------|-----------|--------|--------|
-| B5 | Collection layout not centered at large window widths | `CollectionScene.js` | XS | ✅ Fixed — resize handler context-bound; layout uses camera viewport |
-| B8 | bg_spelling always unlocked in Special Rewards, not equippable | `ItemData.js`, `CollectionScene.js` | XS | ✅ Fixed — `isBackground` removed; no Équiper button shown |
-| B10 | Math emoji icons cropped at top in collection | `CollectionScene.js` | XS | ✅ Fixed — `setOrigin(0.5, 0)` + y+12 offset |
-| B13 | "Succès débloqués" hidden behind achievements grid | `CollectionScene.js` | XS | ✅ Fixed — progress text y=140, grid startY=200 |
-| B14 | No achievement toast when opening collection; disappears fast on lang change | `CollectionScene.js`, `AchievementToast.js` | S | open |
+| B8 | "Classe" background (bg_spelling) in Bonus tab should be always unlocked and in Special Rewards but shouldn't be a background
+| B10 | Math emoji icons cropped at top in collection | `CollectionScene.js` | XS | 
+Pourquoi un cadenas sur la page principale en haut au milieu ?
+No achievement shown when clicking onn collection. Achievement disappear quickly when changing language
+| B5 | When on full page (no full screen) Collection layout not centered. It seems not working when width is big
+| B13 | Achievements grid not well centered in collection | `CollectionScene.js` | The small info "succès débloqués" is not visible because of the achievements box.
+
+
+
+--
+
+Avoir les assets des monstres des mathematiques dans la gallery.html
+Enlever le premium dans le bonus
+Enlever le cadenas du mainn mennu
+Bouton rouge pour effacer dans le spelling game prend un peu trop de place pour les mots les plus longs
 
 ## 2. Content & Assets
 
 | # | Item | Key files | Effort | Done when |
 |---|------|-----------|--------|-----------|
-| C1 | Asset gallery HTML page | new `docs/gallery.html`; inline `WordData.js` / `ItemData.js` drawPicture calls via Canvas | M | Single static page renders every word sprite + item sprite in a grid — no server needed |
 | C2 | Update / refresh sprites | `WordData.js`, `ItemData.js` drawPicture functions | M–L | Visual pass on each `drawPicture` fn, child-test approved |
 
 ---
@@ -34,7 +44,7 @@
 
 | # | Item | Key files | Effort | Done when |
 |---|------|-----------|--------|-----------|
-| F3 | Infinite math mode | `InfiniteMathScene.js`, `MathWorldSelectScene.js` | M | ✅ Done — 3 lives, score, streak combo, difficulty scaling, "Infini ∞" button in world select |
+| F3 | Infinite math mode | new `InfiniteMathScene.js`; add entry in `MathWorldSelectScene.js`; register in `main.js` | M | Endless problem stream, score counter, exits cleanly to MathWorldSelectScene |
 | F4 | Deusgames intro/logo scene | new `IntroScene.js`; register in `main.js`; boot chain: Boot → IntroScene → Preloader | S | 2–3 s logo animation on first launch (or every launch); skippable on tap |
 
 ---
@@ -51,7 +61,7 @@
 
 | # | Item | Key files | Effort | Done when |
 |---|------|-----------|--------|-----------|
-| L1 | German (de) | `I18n.js`, `I18n.test.js` | L | ✅ Done — full 110+ key translation; cycle is fr→en→es→de→fr |
+| L1 | German (de) | `I18n.js` — add `de` to SUPPORTED + full string object; update `I18n.test.js` | L | All `t()` keys return German strings; lang cycle includes `'de'` |
 
 ---
 
