@@ -58,10 +58,10 @@ export class CollectionScene extends Scene {
         this._drawTabs();
         this._drawTabContent();
 
-        // B5: restart scene on resize so layout stays centered
+        // B5: restart scene on resize so layout stays centered, preserving active tab
         this.scale.on('resize', () => {
             this.scene.restart({ tab: this.activeTab });
-        });
+        }, this);
     }
 
     _attachBonusStarToTitle(titleText) {
@@ -411,7 +411,7 @@ export class CollectionScene extends Scene {
             const previewH = cardH > 120 ? Math.floor(cardH * 0.52) : 88;
             this._drawCardBackPreview(cx, cy, item.id, previewW, previewH);
         } else if (item.emoji) {
-            this.add.text(cx, cy + 8, item.emoji, { fontSize: '40px' }).setOrigin(0.5);
+            this.add.text(cx, cy + 12, item.emoji, { fontSize: '40px' }).setOrigin(0.5, 0);
         } else {
             this.add.text(cx, cy, '📦', { fontSize: '32px' }).setOrigin(0.5);
         }
@@ -637,7 +637,7 @@ export class CollectionScene extends Scene {
         const map     = getAchievements();
         const { unlocked, total } = getAchProgress();
 
-        this.add.text(width / 2, 135, t('achProgress', unlocked, total), {
+        this.add.text(width / 2, 140, t('achProgress', unlocked, total), {
             fontSize: '18px',
             color: '#ddaaff',
         }).setOrigin(0.5);
@@ -650,7 +650,7 @@ export class CollectionScene extends Scene {
         const rows   = Math.ceil(ACHIEVEMENTS.length / cols);
         const totalW = cols * cardW + (cols - 1) * colGap;
         const startX = (width - totalW) / 2 + cardW / 2;
-        const startY = 180;
+        const startY = 200;
 
         ACHIEVEMENTS.forEach((ach, idx) => {
             const col    = idx % cols;
