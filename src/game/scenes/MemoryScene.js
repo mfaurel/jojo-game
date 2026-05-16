@@ -1,11 +1,14 @@
 import { Scene } from 'phaser';
 import { audio } from '../systems/AudioManager.js';
 import { getWord } from '../data/WordData.js';
-import { MEMORY_LEVELS, saveMemoryProgress } from '../data/MemoryData.js';
+import { MEMORY_LEVELS, saveMemoryProgress, getMemoryProgress } from '../data/MemoryData.js';
 import { CARD_BACK_ITEMS } from '../data/ItemData.js';
 import { getInventory, addToInventory, getEquipment } from '../data/LevelData.js';
 import { LootManager } from '../systems/LootManager.js';
 import { t } from '../data/I18n.js';
+import { checkAndUnlock } from '../services/AchievementService.js';
+import { showAchievementToast } from '../services/AchievementToast.js';
+import { checkAllStars } from '../services/AchievementChecks.js';
 
 export class MemoryScene extends Scene {
     constructor() {
@@ -304,8 +307,27 @@ export class MemoryScene extends Scene {
         saveMemoryProgress(this.levelIndex);
         this._starRain();
 
+        const achResults = [];
+        const rFirst = checkAndUnlock('first_memory');
+        if (rFirst.wasNew) achResults.push({ id: 'first_memory', rewardItemId: rFirst.rewardItemId });
+
+        const memProgress = getMemoryProgress();
+        const allMemDone  = MEMORY_LEVELS.every((_, i) => memProgress[i]);
+        if (allMemDone) {
+            const rAll = checkAndUnlock('all_memory');
+            if (rAll.wasNew) achResults.push({ id: 'all_memory', rewardItemId: rAll.rewardItemId });
+        }
+
+        const rStars = checkAllStars();
+        if (rStars?.wasNew) achResults.push({ id: 'all_stars', rewardItemId: rStars.rewardItemId });
+
         const wonItem = this._rollMemoryLoot();
         this.time.delayedCall(1400, () => {
+            achResults.forEach((a, i) =>
+                this.time.delayedCall(i * 2200, () =>
+                    showAchievementToast(this, a.id, a.rewardItemId)
+                )
+            );
             if (wonItem) {
                 this.scene.launch('RewardPopup', {
                     item: wonItem,

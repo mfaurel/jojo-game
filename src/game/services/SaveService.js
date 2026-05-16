@@ -12,6 +12,7 @@ const SAVE_KEYS = [
     'jolyne_easter_star',
     'jolyne_child_name',
     'jolyne_name_unlocked',
+    'jolyne_achievements',
 ];
 
 export function buildSaveSnapshot() {

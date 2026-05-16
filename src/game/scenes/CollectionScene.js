@@ -5,12 +5,14 @@ import { t } from '../data/I18n.js';
 import { isNameUnlocked, getChildName, setChildName } from '../services/NameService.js';
 import { purchaseProduct } from '../services/IAPService.js';
 import { getEasterStar, saveEasterStar } from '../data/LevelData.js';
+import { ACHIEVEMENTS, getAchievements, getProgress as getAchProgress } from '../services/AchievementService.js';
 
 const TABS = [
-    { labelKey: 'tabSpelling', categories: ['skin'] },
-    { labelKey: 'tabMath',     categories: ['item_left', 'item_right'] },
-    { labelKey: 'tabMemory',   categories: ['card_back'] },
-    { labelKey: 'tabBonus',    categories: ['background'] },
+    { labelKey: 'tabSpelling',      categories: ['skin'] },
+    { labelKey: 'tabMath',          categories: ['item_left', 'item_right'] },
+    { labelKey: 'tabMemory',        categories: ['card_back'] },
+    { labelKey: 'tabBonus',         categories: ['background'] },
+    { labelKey: 'tabAchievements',  categories: [] },
 ];
 
 export class CollectionScene extends Scene {
@@ -60,7 +62,7 @@ export class CollectionScene extends Scene {
         const { width } = this.cameras.main;
         const earned = getEasterStar();
 
-        const star = this.add.text(width - 22, 22, '⭐', {
+        const star = this.add.text(width - 22, 40, '⭐', {
             fontSize: earned ? '32px' : '26px',
         }).setOrigin(1, 0).setDepth(50).setInteractive({ useHandCursor: true });
 
@@ -75,7 +77,7 @@ export class CollectionScene extends Scene {
         });
 
         if (!earned) {
-            const hint = this.add.text(width - 56, 28, '?', {
+            const hint = this.add.text(width - 56, 50, '?', {
                 fontSize: '14px',
                 fontFamily: 'Arial Black',
                 color: '#ffd700',
@@ -85,7 +87,7 @@ export class CollectionScene extends Scene {
                 saveEasterStar();
                 hint.destroy();
                 star.setFontSize('32px');
-                this.add.particles(width - 22, 22, 'particle', {
+                this.add.particles(width - 22, 40, 'particle', {
                     speed: { min: 80, max: 200 },
                     scale: { start: 0.4, end: 0 },
                     blendMode: 'ADD',
@@ -109,7 +111,7 @@ export class CollectionScene extends Scene {
 
     _drawTabs() {
         const { width } = this.cameras.main;
-        const tabW = TABS.length <= 3 ? 260 : 220;
+        const tabW = TABS.length <= 3 ? 260 : TABS.length <= 4 ? 220 : 170;
         const gap  = 16;
         const totalW = TABS.length * tabW + (TABS.length - 1) * gap;
         const startX = (width - totalW) / 2;
@@ -147,7 +149,8 @@ export class CollectionScene extends Scene {
         if (this.activeTab === 0)      this._drawSkinTab(inventory, equipment);
         else if (this.activeTab === 1) this._drawMathTab(inventory, equipment);
         else if (this.activeTab === 2) this._drawMemoryTab(inventory, equipment);
-        else                           this._drawBonusTab(inventory, equipment);
+        else if (this.activeTab === 3) this._drawBonusTab(inventory, equipment);
+        else                           this._drawAchievementsTab();
     }
 
     // ── Tab 0: Skins ─────────────────────────────────────────────────────────
@@ -610,5 +613,69 @@ export class CollectionScene extends Scene {
         const scale = Math.min(width / img.width, height / img.height) * 0.85;
         img.setScale(scale);
         bg.setInteractive().on('pointerup', () => { bg.destroy(); img.destroy(); });
+    }
+
+    // ── Tab 4: Achievements ───────────────────────────────────────────────────
+
+    _drawAchievementsTab() {
+        const { width } = this.cameras.main;
+        const map     = getAchievements();
+        const { unlocked, total } = getAchProgress();
+
+        this.add.text(width / 2, 135, t('achProgress', unlocked, total), {
+            fontSize: '18px',
+            color: '#ddaaff',
+        }).setOrigin(0.5);
+
+        const cardW  = 440;
+        const cardH  = 88;
+        const colGap = 40;
+        const rowGap = 100;
+        const cols   = 2;
+        const rows   = Math.ceil(ACHIEVEMENTS.length / cols);
+        const totalW = cols * cardW + (cols - 1) * colGap;
+        const startX = (width - totalW) / 2 + cardW / 2;
+        const startY = 165;
+
+        ACHIEVEMENTS.forEach((ach, idx) => {
+            const col    = idx % cols;
+            const row    = Math.floor(idx / cols);
+            const cx     = startX + col * (cardW + colGap);
+            const cy     = startY + row * rowGap;
+            const earned = map[ach.id]?.unlocked === true;
+
+            const border = earned ? 0xffd700 : 0x333355;
+            const fill   = earned ? 0x1a2a00 : 0x0d0d22;
+
+            this.add.rectangle(cx, cy, cardW, cardH, fill, 1)
+                .setStrokeStyle(earned ? 2 : 1, border);
+
+            // Trophy icon
+            this.add.text(cx - cardW / 2 + 28, cy, earned ? '🏆' : '🔒', {
+                fontSize: '26px',
+            }).setOrigin(0.5);
+
+            // Name
+            this.add.text(cx - cardW / 2 + 60, cy - 14, t(ach.nameKey), {
+                fontSize: '15px',
+                fontFamily: 'Arial Black',
+                color: earned ? '#ffd700' : '#555577',
+            }).setOrigin(0, 0.5);
+
+            // Description
+            this.add.text(cx - cardW / 2 + 60, cy + 10, earned ? t(ach.descKey) : '???', {
+                fontSize: '12px',
+                color: earned ? '#ccaaff' : '#333355',
+                wordWrap: { width: cardW - 90 },
+            }).setOrigin(0, 0.5);
+
+            // Reward badge
+            if (earned && ach.reward) {
+                this.add.text(cx + cardW / 2 - 8, cy + 18, '+ ' + ach.reward, {
+                    fontSize: '10px',
+                    color: '#80ffb4',
+                }).setOrigin(1, 0.5);
+            }
+        });
     }
 }

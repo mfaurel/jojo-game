@@ -2,6 +2,9 @@ import { Scene } from 'phaser';
 import { MATH_WORLDS, saveMathProgress, getMathProgress } from '../data/MathWorldData.js';
 import { audio } from '../systems/AudioManager.js';
 import { t } from '../data/I18n.js';
+import { checkAndUnlock } from '../services/AchievementService.js';
+import { showAchievementToast } from '../services/AchievementToast.js';
+import { checkAllStars } from '../services/AchievementChecks.js';
 import { LootManager } from '../systems/LootManager.js';
 import { addToInventory } from '../data/LevelData.js';
 import { SPECIAL_REWARDS } from '../data/ItemData.js';
@@ -95,6 +98,13 @@ export class MathVictoryScene extends Scene {
 
         // Phase 5 — reward popup or continue button (1800ms)
         this.time.delayedCall(1800, () => {
+            if (this._achResults?.length) {
+                this._achResults.forEach((a, i) =>
+                    this.time.delayedCall(i * 2200, () =>
+                        showAchievementToast(this, a.id, a.rewardItemId)
+                    )
+                );
+            }
             if (this.wonItem) {
                 this.scene.launch('RewardPopup', {
                     item:    this.wonItem,
@@ -124,12 +134,17 @@ export class MathVictoryScene extends Scene {
 
     _checkLoot() {
         this.wonItem = LootManager.rollLoot();
+        this._achResults = [];
 
         const progress = getMathProgress();
         const allDone = MATH_WORLDS.every((_, i) => progress[i] === true);
         if (allDone) {
             addToInventory(SPECIAL_REWARDS.MATH_ALL.id);
+            const r = checkAndUnlock('all_math');
+            if (r.wasNew) this._achResults.push({ id: 'all_math', rewardItemId: r.rewardItemId });
         }
+        const rStars = checkAllStars();
+        if (rStars?.wasNew) this._achResults.push({ id: 'all_stars', rewardItemId: rStars.rewardItemId });
     }
 
     _exitToWorldSelect() {

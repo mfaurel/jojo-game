@@ -5,6 +5,9 @@ import { LEVELS } from '../data/LevelData.js';
 import { LootManager } from '../systems/LootManager.js';
 import { SPECIAL_REWARDS, ITEMS } from '../data/ItemData.js';
 import { t } from '../data/I18n.js';
+import { checkAndUnlock } from '../services/AchievementService.js';
+import { showAchievementToast } from '../services/AchievementToast.js';
+import { checkAllStars } from '../services/AchievementChecks.js';
 
 export class VictoryScene extends Scene {
     constructor() {
@@ -50,6 +53,7 @@ export class VictoryScene extends Scene {
 
     _checkLoot() {
         this.wonItem = LootManager.rollLoot();
+        this._achResults = [];
 
         const progress = getProgress();
         let allDone = true;
@@ -60,6 +64,18 @@ export class VictoryScene extends Scene {
             const reward = this.gameType === 'math' ? SPECIAL_REWARDS.MATH_ALL : SPECIAL_REWARDS.SPELLING_ALL;
             addToInventory(reward.id);
         }
+
+        const anySpelling = Object.keys(progress).length > 0;
+        if (anySpelling) {
+            const r = checkAndUnlock('first_spell');
+            if (r.wasNew) this._achResults.push({ id: 'first_spell', rewardItemId: r.rewardItemId });
+        }
+        if (allDone) {
+            const r = checkAndUnlock('all_spelling');
+            if (r.wasNew) this._achResults.push({ id: 'all_spelling', rewardItemId: r.rewardItemId });
+        }
+        const rStars = checkAllStars();
+        if (rStars?.wasNew) this._achResults.push({ id: 'all_stars', rewardItemId: rStars.rewardItemId });
     }
 
     _clearCinematicObjects() {
@@ -364,7 +380,7 @@ export class VictoryScene extends Scene {
                 const star = this.add.text(282 + i * 115, 158, '★', {
                     fontSize: '50px',
                     color: '#ffd700',
-                }).setOrigin(0.5).setAlpha(0).setScale(0).setDepth(10);
+                }).setOrigin(0.5, 0).setAlpha(0).setScale(0).setDepth(10);
                 this._track(star);
                 this.tweens.add({
                     targets: star,
@@ -418,6 +434,16 @@ export class VictoryScene extends Scene {
 
         this._startStarRain();
         this._drawJolyne(512, 370);
+
+        if (this._achResults?.length) {
+            this.time.delayedCall(700, () => {
+                this._achResults.forEach((a, i) =>
+                    this.time.delayedCall(i * 2200, () =>
+                        showAchievementToast(this, a.id, a.rewardItemId)
+                    )
+                );
+            });
+        }
 
         const title = this.add.text(512, 120, '🎉 FÉLICITATIONS ! 🎉', {
             fontSize: '46px',

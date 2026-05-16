@@ -5,6 +5,8 @@ import { getMathProgress, MATH_WORLDS } from '../data/MathWorldData.js';
 import { getMemoryProgress, MEMORY_LEVELS } from '../data/MemoryData.js';
 import { getCountingProgress, COUNTING_LEVELS } from '../data/CountingData.js';
 import { t, cycleLang, getLang } from '../data/I18n.js';
+import { checkAndUnlock } from '../services/AchievementService.js';
+import { showAchievementToast } from '../services/AchievementToast.js';
 import { showBanner, hideBanner } from '../services/AdService.js';
 import { getCurrentUser, signInWithGoogle, signOutUser } from '../services/AuthService.js';
 
@@ -340,6 +342,8 @@ export class MainMenu extends Scene {
         btn.on('pointerout',  () => btn.setStyle({ color: '#ffffff' }));
         btn.on('pointerup',   () => {
             cycleLang();
+            const r = checkAndUnlock('linguist');
+            if (r.wasNew) showAchievementToast(this, 'linguist', r.rewardItemId);
             this.cameras.main.fadeOut(300, 0, 0, 0);
             this.cameras.main.once('camerafadeoutcomplete', () => this.scene.restart());
         });
@@ -447,6 +451,7 @@ export class MainMenu extends Scene {
 
         this._createSmallButton(900, 710, t('btnCollection'), 0xaa00aa, () => {
             hideBanner();
+            checkAndUnlock('explorer');
             this.scene.start('CollectionScene');
         });
 

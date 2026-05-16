@@ -1,9 +1,12 @@
 import { Scene } from 'phaser';
 import { audio } from '../systems/AudioManager.js';
 import { getWord } from '../data/WordData.js';
-import { COUNTING_LEVELS, saveCountingProgress } from '../data/CountingData.js';
+import { COUNTING_LEVELS, saveCountingProgress, getCountingProgress } from '../data/CountingData.js';
 import { LootManager } from '../systems/LootManager.js';
 import { t } from '../data/I18n.js';
+import { checkAndUnlock } from '../services/AchievementService.js';
+import { showAchievementToast } from '../services/AchievementToast.js';
+import { checkAllStars } from '../services/AchievementChecks.js';
 
 const TOTAL_ROUNDS = 6;
 
@@ -355,10 +358,20 @@ export class CountingScene extends Scene {
 
         const perfect = this._score === TOTAL_ROUNDS;
 
+        const achResults = [];
         if (perfect) {
             audio.playVictory();
             saveCountingProgress(this.levelIndex);
             this._starRain();
+
+            const countProgress = getCountingProgress();
+            const allCountDone  = COUNTING_LEVELS.every((_, i) => countProgress[i]);
+            if (allCountDone) {
+                const rAll = checkAndUnlock('all_counting');
+                if (rAll.wasNew) achResults.push({ id: 'all_counting', rewardItemId: rAll.rewardItemId });
+            }
+            const rStars = checkAllStars();
+            if (rStars?.wasNew) achResults.push({ id: 'all_stars', rewardItemId: rStars.rewardItemId });
         }
 
         this.add.text(512, 290, `${this._score} / ${TOTAL_ROUNDS}`, {
@@ -381,6 +394,11 @@ export class CountingScene extends Scene {
 
         const wonItem = perfect ? LootManager.rollLoot() : null;
         this.time.delayedCall(perfect ? 2000 : 3000, () => {
+            achResults.forEach((a, i) =>
+                this.time.delayedCall(i * 2200, () =>
+                    showAchievementToast(this, a.id, a.rewardItemId)
+                )
+            );
             if (wonItem) {
                 this.scene.launch('RewardPopup', {
                     item: wonItem,
