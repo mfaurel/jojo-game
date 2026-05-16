@@ -64,6 +64,7 @@ export class MathWorldSelectScene extends Scene {
         }).setOrigin(0.5);
 
         this._buildWorldCards();
+        this._buildInfiniteBtn(width, height);
 
         const backBtn = this.add.text(20, 20, t('back'), {
             fontSize: '24px',
@@ -185,6 +186,46 @@ export class MathWorldSelectScene extends Scene {
             bg.on('pointerout',  () => bg.setFillStyle(world.btnColor, 1));
             bg.on('pointerup',   () => this._startWorld(world.id));
         }
+    }
+
+    _buildInfiniteBtn(w, h) {
+        const btnW  = 260;
+        const btnH  = 62;
+        const cx    = w / 2;
+        const cy    = h - 46;
+
+        // Pulsing border glow
+        const border = this.add.rectangle(cx, cy, btnW + 8, btnH + 8, 0xaa44ff, 1)
+            .setDepth(9);
+        this.tweens.add({
+            targets:  border,
+            alpha:    0.35,
+            duration: 900,
+            yoyo:     true,
+            repeat:   -1,
+            ease:     'Sine.InOut',
+        });
+
+        const bg = this.add.rectangle(cx, cy, btnW, btnH, 0x4a1280, 1)
+            .setDepth(10)
+            .setInteractive({ useHandCursor: true });
+
+        this.add.text(cx, cy, t('infiniteMathTitle'), {
+            fontSize:        '24px',
+            fontFamily:      'Arial Black, Arial, sans-serif',
+            color:           '#cc88ff',
+            stroke:          '#000',
+            strokeThickness: 4,
+        }).setOrigin(0.5).setDepth(11);
+
+        bg.on('pointerover', () => bg.setFillStyle(0x6a1aa0, 1));
+        bg.on('pointerout',  () => bg.setFillStyle(0x4a1280, 1));
+        bg.on('pointerup',   () => {
+            this.cameras.main.fadeOut(400, 0, 0, 0);
+            this.cameras.main.once('camerafadeoutcomplete', () => {
+                this.scene.start('InfiniteMathScene');
+            });
+        });
     }
 
     _startWorld(worldIndex) {

@@ -205,6 +205,15 @@ const STRINGS = {
         ach_unlocked:          '🏆 Succès débloqué !',
         ach_reward_granted:    '+ récompense',
 
+        // ── Infinite Math mode ───────────────────────────────────────────────
+        infiniteMathTitle:    '∞ Maths Infini',
+        infiniteMathScore:    (n) => `Score : ${n}`,
+        infiniteMathLives:    (n) => `Vies : ${n}`,
+        infiniteMathGameOver: 'GAME OVER',
+        infiniteMathReplay:   'Rejouer',
+        infiniteMathCorrect:  'BRAVO ! 🌟',
+        infiniteMathWrong:    'Essaie encore ! 💛',
+
         // ── Ending cinematic ─────────────────────────────────────────────────
         endingTitle:    'Félicitations ! Tu as tout débloqué !',
         endingSubtitle: 'Tu es une vraie championne ! 🌟',
@@ -403,6 +412,15 @@ const STRINGS = {
         ach_unlocked:          '🏆 Achievement unlocked!',
         ach_reward_granted:    '+ reward',
 
+        // ── Infinite Math mode ───────────────────────────────────────────────
+        infiniteMathTitle:    '∞ Infinite Maths',
+        infiniteMathScore:    (n) => `Score: ${n}`,
+        infiniteMathLives:    (n) => `Lives: ${n}`,
+        infiniteMathGameOver: 'GAME OVER',
+        infiniteMathReplay:   'Play Again',
+        infiniteMathCorrect:  'BRAVO! 🌟',
+        infiniteMathWrong:    'Try again! 💛',
+
         // ── Ending cinematic ─────────────────────────────────────────────────
         endingTitle:    'Congratulations! You unlocked everything!',
         endingSubtitle: 'You are a true champion! 🌟',
@@ -600,6 +618,15 @@ const STRINGS = {
         ach_all_stars_desc:    '¡Ganaste todas las estrellas del juego!',
         ach_unlocked:          '🏆 ¡Logro desbloqueado!',
         ach_reward_granted:    '+ recompensa',
+
+        // ── Infinite Math mode ───────────────────────────────────────────────
+        infiniteMathTitle:    '∞ Mates Infinitas',
+        infiniteMathScore:    (n) => `Puntos: ${n}`,
+        infiniteMathLives:    (n) => `Vidas: ${n}`,
+        infiniteMathGameOver: 'FIN DEL JUEGO',
+        infiniteMathReplay:   'Jugar de Nuevo',
+        infiniteMathCorrect:  '¡BRAVO! 🌟',
+        infiniteMathWrong:    '¡Inténtalo! 💛',
 
         // ── Ending cinematic ─────────────────────────────────────────────────
         endingTitle:    '¡Felicidades! ¡Lo desbloqueaste todo!',

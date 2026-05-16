@@ -7,6 +7,7 @@ import { MemoryScene }    from './scenes/MemoryScene';
 import { CountingMenuScene } from './scenes/CountingMenuScene';
 import { CountingScene }  from './scenes/CountingScene';
 import { MathWorldSelectScene } from './scenes/MathWorldSelectScene';
+import { InfiniteMathScene } from './scenes/InfiniteMathScene';
 import { MathDungeon }    from './scenes/MathDungeon';
 import { MathProblemScene } from './scenes/MathProblemScene';
 import { MathVictoryScene } from './scenes/MathVictoryScene';
@@ -46,6 +47,7 @@ const config = {
         CountingMenuScene,
         CountingScene,
         MathWorldSelectScene,
+        InfiniteMathScene,
         MathDungeon,
         MathProblemScene,
         MathVictoryScene,
