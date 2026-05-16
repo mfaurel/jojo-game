@@ -1,7 +1,10 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { cycleLang, getLang, setLang, t } from '../I18n.js';
 
-beforeEach(() => localStorage.clear());
+beforeEach(() => {
+    localStorage.clear();
+    Object.defineProperty(navigator, 'language', { value: '', configurable: true });
+});
 
 describe('getLang', () => {
     it('returns "fr" by default', () => {
