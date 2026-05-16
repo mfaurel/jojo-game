@@ -35,13 +35,13 @@ export class RewardPopup extends Scene {
             fontSize: '32px',
             fontFamily: 'Arial Black',
             color: '#ffd700',
-        }).setOrigin(0.5).setDepth(102).setAlpha(0);
+        }).setOrigin(0.5).setDepth(102).setAlpha(0).setScrollFactor(0);
 
         const rarityText = this.add.text(cx, cy - 155, t(rarityInfo.labelKey), {
             fontSize: '24px',
             fontFamily: 'Arial Black',
             color: rarityInfo.color,
-        }).setOrigin(0.5).setDepth(102).setAlpha(0);
+        }).setOrigin(0.5).setDepth(102).setAlpha(0).setScrollFactor(0);
 
         const { image: itemImage } = this._buildItemImage(cx, cy - 40);
 
@@ -49,7 +49,7 @@ export class RewardPopup extends Scene {
             fontSize: '30px',
             fontFamily: 'Arial Black',
             color: rarityInfo.color,
-        }).setOrigin(0.5).setDepth(102).setAlpha(0);
+        }).setOrigin(0.5).setDepth(102).setAlpha(0).setScrollFactor(0);
 
         const btn = this.add.text(cx, cy + 168, t('great'), {
             fontSize: '28px',
@@ -57,7 +57,7 @@ export class RewardPopup extends Scene {
             color: '#ffffff',
             backgroundColor: '#00aaff',
             padding: { x: 20, y: 10 },
-        }).setOrigin(0.5).setDepth(102).setInteractive({ useHandCursor: true }).setAlpha(0);
+        }).setOrigin(0.5).setDepth(102).setInteractive({ useHandCursor: true }).setAlpha(0).setScrollFactor(0);
 
         btn.on('pointerup', () => {
             this.scene.stop();
@@ -85,14 +85,14 @@ export class RewardPopup extends Scene {
             blendMode: 'ADD',
             lifespan: 1000,
             quantity: 40,
-        }).setDepth(103).explode();
+        }).setDepth(103).setScrollFactor(0).explode();
     }
 
     _buildItemImage(cx, cy) {
         if (this.item.category === 'skin') {
             if (this.textures.exists('jojo_pixel')) {
                 const img = this.add.image(cx, cy, 'jojo_pixel')
-                    .setDisplaySize(150, 150).setDepth(102).setAlpha(0).setScale(0);
+                    .setDisplaySize(150, 150).setDepth(102).setAlpha(0).setScale(0).setScrollFactor(0);
                 if (this.item.tint) img.setTint(this.item.tint);
                 return { image: img };
             }
@@ -105,14 +105,14 @@ export class RewardPopup extends Scene {
         const emoji = this.item.emoji
             ?? (this.item.category === 'background' ? '🖼️' : '📦');
         const txt = this.add.text(cx, cy, emoji, { fontSize: '88px' })
-            .setOrigin(0.5).setDepth(102).setAlpha(0).setScale(0);
+            .setOrigin(0.5).setDepth(102).setAlpha(0).setScale(0).setScrollFactor(0);
         return { image: txt };
     }
 
     _buildCardBackImage(cx, cy) {
         const W = 110, H = 154;
         const id = this.item.id;
-        const g = this.add.graphics().setDepth(102).setAlpha(0).setScale(0);
+        const g = this.add.graphics().setDepth(102).setAlpha(0).setScale(0).setScrollFactor(0);
 
         if (id === 'card_back_jolyne') {
             g.fillStyle(0x1a0a3a, 1);
@@ -121,7 +121,7 @@ export class RewardPopup extends Scene {
             g.strokeRoundedRect(cx - W / 2, cy - H / 2, W, H, 12);
             if (this.textures.exists('jojo_pixel')) {
                 this.add.image(cx, cy, 'jojo_pixel').setDisplaySize(W - 14, H - 14)
-                    .setDepth(103).setAlpha(0);
+                    .setDepth(103).setAlpha(0).setScrollFactor(0);
             }
         } else if (id === 'card_back_stars') {
             g.fillStyle(0x050520, 1);

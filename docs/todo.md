@@ -1,6 +1,5 @@
 # Le Château de Jolyne — Roadmap
 
-> Items are ordered by urgency within each section.
 > Reference docs: `docs/achievement_plann.md` · `docs/ANDROID_PLAN.md`
 
 ---
@@ -27,7 +26,6 @@
 
 | # | Item | Key files | Effort | Done when |
 |---|------|-----------|--------|-----------|
-| F1 | Achievement system | `AchievementService.js`, `AchievementToast.js`, `AchievementChecks.js`; `CollectionScene.js`, `VictoryScene.js`, `MathVictoryScene.js`, `MemoryScene.js`, `CountingScene.js`, `Boot.js`, `MainMenu.js`, `SaveService.js`, `I18n.js` | L | ✅ **Done** — 10 achievements, 5th tab in Collection, 213 tests passing |
 | F2 | Browser locale auto-detect | `I18n.js:524–527` (`getLang`) | XS | First launch uses `navigator.language.slice(0,2)` if it matches a SUPPORTED locale, falls back to `'fr'` |
 | F3 | Infinite math mode | new `InfiniteMathScene.js`; add entry in `MathWorldSelectScene.js`; register in `main.js` | M | Endless problem stream, score counter, exits cleanly to MathWorldSelectScene |
 | F4 | Deusgames intro/logo scene | new `IntroScene.js`; register in `main.js`; boot chain: Boot → IntroScene → Preloader | S | 2–3 s logo animation on first launch (or every launch); skippable on tap |
@@ -63,8 +61,25 @@
 | M4 | Facebook Sign-In | new Capacitor plugin + `AuthService.js` extension | M | User can sign in with Facebook; same Firestore sync as Google |
 | M5 | iOS App (paid or ads) | `ios/` Capacitor target; App Store Connect | XL | App passes App Store review; monetisation model chosen |
 
+### 7 Reste à faire
+Corriger les bugs
+Sur la page d'accueil, enlever l'étoile à Collection
+Dans les jeux Orthographe, vérifier les images et les mettre à jour
+Dans la collection, ce n'est pas bien centré. Centre correctement que ça soit quand on met en full screenn, qu'on sorte du full screen ou qu'on resize la fenetre
+Dans la collection, je veux que ça soit l'onglet Orthographe par défaut
+Dans la collection, supprime l'étoile qui bouge en haut à droite. Je veux que la 31ème étoile soit gagnée gâce à l'étoile présente dans le titre 'collectionTitle'
+Dans la collection bonus, supprimme la classe dans les fonds de menu principal. Cette image doit être toujours gagnée et faire partie des "Récompenses Spéciales"
+Dans la collection Orthographe, je veux qu'il y ait écrit "Robe classique" pour le premier avatar.
+Dans la collection Mathématiques, certainns émojis sont coupé et one ne voit pas le haut de l'émoji de quelques pixels. Il faut corriger ça.
+Dans le jeu mémo chiffres, le passage à l'écran suivant va trop vite quand on gagne, laisse savourer le joueur.
+Monntrer l'achievement qui apparait plus longtemps (3 secondes)
+Mieux centrer les achievements dans la collection
 ---
 
 ## Effort key
 
 `XS` < 1 h · `S` 1–4 h · `M` 4–16 h · `L` 16–40 h · `XL` > 40 h
+Effort key
+XS < 1 h · S 1–4 h · M 4–16 h · L 16–40 h · XL > 40 h
+
+
