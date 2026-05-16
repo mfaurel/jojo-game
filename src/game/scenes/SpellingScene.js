@@ -95,6 +95,27 @@ export class SpellingScene extends Scene {
         // Draw the word's picture
         const picGfx = this.add.graphics();
         this.wordDef.drawPicture(picGfx, 240, 280, 88);
+
+        // Pop-in entrance
+        picGfx.setScale(0.1);
+        this.tweens.add({
+            targets: picGfx,
+            scale: 1,
+            duration: 480,
+            ease: 'Back.Out',
+            delay: 80,
+        });
+
+        // Idle float after pop-in settles
+        this.tweens.add({
+            targets: picGfx,
+            y: -10,
+            duration: 1900,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.InOut',
+            delay: 650,
+        });
     }
 
     _drawSlots() {

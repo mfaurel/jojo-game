@@ -51,25 +51,74 @@ const WORD_CONCEPTS = {
         en: { answer: 'CAT',  letters: ['C','A','T','O','R','N'] },
         es: { answer: 'GATO', letters: ['G','A','T','O','I','E'] },
         drawPicture(gfx, cx, cy, r) {
+            // Tail (behind body)
+            gfx.lineStyle(r*0.13, 0xff8800, 1);
+            gfx.beginPath(); gfx.arc(cx+r*0.52,cy+r*0.58,r*0.34,-Math.PI*0.8,Math.PI*0.22,false); gfx.strokePath();
+            gfx.fillStyle(0xffcc88, 1); gfx.fillCircle(cx+r*0.80,cy+r*0.37,r*0.10);
+            // Body
             gfx.fillStyle(0xff8800, 1);
-            gfx.fillEllipse(cx, cy+r*0.2, r*1.2, r*0.85);
-            gfx.fillCircle(cx, cy-r*0.35, r*0.5);
-            tri(gfx, cx-r*0.5,cy-r*0.6, cx-r*0.62,cy-r*1.05, cx-r*0.2,cy-r*0.7);
-            tri(gfx, cx+r*0.5,cy-r*0.6, cx+r*0.62,cy-r*1.05, cx+r*0.2,cy-r*0.7);
-            gfx.fillStyle(0xffaabb, 1);
-            tri(gfx, cx-r*0.5,cy-r*0.65, cx-r*0.58,cy-r*0.95, cx-r*0.28,cy-r*0.72);
-            tri(gfx, cx+r*0.5,cy-r*0.65, cx+r*0.58,cy-r*0.95, cx+r*0.28,cy-r*0.72);
-            gfx.fillStyle(0x228822, 1);
-            gfx.fillCircle(cx-r*0.18,cy-r*0.38,r*0.1); gfx.fillCircle(cx+r*0.18,cy-r*0.38,r*0.1);
-            gfx.fillStyle(0x000000, 1);
-            gfx.fillCircle(cx-r*0.18,cy-r*0.38,r*0.05); gfx.fillCircle(cx+r*0.18,cy-r*0.38,r*0.05);
+            gfx.fillEllipse(cx, cy+r*0.22, r*1.1, r*0.86);
+            // Belly lighter
+            gfx.fillStyle(0xffcc88, 0.55);
+            gfx.fillEllipse(cx, cy+r*0.28, r*0.50, r*0.44);
+            // Head
+            gfx.fillStyle(0xff8800, 1);
+            gfx.fillCircle(cx, cy-r*0.30, r*0.48);
+            // Ears outer
+            tri(gfx, cx-r*0.44,cy-r*0.55, cx-r*0.60,cy-r*0.97, cx-r*0.16,cy-r*0.64);
+            tri(gfx, cx+r*0.44,cy-r*0.55, cx+r*0.60,cy-r*0.97, cx+r*0.16,cy-r*0.64);
+            // Ears inner pink
+            gfx.fillStyle(0xffbbcc, 1);
+            tri(gfx, cx-r*0.41,cy-r*0.60, cx-r*0.53,cy-r*0.88, cx-r*0.21,cy-r*0.67);
+            tri(gfx, cx+r*0.41,cy-r*0.60, cx+r*0.53,cy-r*0.88, cx+r*0.21,cy-r*0.67);
+            // Head forehead stripes (tabby)
+            gfx.lineStyle(2.5, 0xdd6600, 0.5);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.15,cy-r*0.68); gfx.lineTo(cx-r*0.08,cy-r*0.53); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx,cy-r*0.72); gfx.lineTo(cx,cy-r*0.57); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.15,cy-r*0.68); gfx.lineTo(cx+r*0.08,cy-r*0.53); gfx.strokePath();
+            // Muzzle
+            gfx.fillStyle(0xfff0e0, 1);
+            gfx.fillEllipse(cx, cy-r*0.18, r*0.38, r*0.27);
+            // Eyes — sclera
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.17,cy-r*0.37,r*0.13);
+            gfx.fillCircle(cx+r*0.17,cy-r*0.37,r*0.13);
+            // Eyes — iris (emerald green)
+            gfx.fillStyle(0x22bb44, 1);
+            gfx.fillCircle(cx-r*0.17,cy-r*0.37,r*0.09);
+            gfx.fillCircle(cx+r*0.17,cy-r*0.37,r*0.09);
+            // Eyes — pupil
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillEllipse(cx-r*0.17,cy-r*0.37,r*0.050,r*0.085);
+            gfx.fillEllipse(cx+r*0.17,cy-r*0.37,r*0.050,r*0.085);
+            // Eyes — shine
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.12,cy-r*0.40,r*0.032);
+            gfx.fillCircle(cx+r*0.22,cy-r*0.40,r*0.032);
+            // Nose (pink triangle)
             gfx.fillStyle(0xff88aa, 1);
-            tri(gfx, cx-r*0.06,cy-r*0.28, cx+r*0.06,cy-r*0.28, cx,cy-r*0.21);
-            gfx.lineStyle(2, 0x000000, 1);
-            for (const [x1,x2] of [[-0.12,-0.6],[0.12,0.6]]) {
-                gfx.beginPath(); gfx.moveTo(cx+x1*r,cy-r*0.22); gfx.lineTo(cx+x2*r,cy-r*0.28); gfx.strokePath();
-                gfx.beginPath(); gfx.moveTo(cx+x1*r,cy-r*0.18); gfx.lineTo(cx+x2*r,cy-r*0.12); gfx.strokePath();
-            }
+            tri(gfx, cx-r*0.05,cy-r*0.215, cx+r*0.05,cy-r*0.215, cx,cy-r*0.155);
+            // Mouth lines
+            gfx.lineStyle(2, 0x994422, 1);
+            gfx.beginPath(); gfx.moveTo(cx,cy-r*0.155); gfx.lineTo(cx-r*0.11,cy-r*0.09); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx,cy-r*0.155); gfx.lineTo(cx+r*0.11,cy-r*0.09); gfx.strokePath();
+            // Whiskers
+            gfx.lineStyle(1.5, 0xffffff, 0.85);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.07,cy-r*0.20); gfx.lineTo(cx-r*0.55,cy-r*0.25); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx-r*0.07,cy-r*0.16); gfx.lineTo(cx-r*0.52,cy-r*0.10); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.07,cy-r*0.20); gfx.lineTo(cx+r*0.55,cy-r*0.25); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.07,cy-r*0.16); gfx.lineTo(cx+r*0.52,cy-r*0.10); gfx.strokePath();
+            // Cheek blush
+            gfx.fillStyle(0xff6655, 0.22);
+            gfx.fillCircle(cx-r*0.30,cy-r*0.26,r*0.12);
+            gfx.fillCircle(cx+r*0.30,cy-r*0.26,r*0.12);
+            // Paws
+            gfx.fillStyle(0xff8800, 1);
+            gfx.fillEllipse(cx-r*0.27,cy+r*0.68,r*0.30,r*0.16);
+            gfx.fillEllipse(cx+r*0.27,cy+r*0.68,r*0.30,r*0.16);
+            gfx.fillStyle(0xffcc88, 0.7);
+            for(let i=-1;i<=1;i++) { gfx.fillCircle(cx-r*0.27+i*r*0.09,cy+r*0.72,r*0.046); }
+            for(let i=-1;i<=1;i++) { gfx.fillCircle(cx+r*0.27+i*r*0.09,cy+r*0.72,r*0.046); }
         }
     },
 
@@ -100,17 +149,61 @@ const WORD_CONCEPTS = {
         en: { answer: 'BEAR', letters: ['B','E','A','R','O','T'] },
         es: { answer: 'OSO',  letters: ['O','S','O','A','I','E'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x8b4513, 1);
-            gfx.fillEllipse(cx,cy+r*0.25,r*1.1,r*0.9);
-            gfx.fillCircle(cx,cy-r*0.3,r*0.48);
-            gfx.fillCircle(cx-r*0.38,cy-r*0.68,r*0.2); gfx.fillCircle(cx+r*0.38,cy-r*0.68,r*0.2);
-            gfx.fillStyle(0xffb6c1, 1);
-            gfx.fillCircle(cx-r*0.38,cy-r*0.68,r*0.11); gfx.fillCircle(cx+r*0.38,cy-r*0.68,r*0.11);
-            gfx.fillStyle(0xc8805a, 1); gfx.fillEllipse(cx,cy-r*0.18,r*0.38,r*0.25);
-            gfx.fillStyle(0x111111, 1); gfx.fillEllipse(cx,cy-r*0.29,r*0.16,r*0.1);
-            gfx.fillCircle(cx-r*0.17,cy-r*0.4,r*0.07); gfx.fillCircle(cx+r*0.17,cy-r*0.4,r*0.07);
+            // Body (honey brown)
+            gfx.fillStyle(0xc07830, 1);
+            gfx.fillEllipse(cx,cy+r*0.22,r*1.08,r*0.88);
+            // Belly lighter patch
+            gfx.fillStyle(0xe8b060, 0.65);
+            gfx.fillEllipse(cx,cy+r*0.30,r*0.52,r*0.48);
+            // Head
+            gfx.fillStyle(0xc07830, 1);
+            gfx.fillCircle(cx,cy-r*0.28,r*0.50);
+            // Ears
+            gfx.fillCircle(cx-r*0.36,cy-r*0.65,r*0.21);
+            gfx.fillCircle(cx+r*0.36,cy-r*0.65,r*0.21);
+            // Ear inner
+            gfx.fillStyle(0xffbbaa, 1);
+            gfx.fillCircle(cx-r*0.36,cy-r*0.65,r*0.12);
+            gfx.fillCircle(cx+r*0.36,cy-r*0.65,r*0.12);
+            // Muzzle
+            gfx.fillStyle(0xdda870, 1);
+            gfx.fillEllipse(cx,cy-r*0.14,r*0.42,r*0.32);
+            // Nose
+            gfx.fillStyle(0x1a1a1a, 1);
+            gfx.fillEllipse(cx,cy-r*0.27,r*0.17,r*0.11);
+            // Nose shine
+            gfx.fillStyle(0x777777, 0.45);
+            gfx.fillCircle(cx-r*0.04,cy-r*0.30,r*0.036);
+            // Eyes — sclera
             gfx.fillStyle(0xffffff, 1);
-            gfx.fillCircle(cx-r*0.14,cy-r*0.43,r*0.025); gfx.fillCircle(cx+r*0.2,cy-r*0.43,r*0.025);
+            gfx.fillCircle(cx-r*0.17,cy-r*0.40,r*0.125);
+            gfx.fillCircle(cx+r*0.17,cy-r*0.40,r*0.125);
+            // Eyes — iris (warm brown)
+            gfx.fillStyle(0x7b3a10, 1);
+            gfx.fillCircle(cx-r*0.17,cy-r*0.40,r*0.088);
+            gfx.fillCircle(cx+r*0.17,cy-r*0.40,r*0.088);
+            // Eyes — pupil
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.17,cy-r*0.40,r*0.055);
+            gfx.fillCircle(cx+r*0.17,cy-r*0.40,r*0.055);
+            // Eyes — shine
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.12,cy-r*0.43,r*0.032);
+            gfx.fillCircle(cx+r*0.22,cy-r*0.43,r*0.032);
+            // Smile arc
+            gfx.lineStyle(2.5, 0x7b4020, 1);
+            gfx.beginPath(); gfx.arc(cx,cy-r*0.07,r*0.13,0.25,Math.PI-0.25,false); gfx.strokePath();
+            // Cheeks
+            gfx.fillStyle(0xff7755, 0.22);
+            gfx.fillCircle(cx-r*0.30,cy-r*0.28,r*0.13);
+            gfx.fillCircle(cx+r*0.30,cy-r*0.28,r*0.13);
+            // Paws
+            gfx.fillStyle(0xc07830, 1);
+            gfx.fillEllipse(cx-r*0.28,cy+r*0.70,r*0.32,r*0.18);
+            gfx.fillEllipse(cx+r*0.28,cy+r*0.70,r*0.32,r*0.18);
+            gfx.fillStyle(0xa06020, 1);
+            for(let i=-1;i<=1;i++) { gfx.fillCircle(cx-r*0.28+i*r*0.09,cy+r*0.74,r*0.045); }
+            for(let i=-1;i<=1;i++) { gfx.fillCircle(cx+r*0.28+i*r*0.09,cy+r*0.74,r*0.045); }
         }
     },
 
@@ -136,22 +229,56 @@ const WORD_CONCEPTS = {
         en: { answer: 'HEN',  letters: ['H','E','N','A','T','O'] },
         es: { answer: 'GALLO',letters: ['G','A','L','L','O','I'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xff4400, 1); tri(gfx,cx-r*0.4,cy,    cx-r*0.85,cy-r*0.5,  cx-r*0.4,cy+r*0.1);
-            gfx.fillStyle(0xffaa00, 1); tri(gfx,cx-r*0.4,cy+r*0.1, cx-r*0.9,cy+r*0.0,  cx-r*0.4,cy+r*0.25);
-            gfx.fillStyle(0xff8800, 1); tri(gfx,cx-r*0.4,cy+r*0.2, cx-r*0.8,cy+r*0.35, cx-r*0.4,cy+r*0.35);
-            gfx.fillStyle(0xf0eecc, 1); gfx.fillEllipse(cx,cy+r*0.1,r*1.0,r*0.8);
-            gfx.fillCircle(cx+r*0.1,cy-r*0.35,r*0.3);
-            gfx.fillStyle(0xcc2200, 1);
-            gfx.fillCircle(cx,       cy-r*0.62, r*0.15);
-            gfx.fillCircle(cx+r*0.12,cy-r*0.58, r*0.13);
-            gfx.fillCircle(cx-r*0.12,cy-r*0.55, r*0.12);
-            gfx.fillCircle(cx+r*0.28,cy-r*0.18, r*0.1);
-            gfx.fillStyle(0xffaa00, 1);
-            tri(gfx, cx+r*0.36,cy-r*0.4, cx+r*0.55,cy-r*0.32, cx+r*0.36,cy-r*0.24);
-            gfx.fillStyle(0x000000, 1); gfx.fillCircle(cx+r*0.18,cy-r*0.4,r*0.06);
-            gfx.lineStyle(3, 0xffaa00, 1);
-            gfx.beginPath(); gfx.moveTo(cx-r*0.08,cy+r*0.48); gfx.lineTo(cx-r*0.08,cy+r*0.72); gfx.strokePath();
-            gfx.beginPath(); gfx.moveTo(cx+r*0.08,cy+r*0.48); gfx.lineTo(cx+r*0.08,cy+r*0.72); gfx.strokePath();
+            // Colorful fan tail feathers (draw behind body)
+            const fColors = [0xcc0000, 0xff7700, 0xffcc00, 0x33bb22, 0x2255cc];
+            fColors.forEach((c, i) => {
+                const angle = -Math.PI*1.08 + i*0.30;
+                const len = r*(0.90 - i*0.03);
+                gfx.fillStyle(c, 1);
+                tri(gfx, cx-r*0.32,cy+r*0.06,
+                    cx-r*0.32+Math.cos(angle-0.14)*len, cy+Math.sin(angle-0.14)*len,
+                    cx-r*0.32+Math.cos(angle+0.14)*len, cy+Math.sin(angle+0.14)*len);
+            });
+            // Body (cream white)
+            gfx.fillStyle(0xf4eedc, 1);
+            gfx.fillEllipse(cx+r*0.08,cy+r*0.12,r*1.0,r*0.78);
+            // Body highlight
+            gfx.fillStyle(0xffffff, 0.5);
+            gfx.fillEllipse(cx+r*0.04,cy+r*0.02,r*0.46,r*0.26);
+            // Neck + head
+            gfx.fillStyle(0xf4eedc, 1);
+            gfx.fillRoundedRect(cx+r*0.06,cy-r*0.54,r*0.28,r*0.42,r*0.08);
+            gfx.fillCircle(cx+r*0.18,cy-r*0.54,r*0.30);
+            // Comb (3 bumps, red)
+            gfx.fillStyle(0xdd1100, 1);
+            gfx.fillCircle(cx+r*0.08,cy-r*0.76,r*0.12);
+            gfx.fillCircle(cx+r*0.18,cy-r*0.82,r*0.15);
+            gfx.fillCircle(cx+r*0.30,cy-r*0.76,r*0.11);
+            // Wattle
+            gfx.fillEllipse(cx+r*0.09,cy-r*0.34,r*0.16,r*0.22);
+            // Beak (yellow)
+            gfx.fillStyle(0xffcc00, 1);
+            tri(gfx, cx+r*0.44,cy-r*0.56, cx+r*0.62,cy-r*0.49, cx+r*0.44,cy-r*0.42);
+            // Eye — sclera
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx+r*0.27,cy-r*0.59,r*0.10);
+            // Eye — iris (orange)
+            gfx.fillStyle(0xff8800, 1);
+            gfx.fillCircle(cx+r*0.27,cy-r*0.59,r*0.072);
+            // Eye — pupil
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx+r*0.28,cy-r*0.59,r*0.044);
+            // Eye — shine
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx+r*0.31,cy-r*0.62,r*0.025);
+            // Legs + toes
+            gfx.lineStyle(3.5, 0xffcc00, 1);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.06,cy+r*0.52); gfx.lineTo(cx-r*0.10,cy+r*0.76); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.14,cy+r*0.52); gfx.lineTo(cx+r*0.10,cy+r*0.76); gfx.strokePath();
+            [[-0.10,0.76,-0.28,0.80],[-0.10,0.76,-0.10,0.89],[-0.10,0.76,0.06,0.80],
+             [0.10,0.76,-0.06,0.80],[0.10,0.76,0.10,0.89],[0.10,0.76,0.26,0.80]].forEach(([x1,y1,x2,y2]) => {
+                gfx.beginPath(); gfx.moveTo(cx+x1*r,cy+y1*r); gfx.lineTo(cx+x2*r,cy+y2*r); gfx.strokePath();
+            });
         }
     },
 
@@ -160,18 +287,49 @@ const WORD_CONCEPTS = {
         en: { answer: 'DUCK', letters: ['D','U','C','K','A','O'] },
         es: { answer: 'OCA',  letters: ['O','C','A','I','E','T'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xf8f8f0, 1); gfx.fillEllipse(cx,cy+r*0.25,r*1.1,r*0.75);
-            gfx.fillRect(cx+r*0.08,cy-r*0.6,r*0.26,r*0.65);
-            gfx.fillCircle(cx+r*0.25,cy-r*0.68,r*0.22);
-            gfx.fillStyle(0xff8800, 1);
-            tri(gfx, cx+r*0.44,cy-r*0.72, cx+r*0.64,cy-r*0.66, cx+r*0.44,cy-r*0.6);
-            gfx.fillStyle(0x000000, 1); gfx.fillCircle(cx+r*0.3,cy-r*0.72,r*0.05);
-            gfx.lineStyle(2, 0xddddcc, 1);
-            gfx.beginPath(); gfx.arc(cx-r*0.1,cy+r*0.1,r*0.4,-0.5,0.5,false); gfx.strokePath();
-            gfx.fillStyle(0xff8800, 1);
-            gfx.fillEllipse(cx-r*0.15,cy+r*0.64,r*0.26,r*0.11);
-            gfx.fillEllipse(cx+r*0.15,cy+r*0.64,r*0.26,r*0.11);
-            gfx.fillStyle(0x4488cc, 0.4); gfx.fillEllipse(cx,cy+r*0.85,r*1.4,r*0.22);
+            // Water ripple beneath
+            gfx.fillStyle(0x88ccee, 0.35);
+            gfx.fillEllipse(cx,cy+r*0.92,r*1.38,r*0.20);
+            // Body (fluffy white)
+            gfx.fillStyle(0xf6f5ec, 1);
+            gfx.fillEllipse(cx,cy+r*0.22,r*1.1,r*0.78);
+            // Wing feather hint (curved lines on body)
+            gfx.lineStyle(2, 0xddddcc, 0.9);
+            gfx.beginPath(); gfx.arc(cx-r*0.18,cy+r*0.15,r*0.44,-0.55,0.55,false); gfx.strokePath();
+            gfx.beginPath(); gfx.arc(cx-r*0.12,cy+r*0.30,r*0.36,-0.45,0.45,false); gfx.strokePath();
+            // Neck
+            gfx.fillStyle(0xf6f5ec, 1);
+            gfx.fillRoundedRect(cx+r*0.08,cy-r*0.60,r*0.26,r*0.62,r*0.10);
+            // Head
+            gfx.fillCircle(cx+r*0.24,cy-r*0.68,r*0.25);
+            // Beak (orange flat, with nostril dots)
+            gfx.fillStyle(0xff8822, 1);
+            gfx.fillEllipse(cx+r*0.52,cy-r*0.68,r*0.30,r*0.12);
+            gfx.fillStyle(0xcc5500, 1);
+            gfx.fillCircle(cx+r*0.43,cy-r*0.68,r*0.032);
+            gfx.fillCircle(cx+r*0.50,cy-r*0.68,r*0.032);
+            // Eye — sclera
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx+r*0.28,cy-r*0.72,r*0.09);
+            // Eye — iris (dark blue)
+            gfx.fillStyle(0x224488, 1);
+            gfx.fillCircle(cx+r*0.28,cy-r*0.72,r*0.062);
+            // Eye — pupil
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx+r*0.29,cy-r*0.72,r*0.038);
+            // Eye — shine
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx+r*0.32,cy-r*0.75,r*0.022);
+            // Orange webbed feet
+            gfx.fillStyle(0xff8822, 1);
+            gfx.fillEllipse(cx-r*0.15,cy+r*0.65,r*0.30,r*0.12);
+            gfx.fillEllipse(cx+r*0.15,cy+r*0.65,r*0.30,r*0.12);
+            // Toe lines
+            gfx.lineStyle(2, 0xcc5500, 1);
+            [-0.06,0.0,0.06].forEach(d => {
+                gfx.beginPath(); gfx.moveTo(cx-r*0.15,cy+r*0.65); gfx.lineTo(cx-r*0.15+d*r*1.8,cy+r*0.74); gfx.strokePath();
+                gfx.beginPath(); gfx.moveTo(cx+r*0.15,cy+r*0.65); gfx.lineTo(cx+r*0.15+d*r*1.8,cy+r*0.74); gfx.strokePath();
+            });
         }
     },
 
@@ -180,18 +338,60 @@ const WORD_CONCEPTS = {
         en: { answer: 'LION', letters: ['L','I','O','N','E','A'] },
         es: { answer: 'LEON', letters: ['L','E','O','N','I','A'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xffc030, 1); gfx.fillEllipse(cx,cy+r*0.55,r*0.8,r*0.55);
-            gfx.fillStyle(0xc87820, 1); gfx.fillCircle(cx,cy-r*0.08,r*0.62);
-            gfx.fillStyle(0xffc030, 1); gfx.fillCircle(cx,cy-r*0.08,r*0.44);
-            gfx.fillStyle(0xffcc88, 1); gfx.fillEllipse(cx,cy+r*0.02,r*0.36,r*0.25);
-            gfx.fillStyle(0xcc4466, 1); gfx.fillCircle(cx,cy-r*0.08,r*0.08);
-            gfx.fillStyle(0xffcc00, 1);
-            gfx.fillCircle(cx-r*0.18,cy-r*0.2,r*0.1); gfx.fillCircle(cx+r*0.18,cy-r*0.2,r*0.1);
-            gfx.fillStyle(0x000000, 1);
-            gfx.fillCircle(cx-r*0.18,cy-r*0.2,r*0.06); gfx.fillCircle(cx+r*0.18,cy-r*0.2,r*0.06);
-            gfx.lineStyle(5, 0xc87820, 1);
-            gfx.beginPath(); gfx.arc(cx+r*0.5,cy+r*0.4,r*0.34,-0.3,1.6,false); gfx.strokePath();
-            gfx.fillStyle(0x885510, 1); gfx.fillCircle(cx+r*0.82,cy+r*0.62,r*0.11);
+            // Fluffy tail (draw behind body)
+            gfx.lineStyle(r*0.14, 0xc87820, 1);
+            gfx.beginPath(); gfx.arc(cx+r*0.52,cy+r*0.45,r*0.36,-0.4,1.6,false); gfx.strokePath();
+            gfx.fillStyle(0x885510, 1); gfx.fillCircle(cx+r*0.82,cy+r*0.66,r*0.14);
+            // Body (golden)
+            gfx.fillStyle(0xffc030, 1);
+            gfx.fillEllipse(cx,cy+r*0.42,r*0.82,r*0.62);
+            // Mane (dark ring around face)
+            gfx.fillStyle(0xc87820, 1);
+            gfx.fillCircle(cx,cy-r*0.08,r*0.64);
+            // Face (lighter inside mane)
+            gfx.fillStyle(0xffc030, 1);
+            gfx.fillCircle(cx,cy-r*0.08,r*0.46);
+            // Mane fluffy bumps
+            gfx.fillStyle(0xa86018, 1);
+            for(let i=0;i<8;i++){
+                const a = -Math.PI*0.72 + i*(Math.PI*1.44/7);
+                gfx.fillCircle(cx+Math.cos(a)*r*0.58, cy-r*0.08+Math.sin(a)*r*0.58, r*0.15);
+            }
+            // Muzzle
+            gfx.fillStyle(0xffcc88, 1);
+            gfx.fillEllipse(cx,cy+r*0.04,r*0.34,r*0.22);
+            // Nose
+            gfx.fillStyle(0xcc4466, 1);
+            gfx.fillCircle(cx,cy-r*0.07,r*0.08);
+            // Nose shine
+            gfx.fillStyle(0xff88aa, 0.5);
+            gfx.fillCircle(cx-r*0.03,cy-r*0.10,r*0.030);
+            // Whisker dots
+            gfx.fillStyle(0x664400, 1);
+            [-0.16,-0.05,0.05,0.16].forEach(dx => gfx.fillCircle(cx+dx*r,cy+r*0.02,r*0.020));
+            // Eyes — sclera
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.18,cy-r*0.20,r*0.12);
+            gfx.fillCircle(cx+r*0.18,cy-r*0.20,r*0.12);
+            // Eyes — iris (amber)
+            gfx.fillStyle(0xdd8800, 1);
+            gfx.fillCircle(cx-r*0.18,cy-r*0.20,r*0.085);
+            gfx.fillCircle(cx+r*0.18,cy-r*0.20,r*0.085);
+            // Eyes — pupil
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.18,cy-r*0.20,r*0.052);
+            gfx.fillCircle(cx+r*0.18,cy-r*0.20,r*0.052);
+            // Eyes — shine
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.13,cy-r*0.24,r*0.030);
+            gfx.fillCircle(cx+r*0.23,cy-r*0.24,r*0.030);
+            // Smile
+            gfx.lineStyle(2, 0x884400, 1);
+            gfx.beginPath(); gfx.arc(cx,cy+r*0.07,r*0.10,0.3,Math.PI-0.3,false); gfx.strokePath();
+            // Cheeks
+            gfx.fillStyle(0xff7733, 0.20);
+            gfx.fillCircle(cx-r*0.30,cy-r*0.12,r*0.12);
+            gfx.fillCircle(cx+r*0.30,cy-r*0.12,r*0.12);
         }
     },
 
@@ -200,22 +400,59 @@ const WORD_CONCEPTS = {
         en: { answer: 'WOLF', letters: ['W','O','L','F','A','E'] },
         es: { answer: 'LOBO', letters: ['L','O','B','O','A','I'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x909090, 1); gfx.fillEllipse(cx,cy+r*0.25,r*1.0,r*0.72);
-            gfx.fillCircle(cx,cy-r*0.3,r*0.42);
-            gfx.fillStyle(0x909090, 1);
-            tri(gfx, cx-r*0.32,cy-r*0.55, cx-r*0.45,cy-r*0.88, cx-r*0.1,cy-r*0.62);
-            tri(gfx, cx+r*0.32,cy-r*0.55, cx+r*0.45,cy-r*0.88, cx+r*0.1,cy-r*0.62);
-            gfx.fillStyle(0xffaaaa, 1);
-            tri(gfx, cx-r*0.32,cy-r*0.58, cx-r*0.4,cy-r*0.8, cx-r*0.16,cy-r*0.65);
-            tri(gfx, cx+r*0.32,cy-r*0.58, cx+r*0.4,cy-r*0.8, cx+r*0.16,cy-r*0.65);
-            gfx.fillStyle(0xbbbbbb, 1); gfx.fillEllipse(cx,cy-r*0.17,r*0.4,r*0.28);
-            gfx.fillStyle(0x111111, 1); gfx.fillEllipse(cx,cy-r*0.28,r*0.14,r*0.09);
-            gfx.fillStyle(0xddbb00, 1);
-            gfx.fillCircle(cx-r*0.16,cy-r*0.37,r*0.09); gfx.fillCircle(cx+r*0.16,cy-r*0.37,r*0.09);
-            gfx.fillStyle(0x000000, 1);
-            gfx.fillCircle(cx-r*0.16,cy-r*0.37,r*0.05); gfx.fillCircle(cx+r*0.16,cy-r*0.37,r*0.05);
-            gfx.lineStyle(7, 0x909090, 1);
-            gfx.beginPath(); gfx.arc(cx-r*0.6,cy+r*0.5,r*0.38,-1.2,0.3,false); gfx.strokePath();
+            // Fluffy tail (behind body)
+            gfx.lineStyle(r*0.15, 0x8899bb, 1);
+            gfx.beginPath(); gfx.arc(cx-r*0.62,cy+r*0.52,r*0.40,-1.2,0.35,false); gfx.strokePath();
+            gfx.fillStyle(0xddeeff, 0.6);
+            gfx.fillCircle(cx-r*0.74,cy+r*0.25,r*0.14);
+            // Body (blue-grey, friendly)
+            gfx.fillStyle(0x9aaabb, 1);
+            gfx.fillEllipse(cx,cy+r*0.22,r*1.02,r*0.78);
+            // Belly lighter
+            gfx.fillStyle(0xccddee, 0.55);
+            gfx.fillEllipse(cx+r*0.05,cy+r*0.28,r*0.48,r*0.42);
+            // Head
+            gfx.fillStyle(0x9aaabb, 1);
+            gfx.fillCircle(cx,cy-r*0.30,r*0.46);
+            // Ears outer
+            tri(gfx, cx-r*0.30,cy-r*0.55, cx-r*0.44,cy-r*0.90, cx-r*0.08,cy-r*0.62);
+            tri(gfx, cx+r*0.30,cy-r*0.55, cx+r*0.44,cy-r*0.90, cx+r*0.08,cy-r*0.62);
+            // Ears inner
+            gfx.fillStyle(0xffbbbb, 1);
+            tri(gfx, cx-r*0.28,cy-r*0.58, cx-r*0.38,cy-r*0.82, cx-r*0.12,cy-r*0.65);
+            tri(gfx, cx+r*0.28,cy-r*0.58, cx+r*0.38,cy-r*0.82, cx+r*0.12,cy-r*0.65);
+            // Muzzle
+            gfx.fillStyle(0xccdde0, 1);
+            gfx.fillEllipse(cx,cy-r*0.16,r*0.40,r*0.29);
+            // Nose
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillEllipse(cx,cy-r*0.27,r*0.14,r*0.09);
+            // Nose shine
+            gfx.fillStyle(0x777777, 0.4);
+            gfx.fillCircle(cx-r*0.03,cy-r*0.30,r*0.030);
+            // Eyes — sclera
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.16,cy-r*0.38,r*0.125);
+            gfx.fillCircle(cx+r*0.16,cy-r*0.38,r*0.125);
+            // Eyes — iris (warm amber — friendly, not scary)
+            gfx.fillStyle(0xcc8800, 1);
+            gfx.fillCircle(cx-r*0.16,cy-r*0.38,r*0.088);
+            gfx.fillCircle(cx+r*0.16,cy-r*0.38,r*0.088);
+            // Eyes — pupil
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.16,cy-r*0.38,r*0.055);
+            gfx.fillCircle(cx+r*0.16,cy-r*0.38,r*0.055);
+            // Eyes — shine
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.11,cy-r*0.41,r*0.030);
+            gfx.fillCircle(cx+r*0.21,cy-r*0.41,r*0.030);
+            // Smile
+            gfx.lineStyle(2, 0x667788, 1);
+            gfx.beginPath(); gfx.arc(cx,cy-r*0.08,r*0.11,0.3,Math.PI-0.3,false); gfx.strokePath();
+            // Cheeks
+            gfx.fillStyle(0xaabbdd, 0.30);
+            gfx.fillCircle(cx-r*0.29,cy-r*0.27,r*0.12);
+            gfx.fillCircle(cx+r*0.29,cy-r*0.27,r*0.12);
         }
     },
 
@@ -224,21 +461,74 @@ const WORD_CONCEPTS = {
         en: { answer: 'DEER',   letters: ['D','E','E','R','A','O'] },
         es: { answer: 'CIERVO', letters: ['C','I','E','R','V','O','A'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xaa6633, 1); gfx.fillEllipse(cx,cy+r*0.28,r*1.0,r*0.68);
-            gfx.fillStyle(0xffeecc, 1); gfx.fillEllipse(cx,cy+r*0.38,r*0.52,r*0.35);
+            // Body (warm chestnut)
             gfx.fillStyle(0xaa6633, 1);
-            gfx.fillRect(cx-r*0.14,cy-r*0.62,r*0.28,r*0.42);
-            gfx.fillCircle(cx,cy-r*0.7,r*0.27);
+            gfx.fillEllipse(cx,cy+r*0.26,r*1.02,r*0.72);
+            // White belly
+            gfx.fillStyle(0xfff5e0, 1);
+            gfx.fillEllipse(cx,cy+r*0.36,r*0.54,r*0.38);
+            // White spots on back (Bambi style)
+            gfx.fillStyle(0xffffff, 0.7);
+            [[0.22,-0.04],[0.34,0.10],[0.14,0.18],[-0.08,0.08],[-0.22,0.18]].forEach(([dx,dy]) =>
+                gfx.fillCircle(cx+dx*r,cy+dy*r,r*0.065));
+            // Neck
+            gfx.fillStyle(0xaa6633, 1);
+            gfx.fillRoundedRect(cx-r*0.14,cy-r*0.62,r*0.28,r*0.44,r*0.10);
+            // Head
+            gfx.fillCircle(cx,cy-r*0.70,r*0.30);
+            // Antlers
             gfx.lineStyle(4, 0x774422, 1);
-            gfx.beginPath(); gfx.moveTo(cx-r*0.08,cy-r*0.9); gfx.lineTo(cx-r*0.22,cy-r*1.08); gfx.strokePath();
-            gfx.beginPath(); gfx.moveTo(cx-r*0.17,cy-r*0.99); gfx.lineTo(cx-r*0.4,cy-r*1.02); gfx.strokePath();
-            gfx.beginPath(); gfx.moveTo(cx+r*0.08,cy-r*0.9); gfx.lineTo(cx+r*0.22,cy-r*1.08); gfx.strokePath();
-            gfx.beginPath(); gfx.moveTo(cx+r*0.17,cy-r*0.99); gfx.lineTo(cx+r*0.4,cy-r*1.02); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx-r*0.10,cy-r*0.92); gfx.lineTo(cx-r*0.24,cy-r*1.10); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx-r*0.18,cy-r*1.02); gfx.lineTo(cx-r*0.42,cy-r*1.04); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx-r*0.24,cy-r*1.10); gfx.lineTo(cx-r*0.38,cy-r*1.22); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.10,cy-r*0.92); gfx.lineTo(cx+r*0.24,cy-r*1.10); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.18,cy-r*1.02); gfx.lineTo(cx+r*0.42,cy-r*1.04); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.24,cy-r*1.10); gfx.lineTo(cx+r*0.38,cy-r*1.22); gfx.strokePath();
+            // Ears
+            gfx.fillStyle(0xaa6633, 1);
+            gfx.fillEllipse(cx-r*0.26,cy-r*0.72,r*0.18,r*0.28);
+            gfx.fillEllipse(cx+r*0.26,cy-r*0.72,r*0.18,r*0.28);
+            gfx.fillStyle(0xffccaa, 0.6);
+            gfx.fillEllipse(cx-r*0.26,cy-r*0.72,r*0.10,r*0.18);
+            gfx.fillEllipse(cx+r*0.26,cy-r*0.72,r*0.10,r*0.18);
+            // Snout
+            gfx.fillStyle(0xcc8855, 1);
+            gfx.fillEllipse(cx,cy-r*0.60,r*0.22,r*0.16);
+            // Nose
+            gfx.fillStyle(0x331111, 1);
+            gfx.fillEllipse(cx,cy-r*0.64,r*0.09,r*0.06);
+            // Eyes — sclera (very large — Bambi style)
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.12,cy-r*0.72,r*0.14);
+            gfx.fillCircle(cx+r*0.12,cy-r*0.72,r*0.14);
+            // Eyes — iris (deep brown)
+            gfx.fillStyle(0x5a2800, 1);
+            gfx.fillCircle(cx-r*0.12,cy-r*0.72,r*0.10);
+            gfx.fillCircle(cx+r*0.12,cy-r*0.72,r*0.10);
+            // Eyes — pupil
             gfx.fillStyle(0x111111, 1);
-            gfx.fillCircle(cx+r*0.11,cy-r*0.72,r*0.06); gfx.fillCircle(cx,cy-r*0.6,r*0.05);
-            gfx.lineStyle(5, 0x995522, 1);
-            for (const dx of [-0.28,-0.1,0.1,0.28]) {
-                gfx.beginPath(); gfx.moveTo(cx+dx*r,cy+r*0.6); gfx.lineTo(cx+dx*r,cy+r*0.88); gfx.strokePath();
+            gfx.fillCircle(cx-r*0.12,cy-r*0.72,r*0.065);
+            gfx.fillCircle(cx+r*0.12,cy-r*0.72,r*0.065);
+            // Eyes — shine (large, dewy)
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.07,cy-r*0.76,r*0.038);
+            gfx.fillCircle(cx+r*0.17,cy-r*0.76,r*0.038);
+            // Lashes
+            gfx.lineStyle(1.5, 0x331111, 0.9);
+            [[-0.19,-0.84],[-0.12,-0.87],[-0.05,-0.86]].forEach(([dx,dy]) => {
+                gfx.beginPath(); gfx.moveTo(cx+dx*r,cy+r*(dy+0.04)); gfx.lineTo(cx+dx*r-r*0.01,cy+r*dy); gfx.strokePath();
+            });
+            // Smile
+            gfx.lineStyle(2, 0x774422, 1);
+            gfx.beginPath(); gfx.arc(cx,cy-r*0.54,r*0.07,0.3,Math.PI-0.3,false); gfx.strokePath();
+            // Cheeks
+            gfx.fillStyle(0xff9966, 0.25);
+            gfx.fillCircle(cx-r*0.22,cy-r*0.66,r*0.10);
+            gfx.fillCircle(cx+r*0.22,cy-r*0.66,r*0.10);
+            // Legs
+            gfx.fillStyle(0xaa6633, 1);
+            for(const dx of [-0.28,-0.10,0.10,0.28]) {
+                gfx.fillRoundedRect(cx+dx*r-r*0.07,cy+r*0.60,r*0.14,r*0.30,r*0.04);
             }
         }
     },
@@ -1012,29 +1302,67 @@ const WORD_CONCEPTS = {
         en: { answer: 'COW',   letters: ['C','O','W','A','E','I'] },
         es: { answer: 'VACA',  letters: ['V','A','C','A','O','E'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xffffff, 1);
-            gfx.fillEllipse(cx, cy+r*0.12, r*1.2, r*0.8);
-            gfx.fillStyle(0x111111, 1);
-            gfx.fillCircle(cx-r*0.3, cy, r*0.22);
-            gfx.fillCircle(cx+r*0.25, cy+r*0.22, r*0.18);
-            gfx.fillStyle(0xffffff, 1);
-            gfx.fillCircle(cx+r*0.5, cy-r*0.12, r*0.3);
-            gfx.fillStyle(0x111111, 1);
-            gfx.fillCircle(cx+r*0.56, cy-r*0.22, r*0.14);
-            gfx.fillCircle(cx+r*0.62, cy-r*0.18, r*0.06);
-            gfx.fillStyle(0xffaaaa, 1);
-            gfx.fillEllipse(cx+r*0.66, cy-r*0.04, r*0.22, r*0.14);
-            gfx.fillStyle(0x222222, 1);
-            gfx.fillCircle(cx+r*0.61, cy-r*0.02, r*0.04);
-            gfx.fillCircle(cx+r*0.71, cy-r*0.02, r*0.04);
-            gfx.fillStyle(0xddb844, 1);
-            tri(gfx, cx+r*0.38, cy-r*0.36, cx+r*0.44, cy-r*0.58, cx+r*0.52, cy-r*0.36);
-            gfx.fillStyle(0xffffff, 1);
-            [[-0.35,0.52],[-0.15,0.52],[0.15,0.52],[0.35,0.52]].forEach(([dx, dy]) => {
-                gfx.fillRect(cx+dx*r-r*0.07, cy+dy*r, r*0.14, r*0.28);
-            });
+            // Legs (draw behind body)
+            gfx.fillStyle(0xeeeeee, 1);
+            [[-0.30,0.50],[-0.12,0.52],[0.12,0.52],[0.30,0.50]].forEach(([dx,dy]) =>
+                gfx.fillRoundedRect(cx+dx*r-r*0.075,cy+dy*r,r*0.15,r*0.30,r*0.04));
+            // Hooves
+            gfx.fillStyle(0x555555, 1);
+            [[-0.30,0.50],[-0.12,0.52],[0.12,0.52],[0.30,0.50]].forEach(([dx,dy]) =>
+                gfx.fillRoundedRect(cx+dx*r-r*0.07,cy+(dy+0.20)*r,r*0.14,r*0.08,r*0.03));
+            // Udder
             gfx.fillStyle(0xffcccc, 1);
-            gfx.fillEllipse(cx, cy+r*0.56, r*0.38, r*0.2);
+            gfx.fillEllipse(cx+r*0.05,cy+r*0.54,r*0.36,r*0.19);
+            gfx.fillStyle(0xff9999, 0.8);
+            [[-0.08,0.58],[0.08,0.58]].forEach(([dx,dy]) => gfx.fillCircle(cx+dx*r,cy+dy*r,r*0.034));
+            // Body (white, tighter)
+            gfx.fillStyle(0xfafafa, 1);
+            gfx.fillEllipse(cx+r*0.02,cy+r*0.10,r*1.05,r*0.72);
+            // Black spots — elongated patches, not big circles
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillEllipse(cx-r*0.20,cy+r*0.03,r*0.28,r*0.20);
+            gfx.fillEllipse(cx+r*0.20,cy+r*0.20,r*0.22,r*0.16);
+            // Head (white, larger — r*0.36)
+            gfx.fillStyle(0xfafafa, 1);
+            gfx.fillCircle(cx+r*0.50,cy-r*0.14,r*0.36);
+            // Ear
+            gfx.fillStyle(0xfafafa, 1);
+            gfx.fillEllipse(cx+r*0.28,cy-r*0.42,r*0.16,r*0.24);
+            gfx.fillStyle(0xffbbaa, 0.6);
+            gfx.fillEllipse(cx+r*0.28,cy-r*0.42,r*0.09,r*0.14);
+            // Head black patch (smaller)
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx+r*0.58,cy-r*0.24,r*0.14);
+            // Horns
+            gfx.fillStyle(0xddbb44, 1);
+            tri(gfx, cx+r*0.36,cy-r*0.38, cx+r*0.42,cy-r*0.58, cx+r*0.52,cy-r*0.40);
+            // Snout (pink)
+            gfx.fillStyle(0xffaaaa, 1);
+            gfx.fillEllipse(cx+r*0.68,cy-r*0.04,r*0.22,r*0.15);
+            // Nostrils
+            gfx.fillStyle(0x221111, 1);
+            gfx.fillCircle(cx+r*0.62,cy-r*0.04,r*0.036);
+            gfx.fillCircle(cx+r*0.74,cy-r*0.04,r*0.036);
+            // Eye — sclera
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx+r*0.60,cy-r*0.19,r*0.11);
+            // Eye — iris
+            gfx.fillStyle(0x8b4010, 1);
+            gfx.fillCircle(cx+r*0.60,cy-r*0.19,r*0.076);
+            // Eye — pupil
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx+r*0.60,cy-r*0.19,r*0.048);
+            // Eye — shine
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx+r*0.64,cy-r*0.22,r*0.026);
+            // Lash
+            gfx.lineStyle(2, 0x111111, 0.9);
+            gfx.beginPath(); gfx.arc(cx+r*0.60,cy-r*0.19,r*0.11,Math.PI*1.25,Math.PI*1.82,false); gfx.strokePath();
+            // Cowbell
+            gfx.fillStyle(0xddaa00, 1);
+            gfx.fillRoundedRect(cx+r*0.36,cy-r*0.09,r*0.13,r*0.17,r*0.03);
+            gfx.fillStyle(0xaa7700, 1);
+            gfx.fillCircle(cx+r*0.425,cy+r*0.10,r*0.028);
         }
     },
     LAPIN: {
@@ -1042,24 +1370,64 @@ const WORD_CONCEPTS = {
         en: { answer: 'RABBIT', letters: ['R','A','B','B','I','T'] },
         es: { answer: 'CONEJO', letters: ['C','O','N','E','J','O'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xdddddd, 1);
-            gfx.fillEllipse(cx, cy+r*0.28, r*0.82, r*0.78);
-            gfx.fillCircle(cx, cy-r*0.22, r*0.3);
-            gfx.fillEllipse(cx-r*0.18, cy-r*0.74, r*0.2, r*0.6);
-            gfx.fillEllipse(cx+r*0.18, cy-r*0.74, r*0.2, r*0.6);
-            gfx.fillStyle(0xffaaaa, 1);
-            gfx.fillEllipse(cx-r*0.18, cy-r*0.74, r*0.1, r*0.5);
-            gfx.fillEllipse(cx+r*0.18, cy-r*0.74, r*0.1, r*0.5);
-            gfx.fillStyle(0x222222, 1);
-            gfx.fillCircle(cx-r*0.1, cy-r*0.26, r*0.06);
-            gfx.fillCircle(cx+r*0.1, cy-r*0.26, r*0.06);
-            gfx.fillStyle(0xff88aa, 1);
-            gfx.fillCircle(cx, cy-r*0.14, r*0.06);
-            gfx.lineStyle(1, 0x888888, 0.8);
-            gfx.beginPath(); gfx.moveTo(cx-r*0.28, cy-r*0.12); gfx.lineTo(cx-r*0.08, cy-r*0.1); gfx.strokePath();
-            gfx.beginPath(); gfx.moveTo(cx+r*0.08, cy-r*0.1); gfx.lineTo(cx+r*0.28, cy-r*0.12); gfx.strokePath();
+            // Fluffy pompom tail
             gfx.fillStyle(0xffffff, 1);
-            gfx.fillCircle(cx, cy+r*0.66, r*0.12);
+            gfx.fillCircle(cx+r*0.36,cy+r*0.52,r*0.16);
+            gfx.fillStyle(0xeeeeee, 1);
+            gfx.fillCircle(cx+r*0.40,cy+r*0.50,r*0.11);
+            // Ears (draw first — tall, behind head)
+            gfx.fillStyle(0xe8e8e8, 1);
+            gfx.fillEllipse(cx-r*0.18,cy-r*0.74,r*0.22,r*0.64);
+            gfx.fillEllipse(cx+r*0.18,cy-r*0.74,r*0.22,r*0.64);
+            // Ear inner pink
+            gfx.fillStyle(0xffaabb, 1);
+            gfx.fillEllipse(cx-r*0.18,cy-r*0.75,r*0.11,r*0.50);
+            gfx.fillEllipse(cx+r*0.18,cy-r*0.75,r*0.11,r*0.50);
+            // Body
+            gfx.fillStyle(0xe8e8e8, 1);
+            gfx.fillEllipse(cx,cy+r*0.26,r*0.85,r*0.82);
+            // Belly lighter
+            gfx.fillStyle(0xffffff, 0.7);
+            gfx.fillEllipse(cx,cy+r*0.30,r*0.46,r*0.44);
+            // Head
+            gfx.fillStyle(0xe8e8e8, 1);
+            gfx.fillCircle(cx,cy-r*0.22,r*0.34);
+            // Cheeks (fluffy)
+            gfx.fillStyle(0xffffff, 0.6);
+            gfx.fillCircle(cx-r*0.20,cy-r*0.20,r*0.16);
+            gfx.fillCircle(cx+r*0.20,cy-r*0.20,r*0.16);
+            // Eyes — sclera
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.11,cy-r*0.27,r*0.11);
+            gfx.fillCircle(cx+r*0.11,cy-r*0.27,r*0.11);
+            // Eyes — iris (sky blue)
+            gfx.fillStyle(0x44aadd, 1);
+            gfx.fillCircle(cx-r*0.11,cy-r*0.27,r*0.075);
+            gfx.fillCircle(cx+r*0.11,cy-r*0.27,r*0.075);
+            // Eyes — pupil
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.11,cy-r*0.27,r*0.048);
+            gfx.fillCircle(cx+r*0.11,cy-r*0.27,r*0.048);
+            // Eyes — shine
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.06,cy-r*0.30,r*0.027);
+            gfx.fillCircle(cx+r*0.16,cy-r*0.30,r*0.027);
+            // Nose (pink round)
+            gfx.fillStyle(0xff88aa, 1);
+            gfx.fillEllipse(cx,cy-r*0.15,r*0.10,r*0.07);
+            // Nose shine
+            gfx.fillStyle(0xffbbcc, 0.6);
+            gfx.fillCircle(cx-r*0.02,cy-r*0.165,r*0.025);
+            // Whiskers
+            gfx.lineStyle(1.2, 0xbbbbbb, 0.75);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.26,cy-r*0.13); gfx.lineTo(cx-r*0.08,cy-r*0.12); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx-r*0.24,cy-r*0.10); gfx.lineTo(cx-r*0.08,cy-r*0.10); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.08,cy-r*0.12); gfx.lineTo(cx+r*0.26,cy-r*0.13); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.08,cy-r*0.10); gfx.lineTo(cx+r*0.24,cy-r*0.10); gfx.strokePath();
+            // Cheek blush
+            gfx.fillStyle(0xff9988, 0.22);
+            gfx.fillCircle(cx-r*0.22,cy-r*0.20,r*0.10);
+            gfx.fillCircle(cx+r*0.22,cy-r*0.20,r*0.10);
         }
     },
     POULE: {
@@ -1067,24 +1435,56 @@ const WORD_CONCEPTS = {
         en: { answer: 'HEN',     letters: ['H','E','N','O','A','I'] },
         es: { answer: 'GALLINA', letters: ['G','A','L','L','I','N','A'] },
         drawPicture(gfx, cx, cy, r) {
+            // Colorful tail feathers
+            const tColors = [0xff3300, 0xff9900, 0xffdd00, 0x44cc22];
+            tColors.forEach((c, i) => {
+                const angle = Math.PI*0.10 + i*0.22;
+                const len = r*(0.80 - i*0.04);
+                gfx.fillStyle(c, 1);
+                tri(gfx, cx+r*0.34,cy+r*0.08,
+                    cx+r*0.34+Math.cos(angle-0.12)*len, cy+Math.sin(angle-0.12)*len,
+                    cx+r*0.34+Math.cos(angle+0.12)*len, cy+Math.sin(angle+0.12)*len);
+            });
+            // Body
             gfx.fillStyle(0xffffff, 1);
-            gfx.fillEllipse(cx, cy+r*0.2, r*1.0, r*0.82);
-            gfx.fillStyle(0xeeeeee, 1);
-            gfx.fillEllipse(cx+r*0.22, cy+r*0.12, r*0.52, r*0.36);
+            gfx.fillEllipse(cx,cy+r*0.18,r*1.02,r*0.84);
+            // Fluffy wing area
+            gfx.fillStyle(0xf0f0ee, 1);
+            gfx.fillEllipse(cx+r*0.20,cy+r*0.10,r*0.54,r*0.38);
+            // Head
             gfx.fillStyle(0xffffff, 1);
-            gfx.fillCircle(cx-r*0.38, cy-r*0.2, r*0.28);
-            gfx.fillStyle(0xee2222, 1);
-            tri(gfx, cx-r*0.44, cy-r*0.45, cx-r*0.36, cy-r*0.56, cx-r*0.28, cy-r*0.45);
-            gfx.fillCircle(cx-r*0.36, cy-r*0.5, r*0.08);
+            gfx.fillCircle(cx-r*0.38,cy-r*0.20,r*0.30);
+            // Comb (3 red bumps)
+            gfx.fillStyle(0xee1111, 1);
+            gfx.fillCircle(cx-r*0.46,cy-r*0.46,r*0.11);
+            gfx.fillCircle(cx-r*0.36,cy-r*0.52,r*0.13);
+            gfx.fillCircle(cx-r*0.26,cy-r*0.46,r*0.10);
+            // Wattle
+            gfx.fillEllipse(cx-r*0.56,cy-r*0.10,r*0.16,r*0.20);
+            // Beak
             gfx.fillStyle(0xffcc00, 1);
-            tri(gfx, cx-r*0.66, cy-r*0.18, cx-r*0.58, cy-r*0.12, cx-r*0.66, cy-r*0.06);
-            gfx.fillStyle(0x222222, 1);
-            gfx.fillCircle(cx-r*0.44, cy-r*0.24, r*0.07);
-            gfx.fillStyle(0xee2222, 1);
-            gfx.fillCircle(cx-r*0.58, cy-r*0.1, r*0.08);
-            gfx.fillStyle(0xffcc00, 1);
-            gfx.fillRect(cx-r*0.2, cy+r*0.6, r*0.1, r*0.22);
-            gfx.fillRect(cx+r*0.08, cy+r*0.6, r*0.1, r*0.22);
+            tri(gfx, cx-r*0.65,cy-r*0.20, cx-r*0.80,cy-r*0.14, cx-r*0.65,cy-r*0.08);
+            // Eye — sclera
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.44,cy-r*0.24,r*0.094);
+            // Eye — iris (orange)
+            gfx.fillStyle(0xff8800, 1);
+            gfx.fillCircle(cx-r*0.44,cy-r*0.24,r*0.065);
+            // Eye — pupil
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.44,cy-r*0.24,r*0.040);
+            // Eye — shine
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.40,cy-r*0.27,r*0.023);
+            // Feet
+            gfx.lineStyle(3, 0xffcc00, 1);
+            [[-0.18,0.60,-0.22,0.78],[0.06,0.60,0.02,0.78]].forEach(([x1,y1,x2,y2]) => {
+                gfx.beginPath(); gfx.moveTo(cx+x1*r,cy+y1*r); gfx.lineTo(cx+x2*r,cy+y2*r); gfx.strokePath();
+            });
+            [[-0.22,0.78,-0.36,0.82],[-0.22,0.78,-0.22,0.90],[-0.22,0.78,-0.10,0.82],
+             [0.02,0.78,-0.10,0.82],[0.02,0.78,0.02,0.90],[0.02,0.78,0.14,0.82]].forEach(([x1,y1,x2,y2]) => {
+                gfx.beginPath(); gfx.moveTo(cx+x1*r,cy+y1*r); gfx.lineTo(cx+x2*r,cy+y2*r); gfx.strokePath();
+            });
         }
     },
     CHIEN: {
@@ -1092,24 +1492,61 @@ const WORD_CONCEPTS = {
         en: { answer: 'DOG',   letters: ['D','O','G','A','E','I'] },
         es: { answer: 'PERRO', letters: ['P','E','R','R','O','A'] },
         drawPicture(gfx, cx, cy, r) {
+            // Wagging tail (behind body)
+            gfx.lineStyle(r*0.12, 0xcc9966, 1);
+            gfx.beginPath(); gfx.arc(cx+r*0.62,cy+r*0.02,r*0.34,-Math.PI*0.62,Math.PI*0.08,false); gfx.strokePath();
+            gfx.fillStyle(0xeebb88, 1);
+            gfx.fillCircle(cx+r*0.82,cy-r*0.26,r*0.10);
+            // Legs
             gfx.fillStyle(0xcc9966, 1);
-            gfx.fillEllipse(cx, cy+r*0.25, r*1.1, r*0.72);
-            gfx.fillCircle(cx-r*0.38, cy-r*0.08, r*0.34);
-            gfx.fillStyle(0xddaa88, 1);
-            gfx.fillEllipse(cx-r*0.56, cy+r*0.02, r*0.28, r*0.2);
-            gfx.fillStyle(0x222222, 1);
-            gfx.fillEllipse(cx-r*0.6, cy-r*0.02, r*0.14, r*0.1);
-            gfx.fillCircle(cx-r*0.3, cy-r*0.16, r*0.08);
-            gfx.fillStyle(0xffffff, 1);
-            gfx.fillCircle(cx-r*0.27, cy-r*0.19, r*0.03);
-            gfx.fillStyle(0xaa7744, 1);
-            gfx.fillEllipse(cx-r*0.24, cy-r*0.35, r*0.22, r*0.42);
-            gfx.lineStyle(8, 0xcc9966, 1);
-            gfx.beginPath(); gfx.arc(cx+r*0.62, cy, r*0.32, -Math.PI*0.6, Math.PI*0.1); gfx.strokePath();
-            gfx.fillStyle(0xcc9966, 1);
-            [[-0.3,0.58],[-0.1,0.6],[0.12,0.58],[0.32,0.56]].forEach(([dx, dy]) => {
-                gfx.fillRoundedRect(cx+dx*r-r*0.07, cy+dy*r, r*0.14, r*0.22, r*0.04);
+            [[-0.30,0.56],[-0.10,0.58],[0.12,0.56],[0.32,0.54]].forEach(([dx,dy]) =>
+                gfx.fillRoundedRect(cx+dx*r-r*0.08,cy+dy*r,r*0.16,r*0.28,r*0.05));
+            // Paw toes
+            gfx.fillStyle(0xeebb88, 1);
+            [[-0.30,0.56],[-0.10,0.58],[0.12,0.56],[0.32,0.54]].forEach(([dx,dy]) => {
+                for(let i=-1;i<=1;i++) gfx.fillCircle(cx+dx*r+i*r*0.05,cy+(dy+0.22)*r,r*0.032);
             });
+            // Body
+            gfx.fillStyle(0xcc9966, 1);
+            gfx.fillEllipse(cx,cy+r*0.22,r*1.1,r*0.74);
+            // Body highlight
+            gfx.fillStyle(0xeebb88, 0.4);
+            gfx.fillEllipse(cx-r*0.05,cy+r*0.10,r*0.55,r*0.28);
+            // Floppy ear (left, drooping)
+            gfx.fillStyle(0xaa7744, 1);
+            gfx.fillEllipse(cx-r*0.24,cy-r*0.38,r*0.24,r*0.46);
+            // Head
+            gfx.fillStyle(0xcc9966, 1);
+            gfx.fillCircle(cx-r*0.38,cy-r*0.08,r*0.36);
+            // Snout
+            gfx.fillStyle(0xddaa88, 1);
+            gfx.fillEllipse(cx-r*0.56,cy+r*0.02,r*0.30,r*0.22);
+            // Nose
+            gfx.fillStyle(0x221111, 1);
+            gfx.fillEllipse(cx-r*0.62,cy-r*0.02,r*0.15,r*0.10);
+            // Nose shine
+            gfx.fillStyle(0x777777, 0.4);
+            gfx.fillCircle(cx-r*0.66,cy-r*0.055,r*0.030);
+            // Tongue (happy panting)
+            gfx.fillStyle(0xff6688, 1);
+            gfx.fillEllipse(cx-r*0.64,cy+r*0.10,r*0.16,r*0.14);
+            gfx.fillStyle(0xee4466, 1);
+            gfx.fillRect(cx-r*0.72,cy+r*0.10,r*0.16,r*0.06);
+            // Eye — sclera
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.30,cy-r*0.16,r*0.11);
+            // Eye — iris (warm brown)
+            gfx.fillStyle(0x7b3a10, 1);
+            gfx.fillCircle(cx-r*0.30,cy-r*0.16,r*0.076);
+            // Eye — pupil
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.30,cy-r*0.16,r*0.048);
+            // Eye — shine
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.25,cy-r*0.19,r*0.027);
+            // Cheeks
+            gfx.fillStyle(0xff9966, 0.22);
+            gfx.fillCircle(cx-r*0.48,cy-r*0.05,r*0.10);
         }
     },
     PONEY: {
@@ -1117,22 +1554,72 @@ const WORD_CONCEPTS = {
         en: { answer: 'PONY',  letters: ['P','O','N','Y','A','E'] },
         es: { answer: 'PONI',  letters: ['P','O','N','I','A','E'] },
         drawPicture(gfx, cx, cy, r) {
+            // Flowing tail (behind body)
+            gfx.fillStyle(0xdd88cc, 1);
+            gfx.fillEllipse(cx+r*0.56,cy+r*0.22,r*0.18,r*0.52);
+            gfx.fillStyle(0xee99dd, 0.7);
+            gfx.fillEllipse(cx+r*0.60,cy+r*0.19,r*0.10,r*0.36);
+            // Hooves
+            gfx.fillStyle(0x553322, 1);
+            [[-0.34,0.68],[-0.14,0.70],[0.12,0.68],[0.34,0.66]].forEach(([dx,dy]) =>
+                gfx.fillRoundedRect(cx+dx*r-r*0.07,cy+dy*r,r*0.14,r*0.11,r*0.04));
+            // Legs
             gfx.fillStyle(0xcc8844, 1);
-            gfx.fillEllipse(cx+r*0.05, cy+r*0.22, r*1.1, r*0.66);
-            gfx.fillRoundedRect(cx-r*0.42, cy-r*0.22, r*0.28, r*0.44, r*0.1);
-            gfx.fillCircle(cx-r*0.44, cy-r*0.38, r*0.22);
-            gfx.fillEllipse(cx-r*0.56, cy-r*0.22, r*0.2, r*0.28);
-            gfx.fillStyle(0x882200, 1);
-            gfx.fillEllipse(cx-r*0.32, cy-r*0.28, r*0.18, r*0.44);
-            gfx.fillEllipse(cx+r*0.58, cy+r*0.22, r*0.18, r*0.44);
-            gfx.fillStyle(0x222222, 1);
-            gfx.fillCircle(cx-r*0.5, cy-r*0.4, r*0.06);
+            [[-0.34,0.50],[-0.14,0.52],[0.12,0.50],[0.34,0.48]].forEach(([dx,dy]) =>
+                gfx.fillRoundedRect(cx+dx*r-r*0.075,cy+dy*r,r*0.15,r*0.22,r*0.04));
+            // Body
+            gfx.fillStyle(0xcc8844, 1);
+            gfx.fillEllipse(cx+r*0.05,cy+r*0.18,r*1.08,r*0.64);
+            // Body highlight
+            gfx.fillStyle(0xeebb77, 0.35);
+            gfx.fillEllipse(cx+r*0.01,cy+r*0.08,r*0.56,r*0.24);
+            // Neck (short — just bridges body to head)
+            gfx.fillStyle(0xcc8844, 1);
+            gfx.fillRoundedRect(cx-r*0.44,cy-r*0.12,r*0.30,r*0.24,r*0.10);
+            // Mane (flowing, pink/purple, along neck)
+            gfx.fillStyle(0xdd88cc, 1);
+            gfx.fillEllipse(cx-r*0.30,cy-r*0.12,r*0.22,r*0.42);
+            gfx.fillStyle(0xee99dd, 0.8);
+            gfx.fillEllipse(cx-r*0.26,cy-r*0.14,r*0.12,r*0.28);
+            // Head (bigger — r*0.30)
+            gfx.fillStyle(0xcc8844, 1);
+            gfx.fillCircle(cx-r*0.44,cy-r*0.26,r*0.30);
+            // Ear (above head, not to side)
+            gfx.fillStyle(0xcc8844, 1);
+            gfx.fillEllipse(cx-r*0.46,cy-r*0.50,r*0.14,r*0.22);
+            gfx.fillStyle(0xffbbaa, 0.7);
+            gfx.fillEllipse(cx-r*0.46,cy-r*0.50,r*0.08,r*0.13);
+            // Forelock (pink mane tuft on forehead)
+            gfx.fillStyle(0xdd88cc, 1);
+            gfx.fillEllipse(cx-r*0.36,cy-r*0.46,r*0.16,r*0.20);
+            gfx.fillStyle(0xee99dd, 0.8);
+            gfx.fillEllipse(cx-r*0.34,cy-r*0.48,r*0.09,r*0.12);
+            // Snout
+            gfx.fillStyle(0xddaa77, 1);
+            gfx.fillEllipse(cx-r*0.62,cy-r*0.20,r*0.22,r*0.15);
+            // Nostrils
             gfx.fillStyle(0xaa6633, 1);
-            gfx.fillCircle(cx-r*0.62, cy-r*0.18, r*0.05);
-            gfx.fillStyle(0xcc8844, 1);
-            [[-0.36,0.55],[-0.16,0.56],[0.18,0.55],[0.38,0.54]].forEach(([dx, dy]) => {
-                gfx.fillRoundedRect(cx+dx*r-r*0.07, cy+dy*r, r*0.14, r*0.3, r*0.04);
-            });
+            gfx.fillCircle(cx-r*0.68,cy-r*0.22,r*0.028);
+            gfx.fillCircle(cx-r*0.56,cy-r*0.22,r*0.028);
+            // Eye — sclera
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.50,cy-r*0.29,r*0.12);
+            // Eye — iris (purple sparkly)
+            gfx.fillStyle(0x8844cc, 1);
+            gfx.fillCircle(cx-r*0.50,cy-r*0.29,r*0.084);
+            // Eye — pupil
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.50,cy-r*0.29,r*0.052);
+            // Eye — shine (two dots for sparkle)
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.45,cy-r*0.32,r*0.028);
+            gfx.fillCircle(cx-r*0.50,cy-r*0.33,r*0.017);
+            // Smile
+            gfx.lineStyle(2, 0x994422, 1);
+            gfx.beginPath(); gfx.arc(cx-r*0.59,cy-r*0.16,r*0.08,0.25,Math.PI-0.25,false); gfx.strokePath();
+            // Cheeks
+            gfx.fillStyle(0xff99cc, 0.28);
+            gfx.fillCircle(cx-r*0.54,cy-r*0.23,r*0.09);
         }
     },
 };

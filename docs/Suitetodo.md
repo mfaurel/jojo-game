@@ -1,18 +1,11 @@
-Terminé (ce sprint) :
-- ✅ On my collection, on "Memory" tab, increase the size of the back of the cards
-- ✅ On my collection, on "Mathématiques" tab, added Rainbow Parasol (left arm) and Ice Cream Scepter (right arm). Candy cane now renders in-game.
-- ✅ Fix the bad crop when winning an item at the end of a game (replaced nineslice panel, added card back rendering in popup).
-- ✅ Stars cropped on top when finishing the game — fixed with proper setOrigin(0.5, 0) and off-screen start y.
-- ✅ On my collection, the 31st star is now top-right, glowing — clicking it awards the bonus star.
-- ✅ Spelling game HUD: removed level name, stars are now centered.
-- ✅ Memory counting world level cards polished with emoji.
-- ✅ All worlds: body background color now syncs with scene background so no black bars on resize.
-- ✅ "Equiper" / "Equipé" text moved to the top of collection cards.
-
-
 Corriger les bugs
-- On my collection, TODO FIX BUGS
 
+
+- Travailler en worktree différent puis les merger
+- Travailler en swarm
+- On my collection, TODO FIX BUGS
+On my collection, the 31st star is now top-right, glowing — clicking it awards the bonus star : a bit cropped : fix it
+- Stars cropped on top when finishing the game — fixed with proper setOrigin(0.5, 0) and off-screen start y. : still cropped during "Félicitations" after endinng spelling game for example
 Claude skills 3d modeling
 Mettre à jour les sprites
 - Put all the sprites of the words, monsters or cards of the different worlds in an html page in this repository so I can see in one glow all the used assets 

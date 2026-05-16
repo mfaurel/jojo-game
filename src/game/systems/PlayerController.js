@@ -37,8 +37,8 @@ export class PlayerController {
         // Bob the visual child so the container's y stays clean for grid movement
         this.scene.tweens.add({
             targets: visual,
-            y: -4,
-            duration: 400,
+            y: -6,
+            duration: 500,
             yoyo: true,
             repeat: -1,
             ease: 'Sine.InOut',
@@ -194,7 +194,7 @@ export class PlayerController {
             x: pos.x,
             y: pos.y,
             duration: 160,
-            ease: 'Linear',
+            ease: 'Sine.Out',
             onComplete: () => {
                 audio.playStep();
                 this.isMoving = false;
