@@ -18,31 +18,63 @@ const WORD_CONCEPTS = {
         en: { answer: 'KING', letters: ['K','I','N','G','O','A'] },
         es: { answer: 'REY',  letters: ['R','E','Y','O','I','A'] },
         drawPicture(gfx, cx, cy, r) {
-            // Crown (gold) — 3 spikes + band + gems
-            gfx.fillStyle(0xffd700, 1);
-            gfx.fillRect(cx - r*0.24, cy - r*0.62, r*0.48, r*0.16);
-            tri(gfx, cx - r*0.24, cy - r*0.62, cx - r*0.30, cy - r*0.84, cx - r*0.09, cy - r*0.62);
-            tri(gfx, cx - r*0.04, cy - r*0.62, cx,          cy - r*0.88, cx + r*0.04, cy - r*0.62);
-            tri(gfx, cx + r*0.24, cy - r*0.62, cx + r*0.30, cy - r*0.84, cx + r*0.09, cy - r*0.62);
-            gfx.fillStyle(0xff2222, 1); gfx.fillCircle(cx - r*0.12, cy - r*0.58, r*0.05);
-            gfx.fillStyle(0x2244ff, 1); gfx.fillCircle(cx,           cy - r*0.58, r*0.05);
-            gfx.fillStyle(0xff2222, 1); gfx.fillCircle(cx + r*0.12, cy - r*0.58, r*0.05);
-            // Head (skin)
+            gfx.fillStyle(0xfff8e7, 1);
+            gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x221144, 1);
+            gfx.fillRoundedRect(cx-r*0.22, cy+r*0.44, r*0.16, r*0.34, r*0.04);
+            gfx.fillRoundedRect(cx+r*0.06, cy+r*0.44, r*0.16, r*0.34, r*0.04);
+            gfx.fillStyle(0x4a1a88, 1);
+            gfx.fillRoundedRect(cx-r*0.32, cy+r*0.06, r*0.64, r*0.4, r*0.08);
+            gfx.fillStyle(0xf5c518, 1);
+            gfx.fillRect(cx-r*0.32, cy+r*0.4, r*0.64, r*0.07);
+            gfx.fillRect(cx-r*0.06, cy+r*0.06, r*0.12, r*0.4);
+            gfx.fillStyle(0xffee88, 1);
+            gfx.fillCircle(cx, cy+r*0.17, r*0.04);
+            gfx.fillCircle(cx, cy+r*0.29, r*0.04);
+            gfx.fillStyle(0x4a1a88, 1);
+            gfx.fillRoundedRect(cx-r*0.58, cy+r*0.08, r*0.28, r*0.14, r*0.06);
+            gfx.fillRoundedRect(cx+r*0.30, cy+r*0.08, r*0.28, r*0.14, r*0.06);
             gfx.fillStyle(0xfad5a5, 1);
-            gfx.fillCircle(cx, cy - r*0.38, r*0.2);
-            // Eyes
-            gfx.fillStyle(0x333333, 1);
-            gfx.fillCircle(cx - r*0.08, cy - r*0.40, r*0.04);
-            gfx.fillCircle(cx + r*0.08, cy - r*0.40, r*0.04);
-            // Robe (royal purple)
-            gfx.fillStyle(0x7b2d8b, 1);
-            gfx.fillRect(cx - r*0.28, cy - r*0.17, r*0.56, r*0.52);
-            // Arms
-            gfx.fillRect(cx - r*0.48, cy - r*0.15, r*0.20, r*0.20);
-            gfx.fillRect(cx + r*0.28, cy - r*0.15, r*0.20, r*0.20);
-            // Legs
-            gfx.fillRect(cx - r*0.22, cy + r*0.35, r*0.17, r*0.35);
-            gfx.fillRect(cx + r*0.05, cy + r*0.35, r*0.17, r*0.35);
+            gfx.fillCircle(cx-r*0.46, cy+r*0.2, r*0.1);
+            gfx.fillCircle(cx+r*0.46, cy+r*0.2, r*0.1);
+            gfx.fillRect(cx-r*0.09, cy-r*0.06, r*0.18, r*0.14);
+            gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx, cy-r*0.3, r*0.29);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy-r*0.3, r*0.27);
+            gfx.fillStyle(0xf0ede8, 1);
+            gfx.fillRoundedRect(cx-r*0.15, cy-r*0.1, r*0.3, r*0.1, r*0.05);
+            gfx.fillStyle(0xd8d4d0, 1);
+            gfx.fillEllipse(cx-r*0.09, cy-r*0.18, r*0.14, r*0.08);
+            gfx.fillEllipse(cx+r*0.09, cy-r*0.18, r*0.14, r*0.08);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillEllipse(cx-r*0.11, cy-r*0.34, r*0.14, r*0.12);
+            gfx.fillEllipse(cx+r*0.11, cy-r*0.34, r*0.14, r*0.12);
+            gfx.fillStyle(0x2255cc, 1);
+            gfx.fillCircle(cx-r*0.11, cy-r*0.33, r*0.06);
+            gfx.fillCircle(cx+r*0.11, cy-r*0.33, r*0.06);
+            gfx.fillStyle(0x111122, 1);
+            gfx.fillCircle(cx-r*0.11, cy-r*0.33, r*0.035);
+            gfx.fillCircle(cx+r*0.11, cy-r*0.33, r*0.035);
+            gfx.fillStyle(0xffffff, 0.9);
+            gfx.fillCircle(cx-r*0.098, cy-r*0.343, r*0.016);
+            gfx.fillCircle(cx+r*0.122, cy-r*0.343, r*0.016);
+            gfx.fillStyle(0xff9988, 0.25);
+            gfx.fillEllipse(cx-r*0.2, cy-r*0.26, r*0.14, r*0.08);
+            gfx.fillEllipse(cx+r*0.2, cy-r*0.26, r*0.14, r*0.08);
+            gfx.lineStyle(2, 0xcc8844, 1);
+            gfx.beginPath(); gfx.arc(cx, cy-r*0.16, r*0.08, 0.25, Math.PI-0.25, false); gfx.strokePath();
+            gfx.fillStyle(0xcc9a0a, 1);
+            gfx.fillRoundedRect(cx-r*0.29, cy-r*0.59, r*0.58, r*0.17, r*0.04);
+            gfx.fillStyle(0xf5c518, 1);
+            gfx.fillRoundedRect(cx-r*0.27, cy-r*0.57, r*0.54, r*0.15, r*0.04);
+            tri(gfx, cx-r*0.25, cy-r*0.57, cx-r*0.13, cy-r*0.57, cx-r*0.19, cy-r*0.78);
+            tri(gfx, cx-r*0.05, cy-r*0.57, cx+r*0.05, cy-r*0.57, cx, cy-r*0.84);
+            tri(gfx, cx+r*0.13, cy-r*0.57, cx+r*0.25, cy-r*0.57, cx+r*0.19, cy-r*0.78);
+            gfx.fillStyle(0xff2244, 1); gfx.fillCircle(cx, cy-r*0.52, r*0.055);
+            gfx.fillStyle(0x2255ff, 1);
+            gfx.fillCircle(cx-r*0.17, cy-r*0.52, r*0.044);
+            gfx.fillCircle(cx+r*0.17, cy-r*0.52, r*0.044);
+            gfx.fillStyle(0xfff9aa, 0.5);
+            gfx.fillEllipse(cx-r*0.06, cy-r*0.55, r*0.18, r*0.06);
         }
     },
 
@@ -127,20 +159,39 @@ const WORD_CONCEPTS = {
         en: { answer: 'FORT',  letters: ['F','O','R','T','A','N'] },
         es: { answer: 'TORRE', letters: ['T','O','R','R','E','A'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x888888, 1);
-            gfx.fillRect(cx-r*0.35,cy-r*0.6,r*0.7,r*1.1);
-            gfx.fillRect(cx-r*0.35,cy-r*0.82,r*0.18,r*0.24);
-            gfx.fillRect(cx-r*0.09,cy-r*0.82,r*0.18,r*0.24);
-            gfx.fillRect(cx+r*0.17,cy-r*0.82,r*0.18,r*0.24);
-            gfx.lineStyle(1, 0x666666, 0.8);
-            for (const dy of [-0.2, 0.1]) {
-                gfx.beginPath(); gfx.moveTo(cx-r*0.35,cy+r*dy); gfx.lineTo(cx+r*0.35,cy+r*dy); gfx.strokePath();
+            gfx.fillStyle(0x7ab0d0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x778899, 1);
+            gfx.fillRoundedRect(cx-r*0.36, cy-r*0.7, r*0.72, r*1.28, r*0.04);
+            gfx.fillStyle(0x8899aa, 1);
+            gfx.fillRect(cx-r*0.36, cy-r*0.7, r*0.72, r*0.06);
+            gfx.fillStyle(0x557788, 1);
+            gfx.fillRect(cx-r*0.36, cy-r*0.86, r*0.18, r*0.18);
+            gfx.fillRect(cx-r*0.09, cy-r*0.86, r*0.18, r*0.18);
+            gfx.fillRect(cx+r*0.18, cy-r*0.86, r*0.18, r*0.18);
+            gfx.lineStyle(1.5, 0x99aabb, 0.5);
+            for (const dy of [-0.5, -0.2, 0.1, 0.4]) {
+                gfx.beginPath(); gfx.moveTo(cx-r*0.36, cy+r*dy); gfx.lineTo(cx+r*0.36, cy+r*dy); gfx.strokePath();
             }
-            gfx.fillStyle(0x222222, 1);
-            gfx.fillRect(cx-r*0.12,cy+r*0.1,r*0.24,r*0.4);
-            gfx.fillCircle(cx,cy+r*0.1,r*0.12);
-            gfx.fillStyle(0x88aaff, 1);
-            gfx.fillRect(cx-r*0.1,cy-r*0.35,r*0.2,r*0.22);
+            for (const dx of [-0.12, 0.12]) {
+                gfx.beginPath(); gfx.moveTo(cx+r*dx, cy-r*0.7); gfx.lineTo(cx+r*dx, cy+r*0.58); gfx.strokePath();
+            }
+            gfx.fillStyle(0x332211, 1);
+            gfx.fillRoundedRect(cx-r*0.13, cy+r*0.12, r*0.26, r*0.46, r*0.12);
+            gfx.fillCircle(cx, cy+r*0.12, r*0.13);
+            gfx.fillStyle(0xffdd88, 0.85);
+            gfx.fillRoundedRect(cx-r*0.1, cy-r*0.36, r*0.2, r*0.22, r*0.06);
+            gfx.fillStyle(0xffcc44, 0.5);
+            gfx.fillEllipse(cx, cy-r*0.25, r*0.12, r*0.18);
+            gfx.lineStyle(2, 0x556677, 0.7);
+            gfx.strokeRoundedRect(cx-r*0.1, cy-r*0.36, r*0.2, r*0.22, r*0.06);
+            gfx.lineStyle(3, 0x8b4513, 1);
+            gfx.beginPath(); gfx.moveTo(cx+r*0.36, cy-r*0.86); gfx.lineTo(cx+r*0.36, cy-r*1.06); gfx.strokePath();
+            gfx.fillStyle(0xdd2222, 1);
+            tri(gfx, cx+r*0.36, cy-r*1.06, cx+r*0.36, cy-r*0.86, cx+r*0.58, cy-r*0.96);
+            gfx.fillStyle(0x446622, 1);
+            gfx.fillEllipse(cx-r*0.34, cy+r*0.0, r*0.08, r*0.18);
+            gfx.fillEllipse(cx-r*0.34, cy+r*0.22, r*0.1, r*0.14);
+            gfx.fillEllipse(cx-r*0.36, cy+r*0.42, r*0.08, r*0.2);
         }
     },
 
@@ -212,14 +263,29 @@ const WORD_CONCEPTS = {
         en: { answer: 'MOON', letters: ['M','O','O','N','A','L'] },
         es: { answer: 'LUNA', letters: ['L','U','N','A','I','E'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x0d0d2e, 1); gfx.fillCircle(cx,cy,r*1.1);
-            gfx.fillStyle(0xffe066, 1); gfx.fillCircle(cx,cy,r*0.65);
-            gfx.fillStyle(0x0d0d2e, 1); gfx.fillCircle(cx+r*0.25,cy-r*0.1,r*0.54);
+            gfx.fillStyle(0x0d0d2e, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0xfff0a0, 1); gfx.fillCircle(cx-r*0.08, cy-r*0.06, r*0.62);
+            gfx.fillStyle(0x0d0d2e, 1); gfx.fillCircle(cx+r*0.22, cy-r*0.18, r*0.52);
+            gfx.fillStyle(0xffe066, 1);
+            gfx.fillCircle(cx-r*0.28, cy+r*0.14, r*0.07);
+            gfx.fillCircle(cx-r*0.36, cy-r*0.02, r*0.05);
+            gfx.fillCircle(cx-r*0.22, cy+r*0.3, r*0.05);
+            gfx.fillStyle(0x111133, 1);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.1, r*0.055);
+            gfx.fillCircle(cx-r*0.08, cy-r*0.1, r*0.055);
+            gfx.lineStyle(2, 0x7a6030, 1);
+            gfx.beginPath(); gfx.arc(cx-r*0.14, cy+r*0.04, r*0.1, 0.2, Math.PI-0.2, false); gfx.strokePath();
             gfx.fillStyle(0xffffff, 1);
-            gfx.fillCircle(cx+r*0.65,cy-r*0.45,r*0.06);
-            gfx.fillCircle(cx+r*0.8, cy+r*0.1, r*0.04);
-            gfx.fillCircle(cx+r*0.55,cy+r*0.55,r*0.05);
-            gfx.fillCircle(cx-r*0.55,cy-r*0.6, r*0.04);
+            gfx.fillCircle(cx+r*0.62, cy-r*0.44, r*0.06);
+            gfx.fillCircle(cx+r*0.78, cy+r*0.12, r*0.04);
+            gfx.fillCircle(cx+r*0.52, cy+r*0.52, r*0.05);
+            gfx.fillCircle(cx-r*0.52, cy-r*0.58, r*0.04);
+            gfx.fillCircle(cx-r*0.72, cy+r*0.22, r*0.035);
+            gfx.lineStyle(1.5, 0xffffff, 0.9);
+            [[-r*0.62,-r*0.44],[r*0.52,r*0.52]].forEach(([sx,sy]) => {
+                gfx.beginPath(); gfx.moveTo(cx+sx-r*0.07,cy+sy); gfx.lineTo(cx+sx+r*0.07,cy+sy); gfx.strokePath();
+                gfx.beginPath(); gfx.moveTo(cx+sx,cy+sy-r*0.07); gfx.lineTo(cx+sx,cy+sy+r*0.07); gfx.strokePath();
+            });
         }
     },
 
@@ -539,21 +605,29 @@ const WORD_CONCEPTS = {
         en: { answer: 'RAIN', letters: ['R','A','I','N','O','E'] },
         es: { answer: 'AGUA', letters: ['A','G','U','A','I','E'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x1144aa, 1); gfx.fillCircle(cx,cy,r*1.1);
-            gfx.lineStyle(4, 0x66aaff, 1);
-            for (const dy of [-0.25, 0.05, 0.35]) {
-                gfx.beginPath();
-                gfx.arc(cx - r*0.4, cy+r*dy, r*0.28, Math.PI, 0, false);
-                gfx.arc(cx + r*0.4, cy+r*dy, r*0.28, Math.PI, 0, true);
-                gfx.strokePath();
-            }
-            gfx.fillStyle(0x88ccff, 0.9);
-            gfx.fillCircle(cx, cy-r*0.72, r*0.18);
+            gfx.fillStyle(0x88ccff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x1155cc, 1);
+            gfx.fillRect(cx-r*0.95, cy+r*0.3, r*1.9, r*0.65);
+            gfx.fillStyle(0x2266dd, 0.6);
             gfx.beginPath();
-            gfx.moveTo(cx-r*0.18, cy-r*0.72);
-            gfx.lineTo(cx, cy-r*1.02);
-            gfx.lineTo(cx+r*0.18, cy-r*0.72);
+            gfx.moveTo(cx-r*0.95, cy+r*0.3);
+            gfx.arc(cx-r*0.45, cy+r*0.3, r*0.28, Math.PI, 0, false);
+            gfx.arc(cx+r*0.3, cy+r*0.3, r*0.28, Math.PI, 0, false);
+            gfx.lineTo(cx+r*0.95, cy+r*0.3);
             gfx.closePath(); gfx.fillPath();
+            gfx.fillStyle(0x0077ee, 1);
+            gfx.fillCircle(cx, cy-r*0.12, r*0.38);
+            gfx.beginPath();
+            gfx.moveTo(cx-r*0.38, cy-r*0.12);
+            gfx.lineTo(cx, cy-r*0.72);
+            gfx.lineTo(cx+r*0.38, cy-r*0.12);
+            gfx.closePath(); gfx.fillPath();
+            gfx.fillStyle(0x44aaff, 0.5);
+            gfx.fillEllipse(cx-r*0.14, cy-r*0.28, r*0.18, r*0.28);
+            gfx.fillStyle(0xffffff, 0.9);
+            gfx.fillCircle(cx+r*0.55, cy+r*0.15, r*0.06);
+            gfx.fillCircle(cx-r*0.4, cy+r*0.18, r*0.04);
+            gfx.fillCircle(cx+r*0.18, cy+r*0.45, r*0.05);
         }
     },
 
@@ -562,18 +636,28 @@ const WORD_CONCEPTS = {
         en: { answer: 'WOOD', letters: ['W','O','O','D','A','E'] },
         es: { answer: 'PINO', letters: ['P','I','N','O','A','E'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x335511, 1); gfx.fillRect(cx-r,cy+r*0.5,r*2,r*0.6);
-            const trees = [cx-r*0.42, cx, cx+r*0.42];
-            trees.forEach((tx, i) => {
-                const scale = i === 1 ? 1.1 : 0.85;
-                const baseY = cy + r*0.5;
-                gfx.fillStyle(0x774422, 1);
-                gfx.fillRect(tx-r*0.08*scale, baseY-r*0.25*scale, r*0.16*scale, r*0.25*scale);
-                gfx.fillStyle(0x228833, 1);
-                tri(gfx, tx, baseY-r*0.88*scale, tx-r*0.32*scale, baseY-r*0.26*scale, tx+r*0.32*scale, baseY-r*0.26*scale);
+            gfx.fillStyle(0x6aad3c, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x4a8822, 1); gfx.fillRect(cx-r*0.95, cy+r*0.38, r*1.9, r*0.58);
+            gfx.fillStyle(0x8b4513, 0.6);
+            gfx.fillRect(cx-r*0.06, cy+r*0.22, r*0.12, r*0.18);
+            gfx.fillRect(cx-r*0.44, cy+r*0.3, r*0.1, r*0.1);
+            gfx.fillRect(cx+r*0.34, cy+r*0.3, r*0.1, r*0.1);
+            const trees3 = [[cx-r*0.42, 0.9], [cx, 1.1], [cx+r*0.42, 0.85]];
+            trees3.forEach(([tx, sc]) => {
+                const by = cy + r*0.38;
+                gfx.fillStyle(0x7a4010, 1);
+                gfx.fillRect(tx-r*0.07*sc, by-r*0.28*sc, r*0.14*sc, r*0.28*sc);
+                gfx.fillStyle(0x226611, 1);
+                tri(gfx, tx, by-r*0.95*sc, tx-r*0.3*sc, by-r*0.3*sc, tx+r*0.3*sc, by-r*0.3*sc);
                 gfx.fillStyle(0x33aa44, 1);
-                tri(gfx, tx, baseY-r*1.02*scale, tx-r*0.25*scale, baseY-r*0.56*scale, tx+r*0.25*scale, baseY-r*0.56*scale);
+                tri(gfx, tx, by-r*1.12*sc, tx-r*0.22*sc, by-r*0.6*sc, tx+r*0.22*sc, by-r*0.6*sc);
+                gfx.fillStyle(0x55cc66, 0.5);
+                tri(gfx, tx, by-r*1.28*sc, tx-r*0.14*sc, by-r*0.88*sc, tx+r*0.14*sc, by-r*0.88*sc);
             });
+            gfx.fillStyle(0xffff66, 1); gfx.fillCircle(cx-r*0.62, cy+r*0.48, r*0.07);
+            gfx.fillStyle(0xff6688, 1); gfx.fillCircle(cx-r*0.62, cy+r*0.48, r*0.04);
+            gfx.fillStyle(0xffff44, 1); gfx.fillCircle(cx+r*0.58, cy+r*0.52, r*0.06);
+            gfx.fillStyle(0xff4488, 1); gfx.fillCircle(cx+r*0.58, cy+r*0.52, r*0.035);
         }
     },
 
@@ -582,14 +666,27 @@ const WORD_CONCEPTS = {
         en: { answer: 'HILL',  letters: ['H','I','L','L','A','O'] },
         es: { answer: 'MONTE', letters: ['M','O','N','T','E','A'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x6699cc, 1); gfx.fillCircle(cx,cy,r*1.1);
-            gfx.fillStyle(0x7a8888, 1);
-            tri(gfx, cx+r*0.38,cy+r*0.55, cx+r*0.8,cy-r*0.45, cx+r*1.05,cy+r*0.55);
-            gfx.fillStyle(0xaaaaaa, 1);
-            tri(gfx, cx-r*0.7,cy+r*0.55, cx,cy-r*0.82, cx+r*0.7,cy+r*0.55);
-            gfx.fillStyle(0xffffff, 1);
-            tri(gfx, cx-r*0.22,cy-r*0.48, cx,cy-r*0.82, cx+r*0.22,cy-r*0.48);
-            gfx.fillStyle(0x446622, 1); gfx.fillRect(cx-r,cy+r*0.54,r*2,r*0.18);
+            gfx.fillStyle(0x5588cc, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x4466aa, 0.4);
+            gfx.fillEllipse(cx-r*0.3, cy-r*0.5, r*0.6, r*0.15);
+            gfx.fillEllipse(cx+r*0.3, cy-r*0.45, r*0.5, r*0.12);
+            gfx.fillStyle(0x8899aa, 1);
+            tri(gfx, cx+r*0.42, cy+r*0.5, cx+r*0.82, cy-r*0.38, cx+r*1.05, cy+r*0.5);
+            gfx.fillStyle(0xaabbcc, 1);
+            tri(gfx, cx-r*0.72, cy+r*0.5, cx, cy-r*0.84, cx+r*0.72, cy+r*0.5);
+            gfx.fillStyle(0xddeeff, 1);
+            tri(gfx, cx-r*0.24, cy-r*0.5, cx, cy-r*0.84, cx+r*0.24, cy-r*0.5);
+            gfx.fillStyle(0xffffff, 0.7);
+            tri(gfx, cx-r*0.12, cy-r*0.64, cx, cy-r*0.84, cx+r*0.12, cy-r*0.64);
+            gfx.fillStyle(0x336622, 1); gfx.fillRect(cx-r*0.95, cy+r*0.48, r*1.9, r*0.22);
+            gfx.fillStyle(0x7a4010, 1);
+            gfx.fillRect(cx-r*0.58, cy+r*0.28, r*0.08, r*0.22);
+            gfx.fillStyle(0x226611, 1);
+            tri(gfx, cx-r*0.54, cy+r*0.06, cx-r*0.68, cy+r*0.28, cx-r*0.4, cy+r*0.28);
+            gfx.fillStyle(0x7a4010, 1);
+            gfx.fillRect(cx+r*0.46, cy+r*0.32, r*0.08, r*0.18);
+            gfx.fillStyle(0x338822, 1);
+            tri(gfx, cx+r*0.5, cy+r*0.1, cx+r*0.36, cy+r*0.32, cx+r*0.64, cy+r*0.32);
         }
     },
 
@@ -598,19 +695,26 @@ const WORD_CONCEPTS = {
         en: { answer: 'WIND', letters: ['W','I','N','D','O','A'] },
         es: { answer: 'AIRE', letters: ['A','I','R','E','O','N'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x99bbdd, 1); gfx.fillCircle(cx,cy,r*1.1);
-            gfx.lineStyle(5, 0xffffff, 0.85);
-            for (const [startA, endA, arcCx, arcCy, arcR] of [
-                [0.3,  2.2,  cx-r*0.1, cy-r*0.2, r*0.52],
-                [-0.1, 1.8,  cx+r*0.05,cy+r*0.15,r*0.42],
-                [0.4,  2.0,  cx-r*0.05,cy+r*0.38,r*0.32],
-            ]) {
-                gfx.beginPath(); gfx.arc(arcCx, arcCy, arcR, startA, endA, false); gfx.strokePath();
-            }
-            gfx.fillStyle(0x55aa33, 1);
-            gfx.fillEllipse(cx+r*0.55, cy-r*0.45, r*0.18, r*0.1);
-            gfx.fillEllipse(cx-r*0.4,  cy+r*0.4,  r*0.14, r*0.08);
-            gfx.fillEllipse(cx+r*0.2,  cy+r*0.62, r*0.16, r*0.09);
+            gfx.fillStyle(0xaad4ee, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.58, cy-r*0.54, r*0.2);
+            gfx.fillCircle(cx-r*0.38, cy-r*0.58, r*0.28);
+            gfx.fillCircle(cx-r*0.14, cy-r*0.54, r*0.22);
+            gfx.fillRect(cx-r*0.58, cy-r*0.54, r*0.46, r*0.2);
+            gfx.lineStyle(5, 0xffffff, 0.9);
+            gfx.beginPath(); gfx.arc(cx-r*0.05, cy-r*0.22, r*0.5, 0.4, 2.1, false); gfx.strokePath();
+            gfx.lineStyle(4, 0xeef4ff, 0.8);
+            gfx.beginPath(); gfx.arc(cx+r*0.08, cy+r*0.08, r*0.42, 0.3, 2.0, false); gfx.strokePath();
+            gfx.lineStyle(3, 0xddeeff, 0.7);
+            gfx.beginPath(); gfx.arc(cx-r*0.04, cy+r*0.34, r*0.32, 0.35, 1.9, false); gfx.strokePath();
+            const leaves = [[cx+r*0.52, cy-r*0.18, 0.3], [cx-r*0.14, cy+r*0.18, -0.4], [cx+r*0.24, cy+r*0.44, 0.5], [cx+r*0.62, cy+r*0.3, -0.2]];
+            leaves.forEach(([lx, ly, angle]) => {
+                const cos = Math.cos(angle), sin = Math.sin(angle);
+                gfx.fillStyle(0x66bb44, 1);
+                gfx.fillEllipse(lx, ly, r*0.18, r*0.1);
+                gfx.lineStyle(1, 0x448822, 0.7);
+                gfx.beginPath(); gfx.moveTo(lx-r*0.08*cos, ly-r*0.08*sin); gfx.lineTo(lx+r*0.08*cos, ly+r*0.08*sin); gfx.strokePath();
+            });
         }
     },
 
@@ -619,26 +723,35 @@ const WORD_CONCEPTS = {
         en: { answer: 'SKY',   letters: ['S','K','Y','A','I','O'] },
         es: { answer: 'CIELO', letters: ['C','I','E','L','O','A'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x5599ee, 1); gfx.fillCircle(cx,cy,r*1.1);
-            gfx.fillStyle(0xffdd00, 1); gfx.fillCircle(cx+r*0.5,cy-r*0.5,r*0.28);
-            gfx.lineStyle(3, 0xffdd00, 1);
-            for (let i=0;i<8;i++) {
-                const a = i*Math.PI/4;
-                const d1=r*0.32, d2=r*0.46;
+            gfx.fillStyle(0x44aaee, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0xffee22, 1); gfx.fillCircle(cx+r*0.44, cy-r*0.44, r*0.28);
+            gfx.lineStyle(3.5, 0xffee22, 1);
+            for (let i = 0; i < 8; i++) {
+                const a = i * Math.PI / 4, d1 = r*0.32, d2 = r*0.48;
                 gfx.beginPath();
-                gfx.moveTo(cx+r*0.5+Math.cos(a)*d1,cy-r*0.5+Math.sin(a)*d1);
-                gfx.lineTo(cx+r*0.5+Math.cos(a)*d2,cy-r*0.5+Math.sin(a)*d2);
+                gfx.moveTo(cx+r*0.44+Math.cos(a)*d1, cy-r*0.44+Math.sin(a)*d1);
+                gfx.lineTo(cx+r*0.44+Math.cos(a)*d2, cy-r*0.44+Math.sin(a)*d2);
                 gfx.strokePath();
             }
+            gfx.fillStyle(0x333300, 1);
+            gfx.fillCircle(cx+r*0.36, cy-r*0.52, r*0.04);
+            gfx.fillCircle(cx+r*0.52, cy-r*0.52, r*0.04);
+            gfx.lineStyle(2, 0x664400, 1);
+            gfx.beginPath(); gfx.arc(cx+r*0.44, cy-r*0.38, r*0.09, 0.2, Math.PI-0.2, false); gfx.strokePath();
             gfx.fillStyle(0xffffff, 1);
-            gfx.fillCircle(cx-r*0.38,cy-r*0.08,r*0.22);
-            gfx.fillCircle(cx-r*0.58,cy-r*0.04,r*0.16);
-            gfx.fillCircle(cx-r*0.18,cy-r*0.04,r*0.16);
-            gfx.fillRect(cx-r*0.6,cy-r*0.04,r*0.44,r*0.18);
-            gfx.fillCircle(cx+r*0.22,cy+r*0.25,r*0.18);
-            gfx.fillCircle(cx+r*0.38,cy+r*0.22,r*0.14);
-            gfx.fillCircle(cx+r*0.06,cy+r*0.22,r*0.13);
-            gfx.fillRect(cx+r*0.05,cy+r*0.25,r*0.36,r*0.14);
+            gfx.fillCircle(cx-r*0.4, cy-r*0.12, r*0.24);
+            gfx.fillCircle(cx-r*0.6, cy-r*0.08, r*0.17);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.08, r*0.17);
+            gfx.fillRect(cx-r*0.6, cy-r*0.08, r*0.42, r*0.18);
+            gfx.fillCircle(cx+r*0.14, cy+r*0.28, r*0.2);
+            gfx.fillCircle(cx+r*0.32, cy+r*0.25, r*0.14);
+            gfx.fillCircle(cx-r*0.02, cy+r*0.25, r*0.14);
+            gfx.fillRect(cx-r*0.02, cy+r*0.28, r*0.36, r*0.15);
+            gfx.lineStyle(2, 0x334455, 0.8);
+            [[-r*0.6, cy-r*0.6], [r*0.72, cy-r*0.28]].forEach(([bx, by]) => {
+                gfx.beginPath(); gfx.moveTo(cx+bx, by); gfx.lineTo(cx+bx+r*0.08, by-r*0.08); gfx.strokePath();
+                gfx.beginPath(); gfx.moveTo(cx+bx+r*0.08, by-r*0.08); gfx.lineTo(cx+bx+r*0.16, by); gfx.strokePath();
+            });
         }
     },
 
@@ -648,19 +761,28 @@ const WORD_CONCEPTS = {
         en: { answer: 'BUN',  letters: ['B','U','N','A','E','O'] },
         es: { answer: 'PAN',  letters: ['P','A','N','I','E','O'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xc87820, 1);
-            gfx.fillEllipse(cx, cy+r*0.05, r*1.3, r*0.72);
-            gfx.fillStyle(0xe89830, 1);
-            gfx.fillEllipse(cx, cy-r*0.1, r*1.15, r*0.5);
-            gfx.lineStyle(3, 0xa05810, 1);
-            for (const dx of [-0.3, 0, 0.3]) {
+            gfx.fillStyle(0xfff3e0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0xb05e14, 1);
+            gfx.fillEllipse(cx, cy+r*0.08, r*1.38, r*0.56);
+            gfx.fillStyle(0xd4821e, 1);
+            gfx.fillEllipse(cx, cy-r*0.02, r*1.28, r*0.48);
+            gfx.fillStyle(0xe8a030, 1);
+            gfx.fillEllipse(cx, cy-r*0.1, r*1.14, r*0.38);
+            gfx.fillStyle(0xf2b840, 1);
+            gfx.fillEllipse(cx-r*0.08, cy-r*0.16, r*0.9, r*0.28);
+            gfx.lineStyle(3, 0x8b3e08, 0.8);
+            for (const dx of [-0.32, -0.1, 0.12, 0.34]) {
                 gfx.beginPath();
-                gfx.moveTo(cx+dx*r-r*0.08, cy-r*0.28);
-                gfx.lineTo(cx+dx*r+r*0.08, cy+r*0.12);
+                gfx.moveTo(cx+dx*r-r*0.07, cy-r*0.26);
+                gfx.lineTo(cx+dx*r+r*0.07, cy+r*0.06);
                 gfx.strokePath();
             }
-            gfx.fillStyle(0xa05810, 1);
-            gfx.fillEllipse(cx, cy+r*0.22, r*1.28, r*0.32);
+            gfx.fillStyle(0xd47818, 1);
+            gfx.fillEllipse(cx-r*0.52, cy+r*0.04, r*0.22, r*0.32);
+            gfx.fillEllipse(cx+r*0.52, cy+r*0.04, r*0.22, r*0.32);
+            gfx.lineStyle(2, 0xffffff, 0.35);
+            gfx.beginPath(); gfx.arc(cx-r*0.22, cy-r*0.22, r*0.08, 3.8, 5.6, false); gfx.strokePath();
+            gfx.beginPath(); gfx.arc(cx+r*0.22, cy-r*0.24, r*0.06, 3.9, 5.5, false); gfx.strokePath();
         }
     },
 
@@ -669,31 +791,41 @@ const WORD_CONCEPTS = {
         en: { answer: 'MILK',  letters: ['M','I','L','K','A','O'] },
         es: { answer: 'LECHE', letters: ['L','E','C','H','E','A'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xeef8ff, 1);
+            gfx.fillStyle(0xeef8ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0xfafafa, 1);
             gfx.beginPath();
-            gfx.moveTo(cx-r*0.32, cy-r*0.62);
-            gfx.lineTo(cx+r*0.32, cy-r*0.62);
-            gfx.lineTo(cx+r*0.38, cy+r*0.55);
-            gfx.lineTo(cx-r*0.38, cy+r*0.55);
+            gfx.moveTo(cx-r*0.3, cy-r*0.62);
+            gfx.lineTo(cx+r*0.3, cy-r*0.62);
+            gfx.lineTo(cx+r*0.36, cy+r*0.54);
+            gfx.lineTo(cx-r*0.36, cy+r*0.54);
+            gfx.closePath(); gfx.fillPath();
+            gfx.fillStyle(0x2266aa, 1);
+            gfx.beginPath();
+            gfx.moveTo(cx-r*0.3, cy-r*0.62);
+            gfx.lineTo(cx+r*0.3, cy-r*0.62);
+            gfx.lineTo(cx+r*0.32, cy-r*0.3);
+            gfx.lineTo(cx-r*0.32, cy-r*0.3);
             gfx.closePath(); gfx.fillPath();
             gfx.fillStyle(0xffffff, 1);
+            gfx.fillRect(cx-r*0.2, cy-r*0.56, r*0.4, r*0.06);
+            gfx.fillRect(cx-r*0.2, cy-r*0.48, r*0.4, r*0.06);
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillEllipse(cx-r*0.1, cy-r*0.1, r*0.14, r*0.18);
+            gfx.fillEllipse(cx+r*0.1, cy+r*0.14, r*0.1, r*0.14);
+            gfx.fillEllipse(cx+r*0.16, cy-r*0.04, r*0.08, r*0.1);
+            gfx.lineStyle(2.5, 0x99ccee, 1);
             gfx.beginPath();
-            gfx.moveTo(cx-r*0.36, cy-r*0.0);
-            gfx.lineTo(cx+r*0.36, cy-r*0.0);
-            gfx.lineTo(cx+r*0.38, cy+r*0.55);
-            gfx.lineTo(cx-r*0.38, cy+r*0.55);
-            gfx.closePath(); gfx.fillPath();
-            gfx.lineStyle(3, 0x99ccee, 1);
-            gfx.beginPath();
-            gfx.moveTo(cx-r*0.32,cy-r*0.62);
-            gfx.lineTo(cx+r*0.32,cy-r*0.62);
-            gfx.lineTo(cx+r*0.38,cy+r*0.55);
-            gfx.lineTo(cx-r*0.38,cy+r*0.55);
+            gfx.moveTo(cx-r*0.3, cy-r*0.62); gfx.lineTo(cx+r*0.3, cy-r*0.62);
+            gfx.lineTo(cx+r*0.36, cy+r*0.54); gfx.lineTo(cx-r*0.36, cy+r*0.54);
             gfx.closePath(); gfx.strokePath();
-            gfx.fillStyle(0xeef8ff, 1);
-            gfx.fillCircle(cx-r*0.12,cy+r*0.08,r*0.06);
-            gfx.fillCircle(cx+r*0.1, cy+r*0.18,r*0.05);
-            gfx.fillCircle(cx+r*0.22,cy+r*0.04,r*0.04);
+            gfx.fillStyle(0xffffff, 0.9);
+            gfx.fillCircle(cx-r*0.3, cy-r*0.62, r*0.05);
+            gfx.beginPath();
+            gfx.moveTo(cx-r*0.3, cy-r*0.62);
+            gfx.lineTo(cx-r*0.26, cy-r*0.82);
+            gfx.lineTo(cx+r*0.26, cy-r*0.82);
+            gfx.lineTo(cx+r*0.3, cy-r*0.62);
+            gfx.closePath(); gfx.fillPath();
         }
     },
 
@@ -702,14 +834,24 @@ const WORD_CONCEPTS = {
         en: { answer: 'NUT',  letters: ['N','U','T','A','O','I'] },
         es: { answer: 'NUEZ', letters: ['N','U','E','Z','A','O'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x9a6228, 1); gfx.fillEllipse(cx,cy,r*1.0,r*0.82);
-            gfx.lineStyle(3, 0x7a4818, 1);
-            gfx.beginPath(); gfx.moveTo(cx,cy-r*0.41); gfx.lineTo(cx,cy+r*0.41); gfx.strokePath();
-            gfx.lineStyle(2, 0x7a4818, 0.7);
-            gfx.beginPath(); gfx.arc(cx-r*0.2,cy-r*0.05,r*0.28,2.0,4.8,false); gfx.strokePath();
-            gfx.beginPath(); gfx.arc(cx-r*0.2,cy+r*0.1, r*0.22,1.8,4.6,false); gfx.strokePath();
-            gfx.beginPath(); gfx.arc(cx+r*0.2,cy-r*0.05,r*0.28,Math.PI-4.8+Math.PI,Math.PI-2.0+Math.PI,false); gfx.strokePath();
-            gfx.fillStyle(0xcc9a4a, 0.5); gfx.fillEllipse(cx-r*0.18,cy-r*0.15,r*0.28,r*0.2);
+            gfx.fillStyle(0xf5e6c8, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x7a4818, 1); gfx.fillEllipse(cx, cy+r*0.04, r*1.04, r*0.84);
+            gfx.fillStyle(0x9a6228, 1); gfx.fillEllipse(cx, cy+r*0.04, r*0.96, r*0.76);
+            gfx.fillStyle(0xc8882c, 1); gfx.fillEllipse(cx-r*0.06, cy+r*0.0, r*0.64, r*0.52);
+            gfx.lineStyle(3, 0x5a3210, 1);
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.42); gfx.lineTo(cx, cy+r*0.42); gfx.strokePath();
+            gfx.lineStyle(2, 0x6a3a14, 0.8);
+            gfx.beginPath(); gfx.arc(cx-r*0.18, cy-r*0.06, r*0.26, 1.9, 4.7, false); gfx.strokePath();
+            gfx.beginPath(); gfx.arc(cx-r*0.18, cy+r*0.12, r*0.2, 1.7, 4.5, false); gfx.strokePath();
+            gfx.beginPath(); gfx.arc(cx+r*0.18, cy-r*0.06, r*0.26, Math.PI-4.7+Math.PI, Math.PI-1.9+Math.PI, false); gfx.strokePath();
+            gfx.beginPath(); gfx.arc(cx+r*0.18, cy+r*0.12, r*0.2, Math.PI-4.5+Math.PI, Math.PI-1.7+Math.PI, false); gfx.strokePath();
+            gfx.fillStyle(0xddaa66, 0.45); gfx.fillEllipse(cx-r*0.2, cy-r*0.14, r*0.26, r*0.18);
+            gfx.fillStyle(0x44aa22, 1);
+            gfx.fillEllipse(cx+r*0.42, cy-r*0.52, r*0.24, r*0.14);
+            gfx.lineStyle(1.5, 0x226611, 0.8);
+            gfx.beginPath(); gfx.moveTo(cx+r*0.3, cy-r*0.52); gfx.lineTo(cx+r*0.54, cy-r*0.52); gfx.strokePath();
+            gfx.lineStyle(3, 0x8b4513, 1);
+            gfx.beginPath(); gfx.moveTo(cx+r*0.42, cy-r*0.52); gfx.lineTo(cx+r*0.38, cy-r*0.66); gfx.strokePath();
         }
     },
 
@@ -718,21 +860,39 @@ const WORD_CONCEPTS = {
         en: { answer: 'HONEY', letters: ['H','O','N','E','Y','A'] },
         es: { answer: 'MIEL',  letters: ['M','I','E','L','O','A'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xffcc00, 1);
-            gfx.fillRoundedRect(cx-r*0.42,cy-r*0.42,r*0.84,r*0.9,r*0.12);
-            gfx.fillStyle(0xff9900, 0.5);
-            gfx.fillRoundedRect(cx-r*0.42,cy,r*0.84,r*0.48,r*0.1);
+            gfx.fillStyle(0xfff8e0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0xcc7700, 1);
+            gfx.fillRoundedRect(cx-r*0.38, cy-r*0.44, r*0.76, r*0.92, r*0.14);
+            gfx.fillStyle(0xffaa00, 1);
+            gfx.fillRoundedRect(cx-r*0.35, cy-r*0.41, r*0.7, r*0.86, r*0.12);
+            gfx.fillStyle(0xffcc33, 1);
+            gfx.fillRoundedRect(cx-r*0.3, cy-r*0.36, r*0.6, r*0.76, r*0.1);
             gfx.fillStyle(0xaa5500, 1);
-            gfx.fillRoundedRect(cx-r*0.46,cy-r*0.52,r*0.92,r*0.18,r*0.06);
-            gfx.fillStyle(0xffcc00, 1);
-            gfx.fillEllipse(cx+r*0.22,cy+r*0.56,r*0.14,r*0.1);
+            gfx.fillRoundedRect(cx-r*0.42, cy-r*0.54, r*0.84, r*0.18, r*0.06);
+            gfx.fillStyle(0xffcc33, 1); gfx.fillEllipse(cx, cy-r*0.44, r*0.48, r*0.16);
+            gfx.fillStyle(0xcc8800, 0.6);
+            for (const [hx, hy] of [[-0.18,-0.22],[0.18,-0.22],[0.0,-0.1],[-0.18,0.06],[0.18,0.06],[0.0,0.2]]) {
+                gfx.lineStyle(1.5, 0x885500, 0.5);
+                gfx.strokeCircle(cx+hx*r, cy+hy*r, r*0.1);
+            }
+            gfx.fillStyle(0xffaa00, 1);
+            gfx.fillEllipse(cx+r*0.28, cy+r*0.56, r*0.1, r*0.08);
             gfx.beginPath();
-            gfx.moveTo(cx+r*0.16,cy+r*0.48);
-            gfx.lineTo(cx+r*0.28,cy+r*0.48);
-            gfx.lineTo(cx+r*0.28,cy+r*0.54);
+            gfx.moveTo(cx+r*0.22, cy+r*0.48);
+            gfx.lineTo(cx+r*0.34, cy+r*0.48);
+            gfx.lineTo(cx+r*0.3, cy+r*0.56);
             gfx.closePath(); gfx.fillPath();
-            gfx.lineStyle(2, 0xaa5500, 0.6);
-            gfx.strokeRect(cx-r*0.32,cy-r*0.28,r*0.64,r*0.42);
+            gfx.fillStyle(0xffdd44, 1);
+            gfx.fillEllipse(cx-r*0.54, cy-r*0.58, r*0.22, r*0.12);
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillRect(cx-r*0.62, cy-r*0.61, r*0.06, r*0.07);
+            gfx.fillRect(cx-r*0.5, cy-r*0.61, r*0.06, r*0.07);
+            gfx.fillStyle(0xffffff, 0.9);
+            gfx.fillEllipse(cx-r*0.56, cy-r*0.52, r*0.08, r*0.14);
+            gfx.fillEllipse(cx-r*0.46, cy-r*0.52, r*0.08, r*0.14);
+            gfx.fillStyle(0x111100, 1);
+            gfx.fillRect(cx-r*0.62, cy-r*0.56, r*0.22, r*0.03);
+            gfx.fillRect(cx-r*0.62, cy-r*0.5, r*0.22, r*0.03);
         }
     },
 
@@ -741,18 +901,31 @@ const WORD_CONCEPTS = {
         en: { answer: 'EGG',   letters: ['E','G','G','A','O','I'] },
         es: { answer: 'HUEVO', letters: ['H','U','E','V','O','A'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xfffdf2, 1);
-            gfx.fillEllipse(cx, cy, r*0.75, r*0.96);
-            gfx.lineStyle(3, 0xddccaa, 1);
+            gfx.fillStyle(0xfff8e8, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0xddccaa, 1); gfx.fillEllipse(cx, cy+r*0.04, r*0.78, r*1.0);
+            gfx.fillStyle(0xfffdf2, 1); gfx.fillEllipse(cx, cy+r*0.04, r*0.72, r*0.94);
+            gfx.fillStyle(0xeeddbb, 1);
+            gfx.fillEllipse(cx-r*0.18, cy-r*0.18, r*0.12, r*0.28);
+            gfx.lineStyle(3, 0xccbb88, 1);
             gfx.beginPath();
-            gfx.moveTo(cx-r*0.12,cy-r*0.15);
-            gfx.lineTo(cx-r*0.04,cy-r*0.04);
-            gfx.lineTo(cx+r*0.1, cy-r*0.12);
+            gfx.moveTo(cx-r*0.14, cy-r*0.18);
+            gfx.lineTo(cx-r*0.06, cy-r*0.06);
+            gfx.lineTo(cx+r*0.1, cy-r*0.14);
+            gfx.lineTo(cx+r*0.06, cy-r*0.04);
             gfx.strokePath();
-            gfx.fillStyle(0xffcc00, 1);
-            gfx.fillCircle(cx+r*0.04,cy-r*0.04,r*0.1);
-            gfx.lineStyle(1, 0xddccaa, 0.5);
-            gfx.strokeEllipse(cx,cy,r*0.75,r*0.96);
+            gfx.fillStyle(0xffcc00, 1); gfx.fillCircle(cx+r*0.04, cy+r*0.02, r*0.14);
+            gfx.fillStyle(0xffdd55, 0.6); gfx.fillCircle(cx-r*0.02, cy-r*0.04, r*0.08);
+            gfx.fillStyle(0x222222, 1);
+            gfx.fillCircle(cx-r*0.14, cy-r*0.44, r*0.055);
+            gfx.fillCircle(cx+r*0.14, cy-r*0.44, r*0.055);
+            gfx.fillStyle(0xffffff, 0.9);
+            gfx.fillCircle(cx-r*0.12, cy-r*0.455, r*0.022);
+            gfx.fillCircle(cx+r*0.16, cy-r*0.455, r*0.022);
+            gfx.lineStyle(2, 0xcc8855, 1);
+            gfx.beginPath(); gfx.arc(cx, cy-r*0.32, r*0.08, 0.3, Math.PI-0.3, false); gfx.strokePath();
+            gfx.fillStyle(0xff9988, 0.22);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.4, r*0.08);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.4, r*0.08);
         }
     },
 
@@ -762,40 +935,31 @@ const WORD_CONCEPTS = {
         en: { answer: 'BIKE', letters: ['B','I','K','E','A','O'] },
         es: { answer: 'BICI', letters: ['B','I','C','I','A','E'] },
         drawPicture(gfx, cx, cy, r) {
-            const wy = cy+r*0.18;
-            gfx.lineStyle(5, 0x222222, 1);
-            gfx.strokeCircle(cx-r*0.34,wy,r*0.34);
-            gfx.strokeCircle(cx+r*0.34,wy,r*0.34);
-            gfx.fillStyle(0x222222, 1);
-            gfx.fillCircle(cx-r*0.34,wy,r*0.05); gfx.fillCircle(cx+r*0.34,wy,r*0.05);
-            gfx.lineStyle(5, 0xff4400, 1);
-            gfx.beginPath();
-            gfx.moveTo(cx-r*0.34,wy);
-            gfx.lineTo(cx,cy-r*0.1);
-            gfx.lineTo(cx+r*0.34,wy);
-            gfx.strokePath();
-            gfx.beginPath();
-            gfx.moveTo(cx-r*0.34,wy);
-            gfx.lineTo(cx+r*0.06,cy-r*0.1);
-            gfx.strokePath();
-            gfx.beginPath();
-            gfx.moveTo(cx,cy-r*0.1);
-            gfx.lineTo(cx-r*0.08,cy-r*0.3);
-            gfx.strokePath();
+            gfx.fillStyle(0xf0f4f8, 1); gfx.fillCircle(cx, cy, r*0.95);
+            const wy = cy + r*0.22, wl = cx - r*0.36, wr = cx + r*0.36;
+            gfx.fillStyle(0x333333, 1); gfx.fillCircle(wl, wy, r*0.36); gfx.fillCircle(wr, wy, r*0.36);
+            gfx.fillStyle(0xdddddd, 1); gfx.fillCircle(wl, wy, r*0.28); gfx.fillCircle(wr, wy, r*0.28);
+            gfx.lineStyle(2.5, 0x999999, 0.7);
+            for (let i = 0; i < 8; i++) {
+                const a = i * Math.PI / 4;
+                gfx.beginPath(); gfx.moveTo(wl, wy); gfx.lineTo(wl+Math.cos(a)*r*0.28, wy+Math.sin(a)*r*0.28); gfx.strokePath();
+                gfx.beginPath(); gfx.moveTo(wr, wy); gfx.lineTo(wr+Math.cos(a)*r*0.28, wy+Math.sin(a)*r*0.28); gfx.strokePath();
+            }
+            gfx.fillStyle(0x333333, 1); gfx.fillCircle(wl, wy, r*0.06); gfx.fillCircle(wr, wy, r*0.06);
+            gfx.lineStyle(5, 0xee3300, 1);
+            gfx.beginPath(); gfx.moveTo(wl, wy); gfx.lineTo(cx, cy-r*0.12); gfx.lineTo(wr, wy); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(wl, wy); gfx.lineTo(cx+r*0.06, cy-r*0.12); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.12); gfx.lineTo(cx-r*0.06, cy-r*0.34); gfx.strokePath();
+            gfx.lineStyle(5, 0xee3300, 1);
+            gfx.beginPath(); gfx.moveTo(wr, wy); gfx.lineTo(wr+r*0.02, cy-r*0.14); gfx.strokePath();
             gfx.lineStyle(4, 0x553311, 1);
-            gfx.beginPath();
-            gfx.moveTo(cx-r*0.2,cy-r*0.3);
-            gfx.lineTo(cx+r*0.05,cy-r*0.3);
-            gfx.strokePath();
-            gfx.lineStyle(4, 0xff4400, 1);
-            gfx.beginPath();
-            gfx.moveTo(cx+r*0.34,wy);
-            gfx.lineTo(cx+r*0.32,cy-r*0.12);
-            gfx.strokePath();
-            gfx.beginPath();
-            gfx.moveTo(cx+r*0.24,cy-r*0.12);
-            gfx.lineTo(cx+r*0.48,cy-r*0.12);
-            gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx-r*0.2, cy-r*0.34); gfx.lineTo(cx+r*0.08, cy-r*0.34); gfx.strokePath();
+            gfx.lineStyle(4, 0xee3300, 1);
+            gfx.beginPath(); gfx.moveTo(wr-r*0.08, cy-r*0.14); gfx.lineTo(wr+r*0.14, cy-r*0.14); gfx.strokePath();
+            gfx.fillStyle(0x553311, 1);
+            gfx.fillEllipse(cx-r*0.06, cy-r*0.34, r*0.22, r*0.1);
+            gfx.fillStyle(0x222222, 1);
+            gfx.fillEllipse(cx+r*0.03, cy-r*0.13, r*0.12, r*0.08);
         }
     },
 
@@ -804,22 +968,34 @@ const WORD_CONCEPTS = {
         en: { answer: 'CAR',   letters: ['C','A','R','O','E','N'] },
         es: { answer: 'COCHE', letters: ['C','O','C','H','E','A'] },
         drawPicture(gfx, cx, cy, r) {
+            gfx.fillStyle(0xfff0f0, 1); gfx.fillCircle(cx, cy, r*0.95);
             gfx.fillStyle(0xdd2222, 1);
-            gfx.fillRoundedRect(cx-r*0.7,cy-r*0.15,r*1.4,r*0.52,r*0.12);
-            gfx.fillRoundedRect(cx-r*0.4,cy-r*0.55,r*0.8,r*0.42,r*0.12);
+            gfx.fillRoundedRect(cx-r*0.72, cy-r*0.18, r*1.44, r*0.52, r*0.14);
+            gfx.fillRoundedRect(cx-r*0.42, cy-r*0.58, r*0.84, r*0.44, r*0.14);
+            gfx.fillStyle(0xcc1111, 1);
+            gfx.fillRoundedRect(cx-r*0.42, cy-r*0.58, r*0.84, r*0.12, r*0.08);
             gfx.fillStyle(0x88ccff, 1);
-            gfx.fillRoundedRect(cx-r*0.34,cy-r*0.5,r*0.32,r*0.28,r*0.06);
-            gfx.fillRoundedRect(cx+r*0.04,cy-r*0.5,r*0.28,r*0.28,r*0.06);
+            gfx.fillRoundedRect(cx-r*0.36, cy-r*0.52, r*0.32, r*0.28, r*0.06);
+            gfx.fillRoundedRect(cx+r*0.06, cy-r*0.52, r*0.28, r*0.28, r*0.06);
+            gfx.fillStyle(0xbbddff, 0.5);
+            gfx.fillEllipse(cx-r*0.22, cy-r*0.44, r*0.1, r*0.14);
+            gfx.fillEllipse(cx+r*0.14, cy-r*0.44, r*0.1, r*0.14);
             gfx.fillStyle(0x111111, 1);
-            gfx.fillCircle(cx-r*0.44,cy+r*0.38,r*0.22);
-            gfx.fillCircle(cx+r*0.44,cy+r*0.38,r*0.22);
+            gfx.fillCircle(cx-r*0.46, cy+r*0.36, r*0.24);
+            gfx.fillCircle(cx+r*0.46, cy+r*0.36, r*0.24);
             gfx.fillStyle(0x888888, 1);
-            gfx.fillCircle(cx-r*0.44,cy+r*0.38,r*0.1);
-            gfx.fillCircle(cx+r*0.44,cy+r*0.38,r*0.1);
+            gfx.fillCircle(cx-r*0.46, cy+r*0.36, r*0.12);
+            gfx.fillCircle(cx+r*0.46, cy+r*0.36, r*0.12);
+            gfx.fillStyle(0xbbbbbb, 1);
+            gfx.fillCircle(cx-r*0.46, cy+r*0.36, r*0.04);
+            gfx.fillCircle(cx+r*0.46, cy+r*0.36, r*0.04);
             gfx.lineStyle(2, 0xaa1111, 1);
-            gfx.beginPath(); gfx.moveTo(cx,cy-r*0.15); gfx.lineTo(cx,cy+r*0.37); gfx.strokePath();
-            gfx.fillStyle(0xffff99, 1); gfx.fillCircle(cx+r*0.62,cy+r*0.04,r*0.08);
-            gfx.fillStyle(0xff6666, 1); gfx.fillCircle(cx-r*0.62,cy+r*0.04,r*0.08);
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.18); gfx.lineTo(cx, cy+r*0.35); gfx.strokePath();
+            gfx.fillStyle(0xffff99, 1); gfx.fillCircle(cx+r*0.64, cy+r*0.02, r*0.1);
+            gfx.fillStyle(0xff6666, 1); gfx.fillCircle(cx-r*0.64, cy+r*0.02, r*0.1);
+            gfx.fillStyle(0xcc1111, 1);
+            gfx.fillRect(cx-r*0.3, cy+r*0.3, r*0.06, r*0.04);
+            gfx.fillRect(cx+r*0.24, cy+r*0.3, r*0.06, r*0.04);
         }
     },
 
@@ -828,23 +1004,40 @@ const WORD_CONCEPTS = {
         en: { answer: 'BATH', letters: ['B','A','T','H','O','E'] },
         es: { answer: 'TINA', letters: ['T','I','N','A','O','E'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xdddddd, 1);
-            gfx.fillRoundedRect(cx-r*0.7,cy-r*0.15,r*1.4,r*0.62,r*0.18);
-            gfx.fillStyle(0x55aaee, 0.85);
-            gfx.fillRoundedRect(cx-r*0.62,cy-r*0.06,r*1.24,r*0.42,r*0.1);
-            gfx.fillStyle(0xffffff, 0.9);
-            gfx.fillCircle(cx-r*0.28,cy-r*0.02,r*0.1);
-            gfx.fillCircle(cx,      cy+r*0.08,r*0.08);
-            gfx.fillCircle(cx+r*0.25,cy-r*0.0, r*0.12);
-            gfx.fillCircle(cx+r*0.5, cy+r*0.1, r*0.07);
-            gfx.fillStyle(0xbbbbbb, 1);
-            gfx.fillRect(cx-r*0.58,cy+r*0.46,r*0.12,r*0.18);
-            gfx.fillRect(cx+r*0.46,cy+r*0.46,r*0.12,r*0.18);
-            gfx.lineStyle(3, 0xbbbbbb, 1);
-            gfx.strokeRoundedRect(cx-r*0.7,cy-r*0.15,r*1.4,r*0.62,r*0.18);
-            gfx.fillStyle(0xaaaaaa, 1);
-            gfx.fillRect(cx-r*0.06,cy-r*0.38,r*0.12,r*0.26);
-            gfx.fillRect(cx-r*0.2, cy-r*0.44,r*0.4,r*0.1);
+            gfx.fillStyle(0xe8f4ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x99aacc, 1);
+            gfx.fillRoundedRect(cx-r*0.72, cy-r*0.18, r*1.44, r*0.66, r*0.2);
+            gfx.fillStyle(0xe0e8f0, 1);
+            gfx.fillRoundedRect(cx-r*0.66, cy-r*0.12, r*1.32, r*0.56, r*0.18);
+            gfx.fillStyle(0x66aadd, 0.85);
+            gfx.fillRoundedRect(cx-r*0.58, cy-r*0.04, r*1.16, r*0.38, r*0.1);
+            gfx.fillStyle(0x88ccff, 0.5);
+            gfx.beginPath(); gfx.arc(cx-r*0.3, cy+r*0.04, r*0.22, Math.PI, 0, false); gfx.fillPath();
+            gfx.beginPath(); gfx.arc(cx+r*0.3, cy+r*0.04, r*0.22, Math.PI, 0, false); gfx.fillPath();
+            gfx.fillStyle(0xffdd44, 1); gfx.fillCircle(cx+r*0.28, cy-r*0.12, r*0.2);
+            gfx.fillStyle(0xffaa00, 1); gfx.fillCircle(cx+r*0.28, cy-r*0.12, r*0.14);
+            gfx.fillStyle(0xff8800, 1); gfx.fillCircle(cx+r*0.28, cy-r*0.12, r*0.09);
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.18, r*0.03);
+            gfx.fillCircle(cx+r*0.34, cy-r*0.18, r*0.03);
+            gfx.lineStyle(1.5, 0x222222, 1);
+            gfx.beginPath(); gfx.arc(cx+r*0.28, cy-r*0.08, r*0.06, 0.2, Math.PI-0.2, false); gfx.strokePath();
+            gfx.fillStyle(0xffffff, 0.8);
+            gfx.fillCircle(cx-r*0.3, cy+r*0.06, r*0.1);
+            gfx.fillCircle(cx-r*0.06, cy+r*0.1, r*0.08);
+            gfx.fillCircle(cx+r*0.06, cy-r*0.04, r*0.12);
+            gfx.lineStyle(1.5, 0x99aacc, 0.7);
+            gfx.strokeCircle(cx-r*0.3, cy+r*0.06, r*0.1);
+            gfx.strokeCircle(cx-r*0.06, cy+r*0.1, r*0.08);
+            gfx.strokeCircle(cx+r*0.06, cy-r*0.04, r*0.12);
+            gfx.fillStyle(0x99aacc, 1);
+            gfx.fillRect(cx-r*0.6, cy+r*0.48, r*0.12, r*0.2);
+            gfx.fillRect(cx+r*0.48, cy+r*0.48, r*0.12, r*0.2);
+            gfx.fillStyle(0x8899bb, 1);
+            gfx.fillRect(cx-r*0.08, cy-r*0.4, r*0.16, r*0.28);
+            gfx.fillStyle(0xaa3322, 1); gfx.fillCircle(cx-r*0.2, cy-r*0.42, r*0.07);
+            gfx.fillStyle(0x2244aa, 1); gfx.fillCircle(cx+r*0.2, cy-r*0.42, r*0.07);
+            gfx.fillRect(cx-r*0.22, cy-r*0.46, r*0.44, r*0.08);
         }
     },
 
@@ -853,24 +1046,38 @@ const WORD_CONCEPTS = {
         en: { answer: 'OVEN',  letters: ['O','V','E','N','A','I'] },
         es: { answer: 'HORNO', letters: ['H','O','R','N','O','A'] },
         drawPicture(gfx, cx, cy, r) {
+            gfx.fillStyle(0x222222, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x555555, 1);
+            gfx.fillRoundedRect(cx-r*0.68, cy-r*0.7, r*1.36, r*1.28, r*0.1);
             gfx.fillStyle(0x444444, 1);
-            gfx.fillRoundedRect(cx-r*0.65,cy-r*0.65,r*1.3,r*1.22,r*0.08);
-            gfx.fillStyle(0x333333, 1);
-            gfx.fillRoundedRect(cx-r*0.5,cy-r*0.55,r*1.0,r*0.82,r*0.06);
+            gfx.fillRoundedRect(cx-r*0.56, cy-r*0.6, r*1.12, r*0.88, r*0.08);
             gfx.fillStyle(0x111111, 1);
-            gfx.fillRoundedRect(cx-r*0.38,cy-r*0.46,r*0.76,r*0.56,r*0.1);
-            gfx.fillStyle(0xff8800, 0.9);
-            gfx.fillEllipse(cx,cy-r*0.18,r*0.38,r*0.28);
-            gfx.fillStyle(0xffdd00, 0.8);
-            gfx.fillEllipse(cx,cy-r*0.22,r*0.22,r*0.18);
-            gfx.fillStyle(0xffffff, 0.5);
-            gfx.fillCircle(cx,cy-r*0.26,r*0.07);
+            gfx.fillRoundedRect(cx-r*0.44, cy-r*0.5, r*0.88, r*0.6, r*0.1);
+            gfx.fillStyle(0xff6600, 0.9); gfx.fillEllipse(cx, cy-r*0.2, r*0.5, r*0.36);
+            gfx.fillStyle(0xff9900, 0.85); gfx.fillEllipse(cx-r*0.04, cy-r*0.25, r*0.34, r*0.26);
+            gfx.fillStyle(0xffcc00, 0.8); gfx.fillEllipse(cx-r*0.06, cy-r*0.3, r*0.2, r*0.16);
+            gfx.fillStyle(0xffffff, 0.5); gfx.fillCircle(cx-r*0.08, cy-r*0.34, r*0.06);
+            gfx.lineStyle(2, 0x888888, 0.6);
+            gfx.strokeRoundedRect(cx-r*0.44, cy-r*0.5, r*0.88, r*0.6, r*0.1);
             gfx.fillStyle(0x666666, 1);
-            for (const dx of [-0.4,-0.13,0.13,0.4]) {
-                gfx.fillCircle(cx+dx*r, cy+r*0.55, r*0.1);
+            for (const [kx, ky] of [[-0.44,-0.74],[-0.18,-0.74],[0.08,-0.74],[0.34,-0.74]]) {
+                gfx.fillCircle(cx+kx*r, cy+ky*r, r*0.1);
+                gfx.fillStyle(0x999999, 1);
+                gfx.fillCircle(cx+kx*r, cy+ky*r, r*0.055);
+                gfx.fillStyle(0x666666, 1);
+            }
+            gfx.fillStyle(0x777777, 1);
+            gfx.fillRoundedRect(cx-r*0.5, cy+r*0.14, r*1.0, r*0.08, r*0.04);
+            gfx.fillStyle(0x888888, 1);
+            gfx.fillRoundedRect(cx-r*0.48, cy+r*0.14, r*0.96, r*0.04, r*0.02);
+            gfx.fillStyle(0xff4400, 1);
+            for (const hx of [-0.28, 0.28]) {
+                gfx.fillCircle(cx+hx*r, cy+r*0.64, r*0.12);
+                gfx.lineStyle(2, 0xcc2200, 0.8);
+                gfx.strokeCircle(cx+hx*r, cy+r*0.64, r*0.12);
             }
             gfx.fillStyle(0x555555, 1);
-            gfx.fillRect(cx-r*0.65,cy-r*0.65,r*1.3,r*0.1);
+            gfx.fillRect(cx-r*0.68, cy-r*0.7, r*1.36, r*0.1);
         }
     },
 
@@ -879,24 +1086,34 @@ const WORD_CONCEPTS = {
         en: { answer: 'VASE',  letters: ['V','A','S','E','O','I'] },
         es: { answer: 'JARRO', letters: ['J','A','R','R','O','I'] },
         drawPicture(gfx, cx, cy, r) {
-            const petals = [0xff4466, 0xff9900, 0xffdd00, 0xff4466, 0xff9900];
-            petals.forEach((c,i) => {
-                const a = (i/petals.length)*Math.PI*2;
+            gfx.fillStyle(0xeef8ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x1155aa, 1);
+            gfx.fillEllipse(cx, cy+r*0.32, r*0.88, r*0.7);
+            gfx.fillRect(cx-r*0.22, cy-r*0.28, r*0.44, r*0.62);
+            gfx.fillEllipse(cx, cy-r*0.28, r*0.44, r*0.18);
+            gfx.fillRect(cx-r*0.28, cy-r*0.36, r*0.56, r*0.12);
+            gfx.fillEllipse(cx, cy-r*0.36, r*0.56, r*0.2);
+            gfx.fillStyle(0x3377cc, 1);
+            gfx.beginPath(); gfx.arc(cx-r*0.3, cy+r*0.1, r*0.32, 0.3, 2.8, false); gfx.strokePath();
+            gfx.lineStyle(2, 0x88aadd, 0.5);
+            gfx.beginPath(); gfx.arc(cx-r*0.22, cy+r*0.0, r*0.22, 0.4, 2.6, false); gfx.strokePath();
+            gfx.fillStyle(0x55aaee, 0.35);
+            gfx.fillEllipse(cx-r*0.16, cy-r*0.06, r*0.14, r*0.42);
+            gfx.fillStyle(0x66cc44, 0.8);
+            gfx.fillRect(cx-r*0.02, cy-r*0.56, r*0.04, r*0.22);
+            gfx.fillStyle(0x44aa22, 1);
+            gfx.fillEllipse(cx+r*0.12, cy-r*0.58, r*0.2, r*0.1);
+            gfx.lineStyle(1, 0x338811, 0.7);
+            gfx.beginPath(); gfx.moveTo(cx+r*0.02, cy-r*0.58); gfx.lineTo(cx+r*0.22, cy-r*0.58); gfx.strokePath();
+            const petals5 = [0xff4488, 0xff8800, 0xffdd00, 0xff4488, 0xff8800];
+            petals5.forEach((c, i) => {
+                const a = (i / 5) * Math.PI * 2;
                 gfx.fillStyle(c, 1);
-                gfx.fillCircle(cx+Math.cos(a)*r*0.2, cy-r*0.7+Math.sin(a)*r*0.2, r*0.14);
+                gfx.fillCircle(cx+Math.cos(a)*r*0.22, cy-r*0.74+Math.sin(a)*r*0.22, r*0.14);
             });
-            gfx.fillStyle(0xffff00, 1); gfx.fillCircle(cx,cy-r*0.7,r*0.12);
-            gfx.lineStyle(4, 0x338822, 1);
-            gfx.beginPath(); gfx.moveTo(cx,cy-r*0.55); gfx.lineTo(cx,cy-r*0.28); gfx.strokePath();
-            gfx.fillStyle(0x4488cc, 1);
-            gfx.fillRect(cx-r*0.15,cy-r*0.28,r*0.3,r*0.22);
-            gfx.fillRect(cx-r*0.22,cy-r*0.3,r*0.44,r*0.06);
-            gfx.fillEllipse(cx,cy+r*0.15,r*0.82,r*0.62);
-            gfx.fillRect(cx-r*0.28,cy+r*0.42,r*0.56,r*0.1);
-            gfx.lineStyle(2, 0x2266aa, 1);
-            gfx.beginPath(); gfx.arc(cx,cy+r*0.08,r*0.38,0.5,Math.PI-0.5,false); gfx.strokePath();
-            gfx.fillStyle(0x88bbee, 0.5);
-            gfx.fillEllipse(cx-r*0.18,cy+r*0.0,r*0.16,r*0.3);
+            gfx.fillStyle(0xffee44, 1); gfx.fillCircle(cx, cy-r*0.74, r*0.12);
+            gfx.fillStyle(0x55aaee, 0.6);
+            gfx.fillEllipse(cx, cy-r*0.3, r*0.38, r*0.08);
         }
     },
 
@@ -906,24 +1123,53 @@ const WORD_CONCEPTS = {
         en: { answer: 'PAPA', letters: ['P','A','P','A','M','E'] },
         es: { answer: 'PAPA', letters: ['P','A','P','A','M','E'] },
         drawPicture(gfx, cx, cy, r) {
+            gfx.fillStyle(0xfff8f0, 1); gfx.fillCircle(cx, cy, r*0.95);
             gfx.fillStyle(0x334466, 1);
-            gfx.fillRect(cx-r*0.2, cy+r*0.32, r*0.16, r*0.38);
-            gfx.fillRect(cx+r*0.04, cy+r*0.32, r*0.16, r*0.38);
+            gfx.fillRoundedRect(cx-r*0.22, cy+r*0.42, r*0.16, r*0.38, r*0.05);
+            gfx.fillRoundedRect(cx+r*0.06, cy+r*0.42, r*0.16, r*0.38, r*0.05);
+            gfx.fillStyle(0x222233, 1);
+            gfx.fillRoundedRect(cx-r*0.22, cy+r*0.7, r*0.18, r*0.1, r*0.04);
+            gfx.fillRoundedRect(cx+r*0.04, cy+r*0.7, r*0.18, r*0.1, r*0.04);
             gfx.fillStyle(0x4466aa, 1);
-            gfx.fillRect(cx-r*0.27, cy-r*0.18, r*0.54, r*0.52);
-            gfx.fillRect(cx-r*0.47, cy-r*0.16, r*0.2, r*0.18);
-            gfx.fillRect(cx+r*0.27, cy-r*0.16, r*0.2, r*0.18);
-            gfx.fillStyle(0xdd2222, 1);
-            tri(gfx, cx-r*0.06, cy-r*0.16, cx+r*0.06, cy-r*0.16, cx, cy+r*0.14);
+            gfx.fillRoundedRect(cx-r*0.3, cy-r*0.18, r*0.6, r*0.62, r*0.1);
+            gfx.fillRoundedRect(cx-r*0.54, cy-r*0.16, r*0.26, r*0.16, r*0.08);
+            gfx.fillRoundedRect(cx+r*0.28, cy-r*0.16, r*0.26, r*0.16, r*0.08);
+            gfx.fillStyle(0xfafafa, 1);
+            gfx.fillRect(cx-r*0.06, cy-r*0.18, r*0.12, r*0.54);
+            gfx.fillStyle(0xcc2222, 1);
+            tri(gfx, cx-r*0.06, cy-r*0.17, cx+r*0.06, cy-r*0.17, cx, cy+r*0.18);
+            gfx.fillStyle(0x222244, 1);
+            gfx.fillCircle(cx-r*0.44, cy-r*0.08, r*0.08);
+            gfx.fillCircle(cx+r*0.44, cy-r*0.08, r*0.08);
             gfx.fillStyle(0xfad5a5, 1);
-            gfx.fillCircle(cx, cy-r*0.38, r*0.2);
-            gfx.fillStyle(0x442200, 1);
-            gfx.fillRect(cx-r*0.2, cy-r*0.58, r*0.4, r*0.12);
-            gfx.fillStyle(0x333333, 1);
-            gfx.fillCircle(cx-r*0.08, cy-r*0.4, r*0.04);
-            gfx.fillCircle(cx+r*0.08, cy-r*0.4, r*0.04);
-            gfx.lineStyle(2, 0x884422, 1);
-            gfx.beginPath(); gfx.arc(cx, cy-r*0.3, r*0.07, 0.3, Math.PI-0.3); gfx.strokePath();
+            gfx.fillCircle(cx-r*0.44, cy-r*0.08, r*0.07);
+            gfx.fillCircle(cx+r*0.44, cy-r*0.08, r*0.07);
+            gfx.fillRect(cx-r*0.1, cy-r*0.1, r*0.2, r*0.1);
+            gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx, cy-r*0.34, r*0.275);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy-r*0.34, r*0.26);
+            gfx.fillStyle(0x3a2010, 1);
+            gfx.fillRoundedRect(cx-r*0.22, cy-r*0.62, r*0.44, r*0.14, r*0.06);
+            gfx.fillStyle(0x4a2a18, 1);
+            gfx.fillEllipse(cx-r*0.09, cy-r*0.26, r*0.12, r*0.06);
+            gfx.fillEllipse(cx+r*0.09, cy-r*0.26, r*0.12, r*0.06);
+            gfx.fillStyle(0xcc9977, 1); gfx.fillCircle(cx, cy-r*0.32, r*0.06);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillEllipse(cx-r*0.12, cy-r*0.42, r*0.14, r*0.12);
+            gfx.fillEllipse(cx+r*0.12, cy-r*0.42, r*0.14, r*0.12);
+            gfx.fillStyle(0x3355aa, 1);
+            gfx.fillCircle(cx-r*0.12, cy-r*0.41, r*0.065);
+            gfx.fillCircle(cx+r*0.12, cy-r*0.41, r*0.065);
+            gfx.fillStyle(0x111122, 1);
+            gfx.fillCircle(cx-r*0.12, cy-r*0.41, r*0.038);
+            gfx.fillCircle(cx+r*0.12, cy-r*0.41, r*0.038);
+            gfx.fillStyle(0xffffff, 0.9);
+            gfx.fillCircle(cx-r*0.108, cy-r*0.422, r*0.016);
+            gfx.fillCircle(cx+r*0.132, cy-r*0.422, r*0.016);
+            gfx.fillStyle(0xff9988, 0.25);
+            gfx.fillEllipse(cx-r*0.22, cy-r*0.34, r*0.14, r*0.08);
+            gfx.fillEllipse(cx+r*0.22, cy-r*0.34, r*0.14, r*0.08);
+            gfx.lineStyle(2, 0xcc8844, 1);
+            gfx.beginPath(); gfx.arc(cx, cy-r*0.26, r*0.08, 0.25, Math.PI-0.25, false); gfx.strokePath();
         }
     },
     MAMAN: {
@@ -931,23 +1177,49 @@ const WORD_CONCEPTS = {
         en: { answer: 'MOMMY', letters: ['M','A','M','O','M','Y'] },
         es: { answer: 'MAMA', letters: ['M','A','M','A','P','E'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xcc44aa, 1);
-            gfx.fillRect(cx-r*0.24, cy-r*0.18, r*0.48, r*0.3);
-            tri(gfx, cx-r*0.24, cy+r*0.12, cx+r*0.24, cy+r*0.12, cx-r*0.44, cy+r*0.7);
-            tri(gfx, cx-r*0.24, cy+r*0.12, cx+r*0.24, cy+r*0.12, cx+r*0.44, cy+r*0.7);
+            gfx.fillStyle(0xfff0f8, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x884488, 1);
+            gfx.fillRoundedRect(cx-r*0.28, cy+r*0.42, r*0.56, r*0.38, r*0.08);
+            tri(gfx, cx-r*0.28, cy+r*0.14, cx+r*0.28, cy+r*0.14, cx-r*0.5, cy+r*0.78);
+            tri(gfx, cx-r*0.28, cy+r*0.14, cx+r*0.28, cy+r*0.14, cx+r*0.5, cy+r*0.78);
+            gfx.fillStyle(0xee66aa, 1);
+            gfx.fillRoundedRect(cx-r*0.28, cy-r*0.18, r*0.56, r*0.34, r*0.08);
+            gfx.fillRoundedRect(cx-r*0.52, cy-r*0.16, r*0.24, r*0.16, r*0.08);
+            gfx.fillRoundedRect(cx+r*0.28, cy-r*0.16, r*0.24, r*0.16, r*0.08);
             gfx.fillStyle(0xfad5a5, 1);
-            gfx.fillRect(cx-r*0.44, cy-r*0.16, r*0.2, r*0.18);
-            gfx.fillRect(cx+r*0.24, cy-r*0.16, r*0.2, r*0.18);
-            gfx.fillCircle(cx, cy-r*0.38, r*0.2);
-            gfx.fillStyle(0x8b4513, 1);
-            gfx.fillRect(cx-r*0.22, cy-r*0.58, r*0.44, r*0.14);
-            gfx.fillRect(cx-r*0.22, cy-r*0.44, r*0.08, r*0.26);
-            gfx.fillRect(cx+r*0.14, cy-r*0.44, r*0.08, r*0.26);
-            gfx.fillStyle(0x333333, 1);
-            gfx.fillCircle(cx-r*0.08, cy-r*0.4, r*0.04);
-            gfx.fillCircle(cx+r*0.08, cy-r*0.4, r*0.04);
-            gfx.lineStyle(2, 0x884422, 1);
-            gfx.beginPath(); gfx.arc(cx, cy-r*0.3, r*0.07, 0.3, Math.PI-0.3); gfx.strokePath();
+            gfx.fillCircle(cx-r*0.44, cy-r*0.08, r*0.07);
+            gfx.fillCircle(cx+r*0.44, cy-r*0.08, r*0.07);
+            gfx.fillRect(cx-r*0.1, cy-r*0.1, r*0.2, r*0.1);
+            gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx, cy-r*0.34, r*0.275);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy-r*0.34, r*0.26);
+            gfx.fillStyle(0x7a3810, 1);
+            gfx.fillEllipse(cx, cy-r*0.6, r*0.52, r*0.14);
+            gfx.fillRect(cx-r*0.24, cy-r*0.62, r*0.48, r*0.1);
+            gfx.fillEllipse(cx-r*0.22, cy-r*0.46, r*0.08, r*0.28);
+            gfx.fillEllipse(cx+r*0.22, cy-r*0.46, r*0.08, r*0.28);
+            gfx.fillStyle(0xff44aa, 1);
+            gfx.fillCircle(cx+r*0.16, cy-r*0.74, r*0.06);
+            gfx.fillStyle(0xcc9977, 1); gfx.fillEllipse(cx, cy-r*0.3, r*0.08, r*0.05);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillEllipse(cx-r*0.12, cy-r*0.42, r*0.14, r*0.12);
+            gfx.fillEllipse(cx+r*0.12, cy-r*0.42, r*0.14, r*0.12);
+            gfx.fillStyle(0x664488, 1);
+            gfx.fillCircle(cx-r*0.12, cy-r*0.41, r*0.065);
+            gfx.fillCircle(cx+r*0.12, cy-r*0.41, r*0.065);
+            gfx.fillStyle(0x111122, 1);
+            gfx.fillCircle(cx-r*0.12, cy-r*0.41, r*0.038);
+            gfx.fillCircle(cx+r*0.12, cy-r*0.41, r*0.038);
+            gfx.fillStyle(0xffffff, 0.9);
+            gfx.fillCircle(cx-r*0.108, cy-r*0.422, r*0.016);
+            gfx.fillCircle(cx+r*0.132, cy-r*0.422, r*0.016);
+            gfx.fillStyle(0xff9988, 0.3);
+            gfx.fillEllipse(cx-r*0.22, cy-r*0.34, r*0.14, r*0.08);
+            gfx.fillEllipse(cx+r*0.22, cy-r*0.34, r*0.14, r*0.08);
+            gfx.lineStyle(2, 0xcc8844, 1);
+            gfx.beginPath(); gfx.arc(cx, cy-r*0.26, r*0.08, 0.25, Math.PI-0.25, false); gfx.strokePath();
+            gfx.fillStyle(0xffaacc, 1);
+            gfx.fillCircle(cx-r*0.32, cy-r*0.38, r*0.04);
+            gfx.fillCircle(cx+r*0.32, cy-r*0.38, r*0.04);
         }
     },
     BEBE: {
@@ -955,23 +1227,47 @@ const WORD_CONCEPTS = {
         en: { answer: 'BABY', letters: ['B','A','B','Y','E','L'] },
         es: { answer: 'BEBE', letters: ['B','E','B','E','A','L'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xfffacd, 1);
-            gfx.fillEllipse(cx, cy+r*0.25, r*1.0, r*0.82);
+            gfx.fillStyle(0xfffce8, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0xaaccff, 1);
+            gfx.fillEllipse(cx, cy+r*0.3, r*1.0, r*0.8);
+            gfx.fillStyle(0xffffff, 0.6);
+            gfx.fillEllipse(cx, cy+r*0.2, r*0.7, r*0.5);
+            gfx.fillStyle(0xaaccff, 1);
+            gfx.fillCircle(cx-r*0.5, cy+r*0.22, r*0.14);
+            gfx.fillCircle(cx+r*0.5, cy+r*0.22, r*0.14);
             gfx.fillStyle(0xfad5a5, 1);
-            gfx.fillCircle(cx-r*0.46, cy+r*0.2, r*0.12);
-            gfx.fillCircle(cx+r*0.46, cy+r*0.2, r*0.12);
-            gfx.fillCircle(cx, cy-r*0.3, r*0.3);
-            gfx.fillStyle(0x88ccff, 1);
-            gfx.fillRect(cx-r*0.3, cy-r*0.6, r*0.6, r*0.2);
-            gfx.fillEllipse(cx, cy-r*0.6, r*0.6, r*0.16);
-            gfx.fillStyle(0x333333, 1);
-            gfx.fillCircle(cx-r*0.11, cy-r*0.3, r*0.07);
-            gfx.fillCircle(cx+r*0.11, cy-r*0.3, r*0.07);
+            gfx.fillCircle(cx-r*0.5, cy+r*0.22, r*0.12);
+            gfx.fillCircle(cx+r*0.5, cy+r*0.22, r*0.12);
+            gfx.fillStyle(0xdddddd, 1);
+            gfx.fillCircle(cx-r*0.14, cy+r*0.46, r*0.04);
+            gfx.fillCircle(cx+r*0.14, cy+r*0.46, r*0.04);
+            gfx.fillCircle(cx, cy+r*0.56, r*0.04);
+            gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx, cy-r*0.26, r*0.375);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy-r*0.26, r*0.36);
+            gfx.fillStyle(0xcc8844, 1);
+            gfx.fillEllipse(cx-r*0.06, cy-r*0.62, r*0.12, r*0.1);
             gfx.fillStyle(0xffffff, 1);
-            gfx.fillCircle(cx-r*0.08, cy-r*0.33, r*0.03);
-            gfx.fillCircle(cx+r*0.14, cy-r*0.33, r*0.03);
-            gfx.lineStyle(2, 0xcc6644, 1);
-            gfx.beginPath(); gfx.arc(cx, cy-r*0.2, r*0.08, 0.3, Math.PI-0.3); gfx.strokePath();
+            gfx.fillEllipse(cx-r*0.14, cy-r*0.32, r*0.18, r*0.16);
+            gfx.fillEllipse(cx+r*0.14, cy-r*0.32, r*0.18, r*0.16);
+            gfx.fillStyle(0x3377cc, 1);
+            gfx.fillCircle(cx-r*0.14, cy-r*0.31, r*0.085);
+            gfx.fillCircle(cx+r*0.14, cy-r*0.31, r*0.085);
+            gfx.fillStyle(0x111122, 1);
+            gfx.fillCircle(cx-r*0.14, cy-r*0.31, r*0.05);
+            gfx.fillCircle(cx+r*0.14, cy-r*0.31, r*0.05);
+            gfx.fillStyle(0xffffff, 0.9);
+            gfx.fillCircle(cx-r*0.126, cy-r*0.322, r*0.022);
+            gfx.fillCircle(cx+r*0.154, cy-r*0.322, r*0.022);
+            gfx.fillStyle(0xcc9977, 1);
+            gfx.fillCircle(cx, cy-r*0.22, r*0.055);
+            gfx.fillStyle(0xff9988, 0.3);
+            gfx.fillCircle(cx-r*0.24, cy-r*0.2, r*0.1);
+            gfx.fillCircle(cx+r*0.24, cy-r*0.2, r*0.1);
+            gfx.lineStyle(2, 0xcc8855, 1);
+            gfx.beginPath(); gfx.arc(cx, cy-r*0.12, r*0.09, 0.3, Math.PI-0.3, false); gfx.strokePath();
+            gfx.fillStyle(0xaaccff, 1);
+            gfx.fillCircle(cx-r*0.3, cy+r*0.62, r*0.12);
+            gfx.fillCircle(cx+r*0.3, cy+r*0.62, r*0.12);
         }
     },
     TATA: {
@@ -979,26 +1275,50 @@ const WORD_CONCEPTS = {
         en: { answer: 'AUNT', letters: ['A','U','N','T','I','E'] },
         es: { answer: 'TATA', letters: ['T','A','T','A','M','E'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x9966cc, 1);
-            gfx.fillRect(cx-r*0.24, cy-r*0.18, r*0.48, r*0.3);
-            tri(gfx, cx-r*0.24, cy+r*0.12, cx+r*0.24, cy+r*0.12, cx-r*0.42, cy+r*0.68);
-            tri(gfx, cx-r*0.24, cy+r*0.12, cx+r*0.24, cy+r*0.12, cx+r*0.42, cy+r*0.68);
+            gfx.fillStyle(0xfff0ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x44aaaa, 1);
+            tri(gfx, cx-r*0.3, cy+r*0.14, cx+r*0.3, cy+r*0.14, cx-r*0.54, cy+r*0.8);
+            tri(gfx, cx-r*0.3, cy+r*0.14, cx+r*0.3, cy+r*0.14, cx+r*0.54, cy+r*0.8);
+            gfx.fillStyle(0x6644aa, 1);
+            gfx.fillRoundedRect(cx-r*0.3, cy-r*0.18, r*0.6, r*0.34, r*0.08);
+            gfx.fillRoundedRect(cx-r*0.54, cy-r*0.16, r*0.26, r*0.16, r*0.08);
+            gfx.fillRoundedRect(cx+r*0.28, cy-r*0.16, r*0.26, r*0.16, r*0.08);
             gfx.fillStyle(0xfad5a5, 1);
-            gfx.fillRect(cx-r*0.44, cy-r*0.16, r*0.2, r*0.18);
-            gfx.fillRect(cx+r*0.24, cy-r*0.16, r*0.2, r*0.18);
-            gfx.fillCircle(cx, cy-r*0.38, r*0.2);
-            gfx.fillStyle(0xff88cc, 1);
-            gfx.fillEllipse(cx, cy-r*0.57, r*0.6, r*0.13);
-            gfx.fillRect(cx-r*0.18, cy-r*0.74, r*0.36, r*0.18);
-            gfx.fillStyle(0xffdd44, 1);
-            gfx.fillCircle(cx+r*0.14, cy-r*0.72, r*0.07);
-            gfx.fillStyle(0xcc8844, 1);
-            gfx.fillRect(cx-r*0.18, cy-r*0.56, r*0.36, r*0.1);
-            gfx.fillStyle(0x333333, 1);
-            gfx.fillCircle(cx-r*0.08, cy-r*0.4, r*0.04);
-            gfx.fillCircle(cx+r*0.08, cy-r*0.4, r*0.04);
-            gfx.lineStyle(2, 0x884422, 1);
-            gfx.beginPath(); gfx.arc(cx, cy-r*0.3, r*0.07, 0.3, Math.PI-0.3); gfx.strokePath();
+            gfx.fillCircle(cx-r*0.44, cy-r*0.08, r*0.07);
+            gfx.fillCircle(cx+r*0.44, cy-r*0.08, r*0.07);
+            gfx.fillRect(cx-r*0.1, cy-r*0.1, r*0.2, r*0.1);
+            gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx, cy-r*0.34, r*0.275);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy-r*0.34, r*0.26);
+            gfx.fillStyle(0x331111, 1);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.6, r*0.1);
+            gfx.fillCircle(cx-r*0.06, cy-r*0.64, r*0.12);
+            gfx.fillCircle(cx+r*0.1, cy-r*0.62, r*0.11);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.56, r*0.09);
+            gfx.fillEllipse(cx-r*0.02, cy-r*0.58, r*0.46, r*0.12);
+            gfx.fillStyle(0xffaaee, 1);
+            gfx.fillCircle(cx-r*0.36, cy-r*0.42, r*0.06);
+            gfx.fillCircle(cx+r*0.36, cy-r*0.42, r*0.06);
+            gfx.fillStyle(0xcc88cc, 1);
+            gfx.fillCircle(cx-r*0.36, cy-r*0.42, r*0.04);
+            gfx.fillCircle(cx+r*0.36, cy-r*0.42, r*0.04);
+            gfx.fillStyle(0xcc9977, 1); gfx.fillEllipse(cx, cy-r*0.3, r*0.08, r*0.05);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillEllipse(cx-r*0.12, cy-r*0.42, r*0.14, r*0.12);
+            gfx.fillEllipse(cx+r*0.12, cy-r*0.42, r*0.14, r*0.12);
+            gfx.fillStyle(0x664488, 1);
+            gfx.fillCircle(cx-r*0.12, cy-r*0.41, r*0.065);
+            gfx.fillCircle(cx+r*0.12, cy-r*0.41, r*0.065);
+            gfx.fillStyle(0x111122, 1);
+            gfx.fillCircle(cx-r*0.12, cy-r*0.41, r*0.038);
+            gfx.fillCircle(cx+r*0.12, cy-r*0.41, r*0.038);
+            gfx.fillStyle(0xffffff, 0.9);
+            gfx.fillCircle(cx-r*0.108, cy-r*0.422, r*0.016);
+            gfx.fillCircle(cx+r*0.132, cy-r*0.422, r*0.016);
+            gfx.fillStyle(0xff9988, 0.28);
+            gfx.fillEllipse(cx-r*0.22, cy-r*0.34, r*0.14, r*0.08);
+            gfx.fillEllipse(cx+r*0.22, cy-r*0.34, r*0.14, r*0.08);
+            gfx.lineStyle(2, 0xcc8844, 1);
+            gfx.beginPath(); gfx.arc(cx, cy-r*0.26, r*0.08, 0.25, Math.PI-0.25, false); gfx.strokePath();
         }
     },
     PAPI: {
@@ -1006,24 +1326,51 @@ const WORD_CONCEPTS = {
         en: { answer: 'PAPI', letters: ['P','A','P','I','M','E'] },
         es: { answer: 'PAPI', letters: ['P','A','P','I','M','E'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x445544, 1);
-            gfx.fillRect(cx-r*0.2, cy+r*0.32, r*0.16, r*0.36);
-            gfx.fillRect(cx+r*0.04, cy+r*0.32, r*0.16, r*0.36);
+            gfx.fillStyle(0xf0fff0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x334433, 1);
+            gfx.fillRoundedRect(cx-r*0.22, cy+r*0.44, r*0.16, r*0.36, r*0.05);
+            gfx.fillRoundedRect(cx+r*0.06, cy+r*0.44, r*0.16, r*0.36, r*0.05);
             gfx.fillStyle(0x558844, 1);
-            gfx.fillRect(cx-r*0.27, cy-r*0.18, r*0.54, r*0.52);
-            gfx.fillRect(cx-r*0.47, cy-r*0.16, r*0.2, r*0.18);
-            gfx.fillRect(cx+r*0.27, cy-r*0.16, r*0.2, r*0.18);
+            gfx.fillRoundedRect(cx-r*0.3, cy-r*0.18, r*0.6, r*0.64, r*0.1);
+            gfx.fillRoundedRect(cx-r*0.54, cy-r*0.16, r*0.26, r*0.16, r*0.08);
+            gfx.fillRoundedRect(cx+r*0.28, cy-r*0.16, r*0.26, r*0.16, r*0.08);
+            gfx.fillStyle(0xfafafa, 1);
+            gfx.fillRect(cx-r*0.06, cy-r*0.18, r*0.12, r*0.54);
+            gfx.fillStyle(0x334433, 1);
+            gfx.fillCircle(cx-r*0.44, cy-r*0.08, r*0.07);
+            gfx.fillCircle(cx+r*0.44, cy-r*0.08, r*0.07);
             gfx.fillStyle(0xfad5a5, 1);
-            gfx.fillCircle(cx, cy-r*0.38, r*0.2);
-            gfx.fillStyle(0xdddddd, 1);
-            gfx.fillRect(cx-r*0.2, cy-r*0.58, r*0.4, r*0.12);
-            gfx.lineStyle(2, 0x333333, 1);
-            gfx.strokeCircle(cx-r*0.09, cy-r*0.4, r*0.07);
-            gfx.strokeCircle(cx+r*0.09, cy-r*0.4, r*0.07);
-            gfx.beginPath(); gfx.moveTo(cx-r*0.02, cy-r*0.4); gfx.lineTo(cx+r*0.02, cy-r*0.4); gfx.strokePath();
-            gfx.lineStyle(3, 0x8b4513, 1);
-            gfx.beginPath(); gfx.moveTo(cx+r*0.42, cy-r*0.06); gfx.lineTo(cx+r*0.46, cy+r*0.68); gfx.strokePath();
-            gfx.beginPath(); gfx.arc(cx+r*0.4, cy-r*0.08, r*0.07, -Math.PI*0.5, Math.PI*0.5); gfx.strokePath();
+            gfx.fillCircle(cx-r*0.44, cy-r*0.08, r*0.065);
+            gfx.fillCircle(cx+r*0.44, cy-r*0.08, r*0.065);
+            gfx.fillRect(cx-r*0.1, cy-r*0.1, r*0.2, r*0.1);
+            gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx, cy-r*0.34, r*0.275);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy-r*0.34, r*0.26);
+            gfx.lineStyle(1.5, 0xd0b090, 0.5);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.12, cy-r*0.32); gfx.lineTo(cx-r*0.22, cy-r*0.28); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.12, cy-r*0.32); gfx.lineTo(cx+r*0.22, cy-r*0.28); gfx.strokePath();
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillEllipse(cx-r*0.1, cy-r*0.62, r*0.14, r*0.08);
+            gfx.fillEllipse(cx+r*0.1, cy-r*0.62, r*0.14, r*0.08);
+            gfx.fillEllipse(cx, cy-r*0.58, r*0.36, r*0.14);
+            gfx.fillStyle(0xe8e0d8, 1);
+            gfx.fillEllipse(cx-r*0.08, cy-r*0.28, r*0.14, r*0.07);
+            gfx.fillEllipse(cx+r*0.08, cy-r*0.28, r*0.14, r*0.07);
+            gfx.fillStyle(0xcc9977, 1); gfx.fillEllipse(cx, cy-r*0.32, r*0.08, r*0.05);
+            gfx.lineStyle(2, 0x444444, 1);
+            gfx.strokeCircle(cx-r*0.12, cy-r*0.42, r*0.08);
+            gfx.strokeCircle(cx+r*0.12, cy-r*0.42, r*0.08);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.04, cy-r*0.42); gfx.lineTo(cx+r*0.04, cy-r*0.42); gfx.strokePath();
+            gfx.fillStyle(0x555555, 0.5);
+            gfx.fillCircle(cx-r*0.12, cy-r*0.42, r*0.04);
+            gfx.fillCircle(cx+r*0.12, cy-r*0.42, r*0.04);
+            gfx.fillStyle(0xff9988, 0.22);
+            gfx.fillEllipse(cx-r*0.22, cy-r*0.34, r*0.14, r*0.08);
+            gfx.fillEllipse(cx+r*0.22, cy-r*0.34, r*0.14, r*0.08);
+            gfx.lineStyle(2, 0xcc9977, 1);
+            gfx.beginPath(); gfx.arc(cx, cy-r*0.26, r*0.08, 0.25, Math.PI-0.25, false); gfx.strokePath();
+            gfx.lineStyle(4, 0x8b4513, 1);
+            gfx.beginPath(); gfx.moveTo(cx+r*0.46, cy-r*0.08); gfx.lineTo(cx+r*0.5, cy+r*0.72); gfx.strokePath();
+            gfx.beginPath(); gfx.arc(cx+r*0.44, cy-r*0.1, r*0.08, -Math.PI*0.5, Math.PI*0.5, false); gfx.strokePath();
         }
     },
 
@@ -1033,11 +1380,30 @@ const WORD_CONCEPTS = {
         en: { answer: 'BLUE', letters: ['B','L','U','E','R','O'] },
         es: { answer: 'AZUL', letters: ['A','Z','U','L','E','O'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x2288ee, 1);
-            gfx.fillCircle(cx, cy+r*0.15, r*0.58);
-            tri(gfx, cx-r*0.42, cy+r*0.15, cx+r*0.42, cy+r*0.15, cx, cy-r*0.62);
-            gfx.fillStyle(0xaaddff, 0.6);
-            gfx.fillCircle(cx-r*0.18, cy-r*0.04, r*0.14);
+            gfx.fillStyle(0x0055cc, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x0033aa, 1); gfx.fillRect(cx-r*0.95, cy+r*0.2, r*1.9, r*0.75);
+            gfx.fillStyle(0x0066ee, 0.7);
+            gfx.beginPath(); gfx.arc(cx-r*0.4, cy+r*0.2, r*0.28, Math.PI, 0, false); gfx.fillPath();
+            gfx.beginPath(); gfx.arc(cx+r*0.3, cy+r*0.2, r*0.28, Math.PI, 0, false); gfx.fillPath();
+            gfx.fillStyle(0x88ccff, 0.4);
+            gfx.beginPath(); gfx.arc(cx-r*0.1, cy+r*0.42, r*0.22, Math.PI, 0, false); gfx.fillPath();
+            gfx.beginPath(); gfx.arc(cx+r*0.52, cy+r*0.42, r*0.18, Math.PI, 0, false); gfx.fillPath();
+            gfx.fillStyle(0x4499dd, 1);
+            gfx.fillEllipse(cx-r*0.12, cy-r*0.2, r*0.38, r*0.2);
+            gfx.fillStyle(0x55aaff, 1);
+            gfx.fillEllipse(cx-r*0.14, cy-r*0.22, r*0.32, r*0.16);
+            gfx.fillStyle(0x77ccff, 0.5); gfx.fillEllipse(cx-r*0.22, cy-r*0.28, r*0.1, r*0.06);
+            tri(gfx, cx+r*0.12, cy-r*0.28, cx+r*0.12, cy-r*0.12, cx+r*0.36, cy-r*0.2);
+            tri(gfx, cx-r*0.38, cy-r*0.2, cx-r*0.38, cy-r*0.36, cx-r*0.58, cy-r*0.28);
+            gfx.fillStyle(0x111122, 1); gfx.fillCircle(cx+r*0.02, cy-r*0.22, r*0.045);
+            gfx.fillStyle(0xffffff, 0.9); gfx.fillCircle(cx+r*0.032, cy-r*0.232, r*0.018);
+            gfx.lineStyle(1.5, 0x334466, 0.7);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.14, cy-r*0.16); gfx.lineTo(cx-r*0.02, cy-r*0.16); gfx.strokePath();
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.6, cy-r*0.6, r*0.18);
+            gfx.fillCircle(cx-r*0.44, cy-r*0.64, r*0.24);
+            gfx.fillCircle(cx-r*0.24, cy-r*0.6, r*0.2);
+            gfx.fillRect(cx-r*0.6, cy-r*0.6, r*0.38, r*0.18);
         }
     },
     ROSE: {
@@ -1045,18 +1411,32 @@ const WORD_CONCEPTS = {
         en: { answer: 'PINK', letters: ['P','I','N','K','O','A'] },
         es: { answer: 'ROSA', letters: ['R','O','S','A','I','E'] },
         drawPicture(gfx, cx, cy, r) {
+            gfx.fillStyle(0xfff0f8, 1); gfx.fillCircle(cx, cy, r*0.95);
             gfx.lineStyle(4, 0x338822, 1);
-            gfx.beginPath(); gfx.moveTo(cx, cy+r*0.72); gfx.lineTo(cx, cy+r*0.1); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx, cy+r*0.92); gfx.lineTo(cx, cy+r*0.1); gfx.strokePath();
             gfx.fillStyle(0x44aa22, 1);
-            tri(gfx, cx, cy+r*0.3, cx-r*0.32, cy+r*0.08, cx-r*0.08, cy+r*0.52);
-            const cols = [0xff88bb, 0xff99cc, 0xffaadd, 0xff77aa, 0xff88bb];
-            cols.forEach((c, i) => {
-                const a = (i / cols.length) * Math.PI * 2;
+            gfx.fillEllipse(cx+r*0.22, cy+r*0.54, r*0.28, r*0.12);
+            gfx.lineStyle(1.5, 0x226611, 0.7);
+            gfx.beginPath(); gfx.moveTo(cx, cy+r*0.54); gfx.lineTo(cx+r*0.34, cy+r*0.54); gfx.strokePath();
+            gfx.fillStyle(0x44aa22, 1);
+            gfx.fillEllipse(cx-r*0.2, cy+r*0.32, r*0.22, r*0.1);
+            gfx.lineStyle(1.5, 0x226611, 0.7);
+            gfx.beginPath(); gfx.moveTo(cx, cy+r*0.32); gfx.lineTo(cx-r*0.3, cy+r*0.32); gfx.strokePath();
+            const outerPetals = [0xff6699, 0xff7788, 0xff88aa, 0xff6699, 0xff7788];
+            outerPetals.forEach((c, i) => {
+                const a = (i / 5) * Math.PI * 2;
                 gfx.fillStyle(c, 1);
-                gfx.fillEllipse(cx + Math.cos(a)*r*0.28, cy-r*0.18 + Math.sin(a)*r*0.28, r*0.3, r*0.42);
+                gfx.fillEllipse(cx+Math.cos(a)*r*0.36, cy-r*0.2+Math.sin(a)*r*0.36, r*0.32, r*0.46);
             });
-            gfx.fillStyle(0xffee66, 1);
-            gfx.fillCircle(cx, cy-r*0.18, r*0.14);
+            const innerPetals = [0xffaacc, 0xffbbdd, 0xffaacc, 0xffbbdd, 0xffaacc];
+            innerPetals.forEach((c, i) => {
+                const a = (i / 5) * Math.PI * 2 + 0.3;
+                gfx.fillStyle(c, 1);
+                gfx.fillEllipse(cx+Math.cos(a)*r*0.2, cy-r*0.2+Math.sin(a)*r*0.2, r*0.22, r*0.32);
+            });
+            gfx.fillStyle(0xffee66, 1); gfx.fillCircle(cx, cy-r*0.2, r*0.14);
+            gfx.fillStyle(0xffdd44, 1); gfx.fillCircle(cx, cy-r*0.2, r*0.1);
+            gfx.fillStyle(0x4488ff, 0.8); gfx.fillCircle(cx+r*0.28, cy-r*0.42, r*0.04);
         }
     },
     NOIR: {
@@ -1064,15 +1444,34 @@ const WORD_CONCEPTS = {
         en: { answer: 'BLACK', letters: ['B','L','A','C','K','O'] },
         es: { answer: 'NEGRO', letters: ['N','E','G','R','O','A'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x111122, 1);
-            gfx.fillRoundedRect(cx-r*0.7, cy-r*0.72, r*1.4, r*1.44, r*0.14);
+            gfx.fillStyle(0x080818, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x111133, 1); gfx.fillRect(cx-r*0.95, cy+r*0.12, r*1.9, r*0.84);
+            gfx.fillStyle(0x221144, 1);
+            gfx.fillRect(cx-r*0.68, cy+r*0.12, r*0.36, r*0.48);
+            tri(gfx, cx-r*0.68, cy+r*0.12, cx-r*0.32, cy+r*0.12, cx-r*0.5, cy-r*0.14);
+            gfx.fillStyle(0x2200aa, 0.5);
+            gfx.fillRect(cx-r*0.58, cy+r*0.2, r*0.14, r*0.18);
+            gfx.fillRect(cx-r*0.42, cy+r*0.2, r*0.14, r*0.18);
+            gfx.fillStyle(0x221133, 1);
+            gfx.fillRect(cx+r*0.1, cy+r*0.12, r*0.28, r*0.48);
+            tri(gfx, cx+r*0.1, cy+r*0.12, cx+r*0.38, cy+r*0.12, cx+r*0.24, cy-r*0.08);
+            gfx.fillStyle(0x221133, 1);
+            tri(gfx, cx-r*0.14, cy+r*0.3, cx, cy+r*0.14, cx+r*0.14, cy+r*0.3);
             gfx.fillStyle(0xffdd44, 1);
-            gfx.fillCircle(cx+r*0.05, cy-r*0.1, r*0.38);
-            gfx.fillStyle(0x111122, 1);
-            gfx.fillCircle(cx+r*0.26, cy-r*0.18, r*0.32);
+            gfx.fillCircle(cx+r*0.04, cy-r*0.28, r*0.38);
+            gfx.fillStyle(0x080818, 1);
+            gfx.fillCircle(cx+r*0.26, cy-r*0.38, r*0.32);
+            gfx.fillStyle(0xffee88, 1);
+            gfx.fillCircle(cx+r*0.3, cy-r*0.56, r*0.04);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.66, r*0.025);
             gfx.fillStyle(0xffffff, 1);
-            [[-0.35,-0.52],[0.38,-0.54],[-0.5,0.1],[0.44,0.25],[-0.1,0.5]].forEach(([dx, dy]) => {
-                gfx.fillCircle(cx+dx*r, cy+dy*r, r*0.05);
+            [[-r*0.38,-r*0.64],[r*0.56,-r*0.56],[-r*0.58,r*0.02],[r*0.44,r*0.06],[-r*0.12,r*0.56]].forEach(([dx,dy]) => {
+                gfx.fillCircle(cx+dx, cy+dy, r*0.04);
+            });
+            gfx.lineStyle(1.5, 0xffffff, 0.8);
+            [[-r*0.38,-r*0.64],[r*0.56,-r*0.56]].forEach(([dx,dy]) => {
+                gfx.beginPath(); gfx.moveTo(cx+dx-r*0.065,cy+dy); gfx.lineTo(cx+dx+r*0.065,cy+dy); gfx.strokePath();
+                gfx.beginPath(); gfx.moveTo(cx+dx,cy+dy-r*0.065); gfx.lineTo(cx+dx,cy+dy+r*0.065); gfx.strokePath();
             });
         }
     },
@@ -1081,17 +1480,41 @@ const WORD_CONCEPTS = {
         en: { answer: 'GREEN', letters: ['G','R','E','E','N','A'] },
         es: { answer: 'VERDE', letters: ['V','E','R','D','E','A'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x33bb44, 1);
-            gfx.fillEllipse(cx, cy-r*0.05, r*0.88, r*1.44);
-            gfx.lineStyle(4, 0x228833, 1);
-            gfx.beginPath(); gfx.moveTo(cx, cy+r*0.72); gfx.lineTo(cx, cy+r*0.88); gfx.strokePath();
-            gfx.lineStyle(2, 0x228833, 0.8);
-            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.72); gfx.lineTo(cx, cy+r*0.72); gfx.strokePath();
-            [[-0.42,-0.05],[0.42,-0.05],[-0.36,0.28],[0.36,0.28]].forEach(([dx, dy]) => {
-                gfx.beginPath(); gfx.moveTo(cx, cy+dy*r); gfx.lineTo(cx+dx*r, cy+(dy+0.22)*r); gfx.strokePath();
-            });
-            gfx.fillStyle(0x88ee88, 0.3);
-            gfx.fillEllipse(cx-r*0.14, cy-r*0.2, r*0.24, r*0.55);
+            gfx.fillStyle(0x44bb44, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x228822, 1); gfx.fillRect(cx-r*0.95, cy+r*0.3, r*1.9, r*0.66);
+            gfx.fillStyle(0x338833, 1);
+            gfx.fillEllipse(cx+r*0.1, cy+r*0.42, r*0.6, r*0.22);
+            gfx.fillStyle(0x55dd44, 1);
+            gfx.fillEllipse(cx+r*0.1, cy+r*0.42, r*0.52, r*0.18);
+            gfx.fillStyle(0x22aa22, 1);
+            gfx.fillEllipse(cx+r*0.1, cy+r*0.18, r*0.82, r*0.68);
+            gfx.fillStyle(0x44cc33, 1);
+            gfx.fillEllipse(cx-r*0.04, cy+r*0.08, r*0.68, r*0.54);
+            gfx.fillStyle(0x55dd44, 1);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.18, r*0.28);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.18, r*0.28);
+            gfx.fillStyle(0x44cc33, 1);
+            gfx.fillEllipse(cx, cy-r*0.08, r*0.66, r*0.38);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.22, r*0.13);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.22, r*0.13);
+            gfx.fillStyle(0x1a5c1a, 1);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.22, r*0.09);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.22, r*0.09);
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.22, r*0.055);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.22, r*0.055);
+            gfx.fillStyle(0xffffff, 0.9);
+            gfx.fillCircle(cx-r*0.208, cy-r*0.232, r*0.024);
+            gfx.fillCircle(cx+r*0.232, cy-r*0.232, r*0.024);
+            gfx.lineStyle(2.5, 0x1a5c1a, 1);
+            gfx.beginPath(); gfx.arc(cx, cy+r*0.08, r*0.12, 0.2, Math.PI-0.2, false); gfx.strokePath();
+            gfx.fillStyle(0x22aa22, 1);
+            gfx.fillEllipse(cx-r*0.2, cy+r*0.06, r*0.08, r*0.05);
+            gfx.fillEllipse(cx+r*0.2, cy+r*0.06, r*0.08, r*0.05);
+            gfx.fillStyle(0xff4400, 1); gfx.fillCircle(cx+r*0.56, cy-r*0.38, r*0.06);
+            gfx.lineStyle(1.5, 0x444400, 0.8);
+            gfx.beginPath(); gfx.moveTo(cx+r*0.42, cy-r*0.36); gfx.lineTo(cx+r*0.5, cy-r*0.38); gfx.strokePath();
         }
     },
     GRIS: {
@@ -1099,16 +1522,43 @@ const WORD_CONCEPTS = {
         en: { answer: 'GREY', letters: ['G','R','E','Y','A','O'] },
         es: { answer: 'GRIS', letters: ['G','R','I','S','E','A'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x999999, 1);
-            gfx.fillCircle(cx-r*0.28, cy-r*0.15, r*0.32);
-            gfx.fillCircle(cx+r*0.28, cy-r*0.15, r*0.32);
-            gfx.fillCircle(cx,        cy-r*0.32,  r*0.35);
-            gfx.fillCircle(cx,        cy+r*0.02,  r*0.32);
-            gfx.fillRect(cx-r*0.58, cy+r*0.02, r*1.16, r*0.2);
-            gfx.fillStyle(0x6688aa, 1);
-            [[-0.38,0.36],[-0.18,0.5],[0.02,0.38],[0.22,0.52],[0.4,0.4]].forEach(([dx, dy]) => {
-                gfx.fillRect(cx+dx*r, cy+dy*r, r*0.06, r*0.2);
-            });
+            gfx.fillStyle(0xe0e8ee, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x667788, 1);
+            gfx.fillEllipse(cx-r*0.38, cy+r*0.14, r*0.5, r*0.8);
+            gfx.fillStyle(0x778899, 1);
+            gfx.fillEllipse(cx-r*0.28, cy+r*0.14, r*0.46, r*0.76);
+            gfx.fillStyle(0x8899aa, 1);
+            gfx.fillEllipse(cx, cy+r*0.24, r*1.1, r*0.82);
+            gfx.fillStyle(0x99aacc, 0.3);
+            gfx.fillEllipse(cx-r*0.2, cy+r*0.1, r*0.6, r*0.4);
+            for (const [lx, ly, lw, lh] of [[-0.32,0.68,0.22,0.36],[-0.1,0.7,0.22,0.36],[0.1,0.68,0.22,0.36],[0.32,0.7,0.22,0.36]]) {
+                gfx.fillStyle(0x778899, 1);
+                gfx.fillRoundedRect(cx+lx*r-r*0.11, cy+ly*r, r*lw, r*lh, r*0.08);
+                gfx.fillStyle(0x667788, 1);
+                gfx.fillRect(cx+lx*r-r*0.09, cy+(ly+lh-0.04)*r, r*0.18, r*0.06);
+            }
+            gfx.fillStyle(0x8899aa, 1);
+            gfx.fillCircle(cx+r*0.46, cy-r*0.22, r*0.38);
+            gfx.fillStyle(0x99aacc, 0.5);
+            gfx.fillCircle(cx+r*0.46, cy-r*0.22, r*0.3);
+            gfx.fillStyle(0xffcccc, 0.6);
+            gfx.fillEllipse(cx+r*0.38, cy-r*0.2, r*0.22, r*0.32);
+            gfx.fillStyle(0x556677, 1);
+            gfx.fillEllipse(cx+r*0.5, cy-r*0.1, r*0.08, r*0.32);
+            gfx.beginPath();
+            gfx.arc(cx+r*0.5, cy+r*0.22, r*0.18, -Math.PI*0.5, Math.PI*0.5, false);
+            gfx.arc(cx+r*0.5, cy+r*0.22, r*0.06, Math.PI*0.5, -Math.PI*0.5, true);
+            gfx.closePath(); gfx.fillPath();
+            gfx.fillStyle(0xffffff, 1); gfx.fillCircle(cx+r*0.52, cy-r*0.3, r*0.1);
+            gfx.fillStyle(0x445566, 1); gfx.fillCircle(cx+r*0.52, cy-r*0.3, r*0.07);
+            gfx.fillStyle(0x111122, 1); gfx.fillCircle(cx+r*0.52, cy-r*0.3, r*0.04);
+            gfx.fillStyle(0xffffff, 0.9); gfx.fillCircle(cx+r*0.532, cy-r*0.312, r*0.018);
+            gfx.fillStyle(0xddddcc, 1);
+            gfx.fillEllipse(cx+r*0.58, cy-r*0.18, r*0.07, r*0.12);
+            gfx.fillStyle(0xbbbbaa, 1);
+            gfx.fillEllipse(cx+r*0.6, cy-r*0.17, r*0.05, r*0.09);
+            gfx.fillStyle(0x6688aa, 0.6);
+            gfx.beginPath(); gfx.moveTo(cx+r*0.62, cy-r*0.12); gfx.lineTo(cx+r*0.7, cy-r*0.18); gfx.strokePath();
         }
     },
 
@@ -1118,14 +1568,39 @@ const WORD_CONCEPTS = {
         en: { answer: 'NOSE',  letters: ['N','O','S','E','A','I'] },
         es: { answer: 'NARIZ', letters: ['N','A','R','I','Z','E'] },
         drawPicture(gfx, cx, cy, r) {
+            gfx.fillStyle(0xfff8f0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx, cy, r*0.72);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy, r*0.68);
+            gfx.fillStyle(0xe8c088, 1);
+            gfx.fillCircle(cx, cy+r*0.18, r*0.32);
             gfx.fillStyle(0xfad5a5, 1);
-            gfx.fillRoundedRect(cx-r*0.14, cy-r*0.58, r*0.28, r*0.65, r*0.08);
-            gfx.fillCircle(cx, cy+r*0.12, r*0.3);
+            gfx.fillCircle(cx, cy+r*0.16, r*0.3);
             gfx.fillStyle(0xcc9977, 1);
-            gfx.fillCircle(cx-r*0.18, cy+r*0.16, r*0.13);
-            gfx.fillCircle(cx+r*0.18, cy+r*0.16, r*0.13);
-            gfx.fillStyle(0xffeecc, 0.5);
-            gfx.fillCircle(cx-r*0.04, cy+r*0.02, r*0.1);
+            gfx.fillCircle(cx-r*0.16, cy+r*0.22, r*0.1);
+            gfx.fillCircle(cx+r*0.16, cy+r*0.22, r*0.1);
+            gfx.fillStyle(0xaa7755, 1);
+            gfx.fillCircle(cx-r*0.14, cy+r*0.24, r*0.065);
+            gfx.fillCircle(cx+r*0.14, cy+r*0.24, r*0.065);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.3, cy-r*0.18, r*0.12);
+            gfx.fillCircle(cx+r*0.3, cy-r*0.18, r*0.12);
+            gfx.fillStyle(0x3355aa, 1);
+            gfx.fillCircle(cx-r*0.3, cy-r*0.17, r*0.085);
+            gfx.fillCircle(cx+r*0.3, cy-r*0.17, r*0.085);
+            gfx.fillStyle(0x111122, 1);
+            gfx.fillCircle(cx-r*0.3, cy-r*0.17, r*0.05);
+            gfx.fillCircle(cx+r*0.3, cy-r*0.17, r*0.05);
+            gfx.fillStyle(0xffffff, 0.9);
+            gfx.fillCircle(cx-r*0.288, cy-r*0.182, r*0.022);
+            gfx.fillCircle(cx+r*0.312, cy-r*0.182, r*0.022);
+            gfx.lineStyle(2, 0xcc9966, 0.7);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.24, cy-r*0.1); gfx.lineTo(cx-r*0.22, cy-r*0.04); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.24, cy-r*0.1); gfx.lineTo(cx+r*0.22, cy-r*0.04); gfx.strokePath();
+            gfx.fillStyle(0xff9988, 0.28);
+            gfx.fillEllipse(cx-r*0.44, cy+r*0.08, r*0.2, r*0.12);
+            gfx.fillEllipse(cx+r*0.44, cy+r*0.08, r*0.2, r*0.12);
+            gfx.lineStyle(2.5, 0xcc8844, 1);
+            gfx.beginPath(); gfx.arc(cx, cy+r*0.44, r*0.14, 0.25, Math.PI-0.25, false); gfx.strokePath();
         }
     },
     BRAS: {
@@ -1133,11 +1608,30 @@ const WORD_CONCEPTS = {
         en: { answer: 'ARM',   letters: ['A','R','M','E','O','I'] },
         es: { answer: 'BRAZO', letters: ['B','R','A','Z','O','E'] },
         drawPicture(gfx, cx, cy, r) {
+            gfx.fillStyle(0xeef4ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x4466aa, 1);
+            gfx.fillRoundedRect(cx-r*0.52, cy-r*0.72, r*0.58, r*0.48, r*0.12);
+            gfx.fillStyle(0x3355aa, 1);
+            gfx.fillEllipse(cx-r*0.24, cy-r*0.72, r*0.58, r*0.18);
+            gfx.fillStyle(0xe8b070, 1);
+            gfx.fillRoundedRect(cx-r*0.28, cy-r*0.26, r*0.52, r*0.96, r*0.2);
             gfx.fillStyle(0xfad5a5, 1);
-            gfx.fillRoundedRect(cx-r*0.52, cy-r*0.04, r*0.46, r*0.28, r*0.1);
-            gfx.fillCircle(cx-r*0.26, cy-r*0.08, r*0.24);
-            gfx.fillRoundedRect(cx-r*0.18, cy-r*0.56, r*0.28, r*0.58, r*0.1);
-            gfx.fillRoundedRect(cx-r*0.22, cy-r*0.72, r*0.36, r*0.22, r*0.07);
+            gfx.fillRoundedRect(cx-r*0.26, cy-r*0.24, r*0.48, r*0.9, r*0.2);
+            gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx-r*0.02, cy-r*0.26, r*0.24);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx-r*0.02, cy-r*0.26, r*0.22);
+            gfx.fillStyle(0xfad5a5, 1);
+            gfx.fillRoundedRect(cx-r*0.38, cy+r*0.54, r*0.22, r*0.28, r*0.08);
+            gfx.fillRoundedRect(cx-r*0.14, cy+r*0.56, r*0.18, r*0.26, r*0.07);
+            gfx.fillRoundedRect(cx+r*0.06, cy+r*0.58, r*0.16, r*0.22, r*0.06);
+            gfx.fillStyle(0xcc9977, 0.5);
+            gfx.fillEllipse(cx-r*0.28, cy+r*0.68, r*0.2, r*0.08);
+            gfx.lineStyle(1.5, 0xcc9977, 0.4);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.26, cy+r*0.56); gfx.lineTo(cx-r*0.06, cy+r*0.56); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx-r*0.26, cy+r*0.64); gfx.lineTo(cx-r*0.06, cy+r*0.64); gfx.strokePath();
+            gfx.lineStyle(2, 0xcc9977, 0.35);
+            for (const ex of [-0.26, -0.06, 0.14]) {
+                gfx.beginPath(); gfx.arc(cx+ex*r, cy-r*0.26, r*0.06, Math.PI, 0, false); gfx.strokePath();
+            }
         }
     },
     MAIN: {
@@ -1145,19 +1639,36 @@ const WORD_CONCEPTS = {
         en: { answer: 'HAND', letters: ['H','A','N','D','O','E'] },
         es: { answer: 'MANO', letters: ['M','A','N','O','I','E'] },
         drawPicture(gfx, cx, cy, r) {
+            gfx.fillStyle(0xfff8f0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0xe8b070, 1);
+            gfx.fillRoundedRect(cx-r*0.36, cy-r*0.14, r*0.72, r*0.68, r*0.14);
             gfx.fillStyle(0xfad5a5, 1);
-            gfx.fillRoundedRect(cx-r*0.32, cy-r*0.12, r*0.64, r*0.6, r*0.12);
-            gfx.fillRoundedRect(cx-r*0.52, cy-r*0.24, r*0.22, r*0.36, r*0.1);
+            gfx.fillRoundedRect(cx-r*0.34, cy-r*0.12, r*0.68, r*0.64, r*0.12);
+            gfx.fillStyle(0xe8b070, 1);
+            gfx.fillRoundedRect(cx-r*0.56, cy-r*0.28, r*0.24, r*0.4, r*0.1);
+            gfx.fillStyle(0xfad5a5, 1);
+            gfx.fillRoundedRect(cx-r*0.54, cy-r*0.26, r*0.22, r*0.36, r*0.1);
             for (let i = 0; i < 4; i++) {
-                gfx.fillRoundedRect(cx-r*0.28+i*r*0.18, cy-r*0.58, r*0.14, r*0.5, r*0.06);
+                const fx = cx - r*0.3 + i*r*0.2;
+                const fh = [0.58, 0.64, 0.62, 0.54][i];
+                gfx.fillStyle(0xe8b070, 1);
+                gfx.fillRoundedRect(fx-r*0.1, cy-r*0.7, r*0.2, r*fh, r*0.08);
+                gfx.fillStyle(0xfad5a5, 1);
+                gfx.fillRoundedRect(fx-r*0.088, cy-r*0.68, r*0.18, r*fh-r*0.02, r*0.08);
+                gfx.fillStyle(0xee9966, 0.5);
+                gfx.fillRect(fx-r*0.08, cy-r*0.7, r*0.16, r*0.08);
+                gfx.fillStyle(0xfad5a5, 1);
+                gfx.fillEllipse(fx, cy-r*0.7, r*0.18, r*0.1);
             }
-            gfx.lineStyle(1, 0xcc9977, 0.4);
+            gfx.lineStyle(1.5, 0xcc9977, 0.4);
             for (let i = 0; i < 4; i++) {
-                gfx.beginPath();
-                gfx.moveTo(cx-r*0.28+i*r*0.18, cy-r*0.12);
-                gfx.lineTo(cx-r*0.14+i*r*0.18, cy-r*0.12);
-                gfx.strokePath();
+                const fx = cx - r*0.3 + i*r*0.2;
+                gfx.beginPath(); gfx.moveTo(fx-r*0.08, cy-r*0.12); gfx.lineTo(fx+r*0.08, cy-r*0.12); gfx.strokePath();
+                gfx.beginPath(); gfx.moveTo(fx-r*0.06, cy+r*0.06); gfx.lineTo(fx+r*0.06, cy+r*0.06); gfx.strokePath();
             }
+            gfx.lineStyle(2, 0xcc9977, 0.35);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.28, cy+r*0.1); gfx.lineTo(cx+r*0.28, cy+r*0.3); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx-r*0.32, cy+r*0.32); gfx.lineTo(cx-r*0.04, cy+r*0.46); gfx.strokePath();
         }
     },
     PIED: {
@@ -1165,13 +1676,28 @@ const WORD_CONCEPTS = {
         en: { answer: 'FOOT', letters: ['F','O','O','T','E','A'] },
         es: { answer: 'PIE',  letters: ['P','I','E','O','A','D'] },
         drawPicture(gfx, cx, cy, r) {
+            gfx.fillStyle(0xfff8f0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0xe8b070, 1);
+            gfx.fillCircle(cx-r*0.36, cy+r*0.32, r*0.3);
+            gfx.fillEllipse(cx+r*0.06, cy+r*0.38, r*1.14, r*0.54);
             gfx.fillStyle(0xfad5a5, 1);
-            gfx.fillCircle(cx-r*0.32, cy+r*0.28, r*0.28);
-            gfx.fillEllipse(cx+r*0.04, cy+r*0.35, r*1.1, r*0.5);
-            const toeR = [0.12, 0.11, 0.1, 0.09, 0.08];
-            const toeX = [0.42, 0.3, 0.18, 0.07, -0.04];
-            const toeY = [-0.06, -0.14, -0.16, -0.12, -0.06];
-            toeR.forEach((tr, i) => gfx.fillCircle(cx+toeX[i]*r, cy+toeY[i]*r, tr*r));
+            gfx.fillCircle(cx-r*0.34, cy+r*0.3, r*0.28);
+            gfx.fillEllipse(cx+r*0.06, cy+r*0.36, r*1.1, r*0.5);
+            gfx.fillStyle(0xee9966, 0.5);
+            gfx.fillEllipse(cx+r*0.38, cy+r*0.14, r*0.32, r*0.24);
+            const toeData = [[0.48,-0.04,0.12],[0.34,-0.12,0.11],[0.2,-0.16,0.1],[0.07,-0.14,0.09],[-0.06,-0.08,0.08]];
+            toeData.forEach(([tx, ty, tr]) => {
+                gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx+tx*r, cy+ty*r, tr*r+r*0.01);
+                gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx+tx*r, cy+ty*r, tr*r);
+                gfx.fillStyle(0xee9966, 0.45);
+                gfx.fillRect(cx+tx*r-tr*r*0.8, cy+ty*r-tr*r*0.6, tr*r*1.6, tr*r*0.5);
+                gfx.fillStyle(0xfad5a5, 1);
+                gfx.fillEllipse(cx+tx*r, cy+ty*r-tr*r*0.35, tr*r*1.4, tr*r*0.5);
+            });
+            gfx.lineStyle(1.5, 0xcc9977, 0.35);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.36, cy+r*0.14); gfx.lineTo(cx-r*0.26, cy+r*0.14); gfx.strokePath();
+            gfx.fillStyle(0xfad5a5, 0.5);
+            gfx.fillCircle(cx-r*0.52, cy+r*0.26, r*0.1);
         }
     },
     TETE: {
@@ -1179,26 +1705,47 @@ const WORD_CONCEPTS = {
         en: { answer: 'HEAD',   letters: ['H','E','A','D','O','R'] },
         es: { answer: 'CABEZA', letters: ['C','A','B','E','Z','A'] },
         drawPicture(gfx, cx, cy, r) {
+            gfx.fillStyle(0xfff8f0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x5c3010, 1);
+            gfx.fillEllipse(cx, cy-r*0.44, r*1.1, r*0.52);
+            gfx.fillRect(cx-r*0.55, cy-r*0.54, r*1.1, r*0.18);
+            gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx, cy+r*0.02, r*0.62);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy+r*0.02, r*0.6);
+            gfx.fillStyle(0xe8b070, 1);
+            gfx.fillCircle(cx-r*0.6, cy+r*0.02, r*0.15);
+            gfx.fillCircle(cx+r*0.6, cy+r*0.02, r*0.15);
             gfx.fillStyle(0xfad5a5, 1);
-            gfx.fillCircle(cx, cy, r*0.62);
-            gfx.fillRect(cx-r*0.18, cy+r*0.55, r*0.36, r*0.22);
-            gfx.fillStyle(0x8b4513, 1);
-            gfx.fillRect(cx-r*0.62, cy-r*0.62, r*1.24, r*0.3);
-            gfx.fillEllipse(cx, cy-r*0.52, r*1.24, r*0.48);
-            gfx.fillStyle(0xfad5a5, 1);
-            gfx.fillCircle(cx-r*0.62, cy, r*0.14);
-            gfx.fillCircle(cx+r*0.62, cy, r*0.14);
-            gfx.fillStyle(0x333333, 1);
-            gfx.fillCircle(cx-r*0.2, cy-r*0.08, r*0.1);
-            gfx.fillCircle(cx+r*0.2, cy-r*0.08, r*0.1);
+            gfx.fillCircle(cx-r*0.6, cy+r*0.02, r*0.13);
+            gfx.fillCircle(cx+r*0.6, cy+r*0.02, r*0.13);
+            gfx.lineStyle(1.5, 0xcc9977, 0.5);
+            gfx.beginPath(); gfx.arc(cx-r*0.6, cy+r*0.06, r*0.06, -0.8, 0.8, false); gfx.strokePath();
+            gfx.beginPath(); gfx.arc(cx+r*0.6, cy+r*0.06, r*0.06, Math.PI-0.8, Math.PI+0.8, false); gfx.strokePath();
+            gfx.fillStyle(0x5c3010, 1);
+            gfx.fillEllipse(cx+r*0.1, cy-r*0.44, r*0.8, r*0.2);
+            gfx.fillStyle(0x6a3818, 1);
+            gfx.fillEllipse(cx-r*0.2, cy-r*0.42, r*0.24, r*0.12);
+            gfx.fillEllipse(cx+r*0.24, cy-r*0.42, r*0.24, r*0.12);
             gfx.fillStyle(0xffffff, 1);
-            gfx.fillCircle(cx-r*0.17, cy-r*0.11, r*0.04);
-            gfx.fillCircle(cx+r*0.23, cy-r*0.11, r*0.04);
+            gfx.fillEllipse(cx-r*0.2, cy-r*0.18, r*0.18, r*0.16);
+            gfx.fillEllipse(cx+r*0.2, cy-r*0.18, r*0.18, r*0.16);
+            gfx.fillStyle(0x44aa44, 1);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.17, r*0.09);
+            gfx.fillCircle(cx+r*0.2, cy-r*0.17, r*0.09);
+            gfx.fillStyle(0x111122, 1);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.17, r*0.054);
+            gfx.fillCircle(cx+r*0.2, cy-r*0.17, r*0.054);
+            gfx.fillStyle(0xffffff, 0.9);
+            gfx.fillCircle(cx-r*0.188, cy-r*0.182, r*0.022);
+            gfx.fillCircle(cx+r*0.212, cy-r*0.182, r*0.022);
             gfx.fillStyle(0xcc9977, 1);
-            gfx.fillCircle(cx-r*0.06, cy+r*0.12, r*0.06);
-            gfx.fillCircle(cx+r*0.06, cy+r*0.12, r*0.06);
-            gfx.lineStyle(3, 0x884422, 1);
-            gfx.beginPath(); gfx.arc(cx, cy+r*0.28, r*0.18, 0.3, Math.PI-0.3); gfx.strokePath();
+            gfx.fillEllipse(cx, cy+r*0.06, r*0.1, r*0.07);
+            gfx.fillCircle(cx-r*0.14, cy+r*0.06, r*0.04);
+            gfx.fillCircle(cx+r*0.14, cy+r*0.06, r*0.04);
+            gfx.fillStyle(0xff9988, 0.28);
+            gfx.fillEllipse(cx-r*0.38, cy+r*0.04, r*0.2, r*0.12);
+            gfx.fillEllipse(cx+r*0.38, cy+r*0.04, r*0.2, r*0.12);
+            gfx.lineStyle(2.5, 0xcc8844, 1);
+            gfx.beginPath(); gfx.arc(cx, cy+r*0.22, r*0.18, 0.25, Math.PI-0.25, false); gfx.strokePath();
         }
     },
 
@@ -1208,24 +1755,29 @@ const WORD_CONCEPTS = {
         en: { answer: 'KIWI', letters: ['K','I','W','I','O','E'] },
         es: { answer: 'KIWI', letters: ['K','I','W','I','O','E'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x8b5e3c, 1);
-            gfx.fillEllipse(cx, cy, r*1.3, r*1.1);
-            gfx.fillStyle(0x88cc44, 1);
-            gfx.fillEllipse(cx, cy, r*1.0, r*0.82);
-            gfx.fillStyle(0xeeffee, 1);
-            gfx.fillCircle(cx, cy, r*0.2);
-            gfx.lineStyle(2, 0x223300, 0.8);
-            for (let i = 0; i < 12; i++) {
-                const a = (i / 12) * Math.PI * 2;
+            gfx.fillStyle(0xf5e8d0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x7a5030, 1); gfx.fillEllipse(cx, cy, r*1.1, r*0.92);
+            gfx.fillStyle(0x5a3a20, 0.5);
+            for (let i = 0; i < 16; i++) {
+                const a = (i / 16) * Math.PI * 2;
+                gfx.fillEllipse(cx+Math.cos(a)*r*0.52, cy+Math.sin(a)*r*0.44, r*0.1, r*0.06);
+            }
+            gfx.fillStyle(0x55aa22, 1); gfx.fillEllipse(cx, cy, r*0.82, r*0.68);
+            gfx.fillStyle(0x77cc44, 1); gfx.fillEllipse(cx, cy, r*0.72, r*0.6);
+            gfx.fillStyle(0xefffcc, 1); gfx.fillCircle(cx, cy, r*0.2);
+            gfx.fillStyle(0xffffff, 0.7); gfx.fillCircle(cx, cy, r*0.14);
+            gfx.lineStyle(1.5, 0x224400, 0.75);
+            for (let i = 0; i < 14; i++) {
+                const a = (i / 14) * Math.PI * 2;
                 gfx.beginPath();
-                gfx.moveTo(cx + Math.cos(a)*r*0.22, cy + Math.sin(a)*r*0.22);
-                gfx.lineTo(cx + Math.cos(a)*r*0.46, cy + Math.sin(a)*r*0.46);
+                gfx.moveTo(cx + Math.cos(a)*r*0.2, cy + Math.sin(a)*r*0.2);
+                gfx.lineTo(cx + Math.cos(a)*r*0.38, cy + Math.sin(a)*r*0.32);
                 gfx.strokePath();
             }
-            gfx.fillStyle(0x111100, 1);
-            for (let i = 0; i < 12; i++) {
-                const a = (i / 12) * Math.PI * 2;
-                gfx.fillCircle(cx + Math.cos(a)*r*0.38, cy + Math.sin(a)*r*0.38, r*0.04);
+            gfx.fillStyle(0x1a1100, 1);
+            for (let i = 0; i < 14; i++) {
+                const a = (i / 14) * Math.PI * 2;
+                gfx.fillEllipse(cx+Math.cos(a)*r*0.3, cy+Math.sin(a)*r*0.25, r*0.058, r*0.038);
             }
         }
     },
@@ -1234,15 +1786,25 @@ const WORD_CONCEPTS = {
         en: { answer: 'PEAR',  letters: ['P','E','A','R','O','I'] },
         es: { answer: 'PERA',  letters: ['P','E','R','A','O','I'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xd4e044, 1);
-            gfx.fillCircle(cx, cy+r*0.2, r*0.52);
-            gfx.fillEllipse(cx, cy-r*0.28, r*0.52, r*0.62);
+            gfx.fillStyle(0xf8f8e8, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0xaabb22, 1);
+            gfx.fillCircle(cx, cy+r*0.24, r*0.54);
+            gfx.fillEllipse(cx, cy-r*0.28, r*0.52, r*0.64);
+            gfx.fillStyle(0xccdd44, 1);
+            gfx.fillCircle(cx, cy+r*0.24, r*0.5);
+            gfx.fillEllipse(cx, cy-r*0.28, r*0.48, r*0.6);
+            gfx.fillStyle(0xddeebb, 0.55);
+            gfx.fillEllipse(cx-r*0.18, cy-r*0.18, r*0.18, r*0.32);
+            gfx.fillStyle(0x88aa00, 0.4);
+            gfx.fillEllipse(cx+r*0.12, cy+r*0.2, r*0.22, r*0.36);
+            gfx.fillStyle(0xff9966, 0.35);
+            gfx.fillEllipse(cx+r*0.14, cy+r*0.3, r*0.16, r*0.24);
             gfx.lineStyle(4, 0x8b5e3c, 1);
-            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.6); gfx.lineTo(cx+r*0.08, cy-r*0.82); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.6); gfx.lineTo(cx+r*0.08, cy-r*0.84); gfx.strokePath();
             gfx.fillStyle(0x44aa22, 1);
-            tri(gfx, cx+r*0.08, cy-r*0.82, cx+r*0.32, cy-r*0.72, cx+r*0.14, cy-r*0.62);
-            gfx.fillStyle(0xeeff88, 0.5);
-            gfx.fillCircle(cx-r*0.16, cy-r*0.2, r*0.18);
+            gfx.fillEllipse(cx+r*0.22, cy-r*0.82, r*0.26, r*0.12);
+            gfx.lineStyle(1.5, 0x226611, 0.7);
+            gfx.beginPath(); gfx.moveTo(cx+r*0.08, cy-r*0.82); gfx.lineTo(cx+r*0.34, cy-r*0.82); gfx.strokePath();
         }
     },
     POMME: {
@@ -1250,18 +1812,24 @@ const WORD_CONCEPTS = {
         en: { answer: 'APPLE',   letters: ['A','P','P','L','E','O'] },
         es: { answer: 'MANZANA', letters: ['M','A','N','Z','A','N','A'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0xee2222, 1);
-            gfx.fillCircle(cx, cy+r*0.06, r*0.58);
+            gfx.fillStyle(0xfff0f0, 1); gfx.fillCircle(cx, cy, r*0.95);
             gfx.fillStyle(0xcc1111, 1);
-            gfx.fillCircle(cx, cy-r*0.42, r*0.22);
-            gfx.fillStyle(0xee2222, 1);
-            gfx.fillCircle(cx, cy-r*0.36, r*0.22);
+            gfx.fillCircle(cx, cy+r*0.08, r*0.6);
+            gfx.fillStyle(0xdd2222, 1);
+            gfx.fillCircle(cx-r*0.12, cy-r*0.4, r*0.22);
+            gfx.fillCircle(cx+r*0.12, cy-r*0.4, r*0.22);
+            gfx.fillStyle(0xee3333, 1);
+            gfx.fillCircle(cx, cy-r*0.38, r*0.24);
+            gfx.fillStyle(0xcc1111, 0.6);
+            gfx.fillEllipse(cx+r*0.2, cy+r*0.18, r*0.24, r*0.44);
+            gfx.fillStyle(0xff6666, 0.45);
+            gfx.fillEllipse(cx-r*0.2, cy-r*0.1, r*0.22, r*0.36);
             gfx.lineStyle(4, 0x8b5e3c, 1);
-            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.52); gfx.lineTo(cx+r*0.06, cy-r*0.74); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.54); gfx.lineTo(cx+r*0.06, cy-r*0.76); gfx.strokePath();
             gfx.fillStyle(0x44aa22, 1);
-            tri(gfx, cx+r*0.06, cy-r*0.74, cx+r*0.36, cy-r*0.66, cx+r*0.1, cy-r*0.56);
-            gfx.fillStyle(0xff8888, 0.5);
-            gfx.fillCircle(cx-r*0.2, cy-r*0.1, r*0.18);
+            gfx.fillEllipse(cx+r*0.22, cy-r*0.74, r*0.28, r*0.12);
+            gfx.lineStyle(1.5, 0x226611, 0.7);
+            gfx.beginPath(); gfx.moveTo(cx+r*0.06, cy-r*0.74); gfx.lineTo(cx+r*0.36, cy-r*0.74); gfx.strokePath();
         }
     },
     FIGUE: {
@@ -1269,15 +1837,32 @@ const WORD_CONCEPTS = {
         en: { answer: 'FIG',   letters: ['F','I','G','U','E','A'] },
         es: { answer: 'HIGO',  letters: ['H','I','G','O','E','A'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x8844aa, 1);
-            gfx.fillCircle(cx, cy+r*0.1, r*0.52);
-            gfx.fillEllipse(cx, cy-r*0.28, r*0.38, r*0.52);
-            gfx.lineStyle(3, 0x556622, 1);
-            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.52); gfx.lineTo(cx, cy-r*0.7); gfx.strokePath();
+            gfx.fillStyle(0xf8f0ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x6622aa, 1);
+            gfx.fillCircle(cx, cy+r*0.12, r*0.54);
+            gfx.fillEllipse(cx, cy-r*0.3, r*0.4, r*0.54);
+            gfx.fillStyle(0x8833cc, 1);
+            gfx.fillCircle(cx, cy+r*0.1, r*0.5);
+            gfx.fillEllipse(cx, cy-r*0.32, r*0.36, r*0.5);
+            gfx.fillStyle(0xaa55ee, 0.45);
+            gfx.fillEllipse(cx-r*0.18, cy-r*0.06, r*0.18, r*0.34);
+            gfx.fillStyle(0x5511aa, 0.6);
+            gfx.fillEllipse(cx+r*0.14, cy+r*0.12, r*0.2, r*0.36);
+            gfx.lineStyle(3, 0x4a2288, 1);
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.54); gfx.lineTo(cx, cy-r*0.72); gfx.strokePath();
+            gfx.fillStyle(0x44aa22, 1);
+            gfx.fillEllipse(cx+r*0.18, cy-r*0.7, r*0.24, r*0.1);
+            gfx.lineStyle(1.5, 0x226611, 0.7);
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.7); gfx.lineTo(cx+r*0.3, cy-r*0.7); gfx.strokePath();
             gfx.fillStyle(0x663388, 1);
-            gfx.fillCircle(cx, cy+r*0.58, r*0.1);
-            gfx.fillStyle(0xaa66cc, 0.4);
-            gfx.fillCircle(cx-r*0.18, cy-r*0.05, r*0.16);
+            gfx.fillCircle(cx, cy+r*0.62, r*0.09);
+            for (let i = 0; i < 5; i++) {
+                const a = (i/5)*Math.PI*2 - Math.PI*0.5;
+                gfx.fillStyle(0x5511aa, 0.5);
+                tri(gfx, cx+Math.cos(a)*r*0.06, cy+r*0.62+Math.sin(a)*r*0.06,
+                    cx+Math.cos(a+0.5)*r*0.09, cy+r*0.62+Math.sin(a+0.5)*r*0.09,
+                    cx+Math.cos(a-0.5)*r*0.09, cy+r*0.62+Math.sin(a-0.5)*r*0.09);
+            }
         }
     },
     PRUNE: {
@@ -1285,14 +1870,24 @@ const WORD_CONCEPTS = {
         en: { answer: 'PLUM',    letters: ['P','L','U','M','A','E'] },
         es: { answer: 'CIRUELA', letters: ['C','I','R','U','E','L','A'] },
         drawPicture(gfx, cx, cy, r) {
-            gfx.fillStyle(0x6622aa, 1);
-            gfx.fillCircle(cx, cy, r*0.58);
-            gfx.lineStyle(3, 0x8b5e3c, 1);
-            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.56); gfx.lineTo(cx+r*0.04, cy-r*0.76); gfx.strokePath();
+            gfx.fillStyle(0xf0f0ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            gfx.fillStyle(0x441188, 1); gfx.fillCircle(cx, cy+r*0.02, r*0.6);
+            gfx.fillStyle(0x5522aa, 1); gfx.fillCircle(cx, cy+r*0.02, r*0.56);
+            gfx.fillStyle(0x6633bb, 1); gfx.fillCircle(cx, cy+r*0.02, r*0.52);
+            gfx.fillStyle(0x4a1a99, 0.6);
+            gfx.fillEllipse(cx+r*0.16, cy+r*0.12, r*0.2, r*0.42);
+            gfx.fillStyle(0x8855dd, 0.5);
+            gfx.fillEllipse(cx-r*0.18, cy-r*0.08, r*0.18, r*0.32);
+            gfx.fillStyle(0xaa88ff, 0.55);
+            gfx.fillEllipse(cx-r*0.16, cy-r*0.22, r*0.24, r*0.18);
+            gfx.lineStyle(2, 0x331177, 0.65);
+            gfx.beginPath(); gfx.moveTo(cx+r*0.02, cy-r*0.56); gfx.lineTo(cx+r*0.02, cy+r*0.58); gfx.strokePath();
+            gfx.lineStyle(4, 0x8b5e3c, 1);
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.56); gfx.lineTo(cx+r*0.04, cy-r*0.78); gfx.strokePath();
             gfx.fillStyle(0x44aa22, 1);
-            tri(gfx, cx+r*0.04, cy-r*0.76, cx+r*0.3, cy-r*0.66, cx+r*0.08, cy-r*0.58);
-            gfx.fillStyle(0xaa66dd, 0.5);
-            gfx.fillCircle(cx-r*0.18, cy-r*0.15, r*0.2);
+            gfx.fillEllipse(cx+r*0.2, cy-r*0.76, r*0.26, r*0.12);
+            gfx.lineStyle(1.5, 0x226611, 0.7);
+            gfx.beginPath(); gfx.moveTo(cx+r*0.04, cy-r*0.76); gfx.lineTo(cx+r*0.34, cy-r*0.76); gfx.strokePath();
         }
     },
 
