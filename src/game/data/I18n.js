@@ -633,10 +633,229 @@ const STRINGS = {
         endingSubtitle: '¡Eres una verdadera campeona! 🌟',
         endingBtn:      '⬅ Volver a la Colección',
     },
+
+    de: {
+        gameTitle:        'Die Welt von {name}',
+        gameSubtitle:     'Wähle dein Abenteuer!',
+        btnSpelling:      '🏰 Rechtschreibung',
+        btnMath:          '🔢 Mathematik',
+        btnCollection:    '🎁 Sammlung',
+        spellingProgress: (d, t) => `⭐ ${d} / ${t} Stufen`,
+        mathProgress:     (d, t) => `⭐ ${d} / ${t} Welten`,
+
+        spellingTitle:    'Das Schloss von {name}',
+        spellingSubtitle: 'Lerne auf Deutsch zu buchstabieren!',
+        chooseLevel:      'Wähle dein Level!',
+        levelLabel:       (n) => `LEVEL ${n}`,
+        back:             '⬅ Zurück',
+
+        spellWord:        'Buchstabiere das Wort!',
+        clickInOrder:     'Klicke die Buchstaben der Reihe nach',
+        bravo:            'BRAVO! 🌟',
+        tryAgain:         'Versuch es nochmal! 💛',
+
+        helpJolyne:       'Hilf {name}! ✨',
+        magicChest:       'Magische Truhe! 🎁',
+        versus:           (name) => `⚔️ gegen ${name}`,
+        superText:        'SUPER! 🌟',
+        tryAgainMath:     'Versuch es nochmal! 💛',
+        menuBtn:          'Menü',
+
+        // ── Level names ──────────────────────────────────────────────────────
+        level_chateau:    'Das Schloss',
+        level_animaux:    'Die Tiere',
+        level_nature:     'Die Natur',
+        level_cuisine:    'Die Küche',
+        level_maison:     'Das Haus',
+        level_famille:    'Die Familie',
+        level_couleurs:   'Die Farben',
+        level_corps:      'Der Körper',
+        level_fruits:     'Das Obst',
+        level_ferme:      'Der Bauernhof',
+
+        spellingRow1:     'Level 1 bis 5',
+        spellingRow2:     'Level 6 bis 10',
+
+        // ── Math world names ─────────────────────────────────────────────────
+        world_toundra:    'Die Tundra',
+        world_sucre:      'Das Zuckerland',
+        world_prairie:    'Die Prärie',
+        world_volcan:     'Der Vulkan',
+        world_ocean:      'Der Ozean',
+        world_espace:     'Der Weltraum',
+
+        // ── Section labels ───────────────────────────────────────────────────
+        additionSection:     'Addition ➕',
+        subtractionSection:  'Subtraktion ➖',
+
+        // ── Monster names ────────────────────────────────────────────────────
+        monster_snowman:     'Schneemann',
+        monster_ice_golem:   'Eisgolem',
+        monster_polar_bear:  'Eisbär',
+        monster_lollipop:    'Lutscher',
+        monster_teddy:       'Teddy',
+        monster_candy_cane:  'Zuckerstange',
+        monster_bee:         'Biene',
+        monster_butterfly:   'Schmetterling',
+        monster_ladybug:     'Marienkäfer',
+        monster_dragon:      'Drache',
+        monster_lava_golem:  'Lavagolem',
+        monster_phoenix:     'Phönix',
+        monster_shark:       'Hai',
+        monster_octopus:     'Tintenfisch',
+        monster_jellyfish:   'Qualle',
+        monster_alien:       'Alien',
+        monster_robot:       'Roboter',
+        monster_ufo:         'UFO',
+
+        // ── Rarity labels ────────────────────────────────────────────────────
+        rarity_common:    'Gewöhnlich',
+        rarity_uncommon:  'Ungewöhnlich',
+        rarity_rare:      'Selten',
+        rarity_epic:      'Episch',
+        rarity_legendary: 'Legendär',
+
+        // ── Item names ───────────────────────────────────────────────────────
+        item_skin_default: 'Klassisches Kleid',
+        item_skin_pink:    'Rosa Kleid',
+        item_skin_gold:    'Goldprinzessin',
+        item_bg_night:     'Sternennacht',
+        item_bg_castle:    'Königsschloss',
+        item_bg_galaxy:    'Rosa Galaxie',
+        item_bg_spelling:  'Klasse von {name}',
+        item_bear:         'Teddy',
+        item_flower:       'Blumenstrauß',
+        item_shield:       'Holzschild',
+        item_magic_glove:  'Magischer Handschuh',
+        item_sword:        'Eisenschwert',
+        item_wand:         'Sternzauberstab',
+        item_candy_cane:   'Zuckerstange',
+        item_umbrella:     'Magischer Sonnenschirm',
+        item_icecream:     'Eiszepter',
+        special_math:      'Mathe-Meister',
+        special_spelling:  'Rechtschreib-Experte',
+
+        // ── Victory / reward UI ──────────────────────────────────────────────
+        gatesOpened:         '5 / 5 Tore geöffnet!',
+        congratulations:     '🎉 GLÜCKWUNSCH! 🎉',
+        mathVictorySubtitle: 'Du hast alle Aufgaben gelöst!',
+        masteredLevel:       (n) => `Du hast ${n} gemeistert!`,
+        chooseLevelBtn:      '▶  Level wählen',
+        mathBravo:           'BRAVO! 🎉',
+        worldComplete:       (n) => `Welt ${n} abgeschlossen!`,
+        continueBtn:         'Weiter →',
+
+        // ── Math world select ────────────────────────────────────────────────
+        mathWorldTitle:    '🔢 Das Mathe-Verlies',
+        chooseMathWorld:   'Wähle deine Welt!',
+        completePrevWorld: 'Schließe die\nvorherige Welt ab',
+        worldLabel:        (n) => `WELT ${n}`,
+        roundLabel:        (n, tot) => `⚔️ Runde ${n} / ${tot}`,
+
+        // ── Collection screen ────────────────────────────────────────────────
+        collectionTitle:     'Meine Sammlung ✨',
+        backMenu:            '⬅ Menü',
+        chooseSkin:          'Wähle ein Kostüm für {name}',
+        mathEquipment:       'Ausrüstung für das Mathe-Spiel',
+        leftArm:             'Linker Arm',
+        rightArm:            'Rechter Arm',
+        chooseBg:            'Wähle den Hintergrund des Hauptmenüs',
+        equipped:            '✔ AUSGERÜSTET',
+        equip:               'Ausrüsten',
+        specialRewardsTitle: '— Besondere Belohnungen —',
+        tabSpelling:         '🏰 Rechtschreibung',
+        tabMath:             '❄️ Mathematik',
+        tabBonus:            '🌟 Bonus',
+        tabMemory:           '🃏 Gedächtnis',
+        chooseCardBack:      'Rückseite der Gedächtniskarten',
+        item_card_back_jolyne:  'Jolyne',
+        item_card_back_stars:   'Kosmische Nacht',
+        item_card_back_rainbow: 'Regenbogen',
+
+        // ── Reward popup ─────────────────────────────────────────────────────
+        newContent:   'NEUER INHALT!',
+        great:        'TOLL!',
+
+        // ── Leaderboard ──────────────────────────────────────────────────────
+        leaderboardTitle:   '⭐ Meine Sterne',
+        leaderboardTotal:   (tt, m) => `Gesamt: ${tt} / ${m} ⭐`,
+        leaderboardMathRow: '🔢 Mathematik',
+
+        // ── HUD / misc ───────────────────────────────────────────────────────
+        pointsLabel:   'Punkte',
+        cheatUnlocked: '✨ ALLES FREIGESCHALTET! ✨',
+
+        // ── Confirmation dialog ──────────────────────────────────────────────
+        confirmQuit: 'Bist du sicher?',
+        confirmYes:  'Ja',
+        confirmNo:   'Nein',
+
+        // ── Memory game ──────────────────────────────────────────────────────
+        btnMemory:       '🃏 Gedächtnis',
+        memoryTitle:     'Gedächtnisspiel',
+        memoryInstruct:  'Finde die Paare!',
+        memoryChoose:    'Wähle ein Level!',
+        memoryRow1:      '4×2 Raster',
+        memoryRow2:      '4×3 Raster',
+        memoryRow3:      '4×4 Raster',
+        memoryProgress:  (d, t) => `⭐ ${d} / ${t} Stufen`,
+
+        // ── Counting game ────────────────────────────────────────────────────
+        btnCounting:      '🧮 Zähl-Memo',
+        countingTitle:    'Zähl-Memo',
+        countingChoose:   'Wähle ein Level!',
+        countingMemoise:  'Einprägen!',
+        countingQuestion: 'Wie viele?',
+        countingCorrect:  'Bravo! 🌟',
+        countingProgress: (d, t) => `⭐ ${d} / ${t} Stufen`,
+        countingScore:    (d, tot) => `${d} / ${tot}`,
+        countingRound:    (n, tot) => `Runde ${n} / ${tot}`,
+        countingGood:     'Toll! Du bist fantastisch! 🌟',
+        countingBad:      'Weiter versuchen, du schaffst das! 💛',
+
+        tabAchievements:       '🏆 Erfolge',
+        achProgress:           (u, tot) => `${u} / ${tot} Erfolge freigeschaltet`,
+        ach_welcome:           'Willkommen!',
+        ach_linguist:          'Sprachtalent',
+        ach_explorer:          'Entdeckerin',
+        ach_first_spell:       'Erste Wörter',
+        ach_first_memory:      'Erstes Gedächtnis',
+        ach_all_counting:      'Zahlen-Meister',
+        ach_all_spelling:      'Wörter-Königin',
+        ach_all_memory:        'Gedächtnis-Champion',
+        ach_all_math:          'Mathematikerin',
+        ach_all_stars:         'Alle Sterne',
+        ach_welcome_desc:      'Du hast das Spiel zum ersten Mal gestartet!',
+        ach_linguist_desc:     'Du hast die Spielsprache geändert.',
+        ach_explorer_desc:     'Du hast die Sammlung geöffnet.',
+        ach_first_spell_desc:  'Du hast dein erstes Rechtschreib-Level abgeschlossen.',
+        ach_first_memory_desc: 'Du hast dein erstes Gedächtnis-Level abgeschlossen.',
+        ach_all_counting_desc: 'Du hast alle Zähl-Memo-Level abgeschlossen!',
+        ach_all_spelling_desc: 'Du hast alle Rechtschreib-Level gemeistert!',
+        ach_all_memory_desc:   'Du hast alle Gedächtnis-Level abgeschlossen!',
+        ach_all_math_desc:     'Du hast alle Mathe-Welten bezwungen!',
+        ach_all_stars_desc:    'Du hast alle Sterne im Spiel gesammelt!',
+        ach_unlocked:          '🏆 Erfolg freigeschaltet!',
+        ach_reward_granted:    '+ Belohnung',
+
+        // ── Infinite Math mode ───────────────────────────────────────────────
+        infiniteMathTitle:    '∞ Unendliche Mathe',
+        infiniteMathScore:    (n) => `Punkte: ${n}`,
+        infiniteMathLives:    (n) => `Leben: ${n}`,
+        infiniteMathGameOver: 'GAME OVER',
+        infiniteMathReplay:   'Nochmal spielen',
+        infiniteMathCorrect:  'BRAVO! 🌟',
+        infiniteMathWrong:    'Versuch es nochmal! 💛',
+
+        // ── Ending cinematic ─────────────────────────────────────────────────
+        endingTitle:    'Glückwunsch! Du hast alles freigeschaltet!',
+        endingSubtitle: 'Du bist eine echte Meisterin! 🌟',
+        endingBtn:      '⬅ Zurück zur Sammlung',
+    },
 };
 
 const LANG_KEY = 'jolyne_lang';
-const SUPPORTED = ['fr', 'en', 'es'];
+const SUPPORTED = ['fr', 'en', 'es', 'de'];
 
 export function getLang() {
     const stored = localStorage.getItem(LANG_KEY);

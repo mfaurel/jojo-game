@@ -19,7 +19,7 @@ describe('getLang', () => {
     });
 
     it('supports all three languages', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             localStorage.setItem('jolyne_lang', lang);
             expect(getLang()).toBe(lang);
         }
@@ -40,10 +40,11 @@ describe('setLang', () => {
 });
 
 describe('cycleLang', () => {
-    it('cycles fr → en → es → fr', () => {
+    it('cycles fr → en → es → de → fr', () => {
         setLang('fr');
         expect(cycleLang()).toBe('en');
         expect(cycleLang()).toBe('es');
+        expect(cycleLang()).toBe('de');
         expect(cycleLang()).toBe('fr');
     });
 
@@ -102,16 +103,17 @@ describe('t()', () => {
 });
 
 describe('leaderboard i18n', () => {
-    it('leaderboardTitle is translated in all three locales', () => {
+    it('leaderboardTitle is translated in all supported locales', () => {
         const titles = [];
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             titles.push(t('leaderboardTitle'));
         }
         expect(titles[0]).toContain('⭐');
         expect(titles[1]).toContain('⭐');
         expect(titles[2]).toContain('⭐');
-        expect(new Set(titles).size).toBe(3);
+        expect(titles[3]).toContain('⭐');
+        expect(new Set(titles).size).toBe(4);
     });
 
     it('leaderboardTotal is a function producing the right format', () => {
@@ -129,7 +131,7 @@ describe('leaderboard i18n', () => {
 
 describe('roundLabel', () => {
     it('produces a string containing round numbers in all three locales', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             const result = t('roundLabel', 3, 6);
             expect(typeof result).toBe('string');
@@ -139,7 +141,7 @@ describe('roundLabel', () => {
     });
 
     it('contains the sword emoji in all three locales', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             expect(t('roundLabel', 1, 6)).toContain('⚔️');
         }
@@ -148,21 +150,21 @@ describe('roundLabel', () => {
 
 describe('mathWorldTitle', () => {
     it('contains the math emoji in all three locales', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             expect(t('mathWorldTitle')).toContain('🔢');
         }
     });
 
     it('is different in each locale', () => {
-        const titles = ['fr', 'en', 'es'].map(lang => { setLang(lang); return t('mathWorldTitle'); });
-        expect(new Set(titles).size).toBe(3);
+        const titles = ['fr', 'en', 'es', 'de'].map(lang => { setLang(lang); return t('mathWorldTitle'); });
+        expect(new Set(titles).size).toBe(4);
     });
 });
 
 describe('counting i18n keys', () => {
     it('countingScore is a function returning a string with both numbers', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             const result = t('countingScore', 3, 6);
             expect(typeof result).toBe('string');
@@ -172,7 +174,7 @@ describe('counting i18n keys', () => {
     });
 
     it('countingRound is a function returning a string with both numbers', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             const result = t('countingRound', 2, 6);
             expect(typeof result).toBe('string');
@@ -182,7 +184,7 @@ describe('counting i18n keys', () => {
     });
 
     it('countingGood is a non-empty string in all three locales', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             const result = t('countingGood');
             expect(typeof result).toBe('string');
@@ -192,7 +194,7 @@ describe('counting i18n keys', () => {
     });
 
     it('countingBad is a non-empty string in all three locales', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             const result = t('countingBad');
             expect(typeof result).toBe('string');
@@ -202,7 +204,7 @@ describe('counting i18n keys', () => {
     });
 
     it('item_bear is a non-empty string in all three locales', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             const result = t('item_bear');
             expect(typeof result).toBe('string');
@@ -212,7 +214,7 @@ describe('counting i18n keys', () => {
     });
 
     it('item_flower is a non-empty string in all three locales', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             const result = t('item_flower');
             expect(typeof result).toBe('string');
@@ -222,7 +224,7 @@ describe('counting i18n keys', () => {
     });
 
     it('item_candy_cane is a non-empty string in all three locales', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             const result = t('item_candy_cane');
             expect(typeof result).toBe('string');
@@ -232,7 +234,7 @@ describe('counting i18n keys', () => {
     });
 
     it('leftArm and rightArm have no emoji in any locale', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             expect(t('leftArm')).not.toMatch(/🛡️/);
             expect(t('rightArm')).not.toMatch(/⚔️/);
@@ -242,21 +244,21 @@ describe('counting i18n keys', () => {
 
 describe('button emojis', () => {
     it('btnMath uses 🔢 in all three locales', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             expect(t('btnMath')).toContain('🔢');
         }
     });
 
     it('btnMath does not use ❄️ in any locale', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             expect(t('btnMath')).not.toContain('❄️');
         }
     });
 
     it('btnCounting uses 🧮 in all three locales', () => {
-        for (const lang of ['fr', 'en', 'es']) {
+        for (const lang of ['fr', 'en', 'es', 'de']) {
             setLang(lang);
             expect(t('btnCounting')).toContain('🧮');
         }
