@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { getEquipment, addToInventory, getProgress, LEVELS } from '../data/LevelData.js';
+import { getEquipment, addToInventory, getProgress, LEVELS, getEasterStar, saveEasterStar } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
 import { getMathProgress, MATH_WORLDS } from '../data/MathWorldData.js';
 import { getMemoryProgress, MEMORY_LEVELS } from '../data/MemoryData.js';
@@ -7,10 +7,6 @@ import { getCountingProgress, COUNTING_LEVELS } from '../data/CountingData.js';
 import { t, cycleLang, getLang } from '../data/I18n.js';
 import { showBanner, hideBanner } from '../services/AdService.js';
 import { getCurrentUser, signInWithGoogle, signOutUser } from '../services/AuthService.js';
-
-const EASTER_KEY = 'jolyne_easter_star';
-function getEasterStar()  { try { return localStorage.getItem(EASTER_KEY) === 'true'; } catch { return false; } }
-function saveEasterStar() { try { localStorage.setItem(EASTER_KEY, 'true'); } catch {} }
 
 export class MainMenu extends Scene {
     constructor() {
@@ -98,8 +94,13 @@ export class MainMenu extends Scene {
 
     // ── Background themes ─────────────────────────────────────────────────────
 
+    _syncBodyBg(hexInt) {
+        document.body.style.backgroundColor = '#' + hexInt.toString(16).padStart(6, '0');
+    }
+
     _drawSpellingBg() {
         const { width, height } = this.cameras.main;
+        this._syncBodyBg(0x8b5a2b);
         this.cameras.main.setBackgroundColor(0x8b5a2b);
         this.add.image(width / 2, height / 2, 'jojopixelart_spelling')
             .setDisplaySize(width, height).setScrollFactor(0);
@@ -107,6 +108,7 @@ export class MainMenu extends Scene {
 
     _drawNightBg() {
         const { width, height } = this.cameras.main;
+        this._syncBodyBg(0x1a1a5e);
         this.cameras.main.setBackgroundColor(0x1a1a5e);
 
         for (let i = 0; i < 70; i++) {
@@ -135,6 +137,7 @@ export class MainMenu extends Scene {
 
     _drawCastleBg() {
         const { width, height } = this.cameras.main;
+        this._syncBodyBg(0x100028);
         this.cameras.main.setBackgroundColor(0x100028);
 
         // Static stars — no twinkling
@@ -219,6 +222,7 @@ export class MainMenu extends Scene {
 
     _drawGalaxyBg() {
         const { width, height } = this.cameras.main;
+        this._syncBodyBg(0x080010);
         this.cameras.main.setBackgroundColor(0x080010);
 
         // Nebula clouds
@@ -442,7 +446,6 @@ export class MainMenu extends Scene {
         const earned = getEasterStar();
 
         this._createSmallButton(900, 710, t('btnCollection'), 0xaa00aa, () => {
-            saveEasterStar();
             hideBanner();
             this.scene.start('CollectionScene');
         });

@@ -53,24 +53,22 @@ export class CastleScene extends Scene {
         this.cameras.main.fadeIn(600);
     }
 
-    _buildHUD(levelName) {
-        this.add.text(512, 14, `🏰 ${levelName}`, {
-            fontSize: '20px',
-            color: '#ffd700',
-            stroke: '#000',
-            strokeThickness: 3,
-        }).setOrigin(0.5, 0).setScrollFactor(0).setDepth(30);
+    _buildHUD(_levelName) {
+        const { width } = this.cameras.main;
 
+        // Stars centered at top
         this.starIcons = [];
+        const starSpacing = 32;
+        const starStartX = width / 2 - ((this.totalGates - 1) * starSpacing) / 2;
         for (let i = 0; i < this.totalGates; i++) {
-            const star = this.add.text(10 + i * 30, 8, '☆', {
+            const star = this.add.text(starStartX + i * starSpacing, 10, '☆', {
                 fontSize: '22px',
                 color: '#555577',
-            }).setScrollFactor(0).setDepth(30);
+            }).setOrigin(0.5, 0).setScrollFactor(0).setDepth(30);
             this.starIcons.push(star);
         }
 
-        const menuBtn = this.add.text(1010, 14, t('menuBtn'), {
+        const menuBtn = this.add.text(width - 14, 14, t('menuBtn'), {
             fontSize: '20px',
             color: '#ffffff',
             backgroundColor: '#2a2a88',

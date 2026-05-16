@@ -163,3 +163,8 @@ export function setEquipment(category, itemId) {
         localStorage.setItem(EQUIP_KEY, JSON.stringify(equip));
     } catch { }
 }
+
+// ── Easter / bonus star ───────────────────────────────────────────────────────
+const EASTER_KEY = 'jolyne_easter_star';
+export function getEasterStar()  { try { return localStorage.getItem(EASTER_KEY) === 'true'; } catch { return false; } }
+export function saveEasterStar() { try { localStorage.setItem(EASTER_KEY, 'true'); } catch {} }

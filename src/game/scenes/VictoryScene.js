@@ -25,6 +25,7 @@ export class VictoryScene extends Scene {
         this._towers           = [];
 
         this.cameras.main.setBackgroundColor(0x100020);
+        document.body.style.backgroundColor = '#100020';
 
         this.input.on('pointerdown', () => this._skipToReward());
 
@@ -389,7 +390,7 @@ export class VictoryScene extends Scene {
                 conf.fillStyle(palette[Math.floor(Math.random() * palette.length)], 1);
                 conf.fillRect(-4, -8, 8, 16);
                 conf.x     = 40 + Math.random() * 944;
-                conf.y     = -20;
+                conf.y     = -30;
                 conf.angle = Math.random() * 360;
                 this._track(conf);
                 this.tweens.add({
@@ -487,10 +488,11 @@ export class VictoryScene extends Scene {
         for (let i = 0; i < 20; i++) {
             this.time.delayedCall(i * 120, () => {
                 const x    = 60 + Math.random() * 904;
+                const size = 24 + Math.random() * 24;
                 const icon = ['⭐', '✨', '🌟'][Math.floor(Math.random() * 3)];
-                const star = this.add.text(x, -120, icon, {
-                    fontSize: (24 + Math.random() * 24) + 'px',
-                }).setAlpha(0.9).setDepth(25);
+                const star = this.add.text(x, -(size + 10), icon, {
+                    fontSize: size + 'px',
+                }).setOrigin(0.5, 0).setAlpha(0.9).setDepth(25);
                 this.tweens.add({
                     targets: star,
                     y: 900,

@@ -11,6 +11,7 @@ export class MathWorldSelectScene extends Scene {
         const { width, height } = this.cameras.main;
 
         this.cameras.main.setBackgroundColor(0x08080f);
+        document.body.style.backgroundColor = '#08080f';
 
         // Graph-paper grid background
         const gridGfx = this.add.graphics();

@@ -24,6 +24,7 @@ export class MathDungeon extends Scene {
         const { width, height } = this.cameras.main;
 
         this.cameras.main.setBackgroundColor(this.worldConfig.skyTop);
+        document.body.style.backgroundColor = '#' + this.worldConfig.skyTop.toString(16).padStart(6, '0');
         this._envObjects = [];
 
         this._drawEnvironment(width, height);
@@ -401,25 +402,33 @@ export class MathDungeon extends Scene {
             follow: null
         }).setScrollFactor(0);
 
-        // Left arm — shield if equipped, teddy bear by default
+        // Left arm
         this.teddyArm = this.add.container(w * 0.2, h * 0.85).setScrollFactor(0);
         const leftG = this.add.graphics();
         if (equip.item_left === 'item_L_shield') {
             this._drawShield(leftG);
         } else if (equip.item_left === 'item_L_magic') {
             this._drawMagicGlove(leftG);
+        } else if (equip.item_left === 'item_L_umbrella') {
+            this._drawUmbrella(leftG);
+        } else if (equip.item_left === 'item_L_flower') {
+            this._drawFlowerBouquet(leftG);
         } else {
             this._drawDetailedTeddy(leftG);
         }
         this.teddyArm.add(leftG);
         this.teddyArm.setDepth(150);
 
-        // Right arm — sword if equipped, wand by default
+        // Right arm
         this.wandArm = this.add.container(w * 0.8, h * 0.85).setScrollFactor(0);
         const rightG = this.add.graphics();
         const showWand = !equip.item_right || equip.item_right === 'item_R_wand';
         if (equip.item_right === 'item_R_sword') {
             this._drawSword(rightG);
+        } else if (equip.item_right === 'item_R_candy') {
+            this._drawCandyCane(rightG);
+        } else if (equip.item_right === 'item_R_icecream') {
+            this._drawIceCream(rightG);
         } else {
             this._drawDetailedWand(rightG);
         }
@@ -613,6 +622,134 @@ export class MathDungeon extends Scene {
         graphics.lineTo(cx, cy - outerRadius);
         graphics.closePath();
         graphics.fillPath();
+    }
+
+    _drawCandyCane(g) {
+        // Red-and-white striped cane
+        const colors = [0xffffff, 0xdd1111];
+        const stripeH = 22;
+        for (let i = 0; i < 8; i++) {
+            g.fillStyle(colors[i % 2], 1);
+            g.fillRect(-14, -80 + i * stripeH, 28, stripeH);
+        }
+        // Curved hook (top) — white base
+        g.fillStyle(0xffffff, 1);
+        g.fillRect(-14, -80, 60, 28);
+        g.fillRect(32, -80, 28, 55);
+        // Red stripes on hook
+        g.fillStyle(0xdd1111, 1);
+        g.fillRect(-14, -80, 60, 11);
+        g.fillRect(32, -80, 28, 11);
+        g.fillRect(32, -47, 28, 11);
+        // Candy shine
+        g.fillStyle(0xffffff, 0.6);
+        g.fillRect(-8, -78, 6, 150);
+        // Tip star
+        g.fillStyle(0xffdddd, 1);
+        g.fillCircle(46, -52, 8);
+    }
+
+    _drawUmbrella(g) {
+        // Handle
+        g.fillStyle(0x5d2e0c, 1);
+        g.fillRect(-6, 60, 12, 100);
+        // Hook at bottom
+        g.fillStyle(0x5d2e0c, 1);
+        g.fillRect(-6, 155, 30, 10);
+        g.fillCircle(26, 160, 12);
+        // Canopy — rainbow stripes
+        const canopyColors = [0xff4444, 0xff9900, 0xffee00, 0x44ee44, 0x44aaff, 0xaa44ff, 0xff44cc];
+        for (let i = 0; i < 7; i++) {
+            const angle1 = (i / 7) * Math.PI;
+            const angle2 = ((i + 1) / 7) * Math.PI;
+            const r = 90;
+            g.fillStyle(canopyColors[i], 1);
+            g.beginPath();
+            g.moveTo(0, 20);
+            g.lineTo(Math.cos(Math.PI - angle1) * r, 20 - Math.sin(angle1) * 55);
+            g.lineTo(Math.cos(Math.PI - angle2) * r, 20 - Math.sin(angle2) * 55);
+            g.closePath();
+            g.fillPath();
+        }
+        // Canopy border
+        g.lineStyle(3, 0xffffff, 0.5);
+        g.beginPath();
+        for (let a = 0; a <= Math.PI; a += 0.1) {
+            const x = Math.cos(Math.PI - a) * 90;
+            const y = 20 - Math.sin(a) * 55;
+            if (a === 0) g.moveTo(x, y); else g.lineTo(x, y);
+        }
+        g.strokePath();
+        // Top tip
+        g.fillStyle(0xffd700, 1);
+        g.fillCircle(0, -37, 8);
+    }
+
+    _drawFlowerBouquet(g) {
+        // Stems
+        g.lineStyle(4, 0x228822, 1);
+        g.lineBetween(0, 80, -20, -20);
+        g.lineBetween(0, 80, 0, -30);
+        g.lineBetween(0, 80, 20, -15);
+        // Flowers
+        const petals = [
+            { cx: -20, cy: -20, c: 0xff88cc },
+            { cx: 0,   cy: -30, c: 0xff4488 },
+            { cx: 20,  cy: -15, c: 0xff99dd },
+        ];
+        petals.forEach(p => {
+            for (let i = 0; i < 5; i++) {
+                const a = (i / 5) * Math.PI * 2;
+                g.fillStyle(p.c, 1);
+                g.fillCircle(p.cx + Math.cos(a) * 16, p.cy + Math.sin(a) * 16, 12);
+            }
+            g.fillStyle(0xffee00, 1);
+            g.fillCircle(p.cx, p.cy, 10);
+        });
+        // Handle
+        g.fillStyle(0x88ee44, 1);
+        g.fillRoundedRect(-10, 60, 20, 60, 6);
+        g.lineStyle(2, 0xffd700, 1);
+        g.strokeRoundedRect(-10, 60, 20, 60, 6);
+    }
+
+    _drawIceCream(g) {
+        // Stick / cone handle
+        g.fillStyle(0xf4a460, 1);
+        g.fillTriangle(-20, 30, 20, 30, 0, 120);
+        // Cone lines
+        g.lineStyle(2, 0xc8862b, 0.7);
+        g.lineBetween(-10, 50, 0, 120);
+        g.lineBetween(10, 50, 0, 120);
+        g.lineBetween(-20, 30, 20, 30);
+        g.lineBetween(-17, 45, 17, 45);
+        g.lineBetween(-12, 65, 12, 65);
+        // Scoop 1 (bottom)
+        g.fillStyle(0xffcc99, 1);
+        g.fillCircle(0, 0, 38);
+        g.fillStyle(0xffddbb, 0.6);
+        g.fillCircle(-8, -8, 18);
+        // Scoop 2 (middle)
+        g.fillStyle(0xff88cc, 1);
+        g.fillCircle(0, -55, 32);
+        g.fillStyle(0xffaadd, 0.6);
+        g.fillCircle(-6, -62, 14);
+        // Scoop 3 (top)
+        g.fillStyle(0x99ddff, 1);
+        g.fillCircle(5, -105, 26);
+        g.fillStyle(0xbbeeFF, 0.6);
+        g.fillCircle(-2, -112, 11);
+        // Cherry on top
+        g.fillStyle(0xdd0000, 1);
+        g.fillCircle(5, -134, 10);
+        g.lineStyle(2, 0x228822, 1);
+        g.lineBetween(5, -134, 14, -148);
+        // Sprinkles
+        const sprinkleColors = [0xff4444, 0x44ff88, 0x4488ff, 0xffee00];
+        [[-8, -20], [12, -8], [-5, 10], [16, -35], [-14, -45]].forEach(([sx, sy], i) => {
+            g.fillStyle(sprinkleColors[i % sprinkleColors.length], 1);
+            g.fillRect(sx - 3, sy - 1, 8, 3);
+        });
     }
 
     _animateArms(time) {

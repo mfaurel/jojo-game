@@ -21,15 +21,17 @@ export const ITEMS = [
     { id: 'bg_spelling', category: 'background', nameKey: 'item_bg_spelling', rarity: 'EPIC',     asset: 'jojopixelart_spelling', bgColor: 0x8b5a2b },
 
     // --- MATH ITEMS (Left Arm) ---
-    { id: 'item_L_teddy',  category: 'item_left',  nameKey: 'item_bear',        rarity: 'COMMON',   asset: 'teddy_bear',  emoji: '🐻' },
-    { id: 'item_L_flower', category: 'item_left',  nameKey: 'item_flower',      rarity: 'UNCOMMON', asset: 'flower',      emoji: '🌸' },
-    { id: 'item_L_shield', category: 'item_left',  nameKey: 'item_shield',      rarity: 'COMMON',   asset: 'shield_wood', emoji: '🛡️' },
-    { id: 'item_L_magic',  category: 'item_left',  nameKey: 'item_magic_glove', rarity: 'RARE',     asset: 'glove_magic', emoji: '🧤' },
+    { id: 'item_L_teddy',    category: 'item_left',  nameKey: 'item_bear',        rarity: 'COMMON',   asset: 'teddy_bear',  emoji: '🐻' },
+    { id: 'item_L_flower',   category: 'item_left',  nameKey: 'item_flower',      rarity: 'UNCOMMON', asset: 'flower',      emoji: '🌸' },
+    { id: 'item_L_shield',   category: 'item_left',  nameKey: 'item_shield',      rarity: 'COMMON',   asset: 'shield_wood', emoji: '🛡️' },
+    { id: 'item_L_magic',    category: 'item_left',  nameKey: 'item_magic_glove', rarity: 'RARE',     asset: 'glove_magic', emoji: '🧤' },
+    { id: 'item_L_umbrella', category: 'item_left',  nameKey: 'item_umbrella',    rarity: 'RARE',     asset: 'umbrella',    emoji: '🌂' },
 
     // --- MATH ITEMS (Right Arm) ---
-    { id: 'item_R_wand',   category: 'item_right', nameKey: 'item_wand',        rarity: 'COMMON',   asset: 'wand_star',   emoji: '⭐' },
-    { id: 'item_R_candy',  category: 'item_right', nameKey: 'item_candy_cane',  rarity: 'UNCOMMON', asset: 'candy_cane',  emoji: '🍭' },
-    { id: 'item_R_sword',  category: 'item_right', nameKey: 'item_sword',       rarity: 'UNCOMMON', asset: 'sword_iron',  emoji: '⚔️' },
+    { id: 'item_R_wand',     category: 'item_right', nameKey: 'item_wand',        rarity: 'COMMON',   asset: 'wand_star',   emoji: '⭐' },
+    { id: 'item_R_candy',    category: 'item_right', nameKey: 'item_candy_cane',  rarity: 'UNCOMMON', asset: 'candy_cane',  emoji: '🍬' },
+    { id: 'item_R_sword',    category: 'item_right', nameKey: 'item_sword',       rarity: 'UNCOMMON', asset: 'sword_iron',  emoji: '⚔️' },
+    { id: 'item_R_icecream', category: 'item_right', nameKey: 'item_icecream',    rarity: 'RARE',     asset: 'ice_cream',   emoji: '🍦' },
 ];
 
 // Card backs — exclusive to the Memory game loot pool

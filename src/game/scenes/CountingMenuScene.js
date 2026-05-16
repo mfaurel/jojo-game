@@ -4,6 +4,15 @@ import { t } from '../data/I18n.js';
 
 const CARD_COLORS = [0x1a4a2a, 0x1a3a6a, 0x4a1a6a, 0x4a2a1a, 0x2a4a1a];
 
+// Emoji themes matching each counting level's object pool
+const LEVEL_EMOJI = [
+    '🐱🐻',  // 0: animals (cats, bears, rabbits, cows, dogs)
+    '🐄🐴',  // 1: farm animals (cows, rabbits, ponies, chickens, dogs)
+    '🐱🐰',  // 2: mixed animals (cats, bears, rabbits, cows, dogs)
+    '🍎🥝',  // 3: fruits (kiwi, apple, pear, fig, plum)
+    '🐱🍎',  // 4: mixed animals + fruits
+];
+
 export class CountingMenuScene extends Scene {
     constructor() {
         super('CountingMenuScene');
@@ -52,6 +61,7 @@ export class CountingMenuScene extends Scene {
     _drawBackground() {
         const { width, height } = this.cameras.main;
         this.cameras.main.setBackgroundColor(0x030d05);
+        document.body.style.backgroundColor = '#030d05';
 
         const g = this.add.graphics();
 
@@ -144,12 +154,10 @@ export class CountingMenuScene extends Scene {
                 return;
             }
 
-            const stars = level.types === 1 ? '★' : level.types === 2 ? '★★' : '★★★';
-            this.add.text(cx, cy - 58, stars, {
-                fontSize: '22px',
-                color: '#ffd700',
-                stroke: '#000',
-                strokeThickness: 2,
+            // Theme emoji for the level
+            this.add.text(cx, cy - 62, LEVEL_EMOJI[i] ?? '🔢', {
+                fontSize: '28px',
+                padding: { top: 4, bottom: 4 },
             }).setOrigin(0.5).setDepth(10);
 
             this.add.text(cx, cy - 20, t('levelLabel', level.id + 1), {
@@ -160,9 +168,10 @@ export class CountingMenuScene extends Scene {
                 strokeThickness: 3,
             }).setOrigin(0.5).setDepth(10);
 
-            const infoLine = `${level.types} 🔢 → ${level.maxCount}`;
-            this.add.text(cx, cy + 16, infoLine, {
-                fontSize: '16px',
+            const diffStars = level.types === 1 ? '⭐' : level.types === 2 ? '⭐⭐' : '⭐⭐⭐';
+            const infoLine = `${diffStars}  ×${level.maxCount}`;
+            this.add.text(cx, cy + 18, infoLine, {
+                fontSize: '15px',
                 color: '#ccffcc',
                 stroke: '#000',
                 strokeThickness: 2,

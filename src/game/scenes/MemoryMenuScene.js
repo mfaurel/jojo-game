@@ -66,6 +66,7 @@ export class MemoryMenuScene extends Scene {
     _drawBackground() {
         const { width, height } = this.cameras.main;
         this.cameras.main.setBackgroundColor(0x08040f);
+        document.body.style.backgroundColor = '#08040f';
 
         const g = this.add.graphics();
 

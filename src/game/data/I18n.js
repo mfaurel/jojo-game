@@ -97,6 +97,8 @@ const STRINGS = {
         item_sword:        'Épée de Fer',
         item_wand:         "Baguette d'Étoile",
         item_candy_cane:   'Canne en Sucre',
+        item_umbrella:     'Parasol Magique',
+        item_icecream:     'Sceptre Glacé',
         special_math:      'Maître des Maths',
         special_spelling:  'Expert en Orthographe',
 
@@ -269,6 +271,8 @@ const STRINGS = {
         item_sword:        'Iron Sword',
         item_wand:         'Star Wand',
         item_candy_cane:   'Candy Cane',
+        item_umbrella:     'Magic Parasol',
+        item_icecream:     'Ice Cream Scepter',
         special_math:      'Math Master',
         special_spelling:  'Spelling Expert',
 
@@ -435,6 +439,8 @@ const STRINGS = {
         item_sword:        'Espada de Hierro',
         item_wand:         'Varita Estrella',
         item_candy_cane:   'Bastón de Caramelo',
+        item_umbrella:     'Parasol Mágico',
+        item_icecream:     'Cetro Helado',
         special_math:      'Maestro de Mates',
         special_spelling:  'Experto en Ortografía',
 

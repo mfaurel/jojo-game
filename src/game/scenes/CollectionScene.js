@@ -4,6 +4,7 @@ import { getInventory, getEquipment, setEquipment } from '../data/LevelData.js';
 import { t } from '../data/I18n.js';
 import { isNameUnlocked, getChildName, setChildName } from '../services/NameService.js';
 import { purchaseProduct } from '../services/IAPService.js';
+import { getEasterStar, saveEasterStar } from '../data/LevelData.js';
 
 const TABS = [
     { labelKey: 'tabSpelling', categories: ['skin'] },
@@ -23,6 +24,7 @@ export class CollectionScene extends Scene {
 
     create() {
         this.cameras.main.setBackgroundColor(0x1a0a2e);
+        document.body.style.backgroundColor = '#1a0a2e';
         const { width, height } = this.cameras.main;
 
         // Stars background
@@ -51,6 +53,58 @@ export class CollectionScene extends Scene {
 
         this._drawTabs();
         this._drawTabContent();
+        this._drawBonusStar();
+    }
+
+    _drawBonusStar() {
+        const { width } = this.cameras.main;
+        const earned = getEasterStar();
+
+        const star = this.add.text(width - 22, 22, '⭐', {
+            fontSize: earned ? '32px' : '26px',
+        }).setOrigin(1, 0).setDepth(50).setInteractive({ useHandCursor: true });
+
+        this.tweens.add({
+            targets: star,
+            scaleX: 1.3,
+            scaleY: 1.3,
+            duration: 900,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.InOut',
+        });
+
+        if (!earned) {
+            const hint = this.add.text(width - 56, 28, '?', {
+                fontSize: '14px',
+                fontFamily: 'Arial Black',
+                color: '#ffd700',
+            }).setOrigin(1, 0).setDepth(51);
+
+            star.on('pointerup', () => {
+                saveEasterStar();
+                hint.destroy();
+                star.setFontSize('32px');
+                this.add.particles(width - 22, 22, 'particle', {
+                    speed: { min: 80, max: 200 },
+                    scale: { start: 0.4, end: 0 },
+                    blendMode: 'ADD',
+                    lifespan: 700,
+                    quantity: 20,
+                }).setDepth(52).explode();
+                const msg = this.add.text(width / 2, 60, '⭐ +1 étoile bonus ! ⭐', {
+                    fontSize: '22px',
+                    fontFamily: 'Arial Black',
+                    color: '#ffd700',
+                    stroke: '#000',
+                    strokeThickness: 4,
+                }).setOrigin(0.5).setDepth(52).setAlpha(0);
+                this.tweens.add({ targets: msg, alpha: 1, duration: 400 });
+                this.time.delayedCall(1800, () => {
+                    this.tweens.add({ targets: msg, alpha: 0, duration: 400, onComplete: () => msg.destroy() });
+                });
+            });
+        }
     }
 
     _drawTabs() {
@@ -304,11 +358,33 @@ export class CollectionScene extends Scene {
 
         const rarityColor = RARITY[item.rarity].color;
 
-        // Preview
-        this._drawItemPreview(cx, cy - 18, item);
+        // Status badge at TOP of card
+        if (isEquipped) {
+            this.add.text(cx, cy - cardH / 2 + 14, t('equipped'), {
+                fontSize: '13px',
+                fontFamily: 'Arial Black',
+                color: '#00ff88',
+            }).setOrigin(0.5, 0.5);
+        } else {
+            bg.setInteractive({ useHandCursor: true });
+            bg.on('pointerover', () => bg.setFillStyle(0x553377));
+            bg.on('pointerout',  () => bg.setFillStyle(fillColor));
+            bg.on('pointerup',   () => {
+                setEquipment(item.category, item.id);
+                this.scene.start('CollectionScene', { tab: this.activeTab });
+            });
+            this.add.text(cx, cy - cardH / 2 + 14, t('equip'), {
+                fontSize: '13px',
+                fontFamily: 'Arial Black',
+                color: '#aaaaff',
+            }).setOrigin(0.5, 0.5);
+        }
+
+        // Preview (slightly lower to account for status badge at top)
+        this._drawItemPreview(cx, cy - 8, item, cardW, cardH);
 
         // Name
-        const nameY = cy + cardH / 2 - 42;
+        const nameY = cy + cardH / 2 - 36;
         if (item.rainbowName) {
             this._drawRainbowName(cx, nameY, t(item.nameKey));
         } else {
@@ -320,34 +396,13 @@ export class CollectionScene extends Scene {
         }
 
         // Rarity label
-        this.add.text(cx, cy + cardH / 2 - 24, t(RARITY[item.rarity].labelKey), {
+        this.add.text(cx, cy + cardH / 2 - 18, t(RARITY[item.rarity].labelKey), {
             fontSize: '11px',
             color: rarityColor,
         }).setOrigin(0.5);
-
-        // Status badge
-        if (isEquipped) {
-            this.add.text(cx, cy + cardH / 2 - 14, t('equipped'), {
-                fontSize: '13px',
-                fontFamily: 'Arial Black',
-                color: '#00ff88',
-            }).setOrigin(0.5);
-        } else {
-            bg.setInteractive({ useHandCursor: true });
-            bg.on('pointerover', () => bg.setFillStyle(0x553377));
-            bg.on('pointerout',  () => bg.setFillStyle(fillColor));
-            bg.on('pointerup',   () => {
-                setEquipment(item.category, item.id);
-                this.scene.start('CollectionScene', { tab: this.activeTab });
-            });
-            this.add.text(cx, cy + cardH / 2 - 14, t('equip'), {
-                fontSize: '13px',
-                color: '#aaaaff',
-            }).setOrigin(0.5);
-        }
     }
 
-    _drawItemPreview(cx, cy, item) {
+    _drawItemPreview(cx, cy, item, cardW = 0, cardH = 0) {
         if (item.category === 'skin') {
             if (this.textures.exists('jojo_pixel')) {
                 const img = this.add.image(cx, cy, 'jojo_pixel').setDisplaySize(80, 80);
@@ -358,7 +413,9 @@ export class CollectionScene extends Scene {
         } else if (item.category === 'background') {
             this._drawBgPreview(cx, cy, item.id);
         } else if (item.category === 'card_back') {
-            this._drawCardBackPreview(cx, cy, item.id);
+            const previewW = cardW > 100 ? Math.floor(cardW * 0.48) : 64;
+            const previewH = cardH > 120 ? Math.floor(cardH * 0.52) : 88;
+            this._drawCardBackPreview(cx, cy, item.id, previewW, previewH);
         } else if (item.emoji) {
             this.add.text(cx, cy, item.emoji, { fontSize: '40px' }).setOrigin(0.5);
         } else {
@@ -366,8 +423,7 @@ export class CollectionScene extends Scene {
         }
     }
 
-    _drawCardBackPreview(cx, cy, id) {
-        const W = 64, H = 88;
+    _drawCardBackPreview(cx, cy, id, W = 64, H = 88) {
 
         if (id === 'card_back_jolyne') {
             const g = this.add.graphics();

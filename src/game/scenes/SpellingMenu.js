@@ -10,6 +10,7 @@ export class SpellingMenu extends Scene {
 
     create() {
         this.cameras.main.setBackgroundColor(0x1a1a5e);
+        document.body.style.backgroundColor = '#1a1a5e';
 
         // Night sky stars
         for (let i = 0; i < 60; i++) {
