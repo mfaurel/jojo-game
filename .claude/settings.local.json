@@ -38,7 +38,12 @@
       "mcp__plugin_playwright_playwright__browser_click",
       "mcp__plugin_playwright_playwright__browser_snapshot",
       "Bash(node *)",
-      "Bash(Remove-Item *)"
+      "Bash(Remove-Item *)",
+      "Bash(find . *)",
+      "Bash(Select-String \"\\\\.json$\")",
+      "Bash(Select-String \"firebase|Firebase\")",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\workspace\\\\jojo-game\\\\src\" -Recurse | Where-Object { $_.Name -match \"i18n|locale|I18n\" } | Select-Object FullName)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\workspace\\\\jojo-game\" -Recurse -Name | Where-Object { $_ -match \"data.json|fr.json|en.json|es.json\" } | Select-Object -First 20)"
     ]
   }
 }
