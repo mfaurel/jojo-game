@@ -21,7 +21,7 @@ export class CollectionScene extends Scene {
     }
 
     init(data) {
-        this.activeTab = data?.tab ?? 1;
+        this.activeTab = data?.tab ?? 0;
     }
 
     create() {
@@ -37,13 +37,15 @@ export class CollectionScene extends Scene {
             );
         }
 
-        this.add.text(width / 2, 38, t('collectionTitle'), {
+        const titleText = this.add.text(width / 2, 38, t('collectionTitle'), {
             fontSize: '38px',
             fontFamily: 'Arial Black',
             color: '#ffd700',
             stroke: '#000',
             strokeThickness: 5,
         }).setOrigin(0.5);
+
+        this._attachBonusStarToTitle(titleText);
 
         const backBtn = this.add.text(22, 38, t('backMenu'), {
             fontSize: '20px',
@@ -55,58 +57,47 @@ export class CollectionScene extends Scene {
 
         this._drawTabs();
         this._drawTabContent();
-        this._drawBonusStar();
+
+        // B5: restart scene on resize so layout stays centered
+        this.scale.on('resize', () => {
+            this.scene.restart({ tab: this.activeTab });
+        });
     }
 
-    _drawBonusStar() {
+    _attachBonusStarToTitle(titleText) {
         const { width } = this.cameras.main;
         const earned = getEasterStar();
 
-        const star = this.add.text(width - 22, 40, '⭐', {
-            fontSize: earned ? '32px' : '26px',
-        }).setOrigin(1, 0).setDepth(50).setInteractive({ useHandCursor: true });
+        if (earned) {
+            // Already earned — title is just interactive for cosmetic effect
+            titleText.setInteractive({ useHandCursor: false });
+            return;
+        }
 
-        this.tweens.add({
-            targets: star,
-            scaleX: 1.3,
-            scaleY: 1.3,
-            duration: 900,
-            yoyo: true,
-            repeat: -1,
-            ease: 'Sine.InOut',
-        });
-
-        if (!earned) {
-            const hint = this.add.text(width - 56, 50, '?', {
-                fontSize: '14px',
+        // Not yet earned — clicking the ✨ glyph in the title triggers the bonus
+        titleText.setInteractive({ useHandCursor: true });
+        titleText.on('pointerup', () => {
+            saveEasterStar();
+            this.add.particles(width / 2, 38, 'particle', {
+                speed: { min: 80, max: 200 },
+                scale: { start: 0.4, end: 0 },
+                blendMode: 'ADD',
+                lifespan: 700,
+                quantity: 20,
+            }).setDepth(52).explode();
+            const msg = this.add.text(width / 2, 80, '⭐ +1 étoile bonus ! ⭐', {
+                fontSize: '22px',
                 fontFamily: 'Arial Black',
                 color: '#ffd700',
-            }).setOrigin(1, 0).setDepth(51);
-
-            star.on('pointerup', () => {
-                saveEasterStar();
-                hint.destroy();
-                star.setFontSize('32px');
-                this.add.particles(width - 22, 40, 'particle', {
-                    speed: { min: 80, max: 200 },
-                    scale: { start: 0.4, end: 0 },
-                    blendMode: 'ADD',
-                    lifespan: 700,
-                    quantity: 20,
-                }).setDepth(52).explode();
-                const msg = this.add.text(width / 2, 60, '⭐ +1 étoile bonus ! ⭐', {
-                    fontSize: '22px',
-                    fontFamily: 'Arial Black',
-                    color: '#ffd700',
-                    stroke: '#000',
-                    strokeThickness: 4,
-                }).setOrigin(0.5).setDepth(52).setAlpha(0);
-                this.tweens.add({ targets: msg, alpha: 1, duration: 400 });
-                this.time.delayedCall(1800, () => {
-                    this.tweens.add({ targets: msg, alpha: 0, duration: 400, onComplete: () => msg.destroy() });
-                });
+                stroke: '#000',
+                strokeThickness: 4,
+            }).setOrigin(0.5).setDepth(52).setAlpha(0);
+            this.tweens.add({ targets: msg, alpha: 1, duration: 400 });
+            this.time.delayedCall(1800, () => {
+                this.tweens.add({ targets: msg, alpha: 0, duration: 400, onComplete: () => msg.destroy() });
             });
-        }
+            titleText.disableInteractive();
+        });
     }
 
     _drawTabs() {
@@ -420,7 +411,7 @@ export class CollectionScene extends Scene {
             const previewH = cardH > 120 ? Math.floor(cardH * 0.52) : 88;
             this._drawCardBackPreview(cx, cy, item.id, previewW, previewH);
         } else if (item.emoji) {
-            this.add.text(cx, cy, item.emoji, { fontSize: '40px' }).setOrigin(0.5);
+            this.add.text(cx, cy + 8, item.emoji, { fontSize: '40px' }).setOrigin(0.5);
         } else {
             this.add.text(cx, cy, '📦', { fontSize: '32px' }).setOrigin(0.5);
         }
@@ -566,6 +557,7 @@ export class CollectionScene extends Scene {
 
     _drawSpecialRewards() {
         const inventory = getInventory();
+        const equipment = getEquipment();
         const { width, height } = this.cameras.main;
 
         this.add.text(width / 2, height - 220, t('specialRewardsTitle'), {
@@ -574,15 +566,38 @@ export class CollectionScene extends Scene {
         }).setOrigin(0.5);
 
         const rewards = Object.values(SPECIAL_REWARDS);
+        const total = rewards.length;
+        const spacing = 160;
+        const startX = width / 2 - ((total - 1) * spacing) / 2;
+
         rewards.forEach((reward, i) => {
-            const x = width / 2 + (i === 0 ? -150 : 150);
+            const x = startX + i * spacing;
             const y = height - 120;
-            const isUnlocked = inventory.includes(reward.id);
+            const isUnlocked = reward.alwaysUnlocked || inventory.includes(reward.id);
 
             if (isUnlocked) {
                 const img = this.add.image(x, y, reward.asset).setDisplaySize(120, 90);
                 this.add.text(x, y + 58, t(reward.nameKey), { fontSize: '14px', color: '#ffd700' }).setOrigin(0.5);
-                img.setInteractive({ useHandCursor: true }).on('pointerup', () => this._showFullPicture(reward.asset));
+
+                if (reward.isBackground) {
+                    // Allow equipping this background from here
+                    const isEquipped = equipment.background === reward.id;
+                    const btnLabel = isEquipped ? t('equipped') : t('equip');
+                    const btnColor = isEquipped ? '#00ff88' : '#aaaaff';
+                    const btn = this.add.text(x, y + 76, btnLabel, {
+                        fontSize: '12px',
+                        fontFamily: 'Arial Black',
+                        color: btnColor,
+                    }).setOrigin(0.5).setInteractive({ useHandCursor: !isEquipped });
+                    if (!isEquipped) {
+                        btn.on('pointerup', () => {
+                            setEquipment('background', reward.id);
+                            this.scene.start('CollectionScene', { tab: this.activeTab });
+                        });
+                    }
+                } else {
+                    img.setInteractive({ useHandCursor: true }).on('pointerup', () => this._showFullPicture(reward.asset));
+                }
             } else {
                 this.add.rectangle(x, y, 120, 90, 0x111111, 1).setStrokeStyle(2, 0x333333);
                 this.add.text(x, y, '🏆', { fontSize: '36px', alpha: 0.2 }).setOrigin(0.5);
@@ -627,15 +642,15 @@ export class CollectionScene extends Scene {
             color: '#ddaaff',
         }).setOrigin(0.5);
 
-        const cardW  = 440;
+        const cardW  = 450;
         const cardH  = 88;
-        const colGap = 40;
+        const colGap = 24;
         const rowGap = 100;
         const cols   = 2;
         const rows   = Math.ceil(ACHIEVEMENTS.length / cols);
         const totalW = cols * cardW + (cols - 1) * colGap;
         const startX = (width - totalW) / 2 + cardW / 2;
-        const startY = 165;
+        const startY = 180;
 
         ACHIEVEMENTS.forEach((ach, idx) => {
             const col    = idx % cols;

@@ -83,7 +83,7 @@ const STRINGS = {
         rarity_legendary: 'Légendaire',
 
         // ── Item names ───────────────────────────────────────────────────────
-        item_skin_default: '{name} Pixel',
+        item_skin_default: 'Robe Classique',
         item_skin_pink:    'Robe Rose',
         item_skin_gold:    "Princesse d'Or",
         item_bg_night:     'Nuit Étoilée',
@@ -282,7 +282,7 @@ const STRINGS = {
         rarity_epic:      'Epic',
         rarity_legendary: 'Legendary',
 
-        item_skin_default: '{name} Pixel',
+        item_skin_default: 'Classic Dress',
         item_skin_pink:    'Pink Dress',
         item_skin_gold:    'Golden Princess',
         item_bg_night:     'Starry Night',
@@ -475,7 +475,7 @@ const STRINGS = {
         rarity_epic:      'Épico',
         rarity_legendary: 'Legendario',
 
-        item_skin_default: '{name} Pixel',
+        item_skin_default: 'Vestido Clásico',
         item_skin_pink:    'Vestido Rosa',
         item_skin_gold:    'Princesa de Oro',
         item_bg_night:     'Noche Estrellada',

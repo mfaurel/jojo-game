@@ -447,26 +447,11 @@ export class MainMenu extends Scene {
     }
 
     _createCollectionButton() {
-        const earned = getEasterStar();
-
         this._createSmallButton(900, 710, t('btnCollection'), 0xaa00aa, () => {
             hideBanner();
             checkAndUnlock('explorer');
             this.scene.start('CollectionScene');
         });
-
-        if (earned) {
-            const star = this.add.text(1008, 698, '⭐', { fontSize: '20px' })
-                .setOrigin(0.5).setDepth(5);
-            this.tweens.add({
-                targets: star,
-                scale: 1.25,
-                duration: 900,
-                yoyo: true,
-                repeat: -1,
-                ease: 'Sine.InOut',
-            });
-        }
     }
 
     _createSmallButton(x, y, label, color, callback) {

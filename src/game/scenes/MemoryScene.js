@@ -322,7 +322,7 @@ export class MemoryScene extends Scene {
         if (rStars?.wasNew) achResults.push({ id: 'all_stars', rewardItemId: rStars.rewardItemId });
 
         const wonItem = this._rollMemoryLoot();
-        this.time.delayedCall(1400, () => {
+        this.time.delayedCall(3000, () => {
             achResults.forEach((a, i) =>
                 this.time.delayedCall(i * 2200, () =>
                     showAchievementToast(this, a.id, a.rewardItemId)

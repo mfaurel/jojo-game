@@ -6,10 +6,20 @@
 
 ## 1. Bugs
 
-| # | Item | Key files | Effort | Done when |
-|---|------|-----------|--------|-----------|
-| B1 | Bonus star (31st) clipped top-right in CollectionScene | `CollectionScene.js:63–108` | XS | ✅ **Fixed** — star moved to y=40 |
-| B2 | Stars clipped during Félicitations phase in VictoryScene | `VictoryScene.js:361–382` | XS | ✅ **Fixed** — `setOrigin(0.5, 0)` applied |
+| # | Description | Key files | Effort | Status |
+|---|-------------|-----------|--------|--------|
+| B1 | Bonus star (31st) clipped top-right in CollectionScene | `CollectionScene.js` | XS | ✅ Fixed — star moved to y=40 |
+| B2 | Stars clipped during Félicitations phase in VictoryScene | `VictoryScene.js` | XS | ✅ Fixed — `setOrigin(0.5, 0)` applied |
+| B3 | ⭐ star decoration on Collection button in MainMenu | `MainMenu.js` | XS | ✅ Fixed — star decoration removed from Collection button |
+| B5 | Collection layout not re-centered on fullscreen/resize | `CollectionScene.js` | XS | ✅ Fixed — `this.scale.on('resize', ...)` restarts scene |
+| B6 | Collection default active tab was Math (1) instead of Spelling (0) | `CollectionScene.js` | XS | ✅ Fixed — `data?.tab ?? 1` changed to `data?.tab ?? 0` |
+| B7 | Animated bonus star in top-right corner of CollectionScene | `CollectionScene.js` | S | ✅ Fixed — floating star removed; bonus triggered by clicking `collectionTitle` text |
+| B8 | "Classe" background (bg_spelling) in Bonus tab should be always unlocked and in Special Rewards | `CollectionScene.js`, `ItemData.js` | S | ✅ Fixed — bg_spelling removed from ITEMS backgrounds, added to SPECIAL_REWARDS with `alwaysUnlocked: true` |
+| B9 | First avatar in Spelling collection has no label | `CollectionScene.js`, `I18n.js` | XS | ✅ Fixed — `item_skin_default` i18n key updated to "Robe Classique" / "Classic Dress" / "Vestido Clásico" |
+| B10 | Math emoji icons cropped at top in collection | `CollectionScene.js` | XS | ✅ Fixed — emoji y offset shifted down by 8px |
+| B11 | Victory transition too fast in MemoryScene (mémo chiffres) | `MemoryScene.js` | XS | ✅ Fixed — `delayedCall` changed from 1400ms to 3000ms |
+| B12 | Achievement toast display duration | `AchievementToast.js` | XS | ✅ No change needed — already 3500ms |
+| B13 | Achievements grid not well centered in collection | `CollectionScene.js` | XS | ✅ Fixed — cardW adjusted to 450, colGap to 24, startY to 180 for better centering |
 
 ---
 
@@ -61,25 +71,10 @@
 | M4 | Facebook Sign-In | new Capacitor plugin + `AuthService.js` extension | M | User can sign in with Facebook; same Firestore sync as Google |
 | M5 | iOS App (paid or ads) | `ios/` Capacitor target; App Store Connect | XL | App passes App Store review; monetisation model chosen |
 
-### 7 Reste à faire
-Corriger les bugs
-Sur la page d'accueil, enlever l'étoile à Collection
-Dans les jeux Orthographe, vérifier les images et les mettre à jour
-Dans la collection, ce n'est pas bien centré. Centre correctement que ça soit quand on met en full screenn, qu'on sorte du full screen ou qu'on resize la fenetre
-Dans la collection, je veux que ça soit l'onglet Orthographe par défaut
-Dans la collection, supprime l'étoile qui bouge en haut à droite. Je veux que la 31ème étoile soit gagnée gâce à l'étoile présente dans le titre 'collectionTitle'
-Dans la collection bonus, supprimme la classe dans les fonds de menu principal. Cette image doit être toujours gagnée et faire partie des "Récompenses Spéciales"
-Dans la collection Orthographe, je veux qu'il y ait écrit "Robe classique" pour le premier avatar.
-Dans la collection Mathématiques, certainns émojis sont coupé et one ne voit pas le haut de l'émoji de quelques pixels. Il faut corriger ça.
-Dans le jeu mémo chiffres, le passage à l'écran suivant va trop vite quand on gagne, laisse savourer le joueur.
-Monntrer l'achievement qui apparait plus longtemps (3 secondes)
-Mieux centrer les achievements dans la collection
 ---
 
 ## Effort key
 
 `XS` < 1 h · `S` 1–4 h · `M` 4–16 h · `L` 16–40 h · `XL` > 40 h
-Effort key
-XS < 1 h · S 1–4 h · M 4–16 h · L 16–40 h · XL > 40 h
 
 

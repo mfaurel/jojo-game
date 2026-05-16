@@ -18,7 +18,6 @@ export const ITEMS = [
     { id: 'bg_night',    category: 'background', nameKey: 'item_bg_night',    rarity: 'COMMON',    asset: 'bg_night',              bgColor: 0x1a1a5e },
     { id: 'bg_castle',  category: 'background', nameKey: 'item_bg_castle',   rarity: 'RARE',      asset: 'bg_castle',             bgColor: 0x2a0055 },
     { id: 'bg_galaxy',  category: 'background', nameKey: 'item_bg_galaxy',   rarity: 'LEGENDARY', asset: 'bg_galaxy',             bgColor: 0x000022 },
-    { id: 'bg_spelling', category: 'background', nameKey: 'item_bg_spelling', rarity: 'EPIC',     asset: 'jojopixelart_spelling', bgColor: 0x8b5a2b },
 
     // --- MATH ITEMS (Left Arm) ---
     { id: 'item_L_teddy',    category: 'item_left',  nameKey: 'item_bear',        rarity: 'COMMON',   asset: 'teddy_bear',  emoji: '🐻' },
@@ -43,5 +42,7 @@ export const CARD_BACK_ITEMS = [
 
 export const SPECIAL_REWARDS = {
     MATH_ALL:     { id: 'special_math',     nameKey: 'special_math',     asset: 'jojopixelart_maths'   },
-    SPELLING_ALL: { id: 'special_spelling', nameKey: 'special_spelling', asset: 'jojopixelart_spelling' }
+    SPELLING_ALL: { id: 'special_spelling', nameKey: 'special_spelling', asset: 'jojopixelart_spelling' },
+    // bg_spelling is always unlocked and shown here instead of the backgrounds tab
+    BG_SPELLING:  { id: 'bg_spelling',      nameKey: 'item_bg_spelling', asset: 'jojopixelart_spelling', alwaysUnlocked: true, isBackground: true },
 };
