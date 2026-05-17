@@ -14,40 +14,9 @@
 | D3 | Math monster assets in `gallery.html` | `public/gallery.html` | New standalone gallery page; 18 monsters in 6 worlds rendered via Canvas2D adapter |
 | D4 | Remove premium lock icon from main menu | `MainMenu.js` | Sign-in button changed from 🔐 to 👤 |
 | D5 | Red delete button in spelling game is too wide for long words | `SpellingScene.js` | Backspace button moved from x=880 to x=950, size 70→55 px |
-
----
-
-## 1. Bugs
-
-| # | Description | Key files | Effort | Status |
-|---|-------------|-----------|--------|--------|
-| B5 | Collection layout not centered when not fullscreen (wide widths) | `CollectionScene.js` | S | Layout centers correctly at all viewport widths |
-| B8 | "Classe" background (bg_spelling) in Bonus tab should always be unlocked + in Special Rewards, but not a background | `ItemData.js`, `CollectionScene.js` | S | Correct categorisation; always visible |
-| B10 | Math emoji icons cropped at top in collection; no achievement shown on click; achievements disappear on language change | `CollectionScene.js` | S | Icons fully visible; achievements persist across lang changes |
-| B13 | Achievements grid not centred; "succès débloqués" info hidden behind grid | `CollectionScene.js` | S | Grid centred; info text always visible |
-
----
-
-## 2. Features
-
-| # | Description | Key files | Effort | Status |
-|---|-------------|-----------|--------|--------|
 | F3 | Infinite math mode | `InfiniteMathScene.js` (exists); `MathWorldSelectScene.js` entry | M | ✅ Done — registered in `main.js`; accessible from world select |
-| F4 | Deusgames intro/logo scene | new `IntroScene.js`; register in `main.js`; boot chain: Boot → IntroScene → Preloader | S | 2–3 s logo animation on first launch (or every launch); skippable on tap |
 | F5 | End-game cinematic (all stars) | `EndingScene.js`, `AchievementChecks.js` | M | ✅ Done — cinematic plays once on 100 % completion via `checkAllStars()`; `ENDING_SEEN_KEY` prevents re-trigger |
 | F6 | MathDungeon atmosphere improvements | `MathDungeon.js` | M | ✅ Done — 3-layer parallax, stone-door entrance animation, per-frame torch flicker |
-
----
-
-## 3. UX / Polish
-
-| # | Description | Effort | Status |
-|---|-------------|--------|--------|
-| D1 | Debug cheat keys — win level (A), unlock achievement (B), grant item (C) | S | Done |
-| D2 | German language support (DE button in language selector) | M | Done |
-| D3 | Math monster assets in `gallery.html` | S | Done |
-| D4 | Remove premium lock icon from main menu | XS | Done |
-| D5 | Red delete button in spelling game is too wide for long words | XS | Done |
 
 ---
 
