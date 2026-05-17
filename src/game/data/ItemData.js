@@ -44,5 +44,5 @@ export const SPECIAL_REWARDS = {
     MATH_ALL:     { id: 'special_math',     nameKey: 'special_math',     asset: 'jojopixelart_maths'   },
     SPELLING_ALL: { id: 'special_spelling', nameKey: 'special_spelling', asset: 'jojopixelart_spelling' },
     // bg_spelling is always unlocked and shown here instead of the backgrounds tab
-    BG_SPELLING:  { id: 'bg_spelling',      nameKey: 'item_bg_spelling', asset: 'jojopixelart_spelling', alwaysUnlocked: true },
+    BG_SPELLING:  { id: 'bg_spelling',      nameKey: 'item_bg_spelling', asset: 'jojopixelart_spelling', alwaysUnlocked: true, isBackground: true },
 };

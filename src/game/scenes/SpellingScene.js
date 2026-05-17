@@ -152,15 +152,15 @@ export class SpellingScene extends Scene {
             this.slotTexts.push(txt);
         }
 
-        // Backspace button (Fixed position on the right to avoid overlap)
-        const bsx = 880;
+        // Backspace button — placed past the rightmost slot edge (even for 5-letter words)
+        const bsx = 950;
         const bsy = startY;
-        
+
         let backBtn;
         if (this.textures.exists('ui_button_red')) {
-            backBtn = this.add.image(bsx, bsy, 'ui_button_red').setDisplaySize(70, 70);
+            backBtn = this.add.image(bsx, bsy, 'ui_button_red').setDisplaySize(55, 55);
         } else {
-            backBtn = this.add.rectangle(bsx, bsy, 70, 60, 0x882200, 1);
+            backBtn = this.add.rectangle(bsx, bsy, 55, 55, 0x882200, 1);
         }
         
         backBtn.setInteractive({ useHandCursor: true })

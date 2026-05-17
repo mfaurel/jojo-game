@@ -1,4 +1,5 @@
 import { Boot }          from './scenes/Boot';
+import { IntroScene }    from './scenes/IntroScene';
 import { Preloader }      from './scenes/Preloader';
 import { MainMenu }       from './scenes/MainMenu';
 import { SpellingMenu }   from './scenes/SpellingMenu';
@@ -39,6 +40,7 @@ const config = {
     },
     scene: [
         Boot,
+        IntroScene,
         Preloader,
         MainMenu,
         SpellingMenu,

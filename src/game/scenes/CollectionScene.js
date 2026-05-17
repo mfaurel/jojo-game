@@ -6,6 +6,7 @@ import { isNameUnlocked, getChildName, setChildName } from '../services/NameServ
 import { purchaseProduct } from '../services/IAPService.js';
 import { getEasterStar, saveEasterStar } from '../data/LevelData.js';
 import { ACHIEVEMENTS, getAchievements, getProgress as getAchProgress } from '../services/AchievementService.js';
+import { showAchievementToast } from '../services/AchievementToast.js';
 
 const TABS = [
     { labelKey: 'tabSpelling',      categories: ['skin'] },
@@ -57,6 +58,7 @@ export class CollectionScene extends Scene {
 
         this._drawTabs();
         this._drawTabContent();
+        this._flushPendingToasts();
 
         // B5: restart scene on resize so layout stays centered, preserving active tab
         this.scale.on('resize', () => {
@@ -98,6 +100,17 @@ export class CollectionScene extends Scene {
             });
             titleText.disableInteractive();
         });
+    }
+
+    _flushPendingToasts() {
+        const queue = this.game.registry.get('pendingToasts');
+        if (!queue?.length) return;
+        this.game.registry.remove('pendingToasts');
+        queue.forEach((toast, i) =>
+            this.time.delayedCall(800 + i * 2200, () =>
+                showAchievementToast(this, toast.id, toast.rewardItemId)
+            )
+        );
     }
 
     _drawTabs() {
@@ -411,7 +424,7 @@ export class CollectionScene extends Scene {
             const previewH = cardH > 120 ? Math.floor(cardH * 0.52) : 88;
             this._drawCardBackPreview(cx, cy, item.id, previewW, previewH);
         } else if (item.emoji) {
-            this.add.text(cx, cy + 12, item.emoji, { fontSize: '40px' }).setOrigin(0.5, 0);
+            this.add.text(cx, cy, item.emoji, { fontSize: '40px' }).setOrigin(0.5, 0.5);
         } else {
             this.add.text(cx, cy, '📦', { fontSize: '32px' }).setOrigin(0.5);
         }
@@ -637,7 +650,7 @@ export class CollectionScene extends Scene {
         const map     = getAchievements();
         const { unlocked, total } = getAchProgress();
 
-        this.add.text(width / 2, 140, t('achProgress', unlocked, total), {
+        this.add.text(width / 2, 128, t('achProgress', unlocked, total), {
             fontSize: '18px',
             color: '#ddaaff',
         }).setOrigin(0.5);
@@ -647,10 +660,9 @@ export class CollectionScene extends Scene {
         const colGap = 24;
         const rowGap = 100;
         const cols   = 2;
-        const rows   = Math.ceil(ACHIEVEMENTS.length / cols);
         const totalW = cols * cardW + (cols - 1) * colGap;
         const startX = (width - totalW) / 2 + cardW / 2;
-        const startY = 200;
+        const startY = 220;
 
         ACHIEVEMENTS.forEach((ach, idx) => {
             const col    = idx % cols;
@@ -662,8 +674,13 @@ export class CollectionScene extends Scene {
             const border = earned ? 0xffd700 : 0x333355;
             const fill   = earned ? 0x1a2a00 : 0x0d0d22;
 
-            this.add.rectangle(cx, cy, cardW, cardH, fill, 1)
-                .setStrokeStyle(earned ? 2 : 1, border);
+            const card = this.add.rectangle(cx, cy, cardW, cardH, fill, 1)
+                .setStrokeStyle(earned ? 2 : 1, border)
+                .setInteractive({ useHandCursor: true });
+
+            card.on('pointerover', () => card.setFillStyle(earned ? 0x2a4400 : 0x15153a));
+            card.on('pointerout',  () => card.setFillStyle(fill));
+            card.on('pointerup',   () => this._showAchievementDetail(ach, earned));
 
             // Trophy icon
             this.add.text(cx - cardW / 2 + 28, cy, earned ? '🏆' : '🔒', {
@@ -692,5 +709,45 @@ export class CollectionScene extends Scene {
                 }).setOrigin(1, 0.5);
             }
         });
+    }
+
+    _showAchievementDetail(ach, earned) {
+        const { width, height } = this.cameras.main;
+        const cx = width / 2, cy = height / 2;
+        const elems = [];
+
+        elems.push(this.add.rectangle(cx, cy, width, height, 0x000000, 0.8).setDepth(100).setScrollFactor(0));
+
+        const g = this.add.graphics().setDepth(101).setScrollFactor(0);
+        g.fillStyle(0x1a0a2e, 0.97);
+        g.fillRoundedRect(cx - 260, cy - 100, 520, 200, 18);
+        g.lineStyle(3, earned ? 0xffd700 : 0x444466, 1);
+        g.strokeRoundedRect(cx - 260, cy - 100, 520, 200, 18);
+        elems.push(g);
+
+        elems.push(this.add.text(cx - 220, cy - 68, earned ? '🏆' : '🔒', { fontSize: '32px' }).setDepth(102).setScrollFactor(0));
+
+        elems.push(this.add.text(cx - 178, cy - 62, t(ach.nameKey), {
+            fontSize: '18px', fontFamily: 'Arial Black', color: earned ? '#ffd700' : '#888899',
+        }).setOrigin(0, 0.5).setDepth(102).setScrollFactor(0));
+
+        elems.push(this.add.text(cx, cy - 18, earned ? t(ach.descKey) : '???', {
+            fontSize: '14px', color: earned ? '#ccaaff' : '#555577',
+            wordWrap: { width: 460 }, align: 'center',
+        }).setOrigin(0.5, 0).setDepth(102).setScrollFactor(0));
+
+        if (earned && ach.reward) {
+            elems.push(this.add.text(cx, cy + 44, '+ ' + ach.reward, {
+                fontSize: '13px', color: '#80ffb4',
+            }).setOrigin(0.5).setDepth(102).setScrollFactor(0));
+        }
+
+        elems.push(this.add.text(cx, cy + 76, t('confirmNo'), {
+            fontSize: '14px', color: '#aaaacc', fontFamily: 'Arial Black',
+            backgroundColor: '#2a2a44', padding: { x: 14, y: 6 },
+        }).setOrigin(0.5).setDepth(102).setScrollFactor(0).setInteractive({ useHandCursor: true })
+            .on('pointerup', () => elems.forEach(e => { if (e?.active) e.destroy(); })));
+
+        elems[0].setInteractive().on('pointerup', () => elems.forEach(e => { if (e?.active) e.destroy(); }));
     }
 }

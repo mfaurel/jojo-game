@@ -1,11 +1,11 @@
 import { Scene } from 'phaser';
-import { getEquipment, addToInventory, getProgress, LEVELS, getEasterStar, saveEasterStar } from '../data/LevelData.js';
+import { getEquipment, addToInventory, getInventory, getProgress, saveProgress, LEVELS, getEasterStar, saveEasterStar } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
 import { getMathProgress, MATH_WORLDS } from '../data/MathWorldData.js';
 import { getMemoryProgress, MEMORY_LEVELS } from '../data/MemoryData.js';
 import { getCountingProgress, COUNTING_LEVELS } from '../data/CountingData.js';
 import { t, cycleLang, getLang } from '../data/I18n.js';
-import { checkAndUnlock } from '../services/AchievementService.js';
+import { checkAndUnlock, ACHIEVEMENTS, getAchievements, unlockAchievement } from '../services/AchievementService.js';
 import { showAchievementToast } from '../services/AchievementToast.js';
 import { showBanner, hideBanner } from '../services/AdService.js';
 import { getCurrentUser, signInWithGoogle, signOutUser } from '../services/AuthService.js';
@@ -90,6 +90,7 @@ export class MainMenu extends Scene {
         this._createSignInButton();
 
         this._initCheatCode();
+        this._flushPendingToasts();
 
         showBanner();
     }
@@ -343,7 +344,7 @@ export class MainMenu extends Scene {
         btn.on('pointerup',   () => {
             cycleLang();
             const r = checkAndUnlock('linguist');
-            if (r.wasNew) showAchievementToast(this, 'linguist', r.rewardItemId);
+            if (r.wasNew) this._queueToast('linguist', r.rewardItemId);
             this.cameras.main.fadeOut(300, 0, 0, 0);
             this.cameras.main.once('camerafadeoutcomplete', () => this.scene.restart());
         });
@@ -364,6 +365,64 @@ export class MainMenu extends Scene {
                 progress = event.keyCode === SEQUENCE[0] ? 1 : 0;
             }
         });
+
+        // Debug shortcuts (demo helpers)
+        this.input.keyboard.on('keydown-A', () => this._debugWinLevel());
+        this.input.keyboard.on('keydown-B', () => this._debugUnlockAchievement());
+        this.input.keyboard.on('keydown-C', () => this._debugGrantItem());
+    }
+
+    _debugWinLevel() {
+        const progress = getProgress();
+        const next = LEVELS.findIndex((_, i) => !progress[i]);
+        if (next === -1) { this._showDebugMsg('All spelling levels done!'); return; }
+        saveProgress(next);
+        this._showDebugMsg(`✅ Level ${next + 1} completed`);
+        this.time.delayedCall(800, () => this.scene.restart());
+    }
+
+    _debugUnlockAchievement() {
+        const map  = getAchievements();
+        const next = ACHIEVEMENTS.find(a => !map[a.id]?.unlocked);
+        if (!next) { this._showDebugMsg('All achievements unlocked!'); return; }
+        const r = unlockAchievement(next.id);
+        showAchievementToast(this, next.id, r.rewardItemId);
+        this._showDebugMsg(`🏆 ${next.id}`);
+    }
+
+    _debugGrantItem() {
+        const inv    = getInventory();
+        const unowned = ITEMS.filter(i => !inv.includes(i.id));
+        if (!unowned.length) { this._showDebugMsg('All items owned!'); return; }
+        const item = unowned[Math.floor(Math.random() * unowned.length)];
+        addToInventory(item.id);
+        this._showDebugMsg(`🎁 ${item.id}`);
+    }
+
+    _showDebugMsg(text) {
+        const { width, height } = this.cameras.main;
+        const msg = this.add.text(width / 2, height - 40, `[DEBUG] ${text}`, {
+            fontSize: '16px', color: '#00ff88',
+            backgroundColor: '#000000aa', padding: { x: 10, y: 4 },
+        }).setOrigin(0.5).setDepth(100);
+        this.time.delayedCall(2000, () => { if (msg?.active) msg.destroy(); });
+    }
+
+    _queueToast(id, rewardItemId) {
+        const queue = this.game.registry.get('pendingToasts') ?? [];
+        queue.push({ id, rewardItemId });
+        this.game.registry.set('pendingToasts', queue);
+    }
+
+    _flushPendingToasts() {
+        const queue = this.game.registry.get('pendingToasts');
+        if (!queue?.length) return;
+        this.game.registry.remove('pendingToasts');
+        queue.forEach((toast, i) =>
+            this.time.delayedCall(800 + i * 2200, () =>
+                showAchievementToast(this, toast.id, toast.rewardItemId)
+            )
+        );
     }
 
     _activateCheat() {
@@ -449,7 +508,8 @@ export class MainMenu extends Scene {
     _createCollectionButton() {
         this._createSmallButton(900, 710, t('btnCollection'), 0xaa00aa, () => {
             hideBanner();
-            checkAndUnlock('explorer');
+            const r = checkAndUnlock('explorer');
+            if (r.wasNew) this._queueToast('explorer', r.rewardItemId);
             this.scene.start('CollectionScene');
         });
     }
@@ -491,7 +551,7 @@ export class MainMenu extends Scene {
 
     _createSignInButton() {
         const user  = getCurrentUser();
-        const label = user ? `👤 ${user.displayName?.split(' ')[0] ?? '…'}` : '🔐';
+        const label = user ? `👤 ${user.displayName?.split(' ')[0] ?? '…'}` : '👤';
         const btn   = this.add.text(512, 35, label, {
             fontSize: '20px',
             fontFamily: 'Arial Black, Arial, sans-serif',

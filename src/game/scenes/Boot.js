@@ -12,6 +12,6 @@ export class Boot extends Scene
     {
         checkAndUnlock('welcome');
         this.cameras.main.setBackgroundColor(0x1a1a5e);
-        this.scene.start('Preloader');
+        this.scene.start('IntroScene');
     }
 }
