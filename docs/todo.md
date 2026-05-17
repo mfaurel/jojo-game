@@ -1,33 +1,26 @@
 # Le Château de Jolyne — Roadmap
 
-## To Verify
-
-| # | Description | Key files | Status |
-|---|-------------|-----------|--------|
-| B10 | Math emoji icons cropped at top; no achievement shown on click; achievements disappear on language change | `CollectionScene.js`, `MainMenu.js` | Emoji origin fixed; explorer/linguist toasts queued via registry and flushed after scene restarts |
-| B13 | Achievements grid not centred; "succès débloqués" info hidden behind grid | `CollectionScene.js` | Vertical spacing increased; click-to-reveal detail modal added |
-| F4 | Deusgames intro/logo scene | `IntroScene.js`, `main.js`, `Boot.js` | New scene with 2–3 s logo animation (skippable); Boot → IntroScene → Preloader chain |
-| D1 | Debug cheat keys — win level (A), unlock achievement (B), grant item (C) | `MainMenu.js` | A/B/C keyboard shortcuts added in `_initCheatCode()`; `_debugWinLevel/Achievement/Item()` helpers |
-| D2 | German language support (DE button in language selector) | `I18n.js` | Already fully implemented — 4 locales: fr, en, es, de |
-| D3 | Math monster assets in `gallery.html` | `public/gallery.html` | New standalone gallery page; 18 monsters in 6 worlds rendered via Canvas2D adapter |
-| D4 | Remove premium lock icon from main menu | `MainMenu.js` | Sign-in button changed from 🔐 to 👤 |
-| D5 | Red delete button in spelling game is too wide for long words | `SpellingScene.js` | Backspace button moved from x=880 to x=950, size 70→55 px |
-| F5 | End-game cinematic (all stars) | `EndingScene.js`, `AchievementChecks.js` | M | ✅ Done — cinematic plays once on 100 % completion via `checkAllStars()`; `ENDING_SEEN_KEY` prevents re-trigger |
-| F6 | MathDungeon atmosphere improvements | `MathDungeon.js` | M | ✅ Done — 3-layer parallax, stone-door entrance animation, per-frame torch flicker |
-
----
-
 ## 1. Bugs
 
 | # | Item | Key files | Effort | Done when |
 |---|------|-----------|--------|-----------|
-| A1 | Infinite math mode | Add a best score in the mathematics page on the rights of "Maths Infini"
 | A2 | Collection layout not centered when large screen 
 | A3 | Remove unused files
-| A4 | Remove unused "Récompenses spéciales" in the middle
-| A5 | Math emoji icons cropped at top in the Collection tabs
+| F5 | End-game cinematic (all stars) is playable again in the collection bonus on "Récompense spéciales" |
+| C2 | Math monster assets in `gallery.html` |  Add in existing gallery.html all the assets (maths monsters of all the 6 worlds...)
 
-## 4. Content & Assets
+### ✅ Done
+| A1 | Infinite math mode best score | Added "Record" badge next to "Maths Infini" button and on game-over screen |
+| A4 | Remove unused "Récompenses spéciales" | Removed section and method from CollectionScene |
+| A5 | Math emoji icons cropped at top in Collection tabs | Resized 40px→32px, shifted down 4px |
+| A6 | No popin on achievement click, remove "+ récompense" text | Removed interactivity and reward badge from achievement cards |
+| A7 | Debug inputs only after Konami code | Keys A/B/C gated behind `_debugUnlocked` flag set by UP UP |
+| D4 | Remove Sign-in button 👤 | Removed button and AuthService import from MainMenu |
+| D5 | Red buttons in SpellingScene grow too wide on hover | Changed `setScale(1.1)` to `setAlpha(0.75)` on hover |
+| D5 | Confirm-quit popin style inconsistent | Rewritten to match the standard dark rounded-rect + gold border layout |
+| F6 | MathDungeon parallax goes down instead of forward | Rewritten with zoom-from-center expanding frames for a true forward-perspective effect |
+
+## 2. Content & Assets
 
 | # | Item | Key files | Effort | Done when |
 |---|------|-----------|--------|-----------|
@@ -35,7 +28,7 @@
 
 ---
 
-## 5. Platform & Monetisation
+## 3. Platform & Monetisation
 
 | # | Item | Key files | Effort | Done when |
 |---|------|-----------|--------|-----------|
@@ -45,13 +38,6 @@
 | M4 | Facebook Sign-In | new Capacitor plugin + `AuthService.js` extension | M | User can sign in with Facebook; same Firestore sync as Google |
 | M5 | iOS App (paid or ads) | `ios/` Capacitor target; App Store Connect | XL | App passes App Store review; monetisation model chosen |
 | P1 | Premium skins (girl / boy variants) | `ItemData.js`, `CollectionScene.js` | S | 2+ new skins visible in Collection tab 0; IAP gate respected |
-
----
-
-## 6. Analytics & Security
-
-| # | Description | Effort |
-|---|-------------|--------|
 | S1 | Replace third-party trackers / ads with self-hosted analytics (user habits, no PII sent out) | M |
 
 ---

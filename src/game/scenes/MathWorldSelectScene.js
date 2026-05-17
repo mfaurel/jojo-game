@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { MATH_WORLDS, getMathProgress, getMathUnlocked } from '../data/MathWorldData.js';
 import { t } from '../data/I18n.js';
+import { getInfiniteBestScore } from '../data/LevelData.js';
 
 export class MathWorldSelectScene extends Scene {
     constructor() {
@@ -226,6 +227,18 @@ export class MathWorldSelectScene extends Scene {
                 this.scene.start('InfiniteMathScene');
             });
         });
+
+        // Best score badge to the right of the button
+        const best = getInfiniteBestScore();
+        if (best > 0) {
+            this.add.text(cx + btnW / 2 + 16, cy, t('infiniteMathBest', best), {
+                fontSize:        '18px',
+                fontFamily:      'Arial Black, Arial, sans-serif',
+                color:           '#ffd700',
+                stroke:          '#000',
+                strokeThickness: 3,
+            }).setOrigin(0, 0.5).setDepth(11);
+        }
     }
 
     _startWorld(worldIndex) {

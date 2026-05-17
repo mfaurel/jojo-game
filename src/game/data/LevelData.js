@@ -121,12 +121,13 @@ export function getInventory() {
         if (inv && Array.isArray(inv)) {
             if (!inv.includes('skin_default'))     inv.push('skin_default');
             if (!inv.includes('bg_night'))         inv.push('bg_night');
+            if (!inv.includes('bg_spelling'))      inv.push('bg_spelling');
             if (!inv.includes('card_back_jolyne')) inv.push('card_back_jolyne');
             if (!inv.includes('item_L_teddy'))     inv.push('item_L_teddy');
             if (!inv.includes('item_R_wand'))      inv.push('item_R_wand');
             return inv;
         }
-        return ['skin_default', 'bg_night', 'card_back_jolyne', 'item_L_teddy', 'item_R_wand'];
+        return ['skin_default', 'bg_night', 'bg_spelling', 'card_back_jolyne', 'item_L_teddy', 'item_R_wand'];
     } catch {
         return ['skin_default', 'bg_night'];
     }
@@ -168,3 +169,8 @@ export function setEquipment(category, itemId) {
 const EASTER_KEY = 'jolyne_easter_star';
 export function getEasterStar()  { try { return localStorage.getItem(EASTER_KEY) === 'true'; } catch { return false; } }
 export function saveEasterStar() { try { localStorage.setItem(EASTER_KEY, 'true'); } catch {} }
+
+// ── Infinite math best score ──────────────────────────────────────────────────
+const INFINITE_BEST_KEY = 'jolyne_infinite_best';
+export function getInfiniteBestScore() { try { return parseInt(localStorage.getItem(INFINITE_BEST_KEY), 10) || 0; } catch { return 0; } }
+export function saveInfiniteBestScore(score) { try { if (score > getInfiniteBestScore()) localStorage.setItem(INFINITE_BEST_KEY, String(score)); } catch {} }

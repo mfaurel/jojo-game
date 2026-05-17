@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { ITEMS, RARITY, SPECIAL_REWARDS, CARD_BACK_ITEMS } from '../data/ItemData.js';
+import { ITEMS, RARITY, CARD_BACK_ITEMS } from '../data/ItemData.js';
 import { getInventory, getEquipment, setEquipment } from '../data/LevelData.js';
 import { t } from '../data/I18n.js';
 import { isNameUnlocked, getChildName, setChildName } from '../services/NameService.js';
@@ -245,7 +245,6 @@ export class CollectionScene extends Scene {
         });
 
         this._drawNameCustomization(width);
-        this._drawSpecialRewards();
     }
 
     // ── Name customization (Bonus tab) ────────────────────────────────────────
@@ -424,7 +423,7 @@ export class CollectionScene extends Scene {
             const previewH = cardH > 120 ? Math.floor(cardH * 0.52) : 88;
             this._drawCardBackPreview(cx, cy, item.id, previewW, previewH);
         } else if (item.emoji) {
-            this.add.text(cx, cy, item.emoji, { fontSize: '40px' }).setOrigin(0.5, 0.5);
+            this.add.text(cx, cy + 4, item.emoji, { fontSize: '32px' }).setOrigin(0.5, 0.5);
         } else {
             this.add.text(cx, cy, '📦', { fontSize: '32px' }).setOrigin(0.5);
         }
@@ -566,59 +565,6 @@ export class CollectionScene extends Scene {
         });
     }
 
-    // ── Special Rewards ───────────────────────────────────────────────────────
-
-    _drawSpecialRewards() {
-        const inventory = getInventory();
-        const equipment = getEquipment();
-        const { width, height } = this.cameras.main;
-
-        this.add.text(width / 2, height - 220, t('specialRewardsTitle'), {
-            fontSize: '16px',
-            color: '#888888',
-        }).setOrigin(0.5);
-
-        const rewards = Object.values(SPECIAL_REWARDS);
-        const total = rewards.length;
-        const spacing = 160;
-        const startX = width / 2 - ((total - 1) * spacing) / 2;
-
-        rewards.forEach((reward, i) => {
-            const x = startX + i * spacing;
-            const y = height - 120;
-            const isUnlocked = reward.alwaysUnlocked || inventory.includes(reward.id);
-
-            if (isUnlocked) {
-                const img = this.add.image(x, y, reward.asset).setDisplaySize(120, 90);
-                this.add.text(x, y + 58, t(reward.nameKey), { fontSize: '14px', color: '#ffd700' }).setOrigin(0.5);
-
-                if (reward.isBackground) {
-                    // Allow equipping this background from here
-                    const isEquipped = equipment.background === reward.id;
-                    const btnLabel = isEquipped ? t('equipped') : t('equip');
-                    const btnColor = isEquipped ? '#00ff88' : '#aaaaff';
-                    const btn = this.add.text(x, y + 76, btnLabel, {
-                        fontSize: '12px',
-                        fontFamily: 'Arial Black',
-                        color: btnColor,
-                    }).setOrigin(0.5).setInteractive({ useHandCursor: !isEquipped });
-                    if (!isEquipped) {
-                        btn.on('pointerup', () => {
-                            setEquipment('background', reward.id);
-                            this.scene.start('CollectionScene', { tab: this.activeTab });
-                        });
-                    }
-                } else {
-                    img.setInteractive({ useHandCursor: true }).on('pointerup', () => this._showFullPicture(reward.asset));
-                }
-            } else {
-                this.add.rectangle(x, y, 120, 90, 0x111111, 1).setStrokeStyle(2, 0x333333);
-                this.add.text(x, y, '🏆', { fontSize: '36px', alpha: 0.2 }).setOrigin(0.5);
-                this.add.text(x, y + 52, '???', { fontSize: '14px', color: '#444444' }).setOrigin(0.5);
-            }
-        });
-    }
-
     _drawRainbowName(cx, cy, text) {
         const colors = ['#ff4444', '#ff9900', '#ffee00', '#44ee44', '#44aaff', '#aa44ff'];
         const style  = { fontSize: '14px', fontFamily: 'Arial Black, Arial, sans-serif' };
@@ -632,15 +578,6 @@ export class CollectionScene extends Scene {
             const ct = this.add.text(xOffset, cy, ch, { ...style, color: colors[i % colors.length] }).setOrigin(0, 0.5);
             xOffset += ct.width;
         });
-    }
-
-    _showFullPicture(asset) {
-        const { width, height } = this.cameras.main;
-        const bg  = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.9).setDepth(100).setScrollFactor(0);
-        const img = this.add.image(width / 2, height / 2, asset).setDepth(101).setScrollFactor(0);
-        const scale = Math.min(width / img.width, height / img.height) * 0.85;
-        img.setScale(scale);
-        bg.setInteractive().on('pointerup', () => { bg.destroy(); img.destroy(); });
     }
 
     // ── Tab 4: Achievements ───────────────────────────────────────────────────
@@ -675,12 +612,7 @@ export class CollectionScene extends Scene {
             const fill   = earned ? 0x1a2a00 : 0x0d0d22;
 
             const card = this.add.rectangle(cx, cy, cardW, cardH, fill, 1)
-                .setStrokeStyle(earned ? 2 : 1, border)
-                .setInteractive({ useHandCursor: true });
-
-            card.on('pointerover', () => card.setFillStyle(earned ? 0x2a4400 : 0x15153a));
-            card.on('pointerout',  () => card.setFillStyle(fill));
-            card.on('pointerup',   () => this._showAchievementDetail(ach, earned));
+                .setStrokeStyle(earned ? 2 : 1, border);
 
             // Trophy icon
             this.add.text(cx - cardW / 2 + 28, cy, earned ? '🏆' : '🔒', {
@@ -701,53 +633,7 @@ export class CollectionScene extends Scene {
                 wordWrap: { width: cardW - 90 },
             }).setOrigin(0, 0.5);
 
-            // Reward badge
-            if (earned && ach.reward) {
-                this.add.text(cx + cardW / 2 - 8, cy + 18, '+ ' + ach.reward, {
-                    fontSize: '10px',
-                    color: '#80ffb4',
-                }).setOrigin(1, 0.5);
-            }
         });
     }
 
-    _showAchievementDetail(ach, earned) {
-        const { width, height } = this.cameras.main;
-        const cx = width / 2, cy = height / 2;
-        const elems = [];
-
-        elems.push(this.add.rectangle(cx, cy, width, height, 0x000000, 0.8).setDepth(100).setScrollFactor(0));
-
-        const g = this.add.graphics().setDepth(101).setScrollFactor(0);
-        g.fillStyle(0x1a0a2e, 0.97);
-        g.fillRoundedRect(cx - 260, cy - 100, 520, 200, 18);
-        g.lineStyle(3, earned ? 0xffd700 : 0x444466, 1);
-        g.strokeRoundedRect(cx - 260, cy - 100, 520, 200, 18);
-        elems.push(g);
-
-        elems.push(this.add.text(cx - 220, cy - 68, earned ? '🏆' : '🔒', { fontSize: '32px' }).setDepth(102).setScrollFactor(0));
-
-        elems.push(this.add.text(cx - 178, cy - 62, t(ach.nameKey), {
-            fontSize: '18px', fontFamily: 'Arial Black', color: earned ? '#ffd700' : '#888899',
-        }).setOrigin(0, 0.5).setDepth(102).setScrollFactor(0));
-
-        elems.push(this.add.text(cx, cy - 18, earned ? t(ach.descKey) : '???', {
-            fontSize: '14px', color: earned ? '#ccaaff' : '#555577',
-            wordWrap: { width: 460 }, align: 'center',
-        }).setOrigin(0.5, 0).setDepth(102).setScrollFactor(0));
-
-        if (earned && ach.reward) {
-            elems.push(this.add.text(cx, cy + 44, '+ ' + ach.reward, {
-                fontSize: '13px', color: '#80ffb4',
-            }).setOrigin(0.5).setDepth(102).setScrollFactor(0));
-        }
-
-        elems.push(this.add.text(cx, cy + 76, t('confirmNo'), {
-            fontSize: '14px', color: '#aaaacc', fontFamily: 'Arial Black',
-            backgroundColor: '#2a2a44', padding: { x: 14, y: 6 },
-        }).setOrigin(0.5).setDepth(102).setScrollFactor(0).setInteractive({ useHandCursor: true })
-            .on('pointerup', () => elems.forEach(e => { if (e?.active) e.destroy(); })));
-
-        elems[0].setInteractive().on('pointerup', () => elems.forEach(e => { if (e?.active) e.destroy(); }));
-    }
 }

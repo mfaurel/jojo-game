@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import { t } from '../data/I18n.js';
+import { getInfiniteBestScore, saveInfiniteBestScore } from '../data/LevelData.js';
 
 const BASE_MAX   = 10;   // starting upper bound for operands
 const STEP       = 5;    // increase per 5 correct answers
@@ -371,9 +372,11 @@ export class InfiniteMathScene extends Scene {
     // ─── Game Over ────────────────────────────────────────────────────────────
 
     _showGameOver() {
+        saveInfiniteBestScore(this.score);
         const { width, height } = this.cameras.main;
         const cx = width / 2, cy = height / 2;
         const elems = [];
+        const best = getInfiniteBestScore();
 
         // Dim overlay
         elems.push(
@@ -410,6 +413,19 @@ export class InfiniteMathScene extends Scene {
                 strokeThickness: 4,
             }).setOrigin(0.5).setDepth(302).setScrollFactor(0)
         );
+
+        // Best score
+        if (best > 0) {
+            elems.push(
+                this.add.text(cx, cy, t('infiniteMathBest', best), {
+                    fontSize:        '18px',
+                    fontFamily:      'Arial Black, Arial, sans-serif',
+                    color:           '#ccaaff',
+                    stroke:          '#000',
+                    strokeThickness: 2,
+                }).setOrigin(0.5).setDepth(302).setScrollFactor(0)
+            );
+        }
 
         // Buttons: Rejouer | Retour
         [

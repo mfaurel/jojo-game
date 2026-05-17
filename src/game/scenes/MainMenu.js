@@ -8,7 +8,6 @@ import { t, cycleLang, getLang } from '../data/I18n.js';
 import { checkAndUnlock, ACHIEVEMENTS, getAchievements, unlockAchievement } from '../services/AchievementService.js';
 import { showAchievementToast } from '../services/AchievementToast.js';
 import { showBanner, hideBanner } from '../services/AdService.js';
-import { getCurrentUser, signInWithGoogle, signOutUser } from '../services/AuthService.js';
 
 export class MainMenu extends Scene {
     constructor() {
@@ -87,7 +86,6 @@ export class MainMenu extends Scene {
         this._drawLeaderboard();
         this._createLangButton();
         this._createFullscreenButton();
-        this._createSignInButton();
 
         this._initCheatCode();
         this._flushPendingToasts();
@@ -353,6 +351,7 @@ export class MainMenu extends Scene {
     _initCheatCode() {
         const SEQUENCE = [38, 38]; // UP UP
         let progress = 0;
+        this._debugUnlocked = false;
 
         this.input.keyboard.on('keydown', (event) => {
             if (event.keyCode === SEQUENCE[progress]) {
@@ -366,10 +365,10 @@ export class MainMenu extends Scene {
             }
         });
 
-        // Debug shortcuts (demo helpers)
-        this.input.keyboard.on('keydown-A', () => this._debugWinLevel());
-        this.input.keyboard.on('keydown-B', () => this._debugUnlockAchievement());
-        this.input.keyboard.on('keydown-C', () => this._debugGrantItem());
+        // Debug shortcuts — only active after Konami code
+        this.input.keyboard.on('keydown-A', () => { if (this._debugUnlocked) this._debugWinLevel(); });
+        this.input.keyboard.on('keydown-B', () => { if (this._debugUnlocked) this._debugUnlockAchievement(); });
+        this.input.keyboard.on('keydown-C', () => { if (this._debugUnlocked) this._debugGrantItem(); });
     }
 
     _debugWinLevel() {
@@ -426,6 +425,7 @@ export class MainMenu extends Scene {
     }
 
     _activateCheat() {
+        this._debugUnlocked = true;
         ITEMS.forEach(item => addToInventory(item.id));
 
         const { width, height } = this.cameras.main;
@@ -547,30 +547,6 @@ export class MainMenu extends Scene {
         hit.on('pointerover', () => draw(true));
         hit.on('pointerout',  () => draw(false));
         hit.on('pointerup',   callback);
-    }
-
-    _createSignInButton() {
-        const user  = getCurrentUser();
-        const label = user ? `👤 ${user.displayName?.split(' ')[0] ?? '…'}` : '👤';
-        const btn   = this.add.text(512, 35, label, {
-            fontSize: '20px',
-            fontFamily: 'Arial Black, Arial, sans-serif',
-            color: '#ffffff',
-            backgroundColor: '#334455',
-            padding: { x: 12, y: 6 },
-        }).setOrigin(0.5).setInteractive({ useHandCursor: true });
-
-        btn.on('pointerover', () => btn.setStyle({ color: '#ffd700' }));
-        btn.on('pointerout',  () => btn.setStyle({ color: '#ffffff' }));
-        btn.on('pointerup',   async () => {
-            if (user) {
-                await signOutUser();
-            } else {
-                try { await signInWithGoogle(); } catch {}
-            }
-            this.cameras.main.fadeOut(300, 0, 0, 0);
-            this.cameras.main.once('camerafadeoutcomplete', () => this.scene.restart());
-        });
     }
 
     _createChoiceButton(x, y, label, color, widthOrCallback, callback) {

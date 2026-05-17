@@ -27,10 +27,7 @@ export class MathDungeon extends Scene {
         document.body.style.backgroundColor = '#' + this.worldConfig.skyTop.toString(16).padStart(6, '0');
         this._envObjects = [];
 
-        // Parallax layer scroll offsets (updated in update())
-        this._parallaxOffsetFar  = 0;
-        this._parallaxOffsetMid  = 0;
-        this._parallaxOffsetNear = 0;
+        this._parallaxOffset = 0;
 
         this._drawEnvironment(width, height);
         this._createParallaxLayers(width, height);
@@ -125,137 +122,22 @@ export class MathDungeon extends Scene {
         this._envObjects.push(fog);
     }
 
-    // ─── Parallax Layers ─────────────────────────────────────────────────────
+    // ─── Parallax Layers (zoom-from-center approach) ─────────────────────────
+    // Elements grow from the vanishing point toward the screen edges, giving a
+    // true "moving forward through a corridor" perspective.
 
     _createParallaxLayers(w, h) {
-        // Destroy previous layers on resize
         if (this._parallaxLayers) {
-            this._parallaxLayers.forEach(l => { if (l?.active) l.destroy(); });
+            this._parallaxLayers.forEach(l => { if (l?.gfx?.active) l.gfx.destroy(); });
         }
-        this._parallaxLayers = [];
+        // Preserve offset across resize so animation doesn't stutter
+        if (this._parallaxOffset === undefined) this._parallaxOffset = 0;
 
-        const vanishingY = h * 0.5;
-
-        // FAR layer (depth 0.5): stone-wall brick texture behind the main corridor,
-        // visible as subtle bands in the background corridor opening.
-        const farGfx = this.add.graphics().setScrollFactor(0).setDepth(0);
-        this._drawParallaxFar(farGfx, w, h, vanishingY, 0);
-        this._parallaxLayers.push({ gfx: farGfx, speed: 0.08, drawFn: this._drawParallaxFar.bind(this) });
-
-        // MID layer (depth 1.5): arched doorway / pillar silhouettes on the sides,
-        // creating a sense of passing through connected chambers.
-        const midGfx = this.add.graphics().setScrollFactor(0).setDepth(1.5);
-        this._drawParallaxMid(midGfx, w, h, vanishingY, 0);
-        this._parallaxLayers.push({ gfx: midGfx, speed: 0.22, drawFn: this._drawParallaxMid.bind(this) });
-
-        // NEAR layer (depth 3.5): foreground rocks / shadow patches at the
-        // corridor sides — move fastest, reinforcing forward motion.
-        const nearGfx = this.add.graphics().setScrollFactor(0).setDepth(3.5);
-        this._drawParallaxNear(nearGfx, w, h, vanishingY, 0);
-        this._parallaxLayers.push({ gfx: nearGfx, speed: 0.55, drawFn: this._drawParallaxNear.bind(this) });
-    }
-
-    /** Far layer: faint repeating brick columns in the background opening */
-    _drawParallaxFar(gfx, w, h, vanishingY, scrollOffset) {
-        gfx.clear();
-        const TILE_W = 80;
-        const TILE_H = 40;
-        // Only draw bricks in the central "corridor" rectangle — the visible gap between side walls.
-        const corridorX = w * 0.17;
-        const corridorW = w * 0.66;
-        const corridorTop = vanishingY - h * 0.25;
-        const corridorH    = h * 0.5;
-
-        gfx.fillStyle(0x1a1408, 0.45);
-        gfx.fillRect(corridorX, corridorTop, corridorW, corridorH);
-
-        gfx.lineStyle(1, 0x302818, 0.5);
-        const rowStart = Math.floor(scrollOffset / TILE_H);
-        for (let row = rowStart - 1; row < rowStart + Math.ceil(corridorH / TILE_H) + 2; row++) {
-            const yy = corridorTop + (row * TILE_H) - (scrollOffset % TILE_H);
-            const xOff = (row % 2) * (TILE_W / 2);
-            for (let col = 0; col < Math.ceil(corridorW / TILE_W) + 1; col++) {
-                const xx = corridorX + xOff + col * TILE_W - (scrollOffset * 0.3 % TILE_W);
-                gfx.strokeRect(xx, yy, TILE_W, TILE_H);
-            }
-        }
-    }
-
-    /** Mid layer: dark arch / pillar silhouettes just inside the wall panels */
-    _drawParallaxMid(gfx, w, h, vanishingY, scrollOffset) {
-        gfx.clear();
-        // Pillar repeat interval
-        const INTERVAL = 220;
-        const pillarsVisible = Math.ceil(h / INTERVAL) + 2;
-        const baseOffset = scrollOffset % INTERVAL;
-
-        gfx.fillStyle(0x0a0806, 0.7);
-
-        for (let i = 0; i < pillarsVisible; i++) {
-            const yBase = (i * INTERVAL) - baseOffset - INTERVAL;
-
-            // Left pillar block
-            const lx = w * 0.16;
-            const pillarW = w * 0.05;
-            gfx.fillRect(lx, yBase, pillarW, INTERVAL * 0.55);
-
-            // Right pillar block (mirrored)
-            const rx = w * 0.83 - pillarW;
-            gfx.fillRect(rx, yBase, pillarW, INTERVAL * 0.55);
-
-            // Arch connecting each pillar pair (upper half of the gap)
-            // Draw a simple dark rounded arch shape
-            const archCx = w / 2;
-            const archTopY = yBase + INTERVAL * 0.05;
-            const archH    = INTERVAL * 0.35;
-            const archW    = w * 0.32;
-
-            gfx.fillStyle(0x0d0b09, 0.6);
-            // Arch as an ellipse top-half silhouette
-            gfx.beginPath();
-            gfx.arc(archCx, archTopY + archH * 0.5, archW, -Math.PI, 0, false);
-            gfx.closePath();
-            gfx.fillPath();
-
-            // Reset fill style for next pillar pair
-            gfx.fillStyle(0x0a0806, 0.7);
-        }
-    }
-
-    /** Near layer: foreground ground rocks and corner shadow blobs */
-    _drawParallaxNear(gfx, w, h, vanishingY, scrollOffset) {
-        gfx.clear();
-        const INTERVAL = 160;
-        const count = Math.ceil(h / INTERVAL) + 3;
-        const baseOffset = scrollOffset % INTERVAL;
-
-        for (let i = 0; i < count; i++) {
-            const t = (i * INTERVAL - baseOffset) / h;
-            // Fade rocks in as they approach the bottom of the screen
-            const alpha = Math.min(1, Math.max(0, (t - 0.3) * 1.8));
-            if (alpha <= 0) continue;
-
-            const yBase = i * INTERVAL - baseOffset;
-            // Scale rocks larger as they get closer (towards bottom)
-            const s = 0.4 + t * 0.8;
-
-            // Left-side rock cluster
-            gfx.fillStyle(0x1a1208, alpha * 0.85);
-            gfx.fillEllipse(w * 0.16, yBase + INTERVAL * 0.6, 55 * s, 28 * s);
-            gfx.fillStyle(0x251c0e, alpha * 0.55);
-            gfx.fillEllipse(w * 0.13, yBase + INTERVAL * 0.75, 36 * s, 18 * s);
-
-            // Right-side rock cluster
-            gfx.fillStyle(0x1a1208, alpha * 0.85);
-            gfx.fillEllipse(w * 0.84, yBase + INTERVAL * 0.6, 55 * s, 28 * s);
-            gfx.fillStyle(0x251c0e, alpha * 0.55);
-            gfx.fillEllipse(w * 0.87, yBase + INTERVAL * 0.75, 36 * s, 18 * s);
-
-            // Shadow drape on the floor
-            gfx.fillStyle(0x000000, alpha * 0.18);
-            gfx.fillRect(0, yBase + INTERVAL * 0.82, w * 0.2, 10 * s);
-            gfx.fillRect(w * 0.8, yBase + INTERVAL * 0.82, w * 0.2, 10 * s);
-        }
+        this._parallaxLayers = [
+            { gfx: this.add.graphics().setScrollFactor(0).setDepth(0.5) },   // far
+            { gfx: this.add.graphics().setScrollFactor(0).setDepth(1.5) },   // mid
+            { gfx: this.add.graphics().setScrollFactor(0).setDepth(3.5) },   // near
+        ];
     }
 
     /** Entrance animation: stone-door split + zoom-out over ~1 second */
@@ -494,17 +376,64 @@ export class MathDungeon extends Scene {
     }
 
     _updateParallaxLayers(delta) {
-        if (!this._parallaxLayers || !this._parallaxLayers.length) return;
+        if (!this._parallaxLayers?.length) return;
         const { width, height } = this.cameras.main;
-        const vanishingY = height * 0.5;
+        const vY = height * 0.5;
 
-        // Advance scroll offsets based on walking speed and each layer's parallax speed
+        // Advance a shared loop counter (0–600) at walking speed
         const scrollDelta = this.isWalking ? delta * 0.35 : 0;
+        const LOOP = 600;
+        this._parallaxOffset = (this._parallaxOffset + scrollDelta) % LOOP;
 
-        this._parallaxLayers.forEach(layer => {
-            // Accumulate offset for this layer's speed factor
-            layer.offset = (layer.offset ?? 0) + scrollDelta * layer.speed;
-            layer.drawFn(layer.gfx, width, height, vanishingY, layer.offset);
+        const wc   = this.worldConfig;
+        const cL   = width * 0.17;          // corridor left edge
+        const cR   = width * 0.83;          // corridor right edge
+        const cW   = cR - cL;               // corridor width
+        const FRAMES = 6;                   // concurrent expanding frames per layer
+
+        const layerCfg = [
+            { alphaBase: 0.18, lw: 1,   depth: 0.5 },
+            { alphaBase: 0.30, lw: 1.5, depth: 1.5 },
+            { alphaBase: 0.48, lw: 2,   depth: 3.5 },
+        ];
+
+        this._parallaxLayers.forEach((layer, idx) => {
+            const gfx = layer.gfx;
+            gfx.clear();
+            const cfg = layerCfg[idx];
+
+            for (let i = 0; i < FRAMES; i++) {
+                // Each frame has a phase distributed evenly across [0,1),
+                // offset by the layer index so layers are staggered.
+                const raw = ((i / FRAMES) + this._parallaxOffset / LOOP + idx / 3) % 1;
+
+                // Perspective foreshortening: use a power curve so frames accelerate
+                // as they "approach" the viewer.
+                const phase = Math.pow(raw, 1.6);
+
+                // Fade in at birth, fade out at death
+                const alpha = raw < 0.12 ? raw / 0.12
+                            : raw > 0.78 ? (1 - raw) / 0.22
+                            : 1;
+                if (alpha < 0.02 || phase < 0.01) continue;
+
+                // Frame expands from vanishing point to full corridor size
+                const fw = cW   * phase;
+                const fh = height * phase;
+                const fx = width / 2 - fw / 2;
+                const fy = vY   - fh / 2;
+
+                gfx.lineStyle(cfg.lw, wc.gridColor, alpha * cfg.alphaBase);
+                gfx.strokeRect(fx, fy, fw, fh);
+
+                // Near layer: add subtle corner darkening for depth
+                if (idx === 2 && phase > 0.6) {
+                    const darkness = (phase - 0.6) / 0.4 * 0.12 * alpha;
+                    gfx.fillStyle(0x000000, darkness);
+                    gfx.fillRect(fx - 4, fy, 4, fh);
+                    gfx.fillRect(fx + fw, fy, 4, fh);
+                }
+            }
         });
     }
 

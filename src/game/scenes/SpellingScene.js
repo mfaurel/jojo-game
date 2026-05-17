@@ -165,8 +165,8 @@ export class SpellingScene extends Scene {
         
         backBtn.setInteractive({ useHandCursor: true })
             .on('pointerup', () => this._backspace())
-            .on('pointerover', () => backBtn.setScale(1.1))
-            .on('pointerout',  () => backBtn.setScale(1));
+            .on('pointerover', () => backBtn.setAlpha(0.75))
+            .on('pointerout',  () => backBtn.setAlpha(1));
 
         this.add.text(bsx, bsy, '⌫', {
             fontSize: '30px', color: '#ffffff',
@@ -234,8 +234,8 @@ export class SpellingScene extends Scene {
         }
         btn.setInteractive({ useHandCursor: true })
             .on('pointerup',   () => this._showConfirmQuit())
-            .on('pointerover', () => btn.setScale(1.1))
-            .on('pointerout',  () => btn.setScale(1));
+            .on('pointerover', () => btn.setAlpha(0.75))
+            .on('pointerout',  () => btn.setAlpha(1));
         this.add.text(114, 88, t('menuBtn'), {
             fontSize: '18px',
             fontFamily: 'Arial Black, Arial, sans-serif',
@@ -253,28 +253,25 @@ export class SpellingScene extends Scene {
 
         btn.setInteractive()
             .on('pointerup', () => this._showConfirmQuit())
-            .on('pointerover', () => btn.setScale(1.1))
-            .on('pointerout',  () => btn.setScale(1));
+            .on('pointerover', () => btn.setAlpha(0.75))
+            .on('pointerout',  () => btn.setAlpha(1));
 
         this.add.text(910, 88, '✕', { fontSize: '22px', color: '#fff' }).setOrigin(0.5);
     }
 
     _showConfirmQuit() {
-        const cx = 512, cy = 384;
+        const { width, height } = this.cameras.main;
+        const cx = width / 2, cy = height / 2;
         const elems = [];
 
-        elems.push(this.add.rectangle(cx, cy, 1024, 768, 0x000000, 0.75).setDepth(50));
+        elems.push(this.add.rectangle(cx, cy, width, height, 0x000000, 0.78).setDepth(50).setScrollFactor(0));
 
-        if (this.textures.exists('ui_panel')) {
-            elems.push(this.add.nineslice(cx, cy, 'ui_panel', 0, 380, 200, 40, 40, 40, 40).setDepth(51));
-        } else {
-            const g = this.add.graphics().setDepth(51);
-            g.fillStyle(0x3a0060, 0.97);
-            g.fillRoundedRect(cx - 190, cy - 100, 380, 200, 18);
-            g.lineStyle(4, 0xffd700, 1);
-            g.strokeRoundedRect(cx - 190, cy - 100, 380, 200, 18);
-            elems.push(g);
-        }
+        const g = this.add.graphics().setDepth(51).setScrollFactor(0);
+        g.fillStyle(0x1a0a2e, 0.97);
+        g.fillRoundedRect(cx - 190, cy - 100, 380, 200, 18);
+        g.lineStyle(4, 0xffd700, 1);
+        g.strokeRoundedRect(cx - 190, cy - 100, 380, 200, 18);
+        elems.push(g);
 
         elems.push(this.add.text(cx, cy - 38, t('confirmQuit'), {
             fontSize: '28px',
@@ -282,33 +279,29 @@ export class SpellingScene extends Scene {
             color: '#ffffff',
             stroke: '#000',
             strokeThickness: 4,
-        }).setOrigin(0.5).setDepth(52));
+        }).setOrigin(0.5).setDepth(52).setScrollFactor(0));
 
-        const dismiss = () => elems.forEach(e => e.destroy());
+        const dismiss = () => elems.forEach(e => { if (e?.active) e.destroy(); });
 
-        const makeBtn = (bx, color, labelKey, onClick) => {
-            let btn;
-            if (this.textures.exists('ui_button_red')) {
-                btn = this.add.image(bx, cy + 38, 'ui_button_red').setDisplaySize(130, 52).setTint(color).setDepth(52);
-            } else {
-                btn = this.add.rectangle(bx, cy + 38, 130, 52, color, 1).setDepth(52);
-            }
-            btn.setInteractive({ useHandCursor: true })
-                .on('pointerover', () => btn.setScale(1.1))
-                .on('pointerout',  () => btn.setScale(1))
-                .on('pointerup',   onClick);
+        [
+            { bx: cx - 80, color: 0x228822, key: 'confirmYes', fn: () => { dismiss(); this._close(); } },
+            { bx: cx + 80, color: 0x882222, key: 'confirmNo',  fn: () => dismiss() },
+        ].forEach(({ bx, color, key, fn }) => {
+            const btn = this.add.rectangle(bx, cy + 38, 130, 52, color, 1)
+                .setDepth(52).setScrollFactor(0)
+                .setInteractive({ useHandCursor: true })
+                .on('pointerover', () => btn.setAlpha(0.8))
+                .on('pointerout',  () => btn.setAlpha(1))
+                .on('pointerup',   fn);
             elems.push(btn);
-            elems.push(this.add.text(bx, cy + 38, t(labelKey), {
+            elems.push(this.add.text(bx, cy + 38, t(key), {
                 fontSize: '22px',
                 fontFamily: 'Arial Black, Arial, sans-serif',
                 color: '#fff',
                 stroke: '#000',
                 strokeThickness: 3,
-            }).setOrigin(0.5).setDepth(53));
-        };
-
-        makeBtn(cx - 80, 0x228822, 'confirmYes', () => { dismiss(); this._close(); });
-        makeBtn(cx + 80, 0x882222, 'confirmNo',  () => dismiss());
+            }).setOrigin(0.5).setDepth(53).setScrollFactor(0));
+        });
     }
 
     _selectLetter(tile) {

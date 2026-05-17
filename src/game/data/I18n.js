@@ -208,6 +208,7 @@ const STRINGS = {
         // ── Infinite Math mode ───────────────────────────────────────────────
         infiniteMathTitle:    '∞ Maths Infini',
         infiniteMathScore:    (n) => `Score : ${n}`,
+        infiniteMathBest:     (n) => `Record : ${n}`,
         infiniteMathLives:    (n) => `Vies : ${n}`,
         infiniteMathGameOver: 'GAME OVER',
         infiniteMathReplay:   'Rejouer',
@@ -415,6 +416,7 @@ const STRINGS = {
         // ── Infinite Math mode ───────────────────────────────────────────────
         infiniteMathTitle:    '∞ Infinite Maths',
         infiniteMathScore:    (n) => `Score: ${n}`,
+        infiniteMathBest:     (n) => `Best: ${n}`,
         infiniteMathLives:    (n) => `Lives: ${n}`,
         infiniteMathGameOver: 'GAME OVER',
         infiniteMathReplay:   'Play Again',
@@ -622,6 +624,7 @@ const STRINGS = {
         // ── Infinite Math mode ───────────────────────────────────────────────
         infiniteMathTitle:    '∞ Mates Infinitas',
         infiniteMathScore:    (n) => `Puntos: ${n}`,
+        infiniteMathBest:     (n) => `Récord: ${n}`,
         infiniteMathLives:    (n) => `Vidas: ${n}`,
         infiniteMathGameOver: 'FIN DEL JUEGO',
         infiniteMathReplay:   'Jugar de Nuevo',
