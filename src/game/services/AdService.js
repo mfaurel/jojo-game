@@ -1,13 +1,22 @@
 import { AdMob, BannerAdSize, BannerAdPosition } from '@capacitor-community/admob';
 
-// Switch between test IDs (dev) and real IDs (prod build)
-const BANNER_ID   = import.meta.env.DEV
+// Switch between test IDs (dev) and real IDs (prod build).
+// Replace the YOUR_* strings with real AdMob unit IDs after creating them in the AdMob Console.
+const BANNER_ID       = import.meta.env.DEV
     ? 'ca-app-pub-3940256099942544/6300978111'
     : 'YOUR_BANNER_AD_UNIT_ID';
 
-const REWARDED_ID = import.meta.env.DEV
+const REWARDED_ID     = import.meta.env.DEV
     ? 'ca-app-pub-3940256099942544/5224354917'
     : 'YOUR_REWARDED_AD_UNIT_ID';
+
+const INTERSTITIAL_ID = import.meta.env.DEV
+    ? 'ca-app-pub-3940256099942544/1033173712'
+    : 'YOUR_INTERSTITIAL_AD_UNIT_ID';
+
+function _isPremium() {
+    try { return localStorage.getItem('jolyne_cosmetics1_unlocked') === 'true'; } catch { return false; }
+}
 
 let _initialized = false;
 
@@ -35,6 +44,14 @@ export async function showBanner() {
 export async function hideBanner() {
     if (!_initialized) return;
     try { await AdMob.hideBanner(); } catch {}
+}
+
+export async function showInterstitialIfReady() {
+    if (!_initialized || _isPremium()) return;
+    try {
+        await AdMob.prepareInterstitial({ adId: INTERSTITIAL_ID, npa: true });
+        await AdMob.showInterstitial();
+    } catch {}
 }
 
 export function showRewardedAd() {

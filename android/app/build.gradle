@@ -16,8 +16,22 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    // ── Release signing ──────────────────────────────────────────────────────
+    // Fill in the three YOUR_* values below after generating your keystore:
+    //   keytool -genkey -v -keystore release.keystore -alias jojo-key -keyalg RSA -keysize 2048 -validity 10000
+    // Store the keystore file OUTSIDE the git repo. Never commit it.
+    signingConfigs {
+        release {
+            storeFile     file(System.getenv("JOJO_KEYSTORE_PATH") ?: "YOUR_KEYSTORE_PATH/release.keystore")
+            storePassword System.getenv("JOJO_STORE_PASS")         ?: "YOUR_STORE_PASSWORD"
+            keyAlias      "jojo-key"
+            keyPassword   System.getenv("JOJO_KEY_PASS")           ?: "YOUR_KEY_PASSWORD"
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

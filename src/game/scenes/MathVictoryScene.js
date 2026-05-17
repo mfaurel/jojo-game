@@ -5,6 +5,7 @@ import { t } from '../data/I18n.js';
 import { checkAndUnlock } from '../services/AchievementService.js';
 import { showAchievementToast } from '../services/AchievementToast.js';
 import { checkAllStars } from '../services/AchievementChecks.js';
+import { showInterstitialIfReady } from '../services/AdService.js';
 import { LootManager } from '../systems/LootManager.js';
 import { addToInventory } from '../data/LevelData.js';
 import { SPECIAL_REWARDS } from '../data/ItemData.js';
@@ -97,7 +98,7 @@ export class MathVictoryScene extends Scene {
         });
 
         // Phase 5 — reward popup or continue button (1800ms)
-        this.time.delayedCall(1800, () => {
+        this.time.delayedCall(1800, async () => {
             if (this._achResults?.length) {
                 this._achResults.forEach((a, i) =>
                     this.time.delayedCall(i * 2200, () =>
@@ -110,9 +111,12 @@ export class MathVictoryScene extends Scene {
                     return;
                 }
             } else if (this._showEnding) {
+                // Skip interstitial for the all-stars ending — that moment is too special to interrupt
                 this.time.delayedCall(600, () => this.scene.start('EndingScene'));
                 return;
             }
+            // Show interstitial before the reward popup or continue button
+            await showInterstitialIfReady();
             if (this.wonItem) {
                 this.scene.launch('RewardPopup', {
                     item:    this.wonItem,

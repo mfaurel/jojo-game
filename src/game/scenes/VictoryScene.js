@@ -8,6 +8,7 @@ import { t } from '../data/I18n.js';
 import { checkAndUnlock } from '../services/AchievementService.js';
 import { showAchievementToast } from '../services/AchievementToast.js';
 import { checkAllStars } from '../services/AchievementChecks.js';
+import { showInterstitialIfReady } from '../services/AdService.js';
 
 export class VictoryScene extends Scene {
     constructor() {
@@ -421,7 +422,12 @@ export class VictoryScene extends Scene {
             });
         }
 
-        this.time.delayedCall(2500, () => { if (!this._skipped) this._showRewardUI(); });
+        this.time.delayedCall(2500, async () => {
+            if (this._skipped) return;
+            // Skip interstitial for the all-stars ending — that moment is too special to interrupt
+            if (!this._showEnding) await showInterstitialIfReady();
+            if (!this._skipped) this._showRewardUI();
+        });
     }
 
     // ─── Phase 5: Reward UI (persistent) ─────────────────────────────────────
