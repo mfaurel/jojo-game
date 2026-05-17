@@ -425,7 +425,7 @@ export class CollectionScene extends Scene {
             const previewH = cardH > 120 ? Math.floor(cardH * 0.52) : 88;
             this._drawCardBackPreview(cx, cy, item.id, previewW, previewH);
         } else if (item.emoji) {
-            this.add.text(cx, cy + 4, item.emoji, { fontSize: '26px' }).setOrigin(0.5, 0.5);
+            this.add.text(cx, cy + 4, item.emoji, { fontSize: '20px' }).setOrigin(0.5, 0.5);
         } else {
             this.add.text(cx, cy, '📦', { fontSize: '32px' }).setOrigin(0.5);
         }
