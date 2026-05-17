@@ -4,8 +4,6 @@
 
 | # | Description | Key files | Status |
 |---|-------------|-----------|--------|
-| B5 | Collection layout not centered when not fullscreen (wide widths) | `CollectionScene.js` | Resize-restart handler was already in place — verify centering at various viewport widths |
-| B8 | "Classe" background (bg_spelling) in Bonus tab should always be unlocked + equippable | `ItemData.js` | Added `isBackground: true` to `SPECIAL_REWARDS.BG_SPELLING` |
 | B10 | Math emoji icons cropped at top; no achievement shown on click; achievements disappear on language change | `CollectionScene.js`, `MainMenu.js` | Emoji origin fixed; explorer/linguist toasts queued via registry and flushed after scene restarts |
 | B13 | Achievements grid not centred; "succès débloqués" info hidden behind grid | `CollectionScene.js` | Vertical spacing increased; click-to-reveal detail modal added |
 | F4 | Deusgames intro/logo scene | `IntroScene.js`, `main.js`, `Boot.js` | New scene with 2–3 s logo animation (skippable); Boot → IntroScene → Preloader chain |
@@ -14,11 +12,20 @@
 | D3 | Math monster assets in `gallery.html` | `public/gallery.html` | New standalone gallery page; 18 monsters in 6 worlds rendered via Canvas2D adapter |
 | D4 | Remove premium lock icon from main menu | `MainMenu.js` | Sign-in button changed from 🔐 to 👤 |
 | D5 | Red delete button in spelling game is too wide for long words | `SpellingScene.js` | Backspace button moved from x=880 to x=950, size 70→55 px |
-| F3 | Infinite math mode | `InfiniteMathScene.js` (exists); `MathWorldSelectScene.js` entry | M | ✅ Done — registered in `main.js`; accessible from world select |
 | F5 | End-game cinematic (all stars) | `EndingScene.js`, `AchievementChecks.js` | M | ✅ Done — cinematic plays once on 100 % completion via `checkAllStars()`; `ENDING_SEEN_KEY` prevents re-trigger |
 | F6 | MathDungeon atmosphere improvements | `MathDungeon.js` | M | ✅ Done — 3-layer parallax, stone-door entrance animation, per-frame torch flicker |
 
 ---
+
+## 1. Bugs
+
+| # | Item | Key files | Effort | Done when |
+|---|------|-----------|--------|-----------|
+| A1 | Infinite math mode | Add a best score in the mathematics page on the rights of "Maths Infini"
+| A2 | Collection layout not centered when large screen 
+| A3 | Remove unused files
+| A4 | Remove unused "Récompenses spéciales" in the middle
+| A5 | Math emoji icons cropped at top in the Collection tabs
 
 ## 4. Content & Assets
 

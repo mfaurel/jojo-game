@@ -12,7 +12,7 @@ export class IntroScene extends Scene {
         this.cameras.main.setBackgroundColor(0x000000);
 
         // Logo text
-        const logo = this.add.text(cx, cy - 20, 'DEUSGAMES', {
+        const logo = this.add.text(cx, cy - 20, 'JOJOGAMES', {
             fontSize: '72px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffffff',

@@ -82,7 +82,10 @@ const StartGame = (parent) => {
     });
 
     const centreScene = (scene) => {
-        if (scene.cameras?.main) scene.cameras.main.centerOn(512, 384);
+        if (scene.cameras?.main) {
+            const cam = scene.cameras.main;
+            cam.centerOn(cam.width / 2, cam.height / 2);
+        }
     };
     const centreAll = () => {
         game.scene.scenes.forEach(s => { if (s.sys.settings.active) centreScene(s); });
