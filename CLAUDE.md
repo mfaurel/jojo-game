@@ -22,7 +22,7 @@ This is a **Windows environment**. Use PowerShell syntax in shell commands (`$en
 - **Data modules** (`src/game/data/`): Pure JS, no Phaser dependency. Add new words in `WordData.js`, new levels as entries in `LevelData.js` / `MemoryData.js` / `MathWorldData.js` / `CountingData.js`.
 - **Scenes** (`src/game/scenes/`): Phaser Scene classes. All must be registered in `src/game/main.js`.
 - **Systems** (`src/game/systems/`): Reusable Phaser helpers (player, map, gates, loot, audio).
-- **Services** (`src/game/services/`): Firebase auth/save, AdMob, IAP, back button, i18n, child name.
+- **Services** (`src/game/services/`): Firebase auth/save, AdMob, IAP, back button, child name, achievements (`AchievementService.js`, `AchievementChecks.js`, `AchievementToast.js`).
 - **i18n**: All user-visible strings go through `t()` from `I18n.js`. Three locales: `fr` (default), `en`, `es`.
 
 ## Adding Content

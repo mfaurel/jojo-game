@@ -269,6 +269,8 @@ src/
       CollectionScene.js           # Tabbed inventory & equip screen
       ParentalGateScene.js         # Arithmetic overlay guarding IAP / sign-in
       ExitConfirmScene.js          # Android back-button exit confirmation
+      EndingScene.js               # End-game cinematic (triggered on 100% completion)
+      InfiniteMathScene.js         # Infinite math mode (endless problem stream)
     systems/
       MapBuilder.js                # Draws castle tiles
       PlayerController.js          # Jolyne sprite, grid movement, D-pad (70px buttons)
@@ -283,6 +285,9 @@ src/
       NameService.js               # Child name customisation (unlocked via IAP)
       BackButtonHandler.js         # Android hardware back button routing
       firebase.js                  # Firebase app + Firestore init
+      AchievementService.js        # Achievement catalogue, unlock logic, localStorage persistence
+      AchievementChecks.js         # Cross-mode completion checks that trigger achievements
+      AchievementToast.js          # In-game toast notification for newly unlocked achievements
 public/
   assets/                          # SVG UI tiles
   resources/                       # Pixel art images (served as static assets)
@@ -364,7 +369,7 @@ Add an entry to `COUNTING_LEVELS` in `src/game/data/CountingData.js`. Specify `t
 |---------|---------|
 | [Phaser](https://phaser.io) | 4.0.0 |
 | [Vite](https://vitejs.dev) | 6.x |
-| [Capacitor](https://capacitorjs.com) | 7.x |
+| [Capacitor](https://capacitorjs.com) | 8.x |
 | @capacitor-community/admob | — |
 | @capgo/native-purchases | — |
 | Firebase (Firestore) | — |
