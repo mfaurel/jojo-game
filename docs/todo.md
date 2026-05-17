@@ -1,29 +1,21 @@
 # Le Château de Jolyne — Roadmap
 
-## 1. Bugs
-
-| # | Item | Key files | Effort | Done when |
-|---|------|-----------|--------|-----------|
-| A2 | Collection layout not centered when large screen 
-| A3 | Remove unused files
-| F5 | End-game cinematic (all stars) is playable again in the collection bonus on "Récompense spéciales" |
-| C2 | Math monster assets in `gallery.html` |  Add in existing gallery.html all the assets (maths monsters of all the 6 worlds...)
-
 ### ✅ Done
-| A1 | Infinite math mode best score | Added "Record" badge next to "Maths Infini" button and on game-over screen |
-| A4 | Remove unused "Récompenses spéciales" | Removed section and method from CollectionScene |
 | A5 | Math emoji icons cropped at top in Collection tabs | Resized 40px→32px, shifted down 4px |
-| A6 | No popin on achievement click, remove "+ récompense" text | Removed interactivity and reward badge from achievement cards |
 | A7 | Debug inputs only after Konami code | Keys A/B/C gated behind `_debugUnlocked` flag set by UP UP |
+| C2 | Math monster assets in `gallery.html` | Added full 6-world × 3-monster section + `lineBetween` adapter to `docs/gallery.html` |
 | D4 | Remove Sign-in button 👤 | Removed button and AuthService import from MainMenu |
 | D5 | Red buttons in SpellingScene grow too wide on hover | Changed `setScale(1.1)` to `setAlpha(0.75)` on hover |
 | D5 | Confirm-quit popin style inconsistent | Rewritten to match the standard dark rounded-rect + gold border layout |
+| F5 | End-game cinematic playable from collection bonus | Fixed by A4 — removing `_drawSpecialRewards()` eliminated the only replay path |
 | F6 | MathDungeon parallax goes down instead of forward | Rewritten with zoom-from-center expanding frames for a true forward-perspective effect |
 
 ## 2. Content & Assets
 
 | # | Item | Key files | Effort | Done when |
 |---|------|-----------|--------|-----------|
+| A2 | Collection layout not centered on large screens | All tab Y positions made height-proportional (`height * fraction`) in CollectionScene |
+| A7 | Debug inputs only after Konami code | Keys A/B/C gated behind `_debugUnlocked` flag set by UP UP | Use A to unlock every level of spelling, Add B to unlock every level of Mathematics, C to unlock every level of Memory, D for memo counting, E for achievements
 | C2 | Update / refresh sprites | `WordData.js`, `ItemData.js` drawPicture functions | M–L | Visual pass on each `drawPicture` fn, child-test approved |
 
 ---

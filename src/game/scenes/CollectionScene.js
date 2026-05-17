@@ -160,14 +160,14 @@ export class CollectionScene extends Scene {
     // ── Tab 0: Skins ─────────────────────────────────────────────────────────
 
     _drawSkinTab(inventory, equipment) {
-        const { width } = this.cameras.main;
+        const { width, height } = this.cameras.main;
         const items = ITEMS.filter(i => i.category === 'skin');
         const cardW = 200;
         const cardH = 200;
         const gap   = 30;
         const totalW = items.length * cardW + (items.length - 1) * gap;
         const startX = (width - totalW) / 2;
-        const cy = 320;
+        const cy = Math.round(height * 0.42);
 
         this.add.text(width / 2, 135, t('chooseSkin'), {
             fontSize: '18px',
@@ -185,16 +185,17 @@ export class CollectionScene extends Scene {
     // ── Tab 1: Math items ─────────────────────────────────────────────────────
 
     _drawMathTab(inventory, equipment) {
-        const { width } = this.cameras.main;
+        const { width, height } = this.cameras.main;
 
         this.add.text(width / 2, 135, t('mathEquipment'), {
             fontSize: '18px',
             color: '#ddaaff',
         }).setOrigin(0.5);
 
+        const rowCY = Math.round(height / 2) + 20;
         const rowDefs = [
-            { labelKey: 'leftArm',  cat: 'item_left',  y: 270 },
-            { labelKey: 'rightArm', cat: 'item_right', y: 450 },
+            { labelKey: 'leftArm',  cat: 'item_left',  y: rowCY - 90 },
+            { labelKey: 'rightArm', cat: 'item_right', y: rowCY + 90 },
         ];
 
         rowDefs.forEach(row => {
@@ -223,14 +224,14 @@ export class CollectionScene extends Scene {
     // ── Tab 2: Backgrounds ───────────────────────────────────────────────────
 
     _drawBonusTab(inventory, equipment) {
-        const { width } = this.cameras.main;
+        const { width, height } = this.cameras.main;
         const items = ITEMS.filter(i => i.category === 'background');
         const cardW = 200;
         const cardH = 160;
         const gap   = 30;
         const totalW = items.length * cardW + (items.length - 1) * gap;
         const startX = (width - totalW) / 2;
-        const cy = 300;
+        const cy = Math.round(height * 0.39);
 
         this.add.text(width / 2, 135, t('chooseBg'), {
             fontSize: '18px',
@@ -250,7 +251,8 @@ export class CollectionScene extends Scene {
     // ── Name customization (Bonus tab) ────────────────────────────────────────
 
     _drawNameCustomization(width) {
-        const sectionY = 490;
+        const { height } = this.cameras.main;
+        const sectionY = Math.round(height * 0.64);
 
         this.add.text(width / 2, sectionY, '— Personnaliser le prénom —', {
             fontSize: '16px',
@@ -423,7 +425,7 @@ export class CollectionScene extends Scene {
             const previewH = cardH > 120 ? Math.floor(cardH * 0.52) : 88;
             this._drawCardBackPreview(cx, cy, item.id, previewW, previewH);
         } else if (item.emoji) {
-            this.add.text(cx, cy + 4, item.emoji, { fontSize: '32px' }).setOrigin(0.5, 0.5);
+            this.add.text(cx, cy + 4, item.emoji, { fontSize: '26px' }).setOrigin(0.5, 0.5);
         } else {
             this.add.text(cx, cy, '📦', { fontSize: '32px' }).setOrigin(0.5);
         }
@@ -543,14 +545,14 @@ export class CollectionScene extends Scene {
     // ── Tab 3: Memory card backs ──────────────────────────────────────────────
 
     _drawMemoryTab(inventory, equipment) {
-        const { width } = this.cameras.main;
+        const { width, height } = this.cameras.main;
         const items  = CARD_BACK_ITEMS;
         const cardW  = 240;
         const cardH  = 310;
         const gap    = 36;
         const totalW = items.length * cardW + (items.length - 1) * gap;
         const startX = (width - totalW) / 2;
-        const cy     = 350;
+        const cy     = Math.round(height * 0.52);
 
         this.add.text(width / 2, 135, t('chooseCardBack'), {
             fontSize: '18px',
@@ -583,7 +585,7 @@ export class CollectionScene extends Scene {
     // ── Tab 4: Achievements ───────────────────────────────────────────────────
 
     _drawAchievementsTab() {
-        const { width } = this.cameras.main;
+        const { width, height } = this.cameras.main;
         const map     = getAchievements();
         const { unlocked, total } = getAchProgress();
 
@@ -599,7 +601,7 @@ export class CollectionScene extends Scene {
         const cols   = 2;
         const totalW = cols * cardW + (cols - 1) * colGap;
         const startX = (width - totalW) / 2 + cardW / 2;
-        const startY = 220;
+        const startY = Math.round(height * 0.29);
 
         ACHIEVEMENTS.forEach((ach, idx) => {
             const col    = idx % cols;
