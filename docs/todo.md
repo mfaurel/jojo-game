@@ -7,6 +7,11 @@
 
 | # | Item | Key files | Effort | Done when |
 |---|------|-----------|--------|-----------|
+
+Rewrite all 18 monster variants (2 new designs each: detailed & kawaii) and all 50 word 
+     variants (2 structurally different icon shapes each). Takes longer but gives real 
+     alternatives.
+
 | A2 | Collection layout not centered on large screens | All tab Y positions made height-proportional (`height * fraction`) in CollectionScene |
 | A7 | Debug inputs only after Konami code | Keys A/B/C gated behind `_debugUnlocked` flag set by UP UP | Use A to unlock every level of spelling, Add B to unlock every level of Mathematics, C to unlock every level of Memory, D for memo counting, E for achievements
 | F6 | MathDungeon parallax goes down instead of forward | Rewritten with zoom-from-center expanding frames for a true forward-perspective effect | Ok but monster should be au premier plan
@@ -25,9 +30,3 @@
 | M5 | iOS App (paid or ads) | `ios/` Capacitor target; App Store Connect | XL | App passes App Store review; monetisation model chosen |
 | P1 | Premium skins (girl / boy variants) | `ItemData.js`, `CollectionScene.js` | S | 2+ new skins visible in Collection tab 0; IAP gate respected |
 | S1 | Replace third-party trackers / ads with self-hosted analytics (user habits, no PII sent out) | M |
-
----
-
-## Effort key
-
-`XS` < 1 h · `S` 1–4 h · `M` 4–16 h · `L` 16–40 h · `XL` > 40 h
