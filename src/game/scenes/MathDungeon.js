@@ -948,7 +948,13 @@ export class MathDungeon extends Scene {
         const monsters = this.worldConfig.monsters;
         const name = monsters[Math.floor(Math.random() * monsters.length)];
 
-        const container = this.add.container(width / 2, height / 2).setScale(0.01).setScrollFactor(0);
+        // Depth 9: above all environment layers (parallax 0.5/1.5/3.5, fog 4, particles 5,
+        // torchHolders 6, torchGfx 7) but below arms (150) and HUD (200+)
+        const container = this.add.container(width / 2, height / 2).setScale(0.01).setScrollFactor(0).setDepth(9);
+
+        // Perspective ground shadow — larger ellipse at floor level for depth feel
+        const groundShadow = this.add.ellipse(0, 120, 220, 55, 0x000000, 0.35);
+        container.add(groundShadow);
 
         const shadow = this.add.ellipse(0, 80, 120, 40, 0x000000, 0.2);
         container.add(shadow);

@@ -1,20 +1,14 @@
 # Le Château de Jolyne — Roadmap
 
 ### ✅ Done
-| A5 | Math emoji icons cropped at top in Collection tabs | Resized 40px→32px, shifted down 4px |
 
-## 2. Content & Assets
+## 2. 260607 15h20 current Content & Assets
 
 | # | Item | Key files | Effort | Done when |
 |---|------|-----------|--------|-----------|
+I want that all 50 word have new alternative variants (2 structurally different icon shapes each). Takes longer but gives real alternatives so I can check them in the @gallery.html
+Check all the screens, verify with playwright and center everything when we have different kind of screen (browser, browser full screen, tablet, phone in portrait, phone in landscape)
 
-Rewrite all 18 monster variants (2 new designs each: detailed & kawaii) and all 50 word 
-     variants (2 structurally different icon shapes each). Takes longer but gives real 
-     alternatives.
-
-| A2 | Collection layout not centered on large screens | All tab Y positions made height-proportional (`height * fraction`) in CollectionScene |
-| A7 | Debug inputs only after Konami code | Keys A/B/C gated behind `_debugUnlocked` flag set by UP UP | Use A to unlock every level of spelling, Add B to unlock every level of Mathematics, C to unlock every level of Memory, D for memo counting, E for achievements
-| F6 | MathDungeon parallax goes down instead of forward | Rewritten with zoom-from-center expanding frames for a true forward-perspective effect | Ok but monster should be au premier plan
 | C2 | Update / refresh sprites | `WordData.js`, `ItemData.js` drawPicture functions | M–L | Visual pass on each `drawPicture` fn, child-test approved |
 
 ---

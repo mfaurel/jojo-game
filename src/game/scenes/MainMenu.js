@@ -1,9 +1,9 @@
 import { Scene } from 'phaser';
 import { getEquipment, addToInventory, getInventory, getProgress, saveProgress, LEVELS, getEasterStar, saveEasterStar } from '../data/LevelData.js';
 import { ITEMS } from '../data/ItemData.js';
-import { getMathProgress, MATH_WORLDS } from '../data/MathWorldData.js';
-import { getMemoryProgress, MEMORY_LEVELS } from '../data/MemoryData.js';
-import { getCountingProgress, COUNTING_LEVELS } from '../data/CountingData.js';
+import { getMathProgress, MATH_WORLDS, saveMathProgress } from '../data/MathWorldData.js';
+import { getMemoryProgress, MEMORY_LEVELS, saveMemoryProgress } from '../data/MemoryData.js';
+import { getCountingProgress, COUNTING_LEVELS, saveCountingProgress } from '../data/CountingData.js';
 import { t, cycleLang, getLang } from '../data/I18n.js';
 import { checkAndUnlock, ACHIEVEMENTS, getAchievements, unlockAchievement } from '../services/AchievementService.js';
 import { showAchievementToast } from '../services/AchievementToast.js';
@@ -366,36 +366,53 @@ export class MainMenu extends Scene {
         });
 
         // Debug shortcuts — only active after Konami code
-        this.input.keyboard.on('keydown-A', () => { if (this._debugUnlocked) this._debugWinLevel(); });
-        this.input.keyboard.on('keydown-B', () => { if (this._debugUnlocked) this._debugUnlockAchievement(); });
-        this.input.keyboard.on('keydown-C', () => { if (this._debugUnlocked) this._debugGrantItem(); });
+        // A = all spelling | B = all math | C = all memory | D = counting | E = achievements | Z = EVERYTHING
+        this.input.keyboard.on('keydown-A', () => { if (this._debugUnlocked) this._debugUnlockAllSpelling(); });
+        this.input.keyboard.on('keydown-B', () => { if (this._debugUnlocked) this._debugUnlockAllMath(); });
+        this.input.keyboard.on('keydown-C', () => { if (this._debugUnlocked) this._debugUnlockAllMemory(); });
+        this.input.keyboard.on('keydown-D', () => { if (this._debugUnlocked) this._debugUnlockAllCounting(); });
+        this.input.keyboard.on('keydown-E', () => { if (this._debugUnlocked) this._debugUnlockAllAchievements(); });
+        this.input.keyboard.on('keydown-Z', () => { if (this._debugUnlocked) this._debugUnlockEverything(); });
     }
 
-    _debugWinLevel() {
-        const progress = getProgress();
-        const next = LEVELS.findIndex((_, i) => !progress[i]);
-        if (next === -1) { this._showDebugMsg('All spelling levels done!'); return; }
-        saveProgress(next);
-        this._showDebugMsg(`✅ Level ${next + 1} completed`);
+    _debugUnlockAllSpelling() {
+        LEVELS.forEach(lvl => saveProgress(lvl.id));
+        this._showDebugMsg(`✅ ${LEVELS.length} spelling levels unlocked`);
         this.time.delayedCall(800, () => this.scene.restart());
     }
 
-    _debugUnlockAchievement() {
-        const map  = getAchievements();
-        const next = ACHIEVEMENTS.find(a => !map[a.id]?.unlocked);
-        if (!next) { this._showDebugMsg('All achievements unlocked!'); return; }
-        const r = unlockAchievement(next.id);
-        showAchievementToast(this, next.id, r.rewardItemId);
-        this._showDebugMsg(`🏆 ${next.id}`);
+    _debugUnlockAllMath() {
+        MATH_WORLDS.forEach(w => saveMathProgress(w.id));
+        this._showDebugMsg(`✅ ${MATH_WORLDS.length} math worlds unlocked`);
+        this.time.delayedCall(800, () => this.scene.restart());
     }
 
-    _debugGrantItem() {
-        const inv    = getInventory();
-        const unowned = ITEMS.filter(i => !inv.includes(i.id));
-        if (!unowned.length) { this._showDebugMsg('All items owned!'); return; }
-        const item = unowned[Math.floor(Math.random() * unowned.length)];
-        addToInventory(item.id);
-        this._showDebugMsg(`🎁 ${item.id}`);
+    _debugUnlockAllMemory() {
+        MEMORY_LEVELS.forEach((_, i) => saveMemoryProgress(i));
+        this._showDebugMsg(`✅ ${MEMORY_LEVELS.length} memory levels unlocked`);
+        this.time.delayedCall(800, () => this.scene.restart());
+    }
+
+    _debugUnlockAllCounting() {
+        COUNTING_LEVELS.forEach((_, i) => saveCountingProgress(i));
+        this._showDebugMsg(`✅ ${COUNTING_LEVELS.length} counting levels unlocked`);
+        this.time.delayedCall(800, () => this.scene.restart());
+    }
+
+    _debugUnlockAllAchievements() {
+        ACHIEVEMENTS.forEach(a => unlockAchievement(a.id));
+        this._showDebugMsg(`🏆 ${ACHIEVEMENTS.length} achievements unlocked`);
+    }
+
+    _debugUnlockEverything() {
+        LEVELS.forEach(lvl => saveProgress(lvl.id));
+        MATH_WORLDS.forEach(w => saveMathProgress(w.id));
+        MEMORY_LEVELS.forEach((_, i) => saveMemoryProgress(i));
+        COUNTING_LEVELS.forEach((_, i) => saveCountingProgress(i));
+        ACHIEVEMENTS.forEach(a => unlockAchievement(a.id));
+        ITEMS.forEach(item => addToInventory(item.id));
+        this._showDebugMsg(`🎉 EVERYTHING UNLOCKED`);
+        this.time.delayedCall(800, () => this.scene.restart());
     }
 
     _showDebugMsg(text) {

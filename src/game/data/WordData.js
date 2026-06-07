@@ -75,6 +75,36 @@ const WORD_CONCEPTS = {
             gfx.fillCircle(cx+r*0.17, cy-r*0.52, r*0.044);
             gfx.fillStyle(0xfff9aa, 0.5);
             gfx.fillEllipse(cx-r*0.06, cy-r*0.55, r*0.18, r*0.06);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Large ornate crown, top-down focus, gold background
+            gfx.fillStyle(0xffd700, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Crown band
+            gfx.fillStyle(0xcc9900, 1);
+            gfx.fillRoundedRect(cx-r*0.55, cy+r*0.1, r*1.1, r*0.22, r*0.05);
+            gfx.fillStyle(0xffd700, 1);
+            gfx.fillRoundedRect(cx-r*0.52, cy+r*0.12, r*1.04, r*0.18, r*0.04);
+            // Crown points (5)
+            const pts = [-0.44, -0.22, 0, 0.22, 0.44];
+            const heights = [-0.62, -0.78, -0.88, -0.78, -0.62];
+            pts.forEach((px, i) => {
+                gfx.fillStyle(0xffd700, 1);
+                tri(gfx, cx+px*r-r*0.13, cy+r*0.1, cx+px*r+r*0.13, cy+r*0.1, cx+px*r, cy+heights[i]*r);
+            });
+            // Jewels on band
+            gfx.fillStyle(0xff2244, 1); gfx.fillCircle(cx, cy+r*0.21, r*0.075);
+            gfx.fillStyle(0x2255ff, 1); gfx.fillCircle(cx-r*0.26, cy+r*0.21, r*0.06);
+            gfx.fillCircle(cx+r*0.26, cy+r*0.21, r*0.06);
+            gfx.fillStyle(0x22cc66, 1); gfx.fillCircle(cx-r*0.46, cy+r*0.21, r*0.05);
+            gfx.fillCircle(cx+r*0.46, cy+r*0.21, r*0.05);
+            // Gem sparkles
+            gfx.fillStyle(0xffffff, 0.8);
+            gfx.fillCircle(cx-r*0.025, cy+r*0.195, r*0.025);
+            gfx.fillCircle(cx-r*0.27, cy+r*0.2, r*0.02);
+            gfx.fillCircle(cx+r*0.25, cy+r*0.2, r*0.02);
+            // Gold shimmer
+            gfx.fillStyle(0xfffacc, 0.45);
+            gfx.fillEllipse(cx-r*0.12, cy-r*0.2, r*0.32, r*0.1);
         }
     },
 
@@ -151,6 +181,47 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0xffcc88, 0.7);
             for(let i=-1;i<=1;i++) { gfx.fillCircle(cx-r*0.27+i*r*0.09,cy+r*0.72,r*0.046); }
             for(let i=-1;i<=1;i++) { gfx.fillCircle(cx+r*0.27+i*r*0.09,cy+r*0.72,r*0.046); }
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Cat face from front — orange tabby
+            gfx.fillStyle(0xff8c00, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Head circle
+            gfx.fillStyle(0xff8800, 1); gfx.fillCircle(cx, cy+r*0.08, r*0.72);
+            // Triangle ears
+            gfx.fillStyle(0xff8800, 1);
+            tri(gfx, cx-r*0.58, cy-r*0.28, cx-r*0.34, cy-r*0.72, cx-r*0.10, cy-r*0.3);
+            tri(gfx, cx+r*0.58, cy-r*0.28, cx+r*0.34, cy-r*0.72, cx+r*0.10, cy-r*0.3);
+            gfx.fillStyle(0xffbbcc, 1);
+            tri(gfx, cx-r*0.50, cy-r*0.30, cx-r*0.34, cy-r*0.63, cx-r*0.16, cy-r*0.33);
+            tri(gfx, cx+r*0.50, cy-r*0.30, cx+r*0.34, cy-r*0.63, cx+r*0.16, cy-r*0.33);
+            // Muzzle
+            gfx.fillStyle(0xfff0e0, 1); gfx.fillEllipse(cx, cy+r*0.24, r*0.44, r*0.32);
+            // Eyes
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.24, cy-r*0.04, r*0.16);
+            gfx.fillCircle(cx+r*0.24, cy-r*0.04, r*0.16);
+            gfx.fillStyle(0x22bb44, 1);
+            gfx.fillCircle(cx-r*0.24, cy-r*0.04, r*0.12);
+            gfx.fillCircle(cx+r*0.24, cy-r*0.04, r*0.12);
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillEllipse(cx-r*0.24, cy-r*0.04, r*0.06, r*0.1);
+            gfx.fillEllipse(cx+r*0.24, cy-r*0.04, r*0.06, r*0.1);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.19, cy-r*0.08, r*0.038);
+            gfx.fillCircle(cx+r*0.29, cy-r*0.08, r*0.038);
+            // Nose
+            gfx.fillStyle(0xff88aa, 1);
+            tri(gfx, cx-r*0.06, cy+r*0.18, cx+r*0.06, cy+r*0.18, cx, cy+r*0.25);
+            // Whiskers
+            gfx.lineStyle(1.8, 0xffffff, 0.9);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.08, cy+r*0.22); gfx.lineTo(cx-r*0.68, cy+r*0.14); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx-r*0.08, cy+r*0.28); gfx.lineTo(cx-r*0.66, cy+r*0.34); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.08, cy+r*0.22); gfx.lineTo(cx+r*0.68, cy+r*0.14); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.08, cy+r*0.28); gfx.lineTo(cx+r*0.66, cy+r*0.34); gfx.strokePath();
+            // Cheeks
+            gfx.fillStyle(0xff6655, 0.25);
+            gfx.fillCircle(cx-r*0.36, cy+r*0.16, r*0.14);
+            gfx.fillCircle(cx+r*0.36, cy+r*0.16, r*0.14);
         }
     },
 
@@ -192,6 +263,30 @@ const WORD_CONCEPTS = {
             gfx.fillEllipse(cx-r*0.34, cy+r*0.0, r*0.08, r*0.18);
             gfx.fillEllipse(cx-r*0.34, cy+r*0.22, r*0.1, r*0.14);
             gfx.fillEllipse(cx-r*0.36, cy+r*0.42, r*0.08, r*0.2);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Bird's-eye view of castle with 4 corner towers
+            gfx.fillStyle(0x7ab0d0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Outer walls (square)
+            gfx.fillStyle(0x778899, 1);
+            gfx.fillRect(cx-r*0.7, cy-r*0.7, r*1.4, r*1.4);
+            // Inner courtyard
+            gfx.fillStyle(0x8faa60, 1);
+            gfx.fillRect(cx-r*0.42, cy-r*0.42, r*0.84, r*0.84);
+            // Corner towers (circles)
+            const corners = [[-0.7,-0.7],[0.7,-0.7],[-0.7,0.7],[0.7,0.7]];
+            corners.forEach(([dx,dy]) => {
+                gfx.fillStyle(0x556677, 1);
+                gfx.fillCircle(cx+dx*r, cy+dy*r, r*0.22);
+                gfx.fillStyle(0x667788, 1);
+                gfx.fillCircle(cx+dx*r, cy+dy*r, r*0.16);
+            });
+            // Gate (south wall)
+            gfx.fillStyle(0x332211, 1);
+            gfx.fillRoundedRect(cx-r*0.1, cy+r*0.42, r*0.2, r*0.28, r*0.08);
+            // Well in courtyard center
+            gfx.fillStyle(0x996644, 1); gfx.fillCircle(cx, cy, r*0.12);
+            gfx.fillStyle(0x664422, 1); gfx.fillCircle(cx, cy, r*0.08);
         }
     },
 
@@ -255,6 +350,43 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0xa06020, 1);
             for(let i=-1;i<=1;i++) { gfx.fillCircle(cx-r*0.28+i*r*0.09,cy+r*0.74,r*0.045); }
             for(let i=-1;i<=1;i++) { gfx.fillCircle(cx+r*0.28+i*r*0.09,cy+r*0.74,r*0.045); }
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Bear face from front, big round head
+            gfx.fillStyle(0xc07830, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Head
+            gfx.fillCircle(cx, cy+r*0.08, r*0.72);
+            // Round ears
+            gfx.fillCircle(cx-r*0.56, cy-r*0.44, r*0.24);
+            gfx.fillCircle(cx+r*0.56, cy-r*0.44, r*0.24);
+            gfx.fillStyle(0xffbbaa, 1);
+            gfx.fillCircle(cx-r*0.56, cy-r*0.44, r*0.14);
+            gfx.fillCircle(cx+r*0.56, cy-r*0.44, r*0.14);
+            // Snout
+            gfx.fillStyle(0xdda870, 1); gfx.fillEllipse(cx, cy+r*0.28, r*0.48, r*0.36);
+            // Nose
+            gfx.fillStyle(0x1a1a1a, 1); gfx.fillEllipse(cx, cy+r*0.14, r*0.2, r*0.13);
+            gfx.fillStyle(0x777777, 0.45); gfx.fillCircle(cx-r*0.05, cy+r*0.1, r*0.04);
+            // Eyes
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.1, r*0.14);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.1, r*0.14);
+            gfx.fillStyle(0x7b3a10, 1);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.1, r*0.1);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.1, r*0.1);
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.1, r*0.062);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.1, r*0.062);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.17, cy-r*0.14, r*0.034);
+            gfx.fillCircle(cx+r*0.27, cy-r*0.14, r*0.034);
+            // Smile
+            gfx.lineStyle(2.5, 0x7b4020, 1);
+            gfx.beginPath(); gfx.arc(cx, cy+r*0.38, r*0.15, 0.25, Math.PI-0.25, false); gfx.strokePath();
+            // Cheeks
+            gfx.fillStyle(0xff7755, 0.22);
+            gfx.fillCircle(cx-r*0.38, cy+r*0.18, r*0.14);
+            gfx.fillCircle(cx+r*0.38, cy+r*0.18, r*0.14);
         }
     },
 
@@ -286,6 +418,35 @@ const WORD_CONCEPTS = {
                 gfx.beginPath(); gfx.moveTo(cx+sx-r*0.07,cy+sy); gfx.lineTo(cx+sx+r*0.07,cy+sy); gfx.strokePath();
                 gfx.beginPath(); gfx.moveTo(cx+sx,cy+sy-r*0.07); gfx.lineTo(cx+sx,cy+sy+r*0.07); gfx.strokePath();
             });
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Full moon with sleeping face
+            gfx.fillStyle(0x0d0d2e, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Stars
+            gfx.fillStyle(0xffffff, 0.85);
+            [[0.7,0.5],[0.8,-0.3],[0.6,-0.6],[-0.7,-0.5],[-0.8,0.3]].forEach(([dx,dy]) => {
+                gfx.fillCircle(cx+dx*r, cy+dy*r, r*0.028);
+            });
+            // Full moon circle
+            gfx.fillStyle(0xfff5bb, 1); gfx.fillCircle(cx, cy, r*0.7);
+            gfx.fillStyle(0xffee88, 0.35); gfx.fillCircle(cx-r*0.1, cy-r*0.1, r*0.55);
+            // Sleeping eyes (closed, curved lines)
+            gfx.lineStyle(3, 0xaa8833, 1);
+            gfx.beginPath(); gfx.arc(cx-r*0.2, cy-r*0.08, r*0.13, Math.PI+0.3, -0.3, false); gfx.strokePath();
+            gfx.beginPath(); gfx.arc(cx+r*0.2, cy-r*0.08, r*0.13, Math.PI+0.3, -0.3, false); gfx.strokePath();
+            // Little ZZZ
+            gfx.fillStyle(0xaa8833, 0.7);
+            gfx.lineStyle(1.5, 0xaa8833, 0.7);
+            gfx.beginPath(); gfx.moveTo(cx+r*0.45, cy-r*0.45); gfx.lineTo(cx+r*0.58, cy-r*0.45); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.58, cy-r*0.45); gfx.lineTo(cx+r*0.47, cy-r*0.56); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.47, cy-r*0.56); gfx.lineTo(cx+r*0.62, cy-r*0.56); gfx.strokePath();
+            // Small smile
+            gfx.lineStyle(2, 0xaa8833, 1);
+            gfx.beginPath(); gfx.arc(cx, cy+r*0.1, r*0.14, 0.25, Math.PI-0.25, false); gfx.strokePath();
+            // Moon craters (subtle)
+            gfx.fillStyle(0xf0de77, 0.6);
+            gfx.fillCircle(cx-r*0.4, cy+r*0.32, r*0.09);
+            gfx.fillCircle(cx+r*0.38, cy+r*0.4, r*0.065);
         }
     },
 
@@ -345,6 +506,31 @@ const WORD_CONCEPTS = {
              [0.10,0.76,-0.06,0.80],[0.10,0.76,0.10,0.89],[0.10,0.76,0.26,0.80]].forEach(([x1,y1,x2,y2]) => {
                 gfx.beginPath(); gfx.moveTo(cx+x1*r,cy+y1*r); gfx.lineTo(cx+x2*r,cy+y2*r); gfx.strokePath();
             });
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Rooster head close-up with big red comb
+            gfx.fillStyle(0x4488ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Head
+            gfx.fillStyle(0xf4eedc, 1); gfx.fillCircle(cx, cy+r*0.12, r*0.52);
+            // Big red comb (3 bumps)
+            gfx.fillStyle(0xdd1100, 1);
+            gfx.fillCircle(cx-r*0.16, cy-r*0.38, r*0.17);
+            gfx.fillCircle(cx, cy-r*0.48, r*0.21);
+            gfx.fillCircle(cx+r*0.16, cy-r*0.38, r*0.17);
+            gfx.fillEllipse(cx, cy-r*0.28, r*0.5, r*0.22);
+            // Wattle
+            gfx.fillEllipse(cx-r*0.12, cy+r*0.46, r*0.18, r*0.26);
+            // Beak
+            gfx.fillStyle(0xffcc00, 1);
+            tri(gfx, cx+r*0.44, cy+r*0.1, cx+r*0.68, cy+r*0.18, cx+r*0.44, cy+r*0.26);
+            // Eye white
+            gfx.fillStyle(0xffffff, 1); gfx.fillCircle(cx+r*0.2, cy-r*0.02, r*0.14);
+            gfx.fillStyle(0xff8800, 1); gfx.fillCircle(cx+r*0.2, cy-r*0.02, r*0.1);
+            gfx.fillStyle(0x111111, 1); gfx.fillCircle(cx+r*0.21, cy-r*0.02, r*0.062);
+            gfx.fillStyle(0xffffff, 1); gfx.fillCircle(cx+r*0.24, cy-r*0.05, r*0.026);
+            // Feather pattern on neck
+            gfx.fillStyle(0xf4eedc, 0.5);
+            gfx.fillEllipse(cx-r*0.2, cy+r*0.26, r*0.22, r*0.36);
         }
     },
 
@@ -396,6 +582,37 @@ const WORD_CONCEPTS = {
                 gfx.beginPath(); gfx.moveTo(cx-r*0.15,cy+r*0.65); gfx.lineTo(cx-r*0.15+d*r*1.8,cy+r*0.74); gfx.strokePath();
                 gfx.beginPath(); gfx.moveTo(cx+r*0.15,cy+r*0.65); gfx.lineTo(cx+r*0.15+d*r*1.8,cy+r*0.74); gfx.strokePath();
             });
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Duck swimming, side view with water
+            gfx.fillStyle(0x66aadd, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Water surface
+            gfx.fillStyle(0x2266aa, 1);
+            gfx.fillRect(cx-r*0.95, cy+r*0.34, r*1.9, r*0.62);
+            // Waves
+            gfx.fillStyle(0x3388cc, 0.5);
+            gfx.beginPath(); gfx.arc(cx-r*0.4, cy+r*0.34, r*0.24, Math.PI, 0, false); gfx.fillPath();
+            gfx.beginPath(); gfx.arc(cx+r*0.32, cy+r*0.34, r*0.22, Math.PI, 0, false); gfx.fillPath();
+            // Duck body (white, on water)
+            gfx.fillStyle(0xf6f5ec, 1);
+            gfx.fillEllipse(cx, cy+r*0.24, r*0.96, r*0.5);
+            // Wing detail
+            gfx.fillStyle(0xddddcc, 0.7);
+            gfx.fillEllipse(cx-r*0.1, cy+r*0.2, r*0.52, r*0.24);
+            // Neck
+            gfx.fillStyle(0xf6f5ec, 1);
+            gfx.fillRoundedRect(cx+r*0.14, cy-r*0.32, r*0.22, r*0.58, r*0.08);
+            // Head
+            gfx.fillCircle(cx+r*0.28, cy-r*0.42, r*0.23);
+            // Beak
+            gfx.fillStyle(0xff8822, 1);
+            gfx.fillEllipse(cx+r*0.54, cy-r*0.42, r*0.28, r*0.11);
+            // Eye
+            gfx.fillStyle(0x111111, 1); gfx.fillCircle(cx+r*0.32, cy-r*0.48, r*0.044);
+            gfx.fillStyle(0xffffff, 1); gfx.fillCircle(cx+r*0.35, cy-r*0.5, r*0.018);
+            // Tail feather up
+            gfx.fillStyle(0xf6f5ec, 1);
+            tri(gfx, cx-r*0.46, cy+r*0.06, cx-r*0.64, cy-r*0.08, cx-r*0.38, cy-r*0.04);
         }
     },
 
@@ -458,6 +675,41 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0xff7733, 0.20);
             gfx.fillCircle(cx-r*0.30,cy-r*0.12,r*0.12);
             gfx.fillCircle(cx+r*0.30,cy-r*0.12,r*0.12);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Lion face filling the circle with huge mane
+            gfx.fillStyle(0xffc030, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Mane outer ring (fluffy bumps)
+            gfx.fillStyle(0xa86018, 1);
+            for(let i=0;i<10;i++){
+                const a = (i/10)*Math.PI*2;
+                gfx.fillCircle(cx+Math.cos(a)*r*0.74, cy+Math.sin(a)*r*0.74, r*0.2);
+            }
+            // Mane ring
+            gfx.fillStyle(0xc87820, 1); gfx.fillCircle(cx, cy, r*0.68);
+            // Face
+            gfx.fillStyle(0xffc030, 1); gfx.fillCircle(cx, cy, r*0.52);
+            // Muzzle
+            gfx.fillStyle(0xffcc88, 1); gfx.fillEllipse(cx, cy+r*0.16, r*0.38, r*0.25);
+            // Nose
+            gfx.fillStyle(0xcc4466, 1); gfx.fillCircle(cx, cy+r*0.04, r*0.09);
+            gfx.fillStyle(0xff88aa, 0.5); gfx.fillCircle(cx-r*0.03, cy+r*0.01, r*0.032);
+            // Eyes
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.14, r*0.14);
+            gfx.fillCircle(cx+r*0.2, cy-r*0.14, r*0.14);
+            gfx.fillStyle(0xdd8800, 1);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.14, r*0.1);
+            gfx.fillCircle(cx+r*0.2, cy-r*0.14, r*0.1);
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.14, r*0.062);
+            gfx.fillCircle(cx+r*0.2, cy-r*0.14, r*0.062);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.15, cy-r*0.17, r*0.032);
+            gfx.fillCircle(cx+r*0.25, cy-r*0.17, r*0.032);
+            // Smile
+            gfx.lineStyle(2.5, 0x884400, 1);
+            gfx.beginPath(); gfx.arc(cx, cy+r*0.2, r*0.12, 0.3, Math.PI-0.3, false); gfx.strokePath();
         }
     },
 
@@ -519,6 +771,33 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0xaabbdd, 0.30);
             gfx.fillCircle(cx-r*0.29,cy-r*0.27,r*0.12);
             gfx.fillCircle(cx+r*0.29,cy-r*0.27,r*0.12);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Wolf howling, front view, full moon behind
+            gfx.fillStyle(0x1a1a3a, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Full moon
+            gfx.fillStyle(0xfff8cc, 1); gfx.fillCircle(cx, cy-r*0.22, r*0.42);
+            gfx.fillStyle(0xf0e888, 0.3); gfx.fillCircle(cx-r*0.08, cy-r*0.28, r*0.32);
+            // Wolf head (silhouette-like, gray)
+            gfx.fillStyle(0x9aaabb, 1); gfx.fillCircle(cx, cy+r*0.36, r*0.46);
+            // Ears pointing up
+            tri(gfx, cx-r*0.24, cy+r*0.06, cx-r*0.42, cy-r*0.26, cx-r*0.08, cy+r*0.04);
+            tri(gfx, cx+r*0.24, cy+r*0.06, cx+r*0.42, cy-r*0.26, cx+r*0.08, cy+r*0.04);
+            gfx.fillStyle(0xffbbbb, 1);
+            tri(gfx, cx-r*0.22, cy+r*0.06, cx-r*0.38, cy-r*0.2, cx-r*0.1, cy+r*0.04);
+            tri(gfx, cx+r*0.22, cy+r*0.06, cx+r*0.38, cy-r*0.2, cx+r*0.1, cy+r*0.04);
+            // Snout pointing upward (howling pose)
+            gfx.fillStyle(0xccdde0, 1); gfx.fillEllipse(cx, cy+r*0.26, r*0.32, r*0.22);
+            gfx.fillStyle(0x9aaabb, 1); gfx.fillEllipse(cx, cy+r*0.16, r*0.28, r*0.22);
+            // Open mouth / howl
+            gfx.fillStyle(0x111111, 1); gfx.fillEllipse(cx, cy+r*0.26, r*0.18, r*0.12);
+            // Eyes (gleaming at night)
+            gfx.fillStyle(0xcc8800, 1);
+            gfx.fillCircle(cx-r*0.15, cy+r*0.28, r*0.06);
+            gfx.fillCircle(cx+r*0.15, cy+r*0.28, r*0.06);
+            gfx.fillStyle(0xffffff, 0.7);
+            gfx.fillCircle(cx-r*0.13, cy+r*0.26, r*0.022);
+            gfx.fillCircle(cx+r*0.17, cy+r*0.26, r*0.022);
         }
     },
 
@@ -596,6 +875,47 @@ const WORD_CONCEPTS = {
             for(const dx of [-0.28,-0.10,0.10,0.28]) {
                 gfx.fillRoundedRect(cx+dx*r-r*0.07,cy+r*0.60,r*0.14,r*0.30,r*0.04);
             }
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Deer head from front with elaborate antler crown
+            gfx.fillStyle(0xcceeaa, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Antlers (branching)
+            gfx.lineStyle(5, 0x774422, 1);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.14, cy-r*0.48); gfx.lineTo(cx-r*0.28, cy-r*0.82); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx-r*0.22, cy-r*0.66); gfx.lineTo(cx-r*0.46, cy-r*0.72); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx-r*0.28, cy-r*0.82); gfx.lineTo(cx-r*0.44, cy-r*0.94); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx-r*0.28, cy-r*0.82); gfx.lineTo(cx-r*0.14, cy-r*0.96); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.14, cy-r*0.48); gfx.lineTo(cx+r*0.28, cy-r*0.82); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.22, cy-r*0.66); gfx.lineTo(cx+r*0.46, cy-r*0.72); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.28, cy-r*0.82); gfx.lineTo(cx+r*0.44, cy-r*0.94); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.28, cy-r*0.82); gfx.lineTo(cx+r*0.14, cy-r*0.96); gfx.strokePath();
+            // Head
+            gfx.fillStyle(0xaa6633, 1); gfx.fillCircle(cx, cy+r*0.14, r*0.54);
+            // Ears
+            gfx.fillEllipse(cx-r*0.42, cy-r*0.14, r*0.2, r*0.32);
+            gfx.fillEllipse(cx+r*0.42, cy-r*0.14, r*0.2, r*0.32);
+            gfx.fillStyle(0xffccaa, 0.6);
+            gfx.fillEllipse(cx-r*0.42, cy-r*0.14, r*0.12, r*0.2);
+            gfx.fillEllipse(cx+r*0.42, cy-r*0.14, r*0.12, r*0.2);
+            // Snout
+            gfx.fillStyle(0xcc8855, 1); gfx.fillEllipse(cx, cy+r*0.38, r*0.26, r*0.18);
+            gfx.fillStyle(0x331111, 1); gfx.fillEllipse(cx, cy+r*0.32, r*0.1, r*0.07);
+            // Eyes big
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.18, cy+r*0.08, r*0.16);
+            gfx.fillCircle(cx+r*0.18, cy+r*0.08, r*0.16);
+            gfx.fillStyle(0x5a2800, 1);
+            gfx.fillCircle(cx-r*0.18, cy+r*0.08, r*0.12);
+            gfx.fillCircle(cx+r*0.18, cy+r*0.08, r*0.12);
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.18, cy+r*0.08, r*0.075);
+            gfx.fillCircle(cx+r*0.18, cy+r*0.08, r*0.075);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.13, cy+r*0.04, r*0.04);
+            gfx.fillCircle(cx+r*0.23, cy+r*0.04, r*0.04);
+            gfx.fillStyle(0xff9966, 0.25);
+            gfx.fillCircle(cx-r*0.32, cy+r*0.18, r*0.1);
+            gfx.fillCircle(cx+r*0.32, cy+r*0.18, r*0.1);
         }
     },
 
@@ -628,6 +948,31 @@ const WORD_CONCEPTS = {
             gfx.fillCircle(cx+r*0.55, cy+r*0.15, r*0.06);
             gfx.fillCircle(cx-r*0.4, cy+r*0.18, r*0.04);
             gfx.fillCircle(cx+r*0.18, cy+r*0.45, r*0.05);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Teardrop / water droplet with shiny reflection
+            gfx.fillStyle(0x99ddff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Droplet shape: circle bottom + triangle top
+            gfx.fillStyle(0x0077ee, 1);
+            gfx.fillCircle(cx, cy+r*0.22, r*0.5);
+            gfx.beginPath();
+            gfx.moveTo(cx-r*0.5, cy+r*0.22);
+            gfx.lineTo(cx, cy-r*0.72);
+            gfx.lineTo(cx+r*0.5, cy+r*0.22);
+            gfx.closePath(); gfx.fillPath();
+            // Highlight inner
+            gfx.fillStyle(0x44aaff, 0.6);
+            gfx.fillCircle(cx, cy+r*0.22, r*0.38);
+            gfx.beginPath();
+            gfx.moveTo(cx-r*0.38, cy+r*0.22);
+            gfx.lineTo(cx, cy-r*0.52);
+            gfx.lineTo(cx+r*0.38, cy+r*0.22);
+            gfx.closePath(); gfx.fillPath();
+            // Shiny reflection ellipse
+            gfx.fillStyle(0xffffff, 0.75);
+            gfx.fillEllipse(cx-r*0.14, cy-r*0.12, r*0.18, r*0.32);
+            gfx.fillStyle(0xffffff, 0.5);
+            gfx.fillCircle(cx-r*0.08, cy+r*0.14, r*0.06);
         }
     },
 
@@ -658,6 +1003,29 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0xff6688, 1); gfx.fillCircle(cx-r*0.62, cy+r*0.48, r*0.04);
             gfx.fillStyle(0xffff44, 1); gfx.fillCircle(cx+r*0.58, cy+r*0.52, r*0.06);
             gfx.fillStyle(0xff4488, 1); gfx.fillCircle(cx+r*0.58, cy+r*0.52, r*0.035);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Single big tree with round canopy and birds
+            gfx.fillStyle(0x88ddff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Ground
+            gfx.fillStyle(0x55aa33, 1);
+            gfx.fillRect(cx-r*0.95, cy+r*0.46, r*1.9, r*0.5);
+            // Trunk
+            gfx.fillStyle(0x7a4010, 1);
+            gfx.fillRoundedRect(cx-r*0.1, cy+r*0.0, r*0.2, r*0.48, r*0.04);
+            // Canopy layers
+            gfx.fillStyle(0x226611, 1); gfx.fillCircle(cx, cy-r*0.28, r*0.56);
+            gfx.fillStyle(0x338822, 1); gfx.fillCircle(cx, cy-r*0.34, r*0.5);
+            gfx.fillStyle(0x44aa33, 1); gfx.fillCircle(cx-r*0.08, cy-r*0.4, r*0.44);
+            // Lighter spot on canopy
+            gfx.fillStyle(0x66cc44, 0.5);
+            gfx.fillCircle(cx-r*0.12, cy-r*0.52, r*0.2);
+            // Birds (simple V shapes)
+            gfx.lineStyle(2, 0x334455, 1);
+            [[0.38,-0.62],[0.54,-0.54],[0.28,-0.5]].forEach(([bx,by]) => {
+                gfx.beginPath(); gfx.moveTo(cx+bx*r-r*0.06, cy+by*r); gfx.lineTo(cx+bx*r, cy+by*r-r*0.04); gfx.strokePath();
+                gfx.beginPath(); gfx.moveTo(cx+bx*r, cy+by*r-r*0.04); gfx.lineTo(cx+bx*r+r*0.06, cy+by*r); gfx.strokePath();
+            });
         }
     },
 
@@ -687,6 +1055,30 @@ const WORD_CONCEPTS = {
             gfx.fillRect(cx+r*0.46, cy+r*0.32, r*0.08, r*0.18);
             gfx.fillStyle(0x338822, 1);
             tri(gfx, cx+r*0.5, cy+r*0.1, cx+r*0.36, cy+r*0.32, cx+r*0.64, cy+r*0.32);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // One sharp geometric mountain peak with snow cap
+            gfx.fillStyle(0x5588cc, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Ground
+            gfx.fillStyle(0x336622, 1);
+            gfx.fillRect(cx-r*0.95, cy+r*0.52, r*1.9, r*0.44);
+            // Mountain — single sharp triangle
+            gfx.fillStyle(0x778899, 1);
+            tri(gfx, cx-r*0.82, cy+r*0.52, cx, cy-r*0.88, cx+r*0.82, cy+r*0.52);
+            // Snow cap
+            gfx.fillStyle(0xffffff, 1);
+            tri(gfx, cx-r*0.22, cy-r*0.46, cx, cy-r*0.88, cx+r*0.22, cy-r*0.46);
+            gfx.fillStyle(0xddeeff, 0.8);
+            tri(gfx, cx-r*0.1, cy-r*0.62, cx, cy-r*0.88, cx+r*0.1, cy-r*0.62);
+            // Sun peeking top right
+            gfx.fillStyle(0xffee22, 1); gfx.fillCircle(cx+r*0.7, cy-r*0.66, r*0.2);
+            gfx.fillStyle(0xffee22, 0.6);
+            for(let i=0;i<6;i++){
+                const a = i*Math.PI/3;
+                gfx.lineStyle(2.5, 0xffee22, 1);
+                gfx.beginPath(); gfx.moveTo(cx+r*0.7+Math.cos(a)*r*0.24, cy-r*0.66+Math.sin(a)*r*0.24);
+                gfx.lineTo(cx+r*0.7+Math.cos(a)*r*0.34, cy-r*0.66+Math.sin(a)*r*0.34); gfx.strokePath();
+            }
         }
     },
 
@@ -715,6 +1107,30 @@ const WORD_CONCEPTS = {
                 gfx.lineStyle(1, 0x448822, 0.7);
                 gfx.beginPath(); gfx.moveTo(lx-r*0.08*cos, ly-r*0.08*sin); gfx.lineTo(lx+r*0.08*cos, ly+r*0.08*sin); gfx.strokePath();
             });
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Pinwheel / windmill with colorful blades
+            gfx.fillStyle(0xaad4ee, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Pole
+            gfx.lineStyle(5, 0x886644, 1);
+            gfx.beginPath(); gfx.moveTo(cx, cy+r*0.2); gfx.lineTo(cx, cy+r*0.88); gfx.strokePath();
+            // 4 blades (quarter circles), alternating colors
+            const bladeColors = [0xff4444, 0xffcc00, 0x44cc44, 0x4488ff];
+            bladeColors.forEach((c, i) => {
+                const startA = i * Math.PI * 0.5 - Math.PI * 0.25;
+                const endA = startA + Math.PI * 0.5 - 0.1;
+                gfx.fillStyle(c, 1);
+                gfx.beginPath();
+                gfx.moveTo(cx, cy);
+                gfx.arc(cx, cy, r*0.6, startA, endA, false);
+                gfx.closePath(); gfx.fillPath();
+            });
+            // Center hub
+            gfx.fillStyle(0x888888, 1); gfx.fillCircle(cx, cy, r*0.09);
+            gfx.fillStyle(0xdddddd, 1); gfx.fillCircle(cx, cy, r*0.06);
+            // Base
+            gfx.fillStyle(0x886644, 1);
+            gfx.fillRoundedRect(cx-r*0.14, cy+r*0.82, r*0.28, r*0.1, r*0.03);
         }
     },
 
@@ -752,6 +1168,32 @@ const WORD_CONCEPTS = {
                 gfx.beginPath(); gfx.moveTo(cx+bx, by); gfx.lineTo(cx+bx+r*0.08, by-r*0.08); gfx.strokePath();
                 gfx.beginPath(); gfx.moveTo(cx+bx+r*0.08, by-r*0.08); gfx.lineTo(cx+bx+r*0.16, by); gfx.strokePath();
             });
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Rainbow arc with clouds at each end
+            gfx.fillStyle(0x66ccff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Rainbow bands (arc, top half of circle)
+            const rainbowColors = [0xff2222, 0xff8800, 0xffee00, 0x44cc22, 0x2266ff, 0x8822cc];
+            rainbowColors.forEach((c, i) => {
+                const outerR = r*(0.82 - i*0.08);
+                const innerR = r*(0.76 - i*0.08);
+                gfx.fillStyle(c, 1);
+                gfx.beginPath();
+                gfx.arc(cx, cy+r*0.28, outerR, Math.PI, 0, false);
+                gfx.arc(cx, cy+r*0.28, innerR, 0, Math.PI, true);
+                gfx.closePath(); gfx.fillPath();
+            });
+            // Left cloud
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.72, cy+r*0.28, r*0.18);
+            gfx.fillCircle(cx-r*0.56, cy+r*0.22, r*0.22);
+            gfx.fillCircle(cx-r*0.42, cy+r*0.28, r*0.16);
+            gfx.fillRect(cx-r*0.72, cy+r*0.28, r*0.32, r*0.18);
+            // Right cloud
+            gfx.fillCircle(cx+r*0.72, cy+r*0.28, r*0.18);
+            gfx.fillCircle(cx+r*0.56, cy+r*0.22, r*0.22);
+            gfx.fillCircle(cx+r*0.42, cy+r*0.28, r*0.16);
+            gfx.fillRect(cx+r*0.42, cy+r*0.28, r*0.32, r*0.18);
         }
     },
 
@@ -783,6 +1225,29 @@ const WORD_CONCEPTS = {
             gfx.lineStyle(2, 0xffffff, 0.35);
             gfx.beginPath(); gfx.arc(cx-r*0.22, cy-r*0.22, r*0.08, 3.8, 5.6, false); gfx.strokePath();
             gfx.beginPath(); gfx.arc(cx+r*0.22, cy-r*0.24, r*0.06, 3.9, 5.5, false); gfx.strokePath();
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Baguette with diagonal score marks
+            gfx.fillStyle(0xfff3e0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Baguette body (long rounded rectangle, angled)
+            gfx.fillStyle(0xb05e14, 1);
+            gfx.fillRoundedRect(cx-r*0.82, cy-r*0.16, r*1.64, r*0.38, r*0.18);
+            gfx.fillStyle(0xd4821e, 1);
+            gfx.fillRoundedRect(cx-r*0.78, cy-r*0.13, r*1.56, r*0.32, r*0.16);
+            gfx.fillStyle(0xe8a030, 1);
+            gfx.fillRoundedRect(cx-r*0.72, cy-r*0.1, r*1.44, r*0.24, r*0.12);
+            gfx.fillStyle(0xf2c050, 0.7);
+            gfx.fillEllipse(cx-r*0.18, cy-r*0.06, r*0.72, r*0.12);
+            // Diagonal score marks
+            gfx.lineStyle(3, 0x8b3e08, 0.85);
+            for(let i = -3; i <= 3; i++) {
+                const mx = cx + i * r * 0.22;
+                gfx.beginPath(); gfx.moveTo(mx - r*0.08, cy - r*0.12); gfx.lineTo(mx + r*0.08, cy + r*0.12); gfx.strokePath();
+            }
+            // Flour dusting
+            gfx.fillStyle(0xfff8f0, 0.4);
+            gfx.fillEllipse(cx-r*0.3, cy-r*0.04, r*0.28, r*0.1);
+            gfx.fillEllipse(cx+r*0.4, cy+r*0.02, r*0.2, r*0.08);
         }
     },
 
@@ -826,6 +1291,45 @@ const WORD_CONCEPTS = {
             gfx.lineTo(cx+r*0.26, cy-r*0.82);
             gfx.lineTo(cx+r*0.3, cy-r*0.62);
             gfx.closePath(); gfx.fillPath();
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Glass of milk with a straw
+            gfx.fillStyle(0xeef8ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Glass body
+            gfx.fillStyle(0xddeeee, 0.8);
+            gfx.beginPath();
+            gfx.moveTo(cx-r*0.3, cy-r*0.52);
+            gfx.lineTo(cx+r*0.3, cy-r*0.52);
+            gfx.lineTo(cx+r*0.38, cy+r*0.58);
+            gfx.lineTo(cx-r*0.38, cy+r*0.58);
+            gfx.closePath(); gfx.fillPath();
+            // Milk fill (white)
+            gfx.fillStyle(0xffffff, 1);
+            gfx.beginPath();
+            gfx.moveTo(cx-r*0.28, cy-r*0.42);
+            gfx.lineTo(cx+r*0.28, cy-r*0.42);
+            gfx.lineTo(cx+r*0.36, cy+r*0.54);
+            gfx.lineTo(cx-r*0.36, cy+r*0.54);
+            gfx.closePath(); gfx.fillPath();
+            // Foam top
+            gfx.fillStyle(0xf8f8f8, 0.9);
+            gfx.fillEllipse(cx, cy-r*0.44, r*0.58, r*0.14);
+            gfx.lineStyle(2, 0xccddee, 0.8);
+            gfx.strokeRoundedRect(cx-r*0.3, cy-r*0.52, r*0.6, r*0.06, r*0.02);
+            // Glass outline
+            gfx.lineStyle(2.5, 0x99bbcc, 0.8);
+            gfx.beginPath();
+            gfx.moveTo(cx-r*0.3, cy-r*0.52); gfx.lineTo(cx-r*0.38, cy+r*0.58);
+            gfx.moveTo(cx+r*0.3, cy-r*0.52); gfx.lineTo(cx+r*0.38, cy+r*0.58);
+            gfx.strokePath();
+            gfx.lineBetween(cx-r*0.38, cy+r*0.58, cx+r*0.38, cy+r*0.58);
+            // Straw (red/white striped)
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillRoundedRect(cx+r*0.14, cy-r*0.82, r*0.1, r*1.0, r*0.04);
+            gfx.fillStyle(0xff4444, 0.8);
+            for(let i=0;i<5;i++) {
+                gfx.fillRect(cx+r*0.14, cy-r*0.82+i*r*0.2, r*0.1, r*0.1);
+            }
         }
     },
 
@@ -852,6 +1356,34 @@ const WORD_CONCEPTS = {
             gfx.beginPath(); gfx.moveTo(cx+r*0.3, cy-r*0.52); gfx.lineTo(cx+r*0.54, cy-r*0.52); gfx.strokePath();
             gfx.lineStyle(3, 0x8b4513, 1);
             gfx.beginPath(); gfx.moveTo(cx+r*0.42, cy-r*0.52); gfx.lineTo(cx+r*0.38, cy-r*0.66); gfx.strokePath();
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Cracked walnut halves (butterfly shape)
+            gfx.fillStyle(0xf5e6c8, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Left half
+            gfx.fillStyle(0x7a4818, 1);
+            gfx.fillEllipse(cx-r*0.3, cy+r*0.06, r*0.5, r*0.7);
+            gfx.fillStyle(0x9a6228, 1);
+            gfx.fillEllipse(cx-r*0.3, cy+r*0.06, r*0.44, r*0.64);
+            // Interior texture left
+            gfx.fillStyle(0xddb870, 0.8);
+            gfx.fillEllipse(cx-r*0.3, cy+r*0.06, r*0.32, r*0.48);
+            gfx.lineStyle(2, 0x8b5020, 0.6);
+            gfx.beginPath(); gfx.arc(cx-r*0.3, cy-r*0.06, r*0.18, 1.8, 4.5, false); gfx.strokePath();
+            gfx.beginPath(); gfx.arc(cx-r*0.3, cy+r*0.18, r*0.14, 1.7, 4.3, false); gfx.strokePath();
+            // Right half
+            gfx.fillStyle(0x7a4818, 1);
+            gfx.fillEllipse(cx+r*0.3, cy+r*0.06, r*0.5, r*0.7);
+            gfx.fillStyle(0x9a6228, 1);
+            gfx.fillEllipse(cx+r*0.3, cy+r*0.06, r*0.44, r*0.64);
+            gfx.fillStyle(0xddb870, 0.8);
+            gfx.fillEllipse(cx+r*0.3, cy+r*0.06, r*0.32, r*0.48);
+            gfx.lineStyle(2, 0x8b5020, 0.6);
+            gfx.beginPath(); gfx.arc(cx+r*0.3, cy-r*0.06, r*0.18, Math.PI-4.5, Math.PI-1.8, false); gfx.strokePath();
+            gfx.beginPath(); gfx.arc(cx+r*0.3, cy+r*0.18, r*0.14, Math.PI-4.3, Math.PI-1.7, false); gfx.strokePath();
+            // Center crack line
+            gfx.lineStyle(3, 0x5a3010, 1);
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.5); gfx.lineTo(cx, cy+r*0.56); gfx.strokePath();
         }
     },
 
@@ -893,6 +1425,44 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0x111100, 1);
             gfx.fillRect(cx-r*0.62, cy-r*0.56, r*0.22, r*0.03);
             gfx.fillRect(cx-r*0.62, cy-r*0.5, r*0.22, r*0.03);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Honeycomb grid pattern — hexagonal cells
+            gfx.fillStyle(0xfff8e0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Draw hexagonal honeycomb cells
+            const hexR = r * 0.2;
+            const rows = [
+                [{x:cx-r*0.4,y:cy-r*0.44},{x:cx,y:cy-r*0.44},{x:cx+r*0.4,y:cy-r*0.44}],
+                [{x:cx-r*0.6,y:cy-r*0.1},{x:cx-r*0.2,y:cy-r*0.1},{x:cx+r*0.2,y:cy-r*0.1},{x:cx+r*0.6,y:cy-r*0.1}],
+                [{x:cx-r*0.4,y:cy+r*0.24},{x:cx,y:cy+r*0.24},{x:cx+r*0.4,y:cy+r*0.24}],
+                [{x:cx-r*0.2,y:cy+r*0.58},{x:cx+r*0.2,y:cy+r*0.58}],
+            ];
+            rows.forEach(row => row.forEach(({x,y}) => {
+                gfx.fillStyle(0xffaa00, 1);
+                gfx.beginPath();
+                for(let i=0;i<6;i++){
+                    const a = i*Math.PI/3 - Math.PI/6;
+                    if(i===0) gfx.moveTo(x+Math.cos(a)*hexR, y+Math.sin(a)*hexR);
+                    else gfx.lineTo(x+Math.cos(a)*hexR, y+Math.sin(a)*hexR);
+                }
+                gfx.closePath(); gfx.fillPath();
+                gfx.fillStyle(0xffcc33, 0.7);
+                gfx.beginPath();
+                for(let i=0;i<6;i++){
+                    const a = i*Math.PI/3 - Math.PI/6;
+                    if(i===0) gfx.moveTo(x+Math.cos(a)*hexR*0.72, y+Math.sin(a)*hexR*0.72);
+                    else gfx.lineTo(x+Math.cos(a)*hexR*0.72, y+Math.sin(a)*hexR*0.72);
+                }
+                gfx.closePath(); gfx.fillPath();
+                gfx.lineStyle(1.5, 0xcc7700, 0.6);
+                gfx.beginPath();
+                for(let i=0;i<6;i++){
+                    const a = i*Math.PI/3 - Math.PI/6;
+                    if(i===0) gfx.moveTo(x+Math.cos(a)*hexR, y+Math.sin(a)*hexR);
+                    else gfx.lineTo(x+Math.cos(a)*hexR, y+Math.sin(a)*hexR);
+                }
+                gfx.closePath(); gfx.strokePath();
+            }));
         }
     },
 
@@ -926,6 +1496,24 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0xff9988, 0.22);
             gfx.fillCircle(cx-r*0.22, cy-r*0.4, r*0.08);
             gfx.fillCircle(cx+r*0.22, cy-r*0.4, r*0.08);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Whole uncracked egg with colored speckles
+            gfx.fillStyle(0xfff8e8, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Egg shape
+            gfx.fillStyle(0xeeddbb, 1); gfx.fillEllipse(cx, cy+r*0.04, r*0.78, r*1.0);
+            gfx.fillStyle(0xfffdf2, 1); gfx.fillEllipse(cx, cy+r*0.04, r*0.72, r*0.94);
+            // Colored speckles
+            const speckles = [[0.12,-0.28,0xcc7744],[-.18,-0.36,0xaa5533],[0.26,-0.1,0xdd9955],
+                              [-0.08,0.16,0xbb6633],[0.2,0.22,0xcc7744],[-.24,0.04,0x997733],
+                              [0.04,0.38,0xbb5522],[-0.16,0.3,0xdd8855]];
+            speckles.forEach(([dx,dy,c]) => {
+                gfx.fillStyle(c, 0.6);
+                gfx.fillEllipse(cx+dx*r, cy+dy*r, r*0.065, r*0.048);
+            });
+            // Shine
+            gfx.fillStyle(0xffffff, 0.6);
+            gfx.fillEllipse(cx-r*0.16, cy-r*0.22, r*0.18, r*0.28);
         }
     },
 
@@ -960,6 +1548,27 @@ const WORD_CONCEPTS = {
             gfx.fillEllipse(cx-r*0.06, cy-r*0.34, r*0.22, r*0.1);
             gfx.fillStyle(0x222222, 1);
             gfx.fillEllipse(cx+r*0.03, cy-r*0.13, r*0.12, r*0.08);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Single bicycle wheel with spokes, very graphic
+            gfx.fillStyle(0xf0f4f8, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Outer tire
+            gfx.fillStyle(0x222222, 1); gfx.fillCircle(cx, cy, r*0.72);
+            gfx.fillStyle(0x444444, 1); gfx.fillCircle(cx, cy, r*0.66);
+            gfx.fillStyle(0xf0f4f8, 1); gfx.fillCircle(cx, cy, r*0.60);
+            // Spokes
+            gfx.lineStyle(2.5, 0xee3300, 0.9);
+            for(let i=0;i<12;i++){
+                const a = i*Math.PI/6;
+                gfx.beginPath(); gfx.moveTo(cx, cy); gfx.lineTo(cx+Math.cos(a)*r*0.6, cy+Math.sin(a)*r*0.6); gfx.strokePath();
+            }
+            // Hub
+            gfx.fillStyle(0x333333, 1); gfx.fillCircle(cx, cy, r*0.1);
+            gfx.fillStyle(0xee3300, 1); gfx.fillCircle(cx, cy, r*0.06);
+            gfx.fillStyle(0xdddddd, 1); gfx.fillCircle(cx, cy, r*0.03);
+            // Valve stem
+            gfx.fillStyle(0x888888, 1);
+            gfx.fillRect(cx+r*0.64, cy-r*0.03, r*0.1, r*0.06);
         }
     },
 
@@ -996,6 +1605,35 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0xcc1111, 1);
             gfx.fillRect(cx-r*0.3, cy+r*0.3, r*0.06, r*0.04);
             gfx.fillRect(cx+r*0.24, cy+r*0.3, r*0.06, r*0.04);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Car from front view: headlights, bumper, windshield
+            gfx.fillStyle(0xfff0f0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Car body front
+            gfx.fillStyle(0xdd2222, 1);
+            gfx.fillRoundedRect(cx-r*0.68, cy-r*0.42, r*1.36, r*0.88, r*0.16);
+            // Roof
+            gfx.fillRoundedRect(cx-r*0.44, cy-r*0.74, r*0.88, r*0.36, r*0.14);
+            // Windshield (big)
+            gfx.fillStyle(0x88ccff, 0.85);
+            gfx.fillRoundedRect(cx-r*0.38, cy-r*0.68, r*0.76, r*0.28, r*0.1);
+            // Grill
+            gfx.fillStyle(0xaa1111, 1);
+            gfx.fillRoundedRect(cx-r*0.32, cy+r*0.24, r*0.64, r*0.16, r*0.04);
+            gfx.lineStyle(2, 0x881111, 1);
+            for(let i=-2;i<=2;i++) {
+                gfx.beginPath(); gfx.moveTo(cx+i*r*0.1, cy+r*0.24); gfx.lineTo(cx+i*r*0.1, cy+r*0.4); gfx.strokePath();
+            }
+            // Headlights
+            gfx.fillStyle(0xffff99, 1);
+            gfx.fillRoundedRect(cx-r*0.64, cy+r*0.06, r*0.24, r*0.16, r*0.06);
+            gfx.fillRoundedRect(cx+r*0.40, cy+r*0.06, r*0.24, r*0.16, r*0.06);
+            gfx.fillStyle(0xffee44, 0.6);
+            gfx.fillEllipse(cx-r*0.52, cy+r*0.14, r*0.14, r*0.08);
+            gfx.fillEllipse(cx+r*0.52, cy+r*0.14, r*0.14, r*0.08);
+            // Hood center ornament
+            gfx.fillStyle(0xcc1111, 1); gfx.fillCircle(cx, cy+r*0.2, r*0.06);
+            gfx.fillStyle(0xffffff, 1); gfx.fillCircle(cx, cy+r*0.2, r*0.03);
         }
     },
 
@@ -1038,6 +1676,34 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0xaa3322, 1); gfx.fillCircle(cx-r*0.2, cy-r*0.42, r*0.07);
             gfx.fillStyle(0x2244aa, 1); gfx.fillCircle(cx+r*0.2, cy-r*0.42, r*0.07);
             gfx.fillRect(cx-r*0.22, cy-r*0.46, r*0.44, r*0.08);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Rubber duck in water
+            gfx.fillStyle(0xe8f4ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Water
+            gfx.fillStyle(0x66aadd, 0.7);
+            gfx.fillRect(cx-r*0.95, cy+r*0.3, r*1.9, r*0.65);
+            gfx.fillStyle(0x88ccff, 0.4);
+            gfx.beginPath(); gfx.arc(cx-r*0.3, cy+r*0.3, r*0.26, Math.PI, 0, false); gfx.fillPath();
+            gfx.beginPath(); gfx.arc(cx+r*0.28, cy+r*0.3, r*0.22, Math.PI, 0, false); gfx.fillPath();
+            // Duck body (yellow oval)
+            gfx.fillStyle(0xffdd00, 1);
+            gfx.fillEllipse(cx, cy+r*0.2, r*0.88, r*0.52);
+            // Duck head
+            gfx.fillCircle(cx+r*0.32, cy-r*0.06, r*0.3);
+            // Wing detail
+            gfx.fillStyle(0xeebb00, 0.6);
+            gfx.fillEllipse(cx-r*0.1, cy+r*0.14, r*0.48, r*0.26);
+            // Beak
+            gfx.fillStyle(0xff8822, 1);
+            gfx.fillEllipse(cx+r*0.64, cy-r*0.06, r*0.24, r*0.1);
+            // Eye
+            gfx.fillStyle(0x111111, 1); gfx.fillCircle(cx+r*0.42, cy-r*0.16, r*0.044);
+            gfx.fillStyle(0xffffff, 1); gfx.fillCircle(cx+r*0.44, cy-r*0.18, r*0.018);
+            // Bubbles
+            gfx.fillStyle(0xffffff, 0.6);
+            gfx.fillCircle(cx-r*0.5, cy+r*0.42, r*0.055);
+            gfx.fillCircle(cx-r*0.62, cy+r*0.36, r*0.04);
         }
     },
 
@@ -1078,6 +1744,35 @@ const WORD_CONCEPTS = {
             }
             gfx.fillStyle(0x555555, 1);
             gfx.fillRect(cx-r*0.68, cy-r*0.7, r*1.36, r*0.1);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Pizza/pie inside oven window (circular with toppings)
+            gfx.fillStyle(0x222222, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Oven window frame
+            gfx.fillStyle(0x555555, 1);
+            gfx.fillRoundedRect(cx-r*0.62, cy-r*0.62, r*1.24, r*1.24, r*0.12);
+            // Window interior glowing
+            gfx.fillStyle(0xff6600, 0.4);
+            gfx.fillRoundedRect(cx-r*0.54, cy-r*0.54, r*1.08, r*1.08, r*0.1);
+            // Pizza circle
+            gfx.fillStyle(0xf2b840, 1); gfx.fillCircle(cx, cy, r*0.48);
+            // Sauce
+            gfx.fillStyle(0xcc2200, 1); gfx.fillCircle(cx, cy, r*0.42);
+            // Cheese
+            gfx.fillStyle(0xffee88, 1); gfx.fillCircle(cx, cy, r*0.38);
+            // Toppings (pepperoni)
+            gfx.fillStyle(0xcc3300, 1);
+            [[0,-0.2],[0.2,0.1],[-0.18,0.12],[0.06,0.28],[-0.1,-0.1]].forEach(([dx,dy]) => {
+                gfx.fillCircle(cx+dx*r, cy+dy*r, r*0.075);
+            });
+            // Crust edge
+            gfx.lineStyle(4, 0xe8a030, 1);
+            gfx.strokeCircle(cx, cy, r*0.44);
+            // Steam
+            gfx.lineStyle(2, 0xffffff, 0.5);
+            gfx.beginPath(); gfx.arc(cx-r*0.2, cy-r*0.6, r*0.06, Math.PI, 0, false); gfx.strokePath();
+            gfx.beginPath(); gfx.arc(cx, cy-r*0.62, r*0.06, Math.PI, 0, false); gfx.strokePath();
+            gfx.beginPath(); gfx.arc(cx+r*0.2, cy-r*0.6, r*0.06, Math.PI, 0, false); gfx.strokePath();
         }
     },
 
@@ -1114,6 +1809,36 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0xffee44, 1); gfx.fillCircle(cx, cy-r*0.74, r*0.12);
             gfx.fillStyle(0x55aaee, 0.6);
             gfx.fillEllipse(cx, cy-r*0.3, r*0.38, r*0.08);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Flower bouquet without vase, arranged in circle
+            gfx.fillStyle(0xeef8ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Stems
+            gfx.lineStyle(3, 0x338822, 1);
+            const flowerPositions = [
+                [0, -0.58], [-0.38, -0.38], [0.38, -0.38],
+                [-0.54, 0.0], [0.54, 0.0], [-0.38, 0.38], [0.38, 0.38]
+            ];
+            flowerPositions.forEach(([dx,dy]) => {
+                gfx.beginPath(); gfx.moveTo(cx, cy+r*0.5); gfx.lineTo(cx+dx*r, cy+dy*r); gfx.strokePath();
+            });
+            // Ribbon at base
+            gfx.fillStyle(0xff4488, 1);
+            gfx.fillRoundedRect(cx-r*0.14, cy+r*0.44, r*0.28, r*0.1, r*0.04);
+            // Flowers
+            const flowerColors = [0xff4488, 0xffaa00, 0xff6699, 0xffcc00, 0xff88bb, 0xeeaa00, 0xff5599];
+            flowerPositions.forEach(([dx,dy], fi) => {
+                const fx = cx+dx*r, fy = cy+dy*r;
+                const fc = flowerColors[fi];
+                // Petals
+                for(let p=0;p<5;p++){
+                    const a = p*Math.PI*2/5;
+                    gfx.fillStyle(fc, 1);
+                    gfx.fillCircle(fx+Math.cos(a)*r*0.12, fy+Math.sin(a)*r*0.12, r*0.09);
+                }
+                // Center
+                gfx.fillStyle(0xffee44, 1); gfx.fillCircle(fx, fy, r*0.07);
+            });
         }
     },
 
@@ -1170,6 +1895,51 @@ const WORD_CONCEPTS = {
             gfx.fillEllipse(cx+r*0.22, cy-r*0.34, r*0.14, r*0.08);
             gfx.lineStyle(2, 0xcc8844, 1);
             gfx.beginPath(); gfx.arc(cx, cy-r*0.26, r*0.08, 0.25, Math.PI-0.25, false); gfx.strokePath();
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Dad face with mustache and glasses, smiling
+            gfx.fillStyle(0xfff8f0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Hair (dark, short)
+            gfx.fillStyle(0x3a2010, 1);
+            gfx.fillRoundedRect(cx-r*0.38, cy-r*0.82, r*0.76, r*0.22, r*0.08);
+            gfx.fillEllipse(cx, cy-r*0.74, r*0.76, r*0.2);
+            // Face
+            gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx, cy, r*0.68);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy, r*0.65);
+            // Ears
+            gfx.fillStyle(0xfad5a5, 1);
+            gfx.fillCircle(cx-r*0.64, cy+r*0.04, r*0.14);
+            gfx.fillCircle(cx+r*0.64, cy+r*0.04, r*0.14);
+            // Glasses frames
+            gfx.lineStyle(3, 0x444444, 1);
+            gfx.strokeCircle(cx-r*0.2, cy-r*0.1, r*0.17);
+            gfx.strokeCircle(cx+r*0.2, cy-r*0.1, r*0.17);
+            gfx.lineBetween(cx-r*0.03, cy-r*0.1, cx+r*0.03, cy-r*0.1);
+            gfx.lineBetween(cx-r*0.37, cy-r*0.1, cx-r*0.54, cy-r*0.06);
+            gfx.lineBetween(cx+r*0.37, cy-r*0.1, cx+r*0.54, cy-r*0.06);
+            // Eyes through glasses
+            gfx.fillStyle(0x3355aa, 1);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.1, r*0.08);
+            gfx.fillCircle(cx+r*0.2, cy-r*0.1, r*0.08);
+            gfx.fillStyle(0x111122, 1);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.1, r*0.05);
+            gfx.fillCircle(cx+r*0.2, cy-r*0.1, r*0.05);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.16, cy-r*0.13, r*0.02);
+            gfx.fillCircle(cx+r*0.24, cy-r*0.13, r*0.02);
+            // Nose
+            gfx.fillStyle(0xcc9977, 1); gfx.fillCircle(cx, cy+r*0.06, r*0.07);
+            // Mustache
+            gfx.fillStyle(0x3a2010, 1);
+            gfx.fillEllipse(cx-r*0.16, cy+r*0.22, r*0.22, r*0.12);
+            gfx.fillEllipse(cx+r*0.16, cy+r*0.22, r*0.22, r*0.12);
+            // Smile
+            gfx.lineStyle(2.5, 0xcc8844, 1);
+            gfx.beginPath(); gfx.arc(cx, cy+r*0.36, r*0.14, 0.25, Math.PI-0.25, false); gfx.strokePath();
+            // Cheeks
+            gfx.fillStyle(0xff9988, 0.22);
+            gfx.fillCircle(cx-r*0.44, cy+r*0.12, r*0.12);
+            gfx.fillCircle(cx+r*0.44, cy+r*0.12, r*0.12);
         }
     },
     MAMAN: {
@@ -1220,6 +1990,56 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0xffaacc, 1);
             gfx.fillCircle(cx-r*0.32, cy-r*0.38, r*0.04);
             gfx.fillCircle(cx+r*0.32, cy-r*0.38, r*0.04);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Mom face with long hair and earrings
+            gfx.fillStyle(0xfff0f8, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Long hair (sides going down)
+            gfx.fillStyle(0x7a3810, 1);
+            gfx.fillEllipse(cx-r*0.52, cy+r*0.24, r*0.32, r*0.88);
+            gfx.fillEllipse(cx+r*0.52, cy+r*0.24, r*0.32, r*0.88);
+            gfx.fillEllipse(cx, cy-r*0.68, r*0.82, r*0.28);
+            gfx.fillRect(cx-r*0.38, cy-r*0.72, r*0.76, r*0.16);
+            // Face
+            gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx, cy, r*0.58);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy, r*0.56);
+            // Earrings
+            gfx.fillStyle(0xff44aa, 1);
+            gfx.fillCircle(cx-r*0.56, cy+r*0.08, r*0.07);
+            gfx.fillCircle(cx+r*0.56, cy+r*0.08, r*0.07);
+            gfx.fillStyle(0xffaadd, 0.7);
+            gfx.fillCircle(cx-r*0.56, cy+r*0.16, r*0.05);
+            gfx.fillCircle(cx+r*0.56, cy+r*0.16, r*0.05);
+            // Eyes
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillEllipse(cx-r*0.18, cy-r*0.1, r*0.2, r*0.16);
+            gfx.fillEllipse(cx+r*0.18, cy-r*0.1, r*0.2, r*0.16);
+            gfx.fillStyle(0x664488, 1);
+            gfx.fillCircle(cx-r*0.18, cy-r*0.1, r*0.08);
+            gfx.fillCircle(cx+r*0.18, cy-r*0.1, r*0.08);
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.18, cy-r*0.1, r*0.05);
+            gfx.fillCircle(cx+r*0.18, cy-r*0.1, r*0.05);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.14, cy-r*0.13, r*0.022);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.13, r*0.022);
+            // Lashes
+            gfx.lineStyle(1.5, 0x331111, 0.9);
+            [[-0.25,-0.18],[-0.18,-0.2],[-0.11,-0.19]].forEach(([dx,dy]) => {
+                gfx.beginPath(); gfx.moveTo(cx+dx*r,cy+dy*r+r*0.02); gfx.lineTo(cx+dx*r,cy+dy*r-r*0.03); gfx.strokePath();
+            });
+            [[ 0.11,-0.19],[0.18,-0.2],[0.25,-0.18]].forEach(([dx,dy]) => {
+                gfx.beginPath(); gfx.moveTo(cx+dx*r,cy+dy*r+r*0.02); gfx.lineTo(cx+dx*r,cy+dy*r-r*0.03); gfx.strokePath();
+            });
+            // Nose
+            gfx.fillStyle(0xcc9977, 1); gfx.fillEllipse(cx, cy+r*0.06, r*0.08, r*0.05);
+            // Lips
+            gfx.fillStyle(0xff6699, 1);
+            gfx.fillEllipse(cx, cy+r*0.24, r*0.26, r*0.1);
+            // Cheeks
+            gfx.fillStyle(0xff9988, 0.3);
+            gfx.fillCircle(cx-r*0.36, cy+r*0.1, r*0.12);
+            gfx.fillCircle(cx+r*0.36, cy+r*0.1, r*0.12);
         }
     },
     BEBE: {
@@ -1268,6 +2088,42 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0xaaccff, 1);
             gfx.fillCircle(cx-r*0.3, cy+r*0.62, r*0.12);
             gfx.fillCircle(cx+r*0.3, cy+r*0.62, r*0.12);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Baby in a cradle with moon mobile above
+            gfx.fillStyle(0xfffce8, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Mobile arm
+            gfx.lineStyle(2, 0xaa8866, 1);
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.78); gfx.lineTo(cx, cy-r*0.56); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx-r*0.26, cy-r*0.78); gfx.lineTo(cx+r*0.26, cy-r*0.78); gfx.strokePath();
+            // Moon
+            gfx.fillStyle(0xfff0a0, 1); gfx.fillCircle(cx-r*0.26, cy-r*0.88, r*0.12);
+            gfx.fillStyle(0xfffce8, 1); gfx.fillCircle(cx-r*0.22, cy-r*0.92, r*0.09);
+            // Star
+            gfx.fillStyle(0xffee44, 1); gfx.fillCircle(cx+r*0.26, cy-r*0.86, r*0.07);
+            gfx.lineStyle(2, 0xffdd00, 1);
+            for(let i=0;i<5;i++){
+                const a = i*Math.PI*2/5 - Math.PI*0.5;
+                gfx.beginPath(); gfx.moveTo(cx+r*0.26, cy-r*0.86);
+                gfx.lineTo(cx+r*0.26+Math.cos(a)*r*0.1, cy-r*0.86+Math.sin(a)*r*0.1); gfx.strokePath();
+            }
+            // Cradle body
+            gfx.fillStyle(0xcc9966, 1);
+            gfx.fillEllipse(cx, cy+r*0.32, r*0.9, r*0.58);
+            gfx.fillStyle(0xddaa77, 1);
+            gfx.fillEllipse(cx, cy+r*0.22, r*0.82, r*0.48);
+            // Baby blanket
+            gfx.fillStyle(0xaaccff, 1);
+            gfx.fillEllipse(cx, cy+r*0.28, r*0.7, r*0.36);
+            // Baby head
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy-r*0.06, r*0.22);
+            // Baby eyes (closed, sleeping)
+            gfx.lineStyle(2, 0xcc8844, 1);
+            gfx.beginPath(); gfx.arc(cx-r*0.09, cy-r*0.08, r*0.06, Math.PI+0.3, -0.3, false); gfx.strokePath();
+            gfx.beginPath(); gfx.arc(cx+r*0.09, cy-r*0.08, r*0.06, Math.PI+0.3, -0.3, false); gfx.strokePath();
+            // Cradle rockers
+            gfx.fillStyle(0xcc9966, 1);
+            gfx.fillEllipse(cx, cy+r*0.68, r*0.72, r*0.1);
         }
     },
     TATA: {
@@ -1319,6 +2175,48 @@ const WORD_CONCEPTS = {
             gfx.fillEllipse(cx+r*0.22, cy-r*0.34, r*0.14, r*0.08);
             gfx.lineStyle(2, 0xcc8844, 1);
             gfx.beginPath(); gfx.arc(cx, cy-r*0.26, r*0.08, 0.25, Math.PI-0.25, false); gfx.strokePath();
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Aunt face with curly hair and necklace
+            gfx.fillStyle(0xfff0ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Curly hair (many circles)
+            gfx.fillStyle(0x331111, 1);
+            const curlPositions = [[-0.44,-0.56],[-0.28,-0.7],[-0.1,-0.76],[0.1,-0.76],[0.28,-0.7],[0.44,-0.56],
+                                   [-0.56,-0.36],[-0.58,-0.14],[0.56,-0.36],[0.58,-0.14]];
+            curlPositions.forEach(([dx,dy]) => gfx.fillCircle(cx+dx*r, cy+dy*r, r*0.16));
+            // Face
+            gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx, cy, r*0.58);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy, r*0.56);
+            // Necklace
+            gfx.lineStyle(2, 0xcc88cc, 1);
+            gfx.beginPath(); gfx.arc(cx, cy+r*0.5, r*0.36, -Math.PI*0.7, -Math.PI*0.3, false); gfx.strokePath();
+            gfx.fillStyle(0xcc88cc, 1); gfx.fillCircle(cx, cy+r*0.62, r*0.05);
+            // Earrings
+            gfx.fillStyle(0xffaaee, 1);
+            gfx.fillCircle(cx-r*0.56, cy+r*0.04, r*0.06);
+            gfx.fillCircle(cx+r*0.56, cy+r*0.04, r*0.06);
+            // Eyes
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillEllipse(cx-r*0.18, cy-r*0.08, r*0.18, r*0.15);
+            gfx.fillEllipse(cx+r*0.18, cy-r*0.08, r*0.18, r*0.15);
+            gfx.fillStyle(0x664488, 1);
+            gfx.fillCircle(cx-r*0.18, cy-r*0.08, r*0.075);
+            gfx.fillCircle(cx+r*0.18, cy-r*0.08, r*0.075);
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.18, cy-r*0.08, r*0.046);
+            gfx.fillCircle(cx+r*0.18, cy-r*0.08, r*0.046);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.14, cy-r*0.11, r*0.02);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.11, r*0.02);
+            // Nose
+            gfx.fillStyle(0xcc9977, 1); gfx.fillEllipse(cx, cy+r*0.06, r*0.08, r*0.05);
+            // Smile
+            gfx.lineStyle(2, 0xcc8844, 1);
+            gfx.beginPath(); gfx.arc(cx, cy+r*0.2, r*0.1, 0.25, Math.PI-0.25, false); gfx.strokePath();
+            // Cheeks
+            gfx.fillStyle(0xff9988, 0.28);
+            gfx.fillCircle(cx-r*0.36, cy+r*0.06, r*0.12);
+            gfx.fillCircle(cx+r*0.36, cy+r*0.06, r*0.12);
         }
     },
     PAPI: {
@@ -1371,6 +2269,48 @@ const WORD_CONCEPTS = {
             gfx.lineStyle(4, 0x8b4513, 1);
             gfx.beginPath(); gfx.moveTo(cx+r*0.46, cy-r*0.08); gfx.lineTo(cx+r*0.5, cy+r*0.72); gfx.strokePath();
             gfx.beginPath(); gfx.arc(cx+r*0.44, cy-r*0.1, r*0.08, -Math.PI*0.5, Math.PI*0.5, false); gfx.strokePath();
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Grandpa face with big white beard and glasses
+            gfx.fillStyle(0xf0fff0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // White hair (top)
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillEllipse(cx, cy-r*0.7, r*0.72, r*0.22);
+            gfx.fillRect(cx-r*0.36, cy-r*0.74, r*0.72, r*0.12);
+            // Face
+            gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx, cy, r*0.58);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy, r*0.56);
+            // Big white beard
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillEllipse(cx, cy+r*0.46, r*0.72, r*0.54);
+            gfx.fillEllipse(cx-r*0.28, cy+r*0.34, r*0.28, r*0.42);
+            gfx.fillEllipse(cx+r*0.28, cy+r*0.34, r*0.28, r*0.42);
+            gfx.fillStyle(0xeeeeee, 0.5);
+            gfx.fillEllipse(cx, cy+r*0.3, r*0.54, r*0.26);
+            // Mustache
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillEllipse(cx-r*0.14, cy+r*0.14, r*0.22, r*0.12);
+            gfx.fillEllipse(cx+r*0.14, cy+r*0.14, r*0.22, r*0.12);
+            // Glasses
+            gfx.lineStyle(2.5, 0x444444, 1);
+            gfx.strokeCircle(cx-r*0.2, cy-r*0.1, r*0.14);
+            gfx.strokeCircle(cx+r*0.2, cy-r*0.1, r*0.14);
+            gfx.lineBetween(cx-r*0.06, cy-r*0.1, cx+r*0.06, cy-r*0.1);
+            gfx.lineBetween(cx-r*0.34, cy-r*0.1, cx-r*0.5, cy-r*0.06);
+            gfx.lineBetween(cx+r*0.34, cy-r*0.1, cx+r*0.5, cy-r*0.06);
+            gfx.fillStyle(0x555555, 0.5);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.1, r*0.046);
+            gfx.fillCircle(cx+r*0.2, cy-r*0.1, r*0.046);
+            // Wrinkles (subtle lines)
+            gfx.lineStyle(1, 0xd0b090, 0.5);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.38, cy-r*0.22); gfx.lineTo(cx-r*0.5, cy-r*0.18); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.38, cy-r*0.22); gfx.lineTo(cx+r*0.5, cy-r*0.18); gfx.strokePath();
+            // Nose
+            gfx.fillStyle(0xcc9977, 1); gfx.fillEllipse(cx, cy+r*0.04, r*0.09, r*0.07);
+            // Cheeks
+            gfx.fillStyle(0xff9988, 0.18);
+            gfx.fillCircle(cx-r*0.38, cy+r*0.1, r*0.1);
+            gfx.fillCircle(cx+r*0.38, cy+r*0.1, r*0.1);
         }
     },
 
@@ -1404,6 +2344,27 @@ const WORD_CONCEPTS = {
             gfx.fillCircle(cx-r*0.44, cy-r*0.64, r*0.24);
             gfx.fillCircle(cx-r*0.24, cy-r*0.6, r*0.2);
             gfx.fillRect(cx-r*0.6, cy-r*0.6, r*0.38, r*0.18);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Blue paint palette with paint blobs
+            gfx.fillStyle(0x0055cc, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Palette shape (oval with thumb hole)
+            gfx.fillStyle(0xf5e8d0, 1);
+            gfx.fillEllipse(cx+r*0.08, cy+r*0.08, r*1.3, r*1.1);
+            gfx.fillStyle(0x0055cc, 1);
+            gfx.fillCircle(cx-r*0.34, cy-r*0.3, r*0.14);
+            // Paint blobs in shades of blue
+            const blues = [0x0022ff, 0x2244ee, 0x4488dd, 0x22aaff, 0x0066cc, 0x88ccff];
+            const blobPos = [[-0.3,-0.42],[0.0,-0.54],[0.3,-0.42],[0.5,-0.14],[0.44,0.22],[-0.44,0.1]];
+            blues.forEach((c,i) => {
+                gfx.fillStyle(c, 1);
+                gfx.fillCircle(cx+blobPos[i][0]*r, cy+blobPos[i][1]*r, r*0.13);
+            });
+            // Brush
+            gfx.lineStyle(4, 0x8b5e3c, 1);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.1, cy+r*0.3); gfx.lineTo(cx+r*0.42, cy-r*0.22); gfx.strokePath();
+            gfx.fillStyle(0x4488dd, 1);
+            gfx.fillEllipse(cx+r*0.44, cy-r*0.24, r*0.12, r*0.06);
         }
     },
     ROSE: {
@@ -1437,6 +2398,30 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0xffee66, 1); gfx.fillCircle(cx, cy-r*0.2, r*0.14);
             gfx.fillStyle(0xffdd44, 1); gfx.fillCircle(cx, cy-r*0.2, r*0.1);
             gfx.fillStyle(0x4488ff, 0.8); gfx.fillCircle(cx+r*0.28, cy-r*0.42, r*0.04);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // A rose flower (the flower, not just the color)
+            gfx.fillStyle(0xfff0f8, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Stem
+            gfx.lineStyle(4, 0x338822, 1);
+            gfx.beginPath(); gfx.moveTo(cx, cy+r*0.92); gfx.lineTo(cx, cy+r*0.2); gfx.strokePath();
+            // Leaves
+            gfx.fillStyle(0x44aa22, 1);
+            gfx.fillEllipse(cx+r*0.22, cy+r*0.56, r*0.3, r*0.12);
+            gfx.fillEllipse(cx-r*0.2, cy+r*0.38, r*0.26, r*0.1);
+            // Outer petals
+            gfx.fillStyle(0xcc2255, 1);
+            for(let i=0;i<5;i++){
+                const a = i*Math.PI*2/5 - Math.PI*0.5;
+                gfx.fillCircle(cx+Math.cos(a)*r*0.38, cy-r*0.1+Math.sin(a)*r*0.38, r*0.22);
+            }
+            // Middle layers
+            gfx.fillStyle(0xee4477, 1); gfx.fillCircle(cx, cy-r*0.1, r*0.3);
+            gfx.fillStyle(0xff6699, 1); gfx.fillCircle(cx, cy-r*0.14, r*0.22);
+            gfx.fillStyle(0xffaabb, 1); gfx.fillCircle(cx-r*0.04, cy-r*0.18, r*0.14);
+            gfx.fillStyle(0xffccdd, 1); gfx.fillCircle(cx, cy-r*0.22, r*0.07);
+            // Dewdrop
+            gfx.fillStyle(0x88ccff, 0.7); gfx.fillCircle(cx+r*0.24, cy-r*0.32, r*0.05);
         }
     },
     NOIR: {
@@ -1473,6 +2458,31 @@ const WORD_CONCEPTS = {
                 gfx.beginPath(); gfx.moveTo(cx+dx-r*0.065,cy+dy); gfx.lineTo(cx+dx+r*0.065,cy+dy); gfx.strokePath();
                 gfx.beginPath(); gfx.moveTo(cx+dx,cy+dy-r*0.065); gfx.lineTo(cx+dx,cy+dy+r*0.065); gfx.strokePath();
             });
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Black cat silhouette on gray background
+            gfx.fillStyle(0x666677, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Moon (background)
+            gfx.fillStyle(0xffee88, 0.8); gfx.fillCircle(cx+r*0.4, cy-r*0.42, r*0.32);
+            // Cat body (all black silhouette)
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillEllipse(cx-r*0.1, cy+r*0.22, r*0.8, r*0.66);
+            // Head
+            gfx.fillCircle(cx-r*0.1, cy-r*0.28, r*0.38);
+            // Ears (triangles)
+            tri(gfx, cx-r*0.38, cy-r*0.5, cx-r*0.52, cy-r*0.82, cx-r*0.16, cy-r*0.58);
+            tri(gfx, cx+r*0.18, cy-r*0.5, cx+r*0.32, cy-r*0.82, cx+r*0.06, cy-r*0.58);
+            // Tail
+            gfx.lineStyle(r*0.1, 0x111111, 1);
+            gfx.beginPath(); gfx.arc(cx+r*0.44, cy+r*0.46, r*0.3, -Math.PI*0.8, Math.PI*0.15, false); gfx.strokePath();
+            // Eyes (glowing in the dark — amber)
+            gfx.fillStyle(0xffaa00, 1);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.3, r*0.07);
+            gfx.fillCircle(cx+r*0.02, cy-r*0.3, r*0.07);
+            // Pupils
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillEllipse(cx-r*0.22, cy-r*0.3, r*0.03, r*0.06);
+            gfx.fillEllipse(cx+r*0.02, cy-r*0.3, r*0.03, r*0.06);
         }
     },
     VERT: {
@@ -1515,6 +2525,38 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0xff4400, 1); gfx.fillCircle(cx+r*0.56, cy-r*0.38, r*0.06);
             gfx.lineStyle(1.5, 0x444400, 0.8);
             gfx.beginPath(); gfx.moveTo(cx+r*0.42, cy-r*0.36); gfx.lineTo(cx+r*0.5, cy-r*0.38); gfx.strokePath();
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Green leaf with water droplet
+            gfx.fillStyle(0x88eebb, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Big leaf shape (ellipse)
+            gfx.fillStyle(0x226611, 1);
+            gfx.fillEllipse(cx, cy+r*0.08, r*1.1, r*0.72);
+            gfx.fillStyle(0x338822, 1);
+            gfx.fillEllipse(cx, cy+r*0.04, r*1.02, r*0.64);
+            gfx.fillStyle(0x44aa33, 1);
+            gfx.fillEllipse(cx-r*0.06, cy+r*0.0, r*0.94, r*0.58);
+            // Tip of leaf (pointed)
+            tri(gfx, cx-r*0.48, cy+r*0.0, cx+r*0.48, cy+r*0.0, cx, cy-r*0.62);
+            gfx.fillStyle(0x44aa33, 1);
+            tri(gfx, cx-r*0.38, cy+r*0.04, cx+r*0.38, cy+r*0.04, cx, cy-r*0.5);
+            // Leaf veins
+            gfx.lineStyle(2, 0x226611, 0.7);
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.5); gfx.lineTo(cx, cy+r*0.36); gfx.strokePath();
+            gfx.lineStyle(1.5, 0x226611, 0.5);
+            [[-0.26,0.3],[-0.2,0.06],[0.2,0.06],[0.26,0.3]].forEach(([dx,dy]) => {
+                gfx.beginPath(); gfx.moveTo(cx, cy+dy*r); gfx.lineTo(cx+dx*r, cy+(dy-0.12)*r); gfx.strokePath();
+            });
+            // Water droplet
+            gfx.fillStyle(0x44aaff, 0.85);
+            gfx.fillCircle(cx+r*0.34, cy-r*0.18, r*0.14);
+            gfx.beginPath();
+            gfx.moveTo(cx+r*0.24, cy-r*0.18);
+            gfx.lineTo(cx+r*0.34, cy-r*0.44);
+            gfx.lineTo(cx+r*0.44, cy-r*0.18);
+            gfx.closePath(); gfx.fillPath();
+            gfx.fillStyle(0xffffff, 0.6);
+            gfx.fillCircle(cx+r*0.29, cy-r*0.28, r*0.04);
         }
     },
     GRIS: {
@@ -1559,6 +2601,32 @@ const WORD_CONCEPTS = {
             gfx.fillEllipse(cx+r*0.6, cy-r*0.17, r*0.05, r*0.09);
             gfx.fillStyle(0x6688aa, 0.6);
             gfx.beginPath(); gfx.moveTo(cx+r*0.62, cy-r*0.12); gfx.lineTo(cx+r*0.7, cy-r*0.18); gfx.strokePath();
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Gray rainy cloud with raindrops
+            gfx.fillStyle(0xe0e8ee, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Cloud
+            gfx.fillStyle(0x889aaa, 1);
+            gfx.fillCircle(cx-r*0.32, cy-r*0.12, r*0.28);
+            gfx.fillCircle(cx, cy-r*0.26, r*0.36);
+            gfx.fillCircle(cx+r*0.32, cy-r*0.12, r*0.28);
+            gfx.fillRect(cx-r*0.32, cy-r*0.12, r*0.64, r*0.28);
+            gfx.fillStyle(0x99aabb, 1);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.18, r*0.22);
+            gfx.fillCircle(cx+r*0.1, cy-r*0.28, r*0.28);
+            gfx.fillCircle(cx+r*0.32, cy-r*0.14, r*0.22);
+            gfx.fillRect(cx-r*0.22, cy-r*0.14, r*0.56, r*0.22);
+            // Raindrops (teardrops)
+            gfx.fillStyle(0x5588bb, 0.85);
+            const drops = [[-0.38,0.28],[-0.18,0.44],[0.02,0.28],[0.22,0.48],[0.42,0.3],[-0.1,0.64],[0.14,0.66]];
+            drops.forEach(([dx,dy]) => {
+                gfx.fillCircle(cx+dx*r, cy+dy*r, r*0.05);
+                gfx.beginPath();
+                gfx.moveTo(cx+dx*r-r*0.05, cy+dy*r);
+                gfx.lineTo(cx+dx*r, cy+(dy-0.14)*r);
+                gfx.lineTo(cx+dx*r+r*0.05, cy+dy*r);
+                gfx.closePath(); gfx.fillPath();
+            });
         }
     },
 
@@ -1601,6 +2669,34 @@ const WORD_CONCEPTS = {
             gfx.fillEllipse(cx+r*0.44, cy+r*0.08, r*0.2, r*0.12);
             gfx.lineStyle(2.5, 0xcc8844, 1);
             gfx.beginPath(); gfx.arc(cx, cy+r*0.44, r*0.14, 0.25, Math.PI-0.25, false); gfx.strokePath();
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Clown nose — big red ball in center
+            gfx.fillStyle(0xfff8f0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Face skin background
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy, r*0.78);
+            // Big red clown nose
+            gfx.fillStyle(0xdd1111, 1); gfx.fillCircle(cx, cy, r*0.34);
+            gfx.fillStyle(0xee3333, 1); gfx.fillCircle(cx-r*0.05, cy-r*0.06, r*0.3);
+            gfx.fillStyle(0xff5555, 0.5); gfx.fillCircle(cx-r*0.08, cy-r*0.1, r*0.16);
+            gfx.fillStyle(0xffffff, 0.6); gfx.fillCircle(cx-r*0.1, cy-r*0.14, r*0.07);
+            // Nostrils subtle
+            gfx.fillStyle(0xaa1111, 0.5);
+            gfx.fillCircle(cx-r*0.1, cy+r*0.08, r*0.055);
+            gfx.fillCircle(cx+r*0.1, cy+r*0.08, r*0.055);
+            // Stars/sparkles around
+            gfx.fillStyle(0xffee00, 1);
+            [[0.58,-0.38],[0.62,0.14],[-0.58,-0.38],[-0.62,0.14],[0.0,-0.68]].forEach(([dx,dy]) => {
+                gfx.fillCircle(cx+dx*r, cy+dy*r, r*0.06);
+                gfx.lineStyle(1.5, 0xffee00, 1);
+                for(let i=0;i<4;i++){
+                    const a = i*Math.PI*0.5;
+                    gfx.beginPath();
+                    gfx.moveTo(cx+dx*r+Math.cos(a)*r*0.08, cy+dy*r+Math.sin(a)*r*0.08);
+                    gfx.lineTo(cx+dx*r+Math.cos(a)*r*0.13, cy+dy*r+Math.sin(a)*r*0.13);
+                    gfx.strokePath();
+                }
+            });
         }
     },
     BRAS: {
@@ -1632,6 +2728,41 @@ const WORD_CONCEPTS = {
             for (const ex of [-0.26, -0.06, 0.14]) {
                 gfx.beginPath(); gfx.arc(cx+ex*r, cy-r*0.26, r*0.06, Math.PI, 0, false); gfx.strokePath();
             }
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Flexing muscle arm (bicep)
+            gfx.fillStyle(0xeef4ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Sleeve top
+            gfx.fillStyle(0x4466aa, 1);
+            gfx.fillRoundedRect(cx-r*0.46, cy-r*0.74, r*0.58, r*0.46, r*0.12);
+            // Upper arm (flexed — wider at top)
+            gfx.fillStyle(0xe8b070, 1);
+            gfx.fillEllipse(cx-r*0.18, cy-r*0.28, r*0.64, r*0.54);
+            gfx.fillStyle(0xfad5a5, 1);
+            gfx.fillEllipse(cx-r*0.18, cy-r*0.28, r*0.6, r*0.5);
+            // Bicep bulge (the muscle ball)
+            gfx.fillStyle(0xe8b070, 1);
+            gfx.fillCircle(cx-r*0.08, cy-r*0.38, r*0.32);
+            gfx.fillStyle(0xfad5a5, 1);
+            gfx.fillCircle(cx-r*0.08, cy-r*0.38, r*0.3);
+            // Forearm going down
+            gfx.fillStyle(0xe8b070, 1);
+            gfx.fillRoundedRect(cx-r*0.38, cy-r*0.14, r*0.48, r*0.72, r*0.2);
+            gfx.fillStyle(0xfad5a5, 1);
+            gfx.fillRoundedRect(cx-r*0.36, cy-r*0.12, r*0.44, r*0.68, r*0.2);
+            // Fist
+            gfx.fillStyle(0xe8b070, 1); gfx.fillEllipse(cx-r*0.14, cy+r*0.6, r*0.46, r*0.3);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillEllipse(cx-r*0.14, cy+r*0.58, r*0.42, r*0.26);
+            // Knuckle lines
+            gfx.lineStyle(1.5, 0xcc9977, 0.4);
+            for(let i=0;i<3;i++) {
+                gfx.beginPath(); gfx.arc(cx-r*0.28+i*r*0.14, cy+r*0.56, r*0.07, Math.PI, 0, false); gfx.strokePath();
+            }
+            // Strength lines
+            gfx.lineStyle(2, 0xffdd44, 0.7);
+            [[0.28,-0.52],[0.36,-0.36],[0.3,-0.2]].forEach(([dx,dy]) => {
+                gfx.beginPath(); gfx.moveTo(cx+dx*r-r*0.04, cy+dy*r); gfx.lineTo(cx+dx*r+r*0.08, cy+dy*r-r*0.06); gfx.strokePath();
+            });
         }
     },
     MAIN: {
@@ -1669,6 +2800,27 @@ const WORD_CONCEPTS = {
             gfx.lineStyle(2, 0xcc9977, 0.35);
             gfx.beginPath(); gfx.moveTo(cx-r*0.28, cy+r*0.1); gfx.lineTo(cx+r*0.28, cy+r*0.3); gfx.strokePath();
             gfx.beginPath(); gfx.moveTo(cx-r*0.32, cy+r*0.32); gfx.lineTo(cx-r*0.04, cy+r*0.46); gfx.strokePath();
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Handprint (filled solid shape of a hand)
+            gfx.fillStyle(0xfff8f0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Paint color background splash
+            gfx.fillStyle(0xff8844, 0.3); gfx.fillCircle(cx, cy, r*0.8);
+            // Hand palm
+            gfx.fillStyle(0xe8b070, 1);
+            gfx.fillRoundedRect(cx-r*0.32, cy-r*0.1, r*0.64, r*0.62, r*0.14);
+            // 4 fingers
+            const fData = [[-0.24, 0.56], [-0.08, 0.62], [0.08, 0.6], [0.24, 0.54]];
+            fData.forEach(([dx, fh]) => {
+                gfx.fillRoundedRect(cx+dx*r-r*0.09, cy-r*fh, r*0.18, r*(fh-0.08), r*0.08);
+            });
+            // Thumb
+            gfx.fillRoundedRect(cx-r*0.5, cy-r*0.24, r*0.22, r*0.38, r*0.1);
+            // Wrist
+            gfx.fillRoundedRect(cx-r*0.28, cy+r*0.5, r*0.56, r*0.22, r*0.08);
+            // Highlight on palm
+            gfx.fillStyle(0xfad5a5, 0.6);
+            gfx.fillEllipse(cx-r*0.06, cy+r*0.18, r*0.36, r*0.3);
         }
     },
     PIED: {
@@ -1698,6 +2850,28 @@ const WORD_CONCEPTS = {
             gfx.beginPath(); gfx.moveTo(cx-r*0.36, cy+r*0.14); gfx.lineTo(cx-r*0.26, cy+r*0.14); gfx.strokePath();
             gfx.fillStyle(0xfad5a5, 0.5);
             gfx.fillCircle(cx-r*0.52, cy+r*0.26, r*0.1);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Footprint (filled sole shape)
+            gfx.fillStyle(0xfff8f0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Paint splash
+            gfx.fillStyle(0x4488ff, 0.25); gfx.fillCircle(cx, cy, r*0.82);
+            // Foot sole
+            gfx.fillStyle(0xe8b070, 1);
+            gfx.fillCircle(cx-r*0.26, cy+r*0.32, r*0.3);
+            gfx.fillEllipse(cx+r*0.14, cy+r*0.38, r*1.02, r*0.52);
+            gfx.fillStyle(0xfad5a5, 1);
+            gfx.fillCircle(cx-r*0.24, cy+r*0.3, r*0.28);
+            gfx.fillEllipse(cx+r*0.14, cy+r*0.36, r*0.98, r*0.48);
+            // 5 toes
+            const toePrint = [[0.46,-0.06,0.12],[0.32,-0.14,0.11],[0.18,-0.18,0.1],[0.04,-0.16,0.09],[-0.1,-0.1,0.08]];
+            toePrint.forEach(([tx,ty,tr]) => {
+                gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx+tx*r, cy+ty*r, tr*r+r*0.01);
+                gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx+tx*r, cy+ty*r, tr*r);
+            });
+            // Arch highlight
+            gfx.fillStyle(0xfff8f0, 0.5);
+            gfx.fillEllipse(cx-r*0.24, cy+r*0.34, r*0.22, r*0.44);
         }
     },
     TETE: {
@@ -1746,6 +2920,49 @@ const WORD_CONCEPTS = {
             gfx.fillEllipse(cx+r*0.38, cy+r*0.04, r*0.2, r*0.12);
             gfx.lineStyle(2.5, 0xcc8844, 1);
             gfx.beginPath(); gfx.arc(cx, cy+r*0.22, r*0.18, 0.25, Math.PI-0.25, false); gfx.strokePath();
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Front-view simple head with all features
+            gfx.fillStyle(0xfff8f0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Hair
+            gfx.fillStyle(0x5c3010, 1);
+            gfx.fillEllipse(cx, cy-r*0.58, r*1.0, r*0.3);
+            gfx.fillRect(cx-r*0.5, cy-r*0.62, r*1.0, r*0.16);
+            // Face
+            gfx.fillStyle(0xe8b070, 1); gfx.fillCircle(cx, cy+r*0.06, r*0.62);
+            gfx.fillStyle(0xfad5a5, 1); gfx.fillCircle(cx, cy+r*0.06, r*0.6);
+            // Ears
+            gfx.fillStyle(0xfad5a5, 1);
+            gfx.fillCircle(cx-r*0.6, cy+r*0.06, r*0.14);
+            gfx.fillCircle(cx+r*0.6, cy+r*0.06, r*0.14);
+            // Eyebrows
+            gfx.lineStyle(3, 0x5c3010, 1);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.28, cy-r*0.26); gfx.lineTo(cx-r*0.08, cy-r*0.28); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.08, cy-r*0.28); gfx.lineTo(cx+r*0.28, cy-r*0.26); gfx.strokePath();
+            // Eyes
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.14, r*0.15);
+            gfx.fillCircle(cx+r*0.2, cy-r*0.14, r*0.15);
+            gfx.fillStyle(0x44aa44, 1);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.14, r*0.1);
+            gfx.fillCircle(cx+r*0.2, cy-r*0.14, r*0.1);
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.14, r*0.062);
+            gfx.fillCircle(cx+r*0.2, cy-r*0.14, r*0.062);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.15, cy-r*0.17, r*0.026);
+            gfx.fillCircle(cx+r*0.25, cy-r*0.17, r*0.026);
+            // Nose
+            gfx.fillStyle(0xcc9977, 1); gfx.fillEllipse(cx, cy+r*0.06, r*0.1, r*0.07);
+            gfx.fillCircle(cx-r*0.06, cy+r*0.1, r*0.04);
+            gfx.fillCircle(cx+r*0.06, cy+r*0.1, r*0.04);
+            // Smile
+            gfx.lineStyle(2.5, 0xcc8844, 1);
+            gfx.beginPath(); gfx.arc(cx, cy+r*0.24, r*0.16, 0.25, Math.PI-0.25, false); gfx.strokePath();
+            // Cheeks
+            gfx.fillStyle(0xff9988, 0.25);
+            gfx.fillCircle(cx-r*0.38, cy+r*0.1, r*0.12);
+            gfx.fillCircle(cx+r*0.38, cy+r*0.1, r*0.12);
         }
     },
 
@@ -1779,6 +2996,33 @@ const WORD_CONCEPTS = {
                 const a = (i / 14) * Math.PI * 2;
                 gfx.fillEllipse(cx+Math.cos(a)*r*0.3, cy+Math.sin(a)*r*0.25, r*0.058, r*0.038);
             }
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Kiwi sliced cross-section — the classic view
+            gfx.fillStyle(0xf5e8d0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Brown outer skin
+            gfx.fillStyle(0x7a5030, 1); gfx.fillCircle(cx, cy, r*0.76);
+            // Green flesh
+            gfx.fillStyle(0x55aa22, 1); gfx.fillCircle(cx, cy, r*0.68);
+            gfx.fillStyle(0x77cc44, 1); gfx.fillCircle(cx, cy, r*0.6);
+            // White center
+            gfx.fillStyle(0xefffcc, 1); gfx.fillCircle(cx, cy, r*0.18);
+            gfx.fillStyle(0xffffff, 0.7); gfx.fillCircle(cx, cy, r*0.12);
+            // Flesh sections radiating
+            gfx.lineStyle(1.2, 0x224400, 0.65);
+            for(let i=0;i<14;i++){
+                const a = (i/14)*Math.PI*2;
+                gfx.beginPath();
+                gfx.moveTo(cx+Math.cos(a)*r*0.18, cy+Math.sin(a)*r*0.18);
+                gfx.lineTo(cx+Math.cos(a)*r*0.58, cy+Math.sin(a)*r*0.52);
+                gfx.strokePath();
+            }
+            // Seeds
+            gfx.fillStyle(0x1a1100, 1);
+            for(let i=0;i<14;i++){
+                const a = (i/14)*Math.PI*2;
+                gfx.fillEllipse(cx+Math.cos(a)*r*0.38, cy+Math.sin(a)*r*0.33, r*0.06, r*0.04);
+            }
         }
     },
     POIRE: {
@@ -1805,6 +3049,39 @@ const WORD_CONCEPTS = {
             gfx.fillEllipse(cx+r*0.22, cy-r*0.82, r*0.26, r*0.12);
             gfx.lineStyle(1.5, 0x226611, 0.7);
             gfx.beginPath(); gfx.moveTo(cx+r*0.08, cy-r*0.82); gfx.lineTo(cx+r*0.34, cy-r*0.82); gfx.strokePath();
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Pear cut in half showing seeds inside
+            gfx.fillStyle(0xf8f8e8, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Left half (outer skin)
+            gfx.fillStyle(0xaabb22, 1);
+            gfx.fillCircle(cx-r*0.12, cy+r*0.2, r*0.5);
+            gfx.fillEllipse(cx-r*0.12, cy-r*0.3, r*0.48, r*0.6);
+            // Flesh inside (yellow-white)
+            gfx.fillStyle(0xf5f0cc, 1);
+            gfx.fillCircle(cx-r*0.12, cy+r*0.2, r*0.44);
+            gfx.fillEllipse(cx-r*0.12, cy-r*0.3, r*0.42, r*0.54);
+            // Right half (mirrored slightly)
+            gfx.fillStyle(0xccdd44, 1);
+            gfx.fillCircle(cx+r*0.12, cy+r*0.2, r*0.5);
+            gfx.fillEllipse(cx+r*0.12, cy-r*0.3, r*0.48, r*0.6);
+            gfx.fillStyle(0xf5f0cc, 1);
+            gfx.fillCircle(cx+r*0.12, cy+r*0.2, r*0.44);
+            gfx.fillEllipse(cx+r*0.12, cy-r*0.3, r*0.42, r*0.54);
+            // Core channel
+            gfx.fillStyle(0xe8d0a0, 1);
+            gfx.fillEllipse(cx, cy+r*0.08, r*0.18, r*0.54);
+            // Seeds
+            gfx.fillStyle(0x774422, 1);
+            gfx.fillEllipse(cx-r*0.06, cy-r*0.02, r*0.08, r*0.14);
+            gfx.fillEllipse(cx+r*0.06, cy+r*0.18, r*0.08, r*0.14);
+            // Center split line
+            gfx.lineStyle(2, 0x7a5030, 0.5);
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.72); gfx.lineTo(cx, cy+r*0.72); gfx.strokePath();
+            // Stems
+            gfx.lineStyle(3, 0x8b5e3c, 1);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.06, cy-r*0.56); gfx.lineTo(cx-r*0.1, cy-r*0.76); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.06, cy-r*0.56); gfx.lineTo(cx+r*0.1, cy-r*0.76); gfx.strokePath();
         }
     },
     POMME: {
@@ -1830,6 +3107,34 @@ const WORD_CONCEPTS = {
             gfx.fillEllipse(cx+r*0.22, cy-r*0.74, r*0.28, r*0.12);
             gfx.lineStyle(1.5, 0x226611, 0.7);
             gfx.beginPath(); gfx.moveTo(cx+r*0.06, cy-r*0.74); gfx.lineTo(cx+r*0.36, cy-r*0.74); gfx.strokePath();
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Apple sliced showing 5-pointed star seed pattern
+            gfx.fillStyle(0xfff0f0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Apple slice (circle)
+            gfx.fillStyle(0xfbecd2, 1); gfx.fillCircle(cx, cy+r*0.04, r*0.7);
+            // Skin ring (red)
+            gfx.lineStyle(8, 0xcc1111, 1);
+            gfx.strokeCircle(cx, cy+r*0.04, r*0.66);
+            // Inner flesh
+            gfx.fillStyle(0xfaf0e0, 1); gfx.fillCircle(cx, cy+r*0.04, r*0.58);
+            // Star-shaped core (5-pointed)
+            gfx.fillStyle(0xddb888, 1);
+            gfx.fillCircle(cx, cy+r*0.04, r*0.18);
+            // 5 seed pockets (the star arms)
+            for(let i=0;i<5;i++){
+                const a = i*Math.PI*2/5 - Math.PI*0.5;
+                gfx.fillStyle(0xddb888, 1);
+                gfx.fillEllipse(cx+Math.cos(a)*r*0.24, cy+r*0.04+Math.sin(a)*r*0.24, r*0.18, r*0.1);
+                // Seeds
+                gfx.fillStyle(0x5a3010, 1);
+                gfx.fillEllipse(cx+Math.cos(a)*r*0.3, cy+r*0.04+Math.sin(a)*r*0.3, r*0.08, r*0.05);
+            }
+            // Stem
+            gfx.lineStyle(4, 0x8b5e3c, 1);
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.66); gfx.lineTo(cx+r*0.06, cy-r*0.84); gfx.strokePath();
+            gfx.fillStyle(0x44aa22, 1);
+            gfx.fillEllipse(cx+r*0.2, cy-r*0.82, r*0.24, r*0.1);
         }
     },
     FIGUE: {
@@ -1863,6 +3168,33 @@ const WORD_CONCEPTS = {
                     cx+Math.cos(a+0.5)*r*0.09, cy+r*0.62+Math.sin(a+0.5)*r*0.09,
                     cx+Math.cos(a-0.5)*r*0.09, cy+r*0.62+Math.sin(a-0.5)*r*0.09);
             }
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Fig sliced open showing pink flesh with seeds
+            gfx.fillStyle(0xf8f0ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Fig outer shape
+            gfx.fillStyle(0x6622aa, 1);
+            gfx.fillCircle(cx, cy+r*0.1, r*0.56);
+            gfx.fillEllipse(cx, cy-r*0.32, r*0.42, r*0.56);
+            // Inner pink flesh
+            gfx.fillStyle(0xff6688, 1);
+            gfx.fillCircle(cx, cy+r*0.1, r*0.46);
+            gfx.fillEllipse(cx, cy-r*0.3, r*0.34, r*0.44);
+            // Inner lighter center
+            gfx.fillStyle(0xffaacc, 0.6);
+            gfx.fillCircle(cx, cy+r*0.14, r*0.28);
+            // Many tiny white seeds radiating
+            gfx.fillStyle(0xffffff, 0.85);
+            for(let i=0;i<18;i++){
+                const a = (i/18)*Math.PI*2;
+                const dist = r*(0.12+Math.random()*0.18);
+                gfx.fillEllipse(cx+Math.cos(a)*dist, cy+r*0.08+Math.sin(a)*dist*0.75, r*0.04, r*0.025);
+            }
+            // Stem
+            gfx.lineStyle(3, 0x4a2288, 1);
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.56); gfx.lineTo(cx, cy-r*0.72); gfx.strokePath();
+            gfx.fillStyle(0x44aa22, 1);
+            gfx.fillEllipse(cx+r*0.16, cy-r*0.7, r*0.22, r*0.1);
         }
     },
     PRUNE: {
@@ -1888,6 +3220,34 @@ const WORD_CONCEPTS = {
             gfx.fillEllipse(cx+r*0.2, cy-r*0.76, r*0.26, r*0.12);
             gfx.lineStyle(1.5, 0x226611, 0.7);
             gfx.beginPath(); gfx.moveTo(cx+r*0.04, cy-r*0.76); gfx.lineTo(cx+r*0.34, cy-r*0.76); gfx.strokePath();
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Plum tree branch with 3 plums hanging
+            gfx.fillStyle(0xf0f0ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Branch
+            gfx.lineStyle(6, 0x7a4010, 1);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.82, cy-r*0.12); gfx.lineTo(cx+r*0.82, cy-r*0.08); gfx.strokePath();
+            gfx.lineStyle(4, 0x7a4010, 1);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.4, cy-r*0.12); gfx.lineTo(cx-r*0.4, cy+r*0.04); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx, cy-r*0.1); gfx.lineTo(cx, cy+r*0.04); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.4, cy-r*0.08); gfx.lineTo(cx+r*0.4, cy+r*0.04); gfx.strokePath();
+            // Leaves
+            gfx.fillStyle(0x44aa22, 1);
+            gfx.fillEllipse(cx-r*0.54, cy-r*0.22, r*0.28, r*0.12);
+            gfx.fillEllipse(cx+r*0.14, cy-r*0.22, r*0.26, r*0.12);
+            gfx.fillEllipse(cx+r*0.6, cy-r*0.2, r*0.28, r*0.12);
+            // 3 plums
+            const plumX = [-0.4, 0, 0.4];
+            plumX.forEach(dx => {
+                // Stem
+                gfx.lineStyle(2, 0x6a3010, 1);
+                gfx.beginPath(); gfx.moveTo(cx+dx*r, cy+r*0.04); gfx.lineTo(cx+dx*r, cy+r*0.22); gfx.strokePath();
+                // Plum
+                gfx.fillStyle(0x441188, 1); gfx.fillCircle(cx+dx*r, cy+r*0.46, r*0.24);
+                gfx.fillStyle(0x5522aa, 1); gfx.fillCircle(cx+dx*r, cy+r*0.44, r*0.22);
+                gfx.fillStyle(0x8855dd, 0.5); gfx.fillEllipse(cx+dx*r-r*0.06, cy+r*0.36, r*0.1, r*0.16);
+                gfx.fillStyle(0xaa88ff, 0.4); gfx.fillEllipse(cx+dx*r-r*0.06, cy+r*0.32, r*0.14, r*0.1);
+            });
         }
     },
 
@@ -1958,6 +3318,50 @@ const WORD_CONCEPTS = {
             gfx.fillRoundedRect(cx+r*0.36,cy-r*0.09,r*0.13,r*0.17,r*0.03);
             gfx.fillStyle(0xaa7700, 1);
             gfx.fillCircle(cx+r*0.425,cy+r*0.10,r*0.028);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Cow face from front — black/white, big nose, horns
+            gfx.fillStyle(0xcceecc, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Head (white)
+            gfx.fillStyle(0xfafafa, 1); gfx.fillCircle(cx, cy+r*0.08, r*0.72);
+            // Black patches on head
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.28, cy-r*0.24, r*0.28);
+            gfx.fillCircle(cx+r*0.34, cy-r*0.18, r*0.22);
+            gfx.fillEllipse(cx+r*0.1, cy-r*0.46, r*0.36, r*0.16);
+            // Ears (round, at sides)
+            gfx.fillStyle(0xfafafa, 1);
+            gfx.fillCircle(cx-r*0.64, cy-r*0.24, r*0.22);
+            gfx.fillCircle(cx+r*0.64, cy-r*0.24, r*0.22);
+            gfx.fillStyle(0xffbbaa, 0.7);
+            gfx.fillCircle(cx-r*0.64, cy-r*0.24, r*0.12);
+            gfx.fillCircle(cx+r*0.64, cy-r*0.24, r*0.12);
+            // Horns
+            gfx.fillStyle(0xddbb44, 1);
+            tri(gfx, cx-r*0.36, cy-r*0.56, cx-r*0.22, cy-r*0.76, cx-r*0.14, cy-r*0.52);
+            tri(gfx, cx+r*0.36, cy-r*0.56, cx+r*0.22, cy-r*0.76, cx+r*0.14, cy-r*0.52);
+            // Big pink nose
+            gfx.fillStyle(0xffaaaa, 1); gfx.fillEllipse(cx, cy+r*0.36, r*0.48, r*0.28);
+            gfx.fillStyle(0x221111, 1);
+            gfx.fillCircle(cx-r*0.14, cy+r*0.36, r*0.055);
+            gfx.fillCircle(cx+r*0.14, cy+r*0.36, r*0.055);
+            // Eyes
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.24, cy-r*0.04, r*0.16);
+            gfx.fillCircle(cx+r*0.24, cy-r*0.04, r*0.16);
+            gfx.fillStyle(0x8b4010, 1);
+            gfx.fillCircle(cx-r*0.24, cy-r*0.04, r*0.11);
+            gfx.fillCircle(cx+r*0.24, cy-r*0.04, r*0.11);
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.24, cy-r*0.04, r*0.068);
+            gfx.fillCircle(cx+r*0.24, cy-r*0.04, r*0.068);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.19, cy-r*0.07, r*0.03);
+            gfx.fillCircle(cx+r*0.29, cy-r*0.07, r*0.03);
+            // Cheeks
+            gfx.fillStyle(0xff9988, 0.22);
+            gfx.fillCircle(cx-r*0.44, cy+r*0.12, r*0.12);
+            gfx.fillCircle(cx+r*0.44, cy+r*0.12, r*0.12);
         }
     },
     LAPIN: {
@@ -2023,6 +3427,53 @@ const WORD_CONCEPTS = {
             gfx.fillStyle(0xff9988, 0.22);
             gfx.fillCircle(cx-r*0.22,cy-r*0.20,r*0.10);
             gfx.fillCircle(cx+r*0.22,cy-r*0.20,r*0.10);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Rabbit face from front — long ears, twitching nose, big eyes
+            gfx.fillStyle(0xe8f8ff, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Long ears
+            gfx.fillStyle(0xe8e8e8, 1);
+            gfx.fillEllipse(cx-r*0.26, cy-r*0.62, r*0.24, r*0.72);
+            gfx.fillEllipse(cx+r*0.26, cy-r*0.62, r*0.24, r*0.72);
+            gfx.fillStyle(0xffaabb, 1);
+            gfx.fillEllipse(cx-r*0.26, cy-r*0.63, r*0.12, r*0.58);
+            gfx.fillEllipse(cx+r*0.26, cy-r*0.63, r*0.12, r*0.58);
+            // Head
+            gfx.fillStyle(0xe8e8e8, 1); gfx.fillCircle(cx, cy+r*0.14, r*0.62);
+            // Cheek poufs
+            gfx.fillStyle(0xffffff, 0.7);
+            gfx.fillCircle(cx-r*0.28, cy+r*0.2, r*0.2);
+            gfx.fillCircle(cx+r*0.28, cy+r*0.2, r*0.2);
+            // Eyes
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.02, r*0.16);
+            gfx.fillCircle(cx+r*0.2, cy-r*0.02, r*0.16);
+            gfx.fillStyle(0x44aadd, 1);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.02, r*0.11);
+            gfx.fillCircle(cx+r*0.2, cy-r*0.02, r*0.11);
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.2, cy-r*0.02, r*0.07);
+            gfx.fillCircle(cx+r*0.2, cy-r*0.02, r*0.07);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.15, cy-r*0.06, r*0.03);
+            gfx.fillCircle(cx+r*0.25, cy-r*0.06, r*0.03);
+            // Nose (pink, twitching)
+            gfx.fillStyle(0xff88aa, 1); gfx.fillEllipse(cx, cy+r*0.16, r*0.12, r*0.08);
+            gfx.fillStyle(0xffbbcc, 0.6); gfx.fillCircle(cx-r*0.02, cy+r*0.14, r*0.03);
+            // Mouth
+            gfx.lineStyle(1.5, 0xcc8899, 1);
+            gfx.beginPath(); gfx.moveTo(cx, cy+r*0.2); gfx.lineTo(cx-r*0.1, cy+r*0.28); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx, cy+r*0.2); gfx.lineTo(cx+r*0.1, cy+r*0.28); gfx.strokePath();
+            // Whiskers
+            gfx.lineStyle(1.2, 0xbbbbbb, 0.75);
+            gfx.beginPath(); gfx.moveTo(cx-r*0.08, cy+r*0.17); gfx.lineTo(cx-r*0.52, cy+r*0.12); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx-r*0.08, cy+r*0.22); gfx.lineTo(cx-r*0.5, cy+r*0.26); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.08, cy+r*0.17); gfx.lineTo(cx+r*0.52, cy+r*0.12); gfx.strokePath();
+            gfx.beginPath(); gfx.moveTo(cx+r*0.08, cy+r*0.22); gfx.lineTo(cx+r*0.5, cy+r*0.26); gfx.strokePath();
+            // Cheek blush
+            gfx.fillStyle(0xff9988, 0.22);
+            gfx.fillCircle(cx-r*0.38, cy+r*0.2, r*0.12);
+            gfx.fillCircle(cx+r*0.38, cy+r*0.2, r*0.12);
         }
     },
     POULE: {
@@ -2080,6 +3531,49 @@ const WORD_CONCEPTS = {
              [0.02,0.78,-0.10,0.82],[0.02,0.78,0.02,0.90],[0.02,0.78,0.14,0.82]].forEach(([x1,y1,x2,y2]) => {
                 gfx.beginPath(); gfx.moveTo(cx+x1*r,cy+y1*r); gfx.lineTo(cx+x2*r,cy+y2*r); gfx.strokePath();
             });
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Hen sitting on nest — bird's-eye view
+            gfx.fillStyle(0xf5e8c0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Nest (straw ring)
+            gfx.fillStyle(0xd4a843, 1); gfx.fillCircle(cx, cy+r*0.10, r*0.78);
+            gfx.fillStyle(0xe8c46a, 1); gfx.fillCircle(cx, cy+r*0.10, r*0.62);
+            // Straw lines in nest
+            gfx.lineStyle(2, 0xb8860b, 0.6);
+            [[-0.42,0.26,0.34,0.42],[0.40,0.20,-0.28,0.44],[0.0,-0.10,0.0,0.56],
+             [-0.38,0.52,0.38,0.28],[-0.20,-0.08,0.30,0.52]].forEach(([x1,y1,x2,y2]) => {
+                gfx.beginPath(); gfx.moveTo(cx+x1*r,cy+y1*r); gfx.lineTo(cx+x2*r,cy+y2*r); gfx.strokePath();
+            });
+            // Eggs in nest (3 white ovals)
+            gfx.fillStyle(0xfcf9f0, 1);
+            gfx.fillEllipse(cx-r*0.20, cy+r*0.38, r*0.22, r*0.28);
+            gfx.fillEllipse(cx+r*0.20, cy+r*0.36, r*0.22, r*0.28);
+            gfx.fillEllipse(cx, cy+r*0.52, r*0.22, r*0.28);
+            // Egg shading
+            gfx.fillStyle(0xe8e0d0, 0.4);
+            gfx.fillEllipse(cx-r*0.18, cy+r*0.40, r*0.10, r*0.14);
+            gfx.fillEllipse(cx+r*0.22, cy+r*0.38, r*0.10, r*0.14);
+            gfx.fillEllipse(cx+r*0.02, cy+r*0.54, r*0.10, r*0.14);
+            // Hen body (rust/brown oval, top-down)
+            gfx.fillStyle(0xcc5522, 1); gfx.fillEllipse(cx, cy-r*0.06, r*0.58, r*0.52);
+            // Wing outlines (folded)
+            gfx.fillStyle(0xaa3300, 1);
+            gfx.fillEllipse(cx-r*0.26, cy-r*0.06, r*0.22, r*0.40);
+            gfx.fillEllipse(cx+r*0.26, cy-r*0.06, r*0.22, r*0.40);
+            gfx.fillStyle(0xcc5522, 1); gfx.fillEllipse(cx, cy-r*0.10, r*0.36, r*0.36);
+            // Head (small, at top)
+            gfx.fillStyle(0xffffff, 1); gfx.fillCircle(cx, cy-r*0.52, r*0.22);
+            // Comb
+            gfx.fillStyle(0xee1111, 1);
+            gfx.fillCircle(cx-r*0.08, cy-r*0.70, r*0.08);
+            gfx.fillCircle(cx, cy-r*0.74, r*0.10);
+            gfx.fillCircle(cx+r*0.08, cy-r*0.70, r*0.08);
+            // Beak
+            gfx.fillStyle(0xffcc00, 1);
+            tri(gfx, cx-r*0.06, cy-r*0.44, cx+r*0.06, cy-r*0.44, cx, cy-r*0.36);
+            // Eye
+            gfx.fillStyle(0x111111, 1); gfx.fillCircle(cx, cy-r*0.52, r*0.05);
+            gfx.fillStyle(0xffffff, 1); gfx.fillCircle(cx+r*0.02, cy-r*0.54, r*0.02);
         }
     },
     CHIEN: {
@@ -2142,6 +3636,44 @@ const WORD_CONCEPTS = {
             // Cheeks
             gfx.fillStyle(0xff9966, 0.22);
             gfx.fillCircle(cx-r*0.48,cy-r*0.05,r*0.10);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Dog face from front — round head, floppy ears, tongue out
+            gfx.fillStyle(0xfff3e0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Floppy ears (draw behind head)
+            gfx.fillStyle(0xaa7744, 1);
+            gfx.fillEllipse(cx-r*0.60, cy+r*0.08, r*0.34, r*0.56);
+            gfx.fillEllipse(cx+r*0.60, cy+r*0.08, r*0.34, r*0.56);
+            // Head
+            gfx.fillStyle(0xcc9966, 1); gfx.fillCircle(cx, cy+r*0.08, r*0.62);
+            // Snout
+            gfx.fillStyle(0xddaa88, 1); gfx.fillEllipse(cx, cy+r*0.30, r*0.42, r*0.30);
+            // Nose
+            gfx.fillStyle(0x221111, 1); gfx.fillEllipse(cx, cy+r*0.16, r*0.20, r*0.13);
+            gfx.fillStyle(0x777777, 0.4); gfx.fillCircle(cx-r*0.05, cy+r*0.13, r*0.038);
+            // Tongue (sticking out)
+            gfx.fillStyle(0xff6688, 1); gfx.fillEllipse(cx, cy+r*0.46, r*0.22, r*0.24);
+            gfx.fillStyle(0xee4466, 1); gfx.fillRect(cx-r*0.11, cy+r*0.34, r*0.22, r*0.10);
+            // Tongue center line
+            gfx.lineStyle(1.5, 0xee4466, 0.8);
+            gfx.beginPath(); gfx.moveTo(cx, cy+r*0.36); gfx.lineTo(cx, cy+r*0.58); gfx.strokePath();
+            // Eyes
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.06, r*0.16);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.06, r*0.16);
+            gfx.fillStyle(0x7b3a10, 1);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.06, r*0.11);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.06, r*0.11);
+            gfx.fillStyle(0x111111, 1);
+            gfx.fillCircle(cx-r*0.22, cy-r*0.06, r*0.068);
+            gfx.fillCircle(cx+r*0.22, cy-r*0.06, r*0.068);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.17, cy-r*0.10, r*0.030);
+            gfx.fillCircle(cx+r*0.27, cy-r*0.10, r*0.030);
+            // Cheeks
+            gfx.fillStyle(0xff9966, 0.25);
+            gfx.fillCircle(cx-r*0.40, cy+r*0.18, r*0.14);
+            gfx.fillCircle(cx+r*0.40, cy+r*0.18, r*0.14);
         }
     },
     PONEY: {
@@ -2215,6 +3747,48 @@ const WORD_CONCEPTS = {
             // Cheeks
             gfx.fillStyle(0xff99cc, 0.28);
             gfx.fillCircle(cx-r*0.54,cy-r*0.23,r*0.09);
+        },
+        drawPicture2(gfx, cx, cy, r) {
+            // Pony head from side — caramel, flowing rainbow mane, facing left
+            gfx.fillStyle(0xffe0b0, 1); gfx.fillCircle(cx, cy, r*0.95);
+            // Neck
+            gfx.fillStyle(0xcc8844, 1);
+            gfx.fillRoundedRect(cx+r*0.10, cy+r*0.04, r*0.34, r*0.52, r*0.12);
+            // Flowing mane (wavy shapes along neck/top — pink, purple, blue)
+            gfx.fillStyle(0xdd66bb, 1);
+            gfx.fillEllipse(cx+r*0.14, cy-r*0.10, r*0.18, r*0.48);
+            gfx.fillStyle(0x9955cc, 1);
+            gfx.fillEllipse(cx+r*0.22, cy-r*0.06, r*0.16, r*0.42);
+            gfx.fillStyle(0x5599ee, 1);
+            gfx.fillEllipse(cx+r*0.30, cy-r*0.02, r*0.16, r*0.36);
+            gfx.fillStyle(0xee99dd, 0.7);
+            gfx.fillEllipse(cx+r*0.16, cy-r*0.14, r*0.10, r*0.30);
+            // Head (main circle, facing left)
+            gfx.fillStyle(0xcc8844, 1); gfx.fillCircle(cx-r*0.14, cy-r*0.12, r*0.46);
+            // Pointy ear on top
+            gfx.fillStyle(0xcc8844, 1);
+            tri(gfx, cx-r*0.16, cy-r*0.50, cx-r*0.02, cy-r*0.72, cx+r*0.08, cy-r*0.52);
+            gfx.fillStyle(0xffbbaa, 0.7);
+            tri(gfx, cx-r*0.14, cy-r*0.52, cx-r*0.03, cy-r*0.67, cx+r*0.04, cy-r*0.54);
+            // Snout (left side)
+            gfx.fillStyle(0xddaa77, 1);
+            gfx.fillEllipse(cx-r*0.46, cy+r*0.02, r*0.28, r*0.20);
+            // Nostril dot
+            gfx.fillStyle(0xaa6633, 1);
+            gfx.fillCircle(cx-r*0.56, cy+r*0.04, r*0.036);
+            // Eye (large, round, soulful)
+            gfx.fillStyle(0xffffff, 1); gfx.fillCircle(cx-r*0.06, cy-r*0.18, r*0.15);
+            gfx.fillStyle(0x8844cc, 1); gfx.fillCircle(cx-r*0.06, cy-r*0.18, r*0.105);
+            gfx.fillStyle(0x111111, 1); gfx.fillCircle(cx-r*0.06, cy-r*0.18, r*0.065);
+            gfx.fillStyle(0xffffff, 1);
+            gfx.fillCircle(cx-r*0.01, cy-r*0.22, r*0.028);
+            gfx.fillCircle(cx-r*0.07, cy-r*0.23, r*0.017);
+            // Smile
+            gfx.lineStyle(2, 0x994422, 1);
+            gfx.beginPath(); gfx.arc(cx-r*0.42, cy+r*0.06, r*0.09, 0.25, Math.PI-0.25, false); gfx.strokePath();
+            // Forelock mane tuft on forehead
+            gfx.fillStyle(0xdd66bb, 1); gfx.fillEllipse(cx-r*0.10, cy-r*0.52, r*0.14, r*0.22);
+            gfx.fillStyle(0x9955cc, 0.8); gfx.fillEllipse(cx-r*0.05, cy-r*0.54, r*0.10, r*0.16);
         }
     },
 };
