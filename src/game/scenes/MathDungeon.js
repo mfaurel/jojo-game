@@ -998,462 +998,271 @@ export class MathDungeon extends Scene {
     }
 
     _drawDetailedMonster(g, name) {
+        const kawaiiEye = (cx, cy, rs, ri, rp, irisColor) => {
+            g.fillStyle(0xffffff, 1); g.fillCircle(cx, cy, rs);
+            g.fillStyle(irisColor, 1); g.fillCircle(cx, cy, ri);
+            g.fillStyle(0x111111, 1); g.fillCircle(cx, cy, rp);
+            g.fillStyle(0xffffff, 1); g.fillCircle(cx - rp * 0.35, cy - rp * 0.35, Math.max(2, rp * 0.4));
+        };
+        const smile = (cx, cy, r, a1, a2) => {
+            g.lineStyle(3, 0x333333, 1);
+            g.beginPath(); g.arc(cx, cy, r, a1, a2, false); g.strokePath();
+        };
+
         if (name === 'monster_snowman') {
-            g.fillStyle(0xe0e0e0, 1);
-            g.fillCircle(0, 50, 70);
-            g.fillCircle(0, -30, 50);
-            g.fillStyle(0xffffff, 1);
-            g.fillCircle(-10, 40, 60);
-            g.fillCircle(-8, -35, 42);
-            g.fillStyle(0xd35400, 1);
-            g.fillTriangle(0, -35, 0, -25, 40, -30);
-            g.fillStyle(0x2c3e50, 1);
-            g.fillCircle(-15, -45, 6);
-            g.fillCircle(15, -45, 6);
+            g.fillStyle(0xeeeeee, 1); g.fillCircle(0, 50, 60);
+            g.fillStyle(0xffffff, 1); g.fillCircle(0, 50, 52);
+            g.fillStyle(0xeeeeee, 1); g.fillCircle(0, -30, 50);
+            g.fillStyle(0xffffff, 1); g.fillCircle(0, -30, 44);
+            g.fillStyle(0x222233, 1); g.fillRect(-18, -82, 36, 9);
+            g.fillStyle(0x222233, 1); g.fillRect(-11, -96, 22, 16);
+            g.fillStyle(0xff4444, 1); g.fillRect(-46, 8, 92, 13);
+            g.fillStyle(0xdd2222, 1); g.fillRect(-46, 19, 18, 7);
+            kawaiiEye(-18, -42, 14, 9, 5, 0x222233);
+            kawaiiEye(18, -42, 14, 9, 5, 0x222233);
+            g.fillStyle(0xff8800, 1); g.fillTriangle(0, -33, 0, -27, 20, -30);
+            smile(0, -22, 12, 0.2, Math.PI - 0.2);
+            g.fillStyle(0x333344, 1); g.fillCircle(0, 28, 5); g.fillCircle(0, 45, 5); g.fillCircle(0, 60, 5);
+
         } else if (name === 'monster_ice_golem') {
-            g.fillStyle(0x2980b9, 1);
-            g.fillRect(-70, -100, 140, 200);
-            g.fillStyle(0x3498db, 1);
-            g.fillRect(-60, -90, 120, 180);
-            g.fillStyle(0x00ffff, 1);
-            g.fillRect(-45, -70, 25, 25);
-            g.fillRect(20, -70, 25, 25);
-            g.lineStyle(2, 0xffffff, 0.5);
-            g.lineBetween(-30, 10, 20, 50);
-            g.lineBetween(40, -20, 60, 20);
+            g.fillStyle(0x5baad5, 1); g.fillRoundedRect(-55, -80, 110, 165, 20);
+            g.fillStyle(0x7dcbf0, 1); g.fillRoundedRect(-38, -65, 76, 130, 14);
+            g.fillStyle(0xaaeeff, 1); g.fillTriangle(0, -95, -12, -78, 12, -78);
+            g.fillStyle(0xddf6ff, 0.7); g.fillTriangle(0, -90, -6, -78, 6, -78);
+            g.fillStyle(0xaaeeff, 0.8); g.fillTriangle(-60, -50, -80, -62, -60, -35);
+            g.fillStyle(0xaaeeff, 0.8); g.fillTriangle(60, -50, 80, -62, 60, -35);
+            kawaiiEye(-20, -40, 16, 10, 6, 0x00ccff);
+            kawaiiEye(20, -40, 16, 10, 6, 0x00ccff);
+            smile(0, -24, 10, 0.2, Math.PI - 0.2);
+            g.fillStyle(0x7dcbf0, 1); g.fillCircle(-30, 88, 7); g.fillCircle(0, 92, 8); g.fillCircle(30, 88, 7);
+
         } else if (name === 'monster_polar_bear') {
-            g.fillStyle(0xdcdde1, 1);
-            g.fillEllipse(0, 0, 160, 110);
-            g.fillCircle(90, -40, 50);
-            g.fillStyle(0xffffff, 1);
-            g.fillEllipse(-10, -5, 140, 90);
-            g.fillStyle(0x2f3640, 1);
-            g.fillCircle(115, -45, 6);
-            g.fillCircle(130, -35, 10);
+            g.fillStyle(0xf0f0f0, 1); g.fillEllipse(0, 28, 140, 100);
+            g.fillStyle(0xffffff, 1); g.fillEllipse(0, 30, 120, 84);
+            g.fillStyle(0xf0f0f0, 1); g.fillCircle(0, -42, 55);
+            g.fillStyle(0xffffff, 1); g.fillCircle(0, -42, 48);
+            g.fillStyle(0xf0f0f0, 1); g.fillCircle(-42, -88, 16); g.fillCircle(42, -88, 16);
+            g.fillStyle(0xffbbcc, 1); g.fillCircle(-42, -88, 9); g.fillCircle(42, -88, 9);
+            kawaiiEye(-20, -50, 16, 10, 6, 0x4488aa);
+            kawaiiEye(20, -50, 16, 10, 6, 0x4488aa);
+            g.fillStyle(0xffaacc, 1); g.fillEllipse(0, -30, 22, 14);
+            g.fillStyle(0xff88aa, 1); g.fillCircle(0, -30, 5);
+            smile(0, -20, 10, 0.2, Math.PI - 0.2);
+
         } else if (name === 'monster_lollipop') {
-            // Stick with candy stripes
-            g.fillStyle(0xffffff, 1);
-            g.fillRect(-7, 0, 14, 120);
+            g.fillStyle(0xffffff, 1); g.fillRect(-5, 5, 10, 115);
             g.fillStyle(0xff4444, 1);
-            for (let i = 0; i < 5; i++) {
-                g.fillRect(-7, i * 24, 14, 12);
-            }
-            // Head
-            g.fillStyle(0xff69b4, 1);
-            g.fillCircle(0, -60, 70);
-            // Spiral
-            g.lineStyle(7, 0xffffff, 0.8);
-            g.beginPath();
-            for (let a = 0; a < Math.PI * 2.5; a += 0.15) {
-                const r = a * 9;
-                const px = Math.cos(a) * r;
-                const py = Math.sin(a) * r - 60;
-                if (a === 0) g.moveTo(px, py);
-                else g.lineTo(px, py);
+            for (let i = 0; i < 5; i++) g.fillRect(-5, 5 + i * 22, 10, 10);
+            g.fillStyle(0xff88cc, 1); g.fillCircle(0, -55, 65);
+            g.fillStyle(0xff66bb, 1); g.fillCircle(0, -55, 58);
+            g.lineStyle(6, 0xffffff, 0.7); g.beginPath();
+            for (let a = 0; a < Math.PI * 2.5; a += 0.12) {
+                const r = a * 8, px = Math.cos(a) * r, py = Math.sin(a) * r - 55;
+                if (a === 0) g.moveTo(px, py); else g.lineTo(px, py);
             }
             g.strokePath();
-            // Eyes and smile
-            g.fillStyle(0x2c3e50, 1);
-            g.fillCircle(-22, -72, 7);
-            g.fillCircle(22, -72, 7);
-            g.lineStyle(5, 0x2c3e50, 1);
-            g.beginPath();
-            g.arc(0, -55, 18, 0.2, Math.PI - 0.2, false);
-            g.strokePath();
+            g.fillStyle(0xff2266, 1);
+            g.fillCircle(30, -78, 7); g.fillCircle(38, -78, 7);
+            g.fillTriangle(27, -73, 41, -73, 34, -65);
+            kawaiiEye(-20, -65, 14, 8, 4, 0x993366);
+            kawaiiEye(20, -65, 14, 8, 4, 0x993366);
+            smile(0, -48, 10, 0.2, Math.PI - 0.2);
+
         } else if (name === 'monster_teddy') {
-            // Body
-            g.fillStyle(0xff6644, 1);
-            g.fillEllipse(0, 30, 110, 130);
-            // Head
-            g.fillCircle(0, -50, 55);
-            // Glossy highlight
-            g.fillStyle(0xff9977, 0.5);
-            g.fillCircle(-18, -65, 20);
-            // Ears
-            g.fillStyle(0xff6644, 1);
-            g.fillCircle(-38, -95, 18);
-            g.fillCircle(38, -95, 18);
-            // Eyes
-            g.fillStyle(0x2c3e50, 1);
-            g.fillCircle(-18, -55, 7);
-            g.fillCircle(18, -55, 7);
-            g.fillStyle(0xffffff, 1);
-            g.fillCircle(-20, -57, 3);
-            g.fillCircle(16, -57, 3);
-            // Smile
-            g.lineStyle(4, 0x2c3e50, 1);
-            g.beginPath();
-            g.arc(0, -40, 16, 0.2, Math.PI - 0.2, false);
-            g.strokePath();
+            g.fillStyle(0xffcc99, 0.5); g.fillEllipse(0, 38, 55, 65);
+            g.fillStyle(0xff8855, 1); g.fillEllipse(0, 30, 100, 110);
+            g.fillStyle(0xff8855, 1); g.fillCircle(0, -45, 55);
+            g.fillStyle(0xff8855, 1); g.fillCircle(-44, -85, 22); g.fillCircle(44, -85, 22);
+            g.fillStyle(0xffbbaa, 1); g.fillCircle(-44, -85, 12); g.fillCircle(44, -85, 12);
+            kawaiiEye(-20, -52, 18, 12, 7, 0x884422);
+            kawaiiEye(20, -52, 18, 12, 7, 0x884422);
+            g.fillStyle(0xffcc99, 1); g.fillEllipse(0, -34, 40, 24);
+            g.fillStyle(0xff9977, 1); g.fillCircle(0, -38, 6);
+            smile(0, -26, 11, 0.2, Math.PI - 0.2);
+
         } else if (name === 'monster_candy_cane') {
-            // White shaft
-            g.fillStyle(0xffffff, 1);
-            g.fillRect(-18, -60, 36, 160);
-            // Red stripes
-            g.fillStyle(0xdd1111, 1);
-            for (let i = 0; i < 6; i++) {
-                g.fillRect(-18, -60 + i * 27, 36, 13);
-            }
-            // Hook top (white base then stripes)
-            g.fillStyle(0xffffff, 1);
-            g.fillRect(-18, -88, 70, 30);
-            g.fillRect(34, -88, 36, 60);
-            g.fillStyle(0xdd1111, 1);
-            g.fillRect(-18, -88, 70, 13);
-            g.fillRect(34, -88, 36, 13);
-            g.fillRect(34, -62, 36, 13);
-            // Face on shaft
-            g.fillStyle(0x2c3e50, 1);
-            g.fillCircle(-6, 40, 5);
-            g.fillCircle(6, 40, 5);
-            g.lineStyle(4, 0x2c3e50, 1);
-            g.beginPath();
-            g.arc(0, 55, 10, 0.2, Math.PI - 0.2, false);
-            g.strokePath();
+            g.fillStyle(0xffffff, 1); g.fillRoundedRect(-20, -65, 40, 155, 10);
+            g.fillStyle(0xee1111, 1);
+            for (let i = 0; i < 6; i++) g.fillRect(-20, -65 + i * 26, 40, 12);
+            g.fillStyle(0xffffff, 1); g.fillRoundedRect(-20, -90, 62, 32, 12);
+            g.fillStyle(0xee1111, 1); g.fillRect(-20, -90, 62, 12);
+            g.fillStyle(0xff44aa, 1);
+            g.fillTriangle(-22, -58, -8, -72, -8, -58);
+            g.fillTriangle(8, -58, 8, -72, 22, -58);
+            g.fillStyle(0xff66cc, 1); g.fillCircle(0, -65, 6);
+            kawaiiEye(-8, 30, 12, 7, 3, 0xaa2244);
+            kawaiiEye(8, 30, 12, 7, 3, 0xaa2244);
+            smile(0, 44, 8, 0.2, Math.PI - 0.2);
+
         } else if (name === 'monster_bee') {
-            // Striped body
-            g.fillStyle(0xffd700, 1);
-            g.fillEllipse(0, 20, 80, 120);
-            g.fillStyle(0x1a1a1a, 1);
-            g.fillRect(-40, 0, 80, 18);
-            g.fillRect(-40, 36, 80, 18);
-            g.fillRect(-40, 72, 80, 18);
-            // Wings
-            g.fillStyle(0xaaddff, 0.55);
-            g.fillEllipse(-65, -30, 80, 50);
-            g.fillEllipse(65, -30, 80, 50);
-            // Head
-            g.fillStyle(0xffd700, 1);
-            g.fillCircle(0, -55, 38);
-            // Eyes
-            g.fillStyle(0x1a1a1a, 1);
-            g.fillCircle(-13, -60, 7);
-            g.fillCircle(13, -60, 7);
-            // Antennae
-            g.lineStyle(3, 0x1a1a1a, 1);
-            g.lineBetween(-10, -90, -25, -118);
-            g.lineBetween(10, -90, 25, -118);
-            g.fillStyle(0x1a1a1a, 1);
-            g.fillCircle(-25, -118, 5);
-            g.fillCircle(25, -118, 5);
-            // Smile
-            g.lineStyle(3, 0x1a1a1a, 1);
-            g.beginPath();
-            g.arc(0, -46, 13, 0.2, Math.PI - 0.2, false);
-            g.strokePath();
+            g.fillStyle(0xcceeff, 0.6); g.fillEllipse(-62, -15, 70, 40); g.fillEllipse(62, -15, 70, 40);
+            g.fillStyle(0xffd700, 1); g.fillEllipse(0, 25, 90, 85);
+            g.fillStyle(0x1a1a1a, 1); g.fillRect(-43, 5, 86, 15); g.fillRect(-43, 34, 86, 15);
+            g.fillStyle(0xffcc00, 1); g.fillTriangle(-8, 68, 8, 68, 0, 82);
+            g.fillStyle(0xffd700, 1); g.fillCircle(0, -52, 42);
+            kawaiiEye(-15, -58, 14, 9, 4, 0x333300);
+            kawaiiEye(15, -58, 14, 9, 4, 0x333300);
+            g.lineStyle(3, 0x1a1a1a, 1); g.lineBetween(-10, -90, -22, -108); g.lineBetween(10, -90, 22, -108);
+            g.fillStyle(0x1a1a1a, 1); g.fillCircle(-22, -108, 5); g.fillCircle(22, -108, 5);
+            smile(0, -42, 10, 0.2, Math.PI - 0.2);
+
         } else if (name === 'monster_butterfly') {
-            // Upper wings
-            g.fillStyle(0x8833ff, 1);
-            g.fillTriangle(-95, -65, -10, -55, -10, 60);
-            g.fillTriangle(95, -65, 10, -55, 10, 60);
-            // Lower wings
-            g.fillStyle(0xbb88ff, 1);
-            g.fillTriangle(-70, 65, -10, 10, -10, 115);
-            g.fillTriangle(70, 65, 10, 10, 10, 115);
-            // Wing highlights
-            g.lineStyle(2, 0xffffff, 0.45);
-            g.lineBetween(-55, -40, -20, 20);
-            g.lineBetween(55, -40, 20, 20);
-            // Body
-            g.fillStyle(0x1a1a1a, 1);
-            g.fillEllipse(0, 20, 16, 120);
-            // Head
-            g.fillCircle(0, -50, 18);
-            // Antennae
-            g.lineStyle(3, 0x1a1a1a, 1);
-            g.lineBetween(-5, -65, -20, -100);
-            g.lineBetween(5, -65, 20, -100);
-            g.fillStyle(0x8833ff, 1);
-            g.fillCircle(-20, -100, 6);
-            g.fillCircle(20, -100, 6);
+            g.fillStyle(0xaa55ff, 1); g.fillEllipse(-65, -38, 110, 80);
+            g.fillStyle(0xcc88ff, 0.7); g.fillEllipse(-58, -42, 80, 56);
+            g.fillStyle(0xaa55ff, 1); g.fillEllipse(65, -38, 110, 80);
+            g.fillStyle(0xcc88ff, 0.7); g.fillEllipse(58, -42, 80, 56);
+            g.fillStyle(0xcc66ff, 1); g.fillEllipse(-50, 55, 75, 55); g.fillEllipse(50, 55, 75, 55);
+            g.lineStyle(2, 0xffffff, 0.4);
+            g.lineBetween(0, -50, -80, -60); g.lineBetween(0, -50, 80, -60);
+            g.lineBetween(0, 10, -55, 55); g.lineBetween(0, 10, 55, 55);
+            g.fillStyle(0x1a1a1a, 1); g.fillEllipse(0, 12, 18, 90);
+            g.fillStyle(0x222222, 1); g.fillCircle(0, -50, 22);
+            kawaiiEye(-9, -54, 10, 6, 3, 0xaa55ff);
+            kawaiiEye(9, -54, 10, 6, 3, 0xaa55ff);
+            g.lineStyle(2, 0x333333, 1); g.lineBetween(-5, -68, -18, -88); g.lineBetween(5, -68, 18, -88);
+            g.fillStyle(0xff66cc, 1);
+            g.fillCircle(-20, -90, 5); g.fillCircle(-16, -90, 5);
+            g.fillCircle(16, -90, 5); g.fillCircle(20, -90, 5);
+
         } else if (name === 'monster_ladybug') {
-            // Red body
-            g.fillStyle(0xdd1111, 1);
-            g.fillEllipse(0, 10, 140, 120);
-            // Centre line
-            g.lineStyle(4, 0x1a1a1a, 1);
-            g.lineBetween(0, -50, 0, 70);
-            // Spots (3 per side)
+            g.fillStyle(0xee2222, 1); g.fillEllipse(0, 15, 130, 110);
+            g.lineStyle(5, 0x1a1a1a, 1); g.lineBetween(0, -48, 0, 68);
             g.fillStyle(0x1a1a1a, 1);
-            g.fillCircle(-34, -12, 16);
-            g.fillCircle(34, -12, 16);
-            g.fillCircle(-32, 28, 13);
-            g.fillCircle(32, 28, 13);
-            g.fillCircle(-20, 58, 10);
-            g.fillCircle(20, 58, 10);
-            // Head
-            g.fillStyle(0x1a1a1a, 1);
-            g.fillCircle(0, -62, 36);
-            // Eyes
-            g.fillStyle(0xffffff, 1);
-            g.fillCircle(-12, -68, 9);
-            g.fillCircle(12, -68, 9);
-            g.fillStyle(0x1a1a1a, 1);
-            g.fillCircle(-12, -68, 5);
-            g.fillCircle(12, -68, 5);
-            // Antennae
-            g.lineStyle(3, 0x1a1a1a, 1);
-            g.lineBetween(-8, -94, -20, -122);
-            g.lineBetween(8, -94, 20, -122);
+            g.fillCircle(-34, -10, 18); g.fillCircle(34, -10, 18);
+            g.fillCircle(-30, 30, 14); g.fillCircle(30, 30, 14);
+            g.fillStyle(0x1a1a1a, 1); g.fillCircle(0, -62, 38);
+            kawaiiEye(-15, -68, 16, 10, 5, 0x4444ff);
+            kawaiiEye(15, -68, 16, 10, 5, 0x4444ff);
+            g.fillStyle(0xff88aa, 0.4); g.fillCircle(-30, -58, 10); g.fillCircle(30, -58, 10);
+            g.lineStyle(3, 0x1a1a1a, 1); g.lineBetween(-8, -96, -18, -112); g.lineBetween(8, -96, 18, -112);
+            g.fillStyle(0x333333, 1); g.fillCircle(-18, -112, 5); g.fillCircle(18, -112, 5);
+
         } else if (name === 'monster_dragon') {
-            // Wings
-            g.fillStyle(0x440000, 1);
-            g.fillTriangle(-20, -20, -130, -100, -80, 60);
-            g.fillTriangle(20, -20, 130, -100, 80, 60);
-            // Body
-            g.fillStyle(0x660000, 1);
-            g.fillEllipse(0, 40, 120, 140);
-            g.fillStyle(0x880000, 1);
-            g.fillEllipse(-8, 30, 95, 115);
-            // Neck
-            g.fillStyle(0x770000, 1);
-            g.fillRect(-16, -80, 32, 70);
-            // Head
-            g.fillStyle(0x990000, 1);
-            g.fillEllipse(0, -100, 60, 48);
-            // Snout
-            g.fillStyle(0x660000, 1);
-            g.fillRect(0, -108, 42, 18);
-            // Fire breath
-            g.fillStyle(0xff6600, 0.9);
-            g.fillTriangle(42, -104, 60, -114, 105, -96);
-            g.fillTriangle(42, -100, 58, -90, 108, -108);
-            g.fillStyle(0xffcc00, 0.8);
-            g.fillTriangle(48, -102, 62, -100, 96, -100);
-            // Eye
-            g.fillStyle(0xffff00, 1);
-            g.fillCircle(-12, -100, 8);
-            g.fillStyle(0x000000, 1);
-            g.fillCircle(-12, -100, 4);
+            g.fillStyle(0x880000, 1); g.fillTriangle(-50, 10, -95, -40, -50, -30); g.fillTriangle(50, 10, 95, -40, 50, -30);
+            g.fillStyle(0xaa2222, 0.6); g.fillTriangle(-50, 10, -85, -28, -50, -20); g.fillTriangle(50, 10, 85, -28, 50, -20);
+            g.fillStyle(0xdd3311, 1); g.fillEllipse(0, 35, 100, 110);
+            g.fillStyle(0xee4422, 1); g.fillCircle(0, -50, 48);
+            g.fillStyle(0xcc2200, 1); g.fillTriangle(-20, -92, -12, -80, -4, -92); g.fillTriangle(20, -92, 12, -80, 4, -92);
+            kawaiiEye(-18, -55, 16, 10, 6, 0xffcc00);
+            kawaiiEye(18, -55, 16, 10, 6, 0xffcc00);
+            g.fillStyle(0xff6600, 0.9); g.fillCircle(36, -48, 8); g.fillCircle(46, -44, 6);
+            g.fillStyle(0xffcc00, 0.8); g.fillCircle(40, -50, 5);
+            g.fillStyle(0xcc2200, 1); g.fillTriangle(-12, 90, 0, 78, 12, 90);
+            smile(0, -40, 10, 0.2, Math.PI - 0.2);
+
         } else if (name === 'monster_lava_golem') {
-            // Stone body
-            g.fillStyle(0x2d1a1a, 1);
-            g.fillRect(-70, -100, 140, 200);
-            g.fillStyle(0x4a2010, 1);
-            g.fillRect(-60, -90, 120, 180);
-            // Glowing cracks
-            g.lineStyle(4, 0xff6600, 0.9);
-            g.lineBetween(-30, -60, 10, -20);
-            g.lineBetween(-10, -20, -35, 25);
-            g.lineBetween(-35, 25, 20, 65);
-            g.lineBetween(-50, 35, -5, 70);
-            g.lineStyle(2, 0xffaa00, 0.6);
-            g.lineBetween(-22, -52, 6, -14);
-            g.lineBetween(-4, -14, -26, 20);
-            // Eye slots
-            g.fillStyle(0xff4400, 1);
-            g.fillRect(-35, -72, 22, 18);
-            g.fillRect(13, -72, 22, 18);
-            g.fillStyle(0xffaa00, 0.7);
-            g.fillRect(-29, -68, 12, 10);
-            g.fillRect(17, -68, 12, 10);
+            g.fillStyle(0x3d2010, 1); g.fillRoundedRect(-55, -80, 110, 165, 18);
+            g.fillStyle(0x5a2e14, 1); g.fillRoundedRect(-40, -65, 80, 132, 12);
+            g.lineStyle(4, 0xff6600, 0.9); g.lineBetween(-28, -50, 0, -10); g.lineBetween(0, -10, -20, 30);
+            g.lineStyle(3, 0xffaa00, 0.7); g.lineBetween(10, -40, 28, 5); g.lineBetween(28, 5, 5, 45);
+            g.fillStyle(0xff4400, 1); g.fillRoundedRect(-32, -65, 24, 14, 4); g.fillRoundedRect(8, -65, 24, 14, 4);
+            g.fillStyle(0xffaa00, 0.8); g.fillRoundedRect(-28, -62, 16, 8, 3); g.fillRoundedRect(12, -62, 16, 8, 3);
+            g.fillStyle(0xff6600, 1); g.fillCircle(-30, 88, 7); g.fillCircle(0, 92, 9); g.fillCircle(30, 88, 7);
+            g.fillStyle(0xffaa00, 0.9); g.fillCircle(-30, 88, 4); g.fillCircle(0, 92, 5); g.fillCircle(30, 88, 4);
+            g.lineStyle(3, 0xff8800, 0.8);
+            g.beginPath(); g.arc(0, -20, 10, 0.3, Math.PI - 0.3, false); g.strokePath();
+
         } else if (name === 'monster_phoenix') {
-            // Tail feathers
-            g.fillStyle(0xff2200, 1);
-            g.fillTriangle(-18, 68, 2, 28, 22, 78);
-            g.fillStyle(0xff6600, 1);
-            g.fillTriangle(-28, 72, -4, 38, 6, 82);
-            g.fillStyle(0xffaa00, 1);
-            g.fillTriangle(12, 70, 22, 38, 36, 75);
-            // Wings
-            g.fillStyle(0xcc2200, 1);
-            g.fillTriangle(-15, -20, -115, -80, -90, 55);
-            g.fillTriangle(15, -20, 115, -80, 90, 55);
-            g.fillStyle(0xff6600, 1);
-            g.fillTriangle(-15, -20, -88, -58, -72, 40);
-            g.fillTriangle(15, -20, 88, -58, 72, 40);
-            // Body
-            g.fillStyle(0xdd4400, 1);
-            g.fillEllipse(0, 14, 78, 105);
-            g.fillStyle(0xff6600, 1);
-            g.fillEllipse(-6, 6, 58, 80);
-            // Head
-            g.fillStyle(0xff5500, 1);
-            g.fillCircle(0, -54, 34);
-            // Crest feathers
-            g.fillStyle(0xffcc00, 1);
-            g.fillTriangle(-6, -84, 0, -112, 6, -84);
-            g.fillTriangle(-16, -80, -8, -106, 0, -80);
-            g.fillTriangle(6, -80, 14, -106, 16, -80);
-            // Eye + beak
-            g.fillStyle(0xffee00, 1);
-            g.fillCircle(-11, -57, 7);
-            g.fillStyle(0x000000, 1);
-            g.fillCircle(-11, -57, 3);
-            g.fillStyle(0xffcc00, 1);
-            g.fillTriangle(6, -54, 26, -50, 6, -44);
+            g.fillStyle(0xff2200, 1); g.fillTriangle(-18, 85, -6, 60, 0, 90);
+            g.fillStyle(0xff6600, 1); g.fillTriangle(-4, 88, 2, 58, 8, 88);
+            g.fillStyle(0xffcc00, 1); g.fillTriangle(6, 85, 14, 58, 20, 85);
+            g.fillStyle(0xff6600, 1); g.fillEllipse(-72, 0, 70, 45); g.fillEllipse(72, 0, 70, 45);
+            g.fillStyle(0xffaa00, 0.7); g.fillEllipse(-62, 5, 45, 28); g.fillEllipse(62, 5, 45, 28);
+            g.fillStyle(0xff5500, 1); g.fillEllipse(0, 18, 85, 90);
+            g.fillStyle(0xffcc00, 1); g.fillCircle(0, -52, 40);
+            g.fillStyle(0xff6600, 1); g.fillTriangle(-14, -88, -8, -72, 0, -90);
+            g.fillStyle(0xffcc00, 1); g.fillTriangle(-2, -92, 2, -72, 6, -92);
+            g.fillStyle(0xff4400, 1); g.fillTriangle(6, -88, 12, -72, 16, -90);
+            kawaiiEye(-15, -56, 14, 9, 5, 0xff8800);
+            kawaiiEye(15, -56, 14, 9, 5, 0xff8800);
+            g.fillStyle(0xffcc00, 1); g.fillTriangle(0, -46, 12, -43, 0, -38);
+            smile(0, -42, 8, 0.2, Math.PI - 0.2);
+
         } else if (name === 'monster_shark') {
-            // Body
-            g.fillStyle(0x5b7d8a, 1);
-            g.fillEllipse(0, 0, 180, 78);
-            g.fillStyle(0x7ab0c0, 1);
-            g.fillEllipse(-8, -6, 148, 58);
-            // Belly
-            g.fillStyle(0xddeeff, 1);
-            g.fillEllipse(5, 16, 115, 28);
-            // Dorsal fin
-            g.fillStyle(0x4a6a77, 1);
-            g.fillTriangle(-8, -38, 18, -38, 8, -110);
-            // Pectoral fins
-            g.fillTriangle(-50, 8, -92, 58, -18, 48);
-            g.fillTriangle(50, 8, 92, 48, 18, 48);
-            // Tail
-            g.fillTriangle(-80, -6, -115, -52, -115, 42);
-            // Eye
-            g.fillStyle(0x000000, 1);
-            g.fillCircle(52, -16, 8);
+            g.fillStyle(0x6688aa, 1); g.fillEllipse(0, 10, 160, 80);
+            g.fillStyle(0x88aacc, 1); g.fillEllipse(-10, 2, 130, 54);
+            g.fillStyle(0xddeeff, 1); g.fillEllipse(10, 22, 100, 25);
+            g.fillStyle(0x4466aa, 1); g.fillTriangle(-5, -38, 15, -38, 5, -90);
+            g.fillStyle(0x4466aa, 1); g.fillTriangle(-60, 12, -92, 45, -28, 38); g.fillTriangle(60, 12, 92, 45, 28, 38);
+            g.fillStyle(0x4466aa, 1); g.fillTriangle(-75, -2, -115, -42, -115, 42);
+            kawaiiEye(45, -12, 18, 12, 7, 0x2244aa);
             g.fillStyle(0xffffff, 1);
-            g.fillCircle(54, -18, 3);
-            // Teeth
-            g.fillStyle(0xffffff, 1);
-            for (let i = 0; i < 5; i++) {
-                g.fillTriangle(-18 + i * 12, 4, -10 + i * 12, 4, -14 + i * 12, 22);
-            }
+            g.fillTriangle(-18, 10, -10, 10, -14, 24); g.fillTriangle(-6, 10, 2, 10, -2, 24); g.fillTriangle(6, 10, 14, 10, 10, 24);
+
         } else if (name === 'monster_octopus') {
-            // Tentacles (behind head)
-            g.fillStyle(0x5533aa, 1);
-            g.fillRoundedRect(-58, 5, 22, 95, 11);
-            g.fillRoundedRect(-28, 10, 20, 100, 10);
-            g.fillRoundedRect(8, 10, 20, 100, 10);
-            g.fillRoundedRect(36, 5, 22, 95, 11);
-            // Suckers
-            g.fillStyle(0xaa88ff, 1);
-            for (let i = 0; i < 4; i++) {
-                g.fillCircle(-47, 22 + i * 20, 5);
-                g.fillCircle(-18, 28 + i * 20, 5);
-                g.fillCircle(18, 28 + i * 20, 5);
-                g.fillCircle(47, 22 + i * 20, 5);
-            }
-            // Head
-            g.fillStyle(0x5533aa, 1);
-            g.fillEllipse(0, -42, 125, 105);
             g.fillStyle(0x7755cc, 1);
-            g.fillEllipse(-8, -48, 92, 78);
-            // Eyes
-            g.fillStyle(0xffeedd, 1);
-            g.fillCircle(-20, -52, 15);
-            g.fillCircle(20, -52, 15);
-            g.fillStyle(0x1a0044, 1);
-            g.fillCircle(-20, -52, 7);
-            g.fillCircle(20, -52, 7);
-            g.fillStyle(0xffffff, 1);
-            g.fillCircle(-22, -54, 3);
-            g.fillCircle(18, -54, 3);
+            g.fillRoundedRect(-55, 12, 20, 80, 10); g.fillRoundedRect(-26, 16, 18, 85, 9);
+            g.fillRoundedRect(8, 16, 18, 85, 9); g.fillRoundedRect(35, 12, 20, 80, 10);
+            g.fillStyle(0xaa88ff, 1);
+            for (let i = 0; i < 3; i++) {
+                g.fillCircle(-45, 28 + i * 22, 5); g.fillCircle(-17, 32 + i * 22, 5);
+                g.fillCircle(17, 32 + i * 22, 5); g.fillCircle(45, 28 + i * 22, 5);
+            }
+            g.fillStyle(0x8866dd, 1); g.fillEllipse(0, -38, 120, 100);
+            g.fillStyle(0xaa88ee, 1); g.fillEllipse(-5, -44, 88, 72);
+            kawaiiEye(-22, -45, 22, 14, 8, 0x5533aa);
+            kawaiiEye(22, -45, 22, 14, 8, 0x5533aa);
+            g.fillStyle(0xff88aa, 0.4); g.fillCircle(-40, -30, 12); g.fillCircle(40, -30, 12);
+            smile(0, -24, 8, 0.2, Math.PI - 0.2);
+
         } else if (name === 'monster_jellyfish') {
-            // Trailing tentacles
-            g.lineStyle(3, 0xaabbff, 0.5);
-            g.lineBetween(-42, 0, -62, 105);
-            g.lineBetween(-58, -8, -75, 92);
-            g.lineBetween(42, 0, 62, 105);
-            g.lineBetween(58, -8, 75, 92);
-            // Oral arms
-            g.lineStyle(8, 0x7788ee, 0.7);
-            g.lineBetween(-14, 2, -24, 82);
-            g.lineBetween(2, 2, 10, 86);
-            g.lineBetween(16, 2, 6, 78);
-            // Bell/dome
-            g.fillStyle(0x5588ff, 0.8);
-            g.fillEllipse(0, -42, 140, 100);
-            g.fillStyle(0x88aaff, 0.6);
-            g.fillEllipse(-5, -50, 100, 65);
-            // Bioluminescent spots
-            g.fillStyle(0xccddff, 0.85);
-            g.fillCircle(-25, -52, 7);
-            g.fillCircle(16, -56, 5);
-            g.fillCircle(32, -44, 6);
-            g.fillCircle(-8, -36, 4);
+            g.lineStyle(4, 0x8899ff, 0.6);
+            g.lineBetween(-38, 4, -52, 95); g.lineBetween(-18, 8, -22, 96);
+            g.lineBetween(0, 8, 0, 98); g.lineBetween(18, 8, 22, 96); g.lineBetween(38, 4, 52, 95);
+            g.fillStyle(0x8899ff, 0.8); g.fillEllipse(0, -36, 130, 80);
+            g.fillStyle(0xbbccff, 0.5); g.fillEllipse(-8, -44, 80, 48);
+            g.fillStyle(0xeeeeff, 0.9);
+            g.fillCircle(-30, -52, 5); g.fillCircle(28, -56, 4); g.fillCircle(10, -38, 3); g.fillCircle(-12, -30, 4);
+            kawaiiEye(-20, -40, 14, 9, 5, 0x4455ff);
+            kawaiiEye(20, -40, 14, 9, 5, 0x4455ff);
+            smile(0, -26, 8, 0.2, Math.PI - 0.2);
+
         } else if (name === 'monster_alien') {
-            // Large head
-            g.fillStyle(0x44bb44, 1);
-            g.fillEllipse(0, -52, 114, 134);
-            g.fillStyle(0x66dd66, 1);
-            g.fillEllipse(-8, -60, 82, 100);
-            // Large eyes
-            g.fillStyle(0x0a0a1a, 1);
-            g.fillEllipse(-22, -58, 40, 28);
-            g.fillEllipse(22, -58, 40, 28);
-            g.fillStyle(0x3333ff, 0.5);
-            g.fillCircle(-22, -58, 12);
-            g.fillCircle(22, -58, 12);
-            // Mouth slit
-            g.lineStyle(3, 0x228822, 1);
-            g.lineBetween(-14, -22, 14, -22);
-            // Thin body
-            g.fillStyle(0x44bb44, 1);
-            g.fillRect(-20, 18, 40, 58);
-            // Arms
-            g.fillRect(-54, 22, 34, 12);
-            g.fillRect(20, 22, 34, 12);
-            // Antennae
-            g.lineStyle(3, 0x44bb44, 1);
-            g.lineBetween(-14, -112, -28, -148);
-            g.lineBetween(14, -112, 28, -148);
-            g.fillStyle(0x88ff88, 1);
-            g.fillCircle(-28, -148, 7);
-            g.fillCircle(28, -148, 7);
+            g.fillStyle(0x55cc55, 1); g.fillCircle(0, -38, 65);
+            g.fillStyle(0x77ee77, 1); g.fillEllipse(-10, -48, 85, 90);
+            g.fillStyle(0x0a0a1a, 1); g.fillEllipse(-22, -48, 38, 22); g.fillEllipse(22, -48, 38, 22);
+            g.fillStyle(0x3366ff, 0.6); g.fillCircle(-22, -48, 10); g.fillCircle(22, -48, 10);
+            g.fillStyle(0x88aaff, 0.8); g.fillCircle(-25, -52, 4); g.fillCircle(19, -52, 4);
+            g.lineStyle(2, 0x338833, 1); g.lineBetween(-10, -22, 10, -22);
+            g.fillStyle(0x55cc55, 1); g.fillRect(-14, 22, 28, 52);
+            g.fillStyle(0x55cc55, 1); g.fillRect(-52, 24, 38, 8); g.fillRect(14, 24, 38, 8);
+            g.lineStyle(3, 0x44aa44, 1); g.lineBetween(-12, -100, -24, -122); g.lineBetween(12, -100, 24, -122);
+            g.fillStyle(0x88ff88, 1); g.fillCircle(-24, -122, 6); g.fillCircle(24, -122, 6);
+
         } else if (name === 'monster_robot') {
-            // Head
-            g.fillStyle(0x667788, 1);
-            g.fillRect(-38, -112, 76, 68);
-            g.fillStyle(0x001122, 1);
-            g.fillRect(-28, -102, 56, 32);
-            g.fillStyle(0x00ffff, 1);
-            g.fillRect(-20, -94, 16, 15);
-            g.fillRect(4, -94, 16, 15);
-            // Antenna
-            g.fillStyle(0x889999, 1);
-            g.fillRect(-3, -144, 6, 34);
-            g.fillCircle(0, -147, 7);
-            g.fillStyle(0xff4444, 1);
-            g.fillCircle(0, -147, 4);
-            // Body
-            g.fillStyle(0x556677, 1);
-            g.fillRect(-55, -44, 110, 118);
-            g.fillStyle(0x445566, 1);
-            g.fillRect(-38, -34, 76, 80);
-            // Buttons
-            g.fillStyle(0xff4444, 1); g.fillCircle(-18, -14, 6);
-            g.fillStyle(0x44ff44, 1); g.fillCircle(0, -14, 6);
-            g.fillStyle(0x4444ff, 1); g.fillCircle(18, -14, 6);
-            // Arms
-            g.fillStyle(0x667788, 1);
-            g.fillRect(-86, -40, 31, 80);
-            g.fillRect(55, -40, 31, 80);
-            g.fillCircle(-70, 46, 16);
-            g.fillCircle(70, 46, 16);
-            // Legs
-            g.fillStyle(0x556677, 1);
-            g.fillRect(-40, 74, 30, 50);
-            g.fillRect(10, 74, 30, 50);
-            g.fillRect(-48, 118, 46, 18);
-            g.fillRect(2, 118, 46, 18);
+            g.fillStyle(0x778899, 1); g.fillRoundedRect(-38, 76, 28, 46, 6); g.fillRoundedRect(10, 76, 28, 46, 6);
+            g.fillStyle(0x6677aa, 1); g.fillRoundedRect(-44, 116, 38, 12, 4); g.fillRoundedRect(6, 116, 38, 12, 4);
+            g.fillStyle(0x778899, 1); g.fillRoundedRect(-82, -36, 28, 72, 8); g.fillRoundedRect(54, -36, 28, 72, 8);
+            g.fillStyle(0x667788, 1); g.fillCircle(-68, 42, 14); g.fillCircle(68, 42, 14);
+            g.fillStyle(0x8899aa, 1); g.fillRoundedRect(-50, -38, 100, 116, 10);
+            g.fillStyle(0x667788, 1); g.fillRoundedRect(-36, -28, 72, 78, 8);
+            g.fillStyle(0xff4444, 1); g.fillCircle(-18, -12, 7);
+            g.fillStyle(0x44ff44, 1); g.fillCircle(0, -12, 7);
+            g.fillStyle(0x4444ff, 1); g.fillCircle(18, -12, 7);
+            g.fillStyle(0x8899aa, 1); g.fillRoundedRect(-42, -110, 84, 70, 12);
+            g.fillStyle(0x001122, 1); g.fillRoundedRect(-30, -102, 60, 36, 6);
+            g.fillStyle(0x00ffff, 1); g.fillRect(-24, -96, 14, 12); g.fillRect(10, -96, 14, 12);
+            g.fillStyle(0xffff44, 1);
+            g.fillRect(-14, -80, 6, 6); g.fillRect(-5, -76, 6, 6); g.fillRect(4, -80, 6, 6);
+            g.fillStyle(0x889aaa, 1); g.fillRect(-3, -140, 6, 32);
+            g.fillStyle(0xff4444, 1); g.fillCircle(0, -142, 7);
+
         } else if (name === 'monster_ufo') {
-            // Light beam
-            g.fillStyle(0xffffaa, 0.14);
-            g.fillTriangle(-50, 22, 50, 22, 105, 210);
-            // Saucer body
-            g.fillStyle(0xaabbcc, 1);
-            g.fillEllipse(0, 12, 200, 60);
-            g.fillStyle(0xbbccdd, 1);
-            g.fillEllipse(-4, 6, 158, 44);
-            // Dome
-            g.fillStyle(0x4488cc, 0.75);
-            g.fillEllipse(0, -26, 82, 72);
-            g.fillStyle(0x66aaee, 0.5);
-            g.fillEllipse(-7, -32, 50, 46);
-            // Rim lights
-            const rimColors = [0xff4444, 0x44ff44, 0x4488ff, 0xffff44, 0xff44ff];
+            g.fillStyle(0xffffaa, 0.12); g.fillTriangle(-45, 22, 45, 22, 100, 210);
+            g.fillStyle(0xaabbcc, 1); g.fillEllipse(0, 16, 190, 55);
+            g.fillStyle(0xbbccdd, 1); g.fillEllipse(-2, 10, 148, 38);
+            g.fillStyle(0x5599dd, 0.7); g.fillEllipse(0, -28, 75, 62);
+            g.fillStyle(0x88bbee, 0.5); g.fillEllipse(-8, -34, 46, 40);
+            const rimC = [0xff4444, 0x44ff44, 0x4488ff, 0xffff44, 0xff44ff];
             for (let i = 0; i < 5; i++) {
                 const a = (i / 5) * Math.PI * 2;
-                g.fillStyle(rimColors[i], 1);
-                g.fillCircle(Math.cos(a) * 75, Math.sin(a) * 20 + 12, 7);
+                g.fillStyle(rimC[i], 1); g.fillCircle(Math.cos(a) * 72, Math.sin(a) * 18 + 16, 8);
             }
-            // Alien silhouette inside dome
-            g.fillStyle(0x44bb44, 0.85);
-            g.fillCircle(0, -26, 18);
-            g.fillStyle(0x0a0a1a, 1);
-            g.fillEllipse(-7, -28, 14, 9);
-            g.fillEllipse(7, -28, 14, 9);
+            g.fillStyle(0x55cc55, 0.85); g.fillCircle(0, -26, 20);
+            g.fillStyle(0x0a0a1a, 1); g.fillEllipse(-7, -28, 12, 8); g.fillEllipse(7, -28, 12, 8);
+            g.fillStyle(0xffffff, 0.9);
+            g.fillCircle(-90, -60, 3); g.fillCircle(95, -42, 2); g.fillCircle(-70, 55, 2); g.fillCircle(88, 60, 3);
+            g.fillCircle(-95, 15, 2); g.fillCircle(80, -65, 3);
         }
     }
 

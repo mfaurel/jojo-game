@@ -6,10 +6,9 @@
 
 | # | Item | Key files | Effort | Done when |
 |---|------|-----------|--------|-----------|
-I want that all 50 word have new alternative variants (2 structurally different icon shapes each). Takes longer but gives real alternatives so I can check them in the @gallery.html
-Check all the screens, verify with playwright and center everything when we have different kind of screen (browser, browser full screen, tablet, phone in portrait, phone in landscape)
-
-| C2 | Update / refresh sprites | `WordData.js`, `ItemData.js` drawPicture functions | M–L | Visual pass on each `drawPicture` fn, child-test approved |
+I want that all 50 word have new alternative variants (2 structurally different icon shapes each). Takes longer but gives real alternatives so I can check them in the @gallery.html directly in any browser without commpiling.
++
+Check all the screens, verify with playwright and center the game when we have different kind of screen (browser, browser full screen, tablet, phone in portrait, phone in landscape or check with different kind of pixel ratio 1024*768px, 1280	1024, 1600	1200, 1920 × 1080 ...  : add tests to ensure that it works)
 
 ---
 
