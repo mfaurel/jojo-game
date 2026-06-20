@@ -49,7 +49,7 @@ export class MathWorldSelectScene extends Scene {
             });
         }
 
-        this.add.text(512, 55, t('mathWorldTitle'), {
+        this.add.text(width / 2, 55, t('mathWorldTitle'), {
             fontSize: '44px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffd700',
@@ -57,7 +57,7 @@ export class MathWorldSelectScene extends Scene {
             strokeThickness: 6,
         }).setOrigin(0.5);
 
-        this.add.text(512, 118, t('chooseMathWorld'), {
+        this.add.text(width / 2, 118, t('chooseMathWorld'), {
             fontSize: '24px',
             color: '#ddaaff',
             stroke: '#000',
@@ -74,21 +74,24 @@ export class MathWorldSelectScene extends Scene {
             padding: { x: 10, y: 5 }
         }).setInteractive({ useHandCursor: true });
         backBtn.on('pointerup', () => this.scene.start('MainMenu'));
+
+        this.scale.on('resize', () => this.scene.restart(), this);
     }
 
     _buildWorldCards() {
+        const { width, height } = this.cameras.main;
         const progress  = getMathProgress();
         const cardW     = 200;
         const cardH     = 155;
         const gap       = 40;
         const totalW    = 3 * cardW + 2 * gap;   // 680
-        const startX    = (1024 - totalW) / 2;    // 172
+        const startX    = (width - totalW) / 2;
 
         const addWorlds = MATH_WORLDS.filter(w => (w.operation ?? 'add') === 'add');
         const subWorlds = MATH_WORLDS.filter(w => w.operation === 'sub');
 
         // ── Section header: Addition ─────────────────────────────────────────
-        this.add.text(512, 162, t('additionSection'), {
+        this.add.text(width / 2, Math.round(height * 0.211), t('additionSection'), {
             fontSize: '20px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#aaddff',
@@ -98,16 +101,16 @@ export class MathWorldSelectScene extends Scene {
 
         addWorlds.forEach((world, i) => {
             const cx = startX + i * (cardW + gap) + cardW / 2;
-            this._buildCard(world, cx, 278, cardW, cardH, progress);
+            this._buildCard(world, cx, Math.round(height * 0.362), cardW, cardH, progress);
         });
 
         // ── Divider ──────────────────────────────────────────────────────────
         const div = this.add.graphics();
         div.lineStyle(1, 0x445566, 0.6);
-        div.lineBetween(80, 375, 944, 375);
+        div.lineBetween(Math.round(width * 0.078), Math.round(height * 0.488), Math.round(width * 0.922), Math.round(height * 0.488));
 
         // ── Section header: Soustraction ─────────────────────────────────────
-        this.add.text(512, 390, t('subtractionSection'), {
+        this.add.text(width / 2, Math.round(height * 0.508), t('subtractionSection'), {
             fontSize: '20px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffddaa',
@@ -117,7 +120,7 @@ export class MathWorldSelectScene extends Scene {
 
         subWorlds.forEach((world, i) => {
             const cx = startX + i * (cardW + gap) + cardW / 2;
-            this._buildCard(world, cx, 510, cardW, cardH, progress);
+            this._buildCard(world, cx, Math.round(height * 0.664), cardW, cardH, progress);
         });
     }
 

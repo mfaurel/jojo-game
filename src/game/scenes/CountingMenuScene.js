@@ -20,8 +20,9 @@ export class CountingMenuScene extends Scene {
 
     create() {
         this._drawBackground();
+        const { width, height } = this.cameras.main;
 
-        this.add.text(512, 44, t('countingTitle'), {
+        this.add.text(width / 2, 44, t('countingTitle'), {
             fontSize: '44px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffd700',
@@ -29,7 +30,7 @@ export class CountingMenuScene extends Scene {
             strokeThickness: 6,
         }).setOrigin(0.5);
 
-        this.add.text(512, 96, t('countingChoose'), {
+        this.add.text(width / 2, 96, t('countingChoose'), {
             fontSize: '24px',
             color: '#aaffcc',
             stroke: '#000',
@@ -39,7 +40,7 @@ export class CountingMenuScene extends Scene {
         const progress = getCountingProgress();
         const doneCnt  = COUNTING_LEVELS.filter(l => progress[l.id]).length;
         if (doneCnt > 0) {
-            this.add.text(512, 128, t('countingProgress', doneCnt, COUNTING_LEVELS.length), {
+            this.add.text(width / 2, 128, t('countingProgress', doneCnt, COUNTING_LEVELS.length), {
                 fontSize: '18px',
                 color: '#ffd700',
                 stroke: '#000',
@@ -56,6 +57,8 @@ export class CountingMenuScene extends Scene {
             padding: { x: 10, y: 5 },
         }).setOrigin(0, 0).setInteractive({ useHandCursor: true });
         backBtn.on('pointerup', () => this.scene.start('MainMenu'));
+
+        this.scale.on('resize', () => this.scene.restart(), this);
     }
 
     _drawBackground() {
@@ -115,12 +118,13 @@ export class CountingMenuScene extends Scene {
     }
 
     _buildCards(progress) {
+        const { width, height } = this.cameras.main;
         const cardW  = 160;
         const cardH  = 180;
         const gap    = 28;
         const totalW = COUNTING_LEVELS.length * cardW + (COUNTING_LEVELS.length - 1) * gap;
-        const startX = (1024 - totalW) / 2 + cardW / 2;
-        const cy     = 420;
+        const startX = (width - totalW) / 2 + cardW / 2;
+        const cy     = Math.round(height * 0.547);
 
         COUNTING_LEVELS.forEach((level, i) => {
             const cx      = startX + i * (cardW + gap);

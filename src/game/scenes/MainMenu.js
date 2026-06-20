@@ -16,6 +16,7 @@ export class MainMenu extends Scene {
 
     create() {
         const equip = getEquipment();
+        const { width, height } = this.cameras.main;
 
         if (equip.background === 'bg_castle') {
             this._drawCastleBg();
@@ -27,7 +28,7 @@ export class MainMenu extends Scene {
             this._drawNightBg();
         }
 
-        this.add.text(512, 150, t('gameTitle'), {
+        this.add.text(width / 2, Math.round(height * 0.195), t('gameTitle'), {
             fontSize: '64px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffd700',
@@ -35,27 +36,31 @@ export class MainMenu extends Scene {
             strokeThickness: 8,
         }).setOrigin(0.5);
 
-        this.add.text(512, 230, t('gameSubtitle'), {
+        this.add.text(width / 2, Math.round(height * 0.299), t('gameSubtitle'), {
             fontSize: '28px',
             color: '#ddaaff',
             stroke: '#000',
             strokeThickness: 3,
         }).setOrigin(0.5);
 
-        // 2×2 grid of mode buttons (centers at 256 / 768 to ensure 62 px gap for 430 px wide buttons)
-        this._createChoiceButton(256, 360, t('btnSpelling'), 0x2a2a88, 430, () => {
+        const col1  = Math.round(width * 0.25);
+        const col2  = Math.round(width * 0.75);
+        const row1Y = Math.round(height * 0.469);
+        const row2Y = Math.round(height * 0.677);
+
+        this._createChoiceButton(col1, row1Y, t('btnSpelling'), 0x2a2a88, 430, () => {
             hideBanner(); this.scene.start('SpellingMenu');
         });
 
-        this._createChoiceButton(768, 360, t('btnMath'), 0xaa8800, 430, () => {
+        this._createChoiceButton(col2, row1Y, t('btnMath'), 0xaa8800, 430, () => {
             hideBanner(); this.scene.start('MathWorldSelectScene');
         });
 
-        this._createChoiceButton(256, 520, t('btnMemory'), 0xcc5500, 430, () => {
+        this._createChoiceButton(col1, row2Y, t('btnMemory'), 0xcc5500, 430, () => {
             hideBanner(); this.scene.start('MemoryMenuScene');
         });
 
-        this._createChoiceButton(768, 520, t('btnCounting'), 0x1a6a2a, 430, () => {
+        this._createChoiceButton(col2, row2Y, t('btnCounting'), 0x1a6a2a, 430, () => {
             hideBanner(); this.scene.start('CountingMenuScene');
         });
 
@@ -63,22 +68,22 @@ export class MainMenu extends Scene {
 
         const spellingDone = LEVELS.filter(l => getProgress()[l.id]).length;
         if (spellingDone > 0) {
-            this.add.text(256, 400, t('spellingProgress', spellingDone, LEVELS.length), progressStyle).setOrigin(0.5, 0.5);
+            this.add.text(col1, row1Y + 40, t('spellingProgress', spellingDone, LEVELS.length), progressStyle).setOrigin(0.5, 0.5);
         }
 
         const mathDone = MATH_WORLDS.filter((_, i) => getMathProgress()[i]).length;
         if (mathDone > 0) {
-            this.add.text(768, 400, t('mathProgress', mathDone, MATH_WORLDS.length), progressStyle).setOrigin(0.5, 0.5);
+            this.add.text(col2, row1Y + 40, t('mathProgress', mathDone, MATH_WORLDS.length), progressStyle).setOrigin(0.5, 0.5);
         }
 
         const memoryDone = MEMORY_LEVELS.filter((_, i) => getMemoryProgress()[i]).length;
         if (memoryDone > 0) {
-            this.add.text(256, 560, t('memoryProgress', memoryDone, MEMORY_LEVELS.length), progressStyle).setOrigin(0.5, 0.5);
+            this.add.text(col1, row2Y + 40, t('memoryProgress', memoryDone, MEMORY_LEVELS.length), progressStyle).setOrigin(0.5, 0.5);
         }
 
         const countingDone = COUNTING_LEVELS.filter((_, i) => getCountingProgress()[i]).length;
         if (countingDone > 0) {
-            this.add.text(768, 560, t('countingProgress', countingDone, COUNTING_LEVELS.length), progressStyle).setOrigin(0.5, 0.5);
+            this.add.text(col2, row2Y + 40, t('countingProgress', countingDone, COUNTING_LEVELS.length), progressStyle).setOrigin(0.5, 0.5);
         }
 
         this._createCollectionButton();
@@ -91,6 +96,8 @@ export class MainMenu extends Scene {
         this._flushPendingToasts();
 
         showBanner();
+
+        this.scale.on('resize', () => this.scene.restart(), this);
     }
 
     // ── Background themes ─────────────────────────────────────────────────────
@@ -328,8 +335,9 @@ export class MainMenu extends Scene {
     }
 
     _createLangButton() {
+        const { width } = this.cameras.main;
         const lang = getLang().toUpperCase();
-        const btn = this.add.text(960, 35, lang, {
+        const btn = this.add.text(width - 64, 35, lang, {
             fontSize: '22px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffffff',
@@ -485,7 +493,8 @@ export class MainMenu extends Scene {
         const total    = spellingStars + memoryStars + countingStars + mathStars + easterStar;
         const maxTotal = maxSpelling + maxMemory + maxCounting + maxMath + easterStar;
 
-        const px = 10, py = 595, pw = 270, ph = 158;
+        const { height } = this.cameras.main;
+        const px = 10, py = height - 173, pw = 270, ph = 158;
 
         const bg = this.add.graphics();
         bg.fillStyle(0x000000, 0.55);
@@ -523,7 +532,8 @@ export class MainMenu extends Scene {
     }
 
     _createCollectionButton() {
-        this._createSmallButton(900, 710, t('btnCollection'), 0xaa00aa, () => {
+        const { width, height } = this.cameras.main;
+        this._createSmallButton(width - 124, height - 58, t('btnCollection'), 0xaa00aa, () => {
             hideBanner();
             const r = checkAndUnlock('explorer');
             if (r.wasNew) this._queueToast('explorer', r.rewardItemId);

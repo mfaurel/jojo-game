@@ -11,10 +11,11 @@ export class SpellingMenu extends Scene {
     create() {
         this.cameras.main.setBackgroundColor(0x1a1a5e);
         document.body.style.backgroundColor = '#1a1a5e';
+        const { width, height } = this.cameras.main;
 
         // Night sky stars
         for (let i = 0; i < 60; i++) {
-            const x = Math.random() * 1024;
+            const x = Math.random() * width;
             const y = Math.random() * 420;
             const r = 1 + Math.random() * 2;
             const star = this.add.circle(x, y, r, 0xffffff, 0.6 + Math.random() * 0.4);
@@ -28,9 +29,10 @@ export class SpellingMenu extends Scene {
             });
         }
 
-        this._drawCastle();
+        const castleGfx = this._drawCastle();
+        castleGfx.x = Math.max(0, Math.round((width - 1024) / 2));
 
-        this.add.text(512, 55, t('spellingTitle'), {
+        this.add.text(width / 2, 55, t('spellingTitle'), {
             fontSize: '44px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffd700',
@@ -38,16 +40,16 @@ export class SpellingMenu extends Scene {
             strokeThickness: 6,
         }).setOrigin(0.5);
 
-        this.add.text(512, 118, t('spellingSubtitle'), {
+        this.add.text(width / 2, 118, t('spellingSubtitle'), {
             fontSize: '24px',
             color: '#ddaaff',
             stroke: '#000',
             strokeThickness: 3,
         }).setOrigin(0.5);
 
-        this._drawCharacter(512, 210);
+        this._drawCharacter(width / 2, 210);
 
-        this.add.text(512, 290, t('chooseLevel'), {
+        this.add.text(width / 2, 290, t('chooseLevel'), {
             fontSize: '26px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffffff',
@@ -65,9 +67,12 @@ export class SpellingMenu extends Scene {
             padding: { x: 10, y: 5 }
         }).setInteractive({ useHandCursor: true });
         backBtn.on('pointerup', () => this.scene.start('MainMenu'));
+
+        this.scale.on('resize', () => this.scene.restart(), this);
     }
 
     _buildLevelCards() {
+        const { width } = this.cameras.main;
         const progress = getProgress();
         const cardW = 175;
         const cardH = 105;
@@ -75,10 +80,10 @@ export class SpellingMenu extends Scene {
         const row1Levels = LEVELS.slice(0, 5);
         const row2Levels = LEVELS.slice(5);
         const totalW  = 5 * cardW + 4 * gap;
-        const startX  = (1024 - totalW) / 2;
+        const startX  = (width - totalW) / 2;
 
         // ── Row 1 header ──────────────────────────────────────────────────────
-        this.add.text(512, 332, t('spellingRow1'), {
+        this.add.text(width / 2, 332, t('spellingRow1'), {
             fontSize: '16px',
             color: '#aaddff',
             stroke: '#000',
@@ -93,10 +98,10 @@ export class SpellingMenu extends Scene {
         // ── Divider ───────────────────────────────────────────────────────────
         const div = this.add.graphics().setDepth(9);
         div.lineStyle(1, 0x445566, 0.6);
-        div.lineBetween(80, 460, 944, 460);
+        div.lineBetween(Math.round(width * 0.078), 460, Math.round(width * 0.922), 460);
 
         // ── Row 2 header ──────────────────────────────────────────────────────
-        this.add.text(512, 475, t('spellingRow2'), {
+        this.add.text(width / 2, 475, t('spellingRow2'), {
             fontSize: '16px',
             color: '#ffddaa',
             stroke: '#000',
@@ -233,6 +238,7 @@ export class SpellingMenu extends Scene {
         g.fillStyle(0xffaa33, 0.6);
         g.fillCircle(171, 235, 9);
         g.fillCircle(853, 235, 9);
+        return g;
     }
 
     _drawCharacter(cx, cy) {

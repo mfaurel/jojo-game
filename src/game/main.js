@@ -34,7 +34,7 @@ const config = {
     parent: 'game-container',
     backgroundColor: '#1a1a5e',
     scale: {
-        mode: Scale.EXPAND,
+        mode: Scale.FIT,
         autoCenter: Scale.CENTER_BOTH,
         fullscreenTarget: 'game-container',
     },
@@ -81,40 +81,18 @@ const StartGame = (parent) => {
         }
     });
 
-    const centreScene = (scene) => {
-        if (scene.cameras?.main) {
-            const cam = scene.cameras.main;
-            cam.centerOn(cam.width / 2, cam.height / 2);
-        }
-    };
-    const centreAll = () => {
-        game.scene.scenes.forEach(s => { if (s.sys.settings.active) centreScene(s); });
-    };
-
-    game.scale.on('resize', centreAll);
-
-    // Chrome completes fullscreen transitions asynchronously; a second delayed
-    // refresh ensures correct centering in both directions.
-    const onFullscreenChange = () => setTimeout(() => { game.scale.refresh(); centreAll(); }, 120);
+    // Chrome completes fullscreen transitions asynchronously; a delayed refresh
+    // ensures Phaser recalculates the FIT dimensions in both directions.
+    const onFullscreenChange = () => setTimeout(() => { game.scale.refresh(); }, 120);
     game.scale.on('enterfullscreen', onFullscreenChange);
     game.scale.on('leavefullscreen', onFullscreenChange);
     document.addEventListener('fullscreenchange',       onFullscreenChange);
     document.addEventListener('webkitfullscreenchange', onFullscreenChange);
 
-    game.events.on('ready', () => {
-        game.scene.scenes.forEach(scene => {
-            scene.events.on('create', () => centreScene(scene));
-            scene.events.on('wake',   () => centreScene(scene));
-        });
-    });
-
-    window.addEventListener('resize', () => {
-        game.scale.refresh();
-        centreAll();
-    });
+    window.addEventListener('resize', () => { game.scale.refresh(); });
 
     window.addEventListener('orientationchange', () => {
-        setTimeout(() => { game.scale.refresh(); centreAll(); }, 300);
+        setTimeout(() => { game.scale.refresh(); }, 300);
     });
 
     return game;

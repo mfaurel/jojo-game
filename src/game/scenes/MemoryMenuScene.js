@@ -25,8 +25,9 @@ export class MemoryMenuScene extends Scene {
 
     create() {
         this._drawBackground();
+        const { width, height } = this.cameras.main;
 
-        this.add.text(512, 44, t('memoryTitle'), {
+        this.add.text(width / 2, 44, t('memoryTitle'), {
             fontSize: '44px',
             fontFamily: 'Arial Black, Arial, sans-serif',
             color: '#ffd700',
@@ -34,7 +35,7 @@ export class MemoryMenuScene extends Scene {
             strokeThickness: 6,
         }).setOrigin(0.5);
 
-        this.add.text(512, 96, t('memoryChoose'), {
+        this.add.text(width / 2, 96, t('memoryChoose'), {
             fontSize: '24px',
             color: '#ffcc88',
             stroke: '#000',
@@ -51,10 +52,12 @@ export class MemoryMenuScene extends Scene {
         }).setOrigin(0, 0).setInteractive({ useHandCursor: true });
         backBtn.on('pointerup', () => this.scene.start('MainMenu'));
 
+        this.scale.on('resize', () => this.scene.restart(), this);
+
         const progress  = getMemoryProgress();
         const doneCnt   = MEMORY_LEVELS.filter(l => progress[l.id]).length;
         if (doneCnt > 0) {
-            this.add.text(512, 128, t('memoryProgress', doneCnt, MEMORY_LEVELS.length), {
+            this.add.text(width / 2, 128, t('memoryProgress', doneCnt, MEMORY_LEVELS.length), {
                 fontSize: '18px',
                 color: '#ffd700',
                 stroke: '#000',
@@ -122,18 +125,19 @@ export class MemoryMenuScene extends Scene {
     }
 
     _buildGrid() {
+        const { width, height } = this.cameras.main;
         const progress  = getMemoryProgress();
         const cardW = 260;
         const cardH = 130;
         const gapX  = 28;
 
         const totalW = 3 * cardW + 2 * gapX;
-        const startX = (1024 - totalW) / 2 + cardW / 2;
-        const rowYs  = [230, 390, 550];
+        const startX = (width - totalW) / 2 + cardW / 2;
+        const rowYs  = [Math.round(height * 0.299), Math.round(height * 0.508), Math.round(height * 0.716)];
 
         // Row headers
         rowYs.forEach((ry, rowIdx) => {
-            this.add.text(512, ry - 54, t(ROW_LABELS[rowIdx]), {
+            this.add.text(width / 2, ry - 54, t(ROW_LABELS[rowIdx]), {
                 fontSize: '17px',
                 color: '#ffcc88',
                 stroke: '#000',
@@ -142,7 +146,7 @@ export class MemoryMenuScene extends Scene {
 
             const div = this.add.graphics().setDepth(0);
             div.lineStyle(1, 0x664422, 0.5);
-            div.lineBetween(80, ry - 72, 944, ry - 72);
+            div.lineBetween(Math.round(width * 0.078), ry - 72, Math.round(width * 0.922), ry - 72);
         });
 
         MEMORY_LEVELS.forEach((level, i) => {

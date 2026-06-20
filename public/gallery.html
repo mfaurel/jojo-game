@@ -4514,6 +4514,213 @@ WORD_ICONS.forEach(({ key, draw1, draw2 }) => {
 wordSection.appendChild(wordRow);
 document.body.appendChild(wordSection);
 
+// ── Math Item Sprites ─────────────────────────────────────────────────────────
+
+const ITEM_SIZE = 200;
+
+function makeItemCanvas(drawFn, bgColor, offsetY = 0, scale = 0.55) {
+    const canvas = document.createElement('canvas');
+    canvas.width  = ITEM_SIZE;
+    canvas.height = ITEM_SIZE;
+    canvas.style.background = bgColor;
+    const ctx = canvas.getContext('2d');
+    ctx.save();
+    ctx.translate(ITEM_SIZE / 2, ITEM_SIZE / 2 + offsetY);
+    ctx.scale(scale, scale);
+    const g = makeG(ctx);
+    drawFn(g);
+    ctx.restore();
+    return canvas;
+}
+
+function drawStar(g, cx, cy, spikes, outer, inner) {
+    let rot = Math.PI / 2 * 3;
+    g.beginPath();
+    g.moveTo(cx, cy - outer);
+    for (let i = 0; i < spikes; i++) {
+        g.lineTo(cx + Math.cos(rot) * outer, cy + Math.sin(rot) * outer);
+        rot += Math.PI / spikes;
+        g.lineTo(cx + Math.cos(rot) * inner, cy + Math.sin(rot) * inner);
+        rot += Math.PI / spikes;
+    }
+    g.lineTo(cx, cy - outer);
+    g.closePath();
+    g.fillPath();
+}
+
+function drawItemTeddy(g) {
+    g.fillStyle(0x5d2e0c, 1); g.fillEllipse(5, 5, 130, 170);
+    g.fillStyle(0x8b4513, 1); g.fillEllipse(0, 0, 130, 170);
+    g.fillStyle(0xa0522d, 1); g.fillCircle(-40, -60, 45);
+    g.lineStyle(3, 0x5d2e0c, 1); g.strokeCircle(-40, -60, 45);
+    g.fillStyle(0xcd853f, 0.4); g.fillCircle(-30, -70, 15);
+    g.fillStyle(0x8b4513, 1); g.fillCircle(-75, -95, 22); g.fillCircle(-5, -95, 22);
+    g.fillStyle(0x000000, 1); g.fillCircle(-55, -65, 6); g.fillCircle(-25, -65, 6);
+    g.fillStyle(0xffffff, 1); g.fillCircle(-57, -67, 2); g.fillCircle(-27, -67, 2);
+}
+
+function drawItemShield(g) {
+    g.fillStyle(0x3d1a00, 0.5);
+    g.beginPath(); g.moveTo(-52,-68); g.lineTo(57,-68); g.lineTo(57,33); g.lineTo(2,83); g.lineTo(-52,33); g.closePath(); g.fillPath();
+    g.fillStyle(0x8b4513, 1);
+    g.beginPath(); g.moveTo(-55,-70); g.lineTo(55,-70); g.lineTo(55,30); g.lineTo(0,80); g.lineTo(-55,30); g.closePath(); g.fillPath();
+    g.fillStyle(0xcd853f, 1);
+    g.beginPath(); g.moveTo(-38,-55); g.lineTo(38,-55); g.lineTo(38,22); g.lineTo(0,60); g.lineTo(-38,22); g.closePath(); g.fillPath();
+    g.fillStyle(0xffd700, 1); g.fillRect(-5,-50,10,115); g.fillRect(-38,-8,76,10);
+    g.fillStyle(0xffd700, 1); g.fillCircle(0,0,14);
+    g.fillStyle(0xffee88, 1); g.fillCircle(-3,-3,5);
+    g.lineStyle(4, 0x5d2e0c, 1);
+    g.beginPath(); g.moveTo(-55,-70); g.lineTo(55,-70); g.lineTo(55,30); g.lineTo(0,80); g.lineTo(-55,30); g.closePath(); g.strokePath();
+}
+
+function drawItemMagicGlove(g) {
+    g.fillStyle(0x6a0dad, 1); g.fillEllipse(0, 20, 110, 150);
+    g.fillStyle(0x7b14c4, 1);
+    for (let i = 0; i < 4; i++) g.fillRoundedRect(-44 + i * 28, -70, 22, 60, 10);
+    g.fillRoundedRect(-62, -40, 22, 50, 10);
+    g.lineStyle(2, 0xff88ff, 0.8); g.strokeCircle(0, 30, 28);
+    g.lineStyle(2, 0xffccff, 0.6); g.lineBetween(-20, 10, 20, 50); g.lineBetween(20, 10, -20, 50);
+    g.fillStyle(0xff88ff, 0.9); g.fillCircle(-30, -80, 7); g.fillCircle(35, -90, 5); g.fillCircle(0, -100, 9);
+}
+
+function drawItemUmbrella(g) {
+    g.fillStyle(0x5d2e0c, 1); g.fillRect(-6, 60, 12, 100);
+    g.fillStyle(0x5d2e0c, 1); g.fillRect(-6, 155, 30, 10); g.fillCircle(26, 160, 12);
+    const colors = [0xff4444, 0xff9900, 0xffee00, 0x44ee44, 0x44aaff, 0xaa44ff, 0xff44cc];
+    for (let i = 0; i < 7; i++) {
+        const a1 = (i / 7) * Math.PI, a2 = ((i + 1) / 7) * Math.PI, r = 90;
+        g.fillStyle(colors[i], 1);
+        g.beginPath(); g.moveTo(0, 20);
+        g.lineTo(Math.cos(Math.PI - a1) * r, 20 - Math.sin(a1) * 55);
+        g.lineTo(Math.cos(Math.PI - a2) * r, 20 - Math.sin(a2) * 55);
+        g.closePath(); g.fillPath();
+    }
+    g.lineStyle(3, 0xffffff, 0.5);
+    g.beginPath();
+    for (let a = 0; a <= Math.PI; a += 0.1) {
+        const x = Math.cos(Math.PI - a) * 90, y = 20 - Math.sin(a) * 55;
+        if (a === 0) g.moveTo(x, y); else g.lineTo(x, y);
+    }
+    g.strokePath();
+    g.fillStyle(0xffd700, 1); g.fillCircle(0, -37, 8);
+}
+
+function drawItemFlower(g) {
+    g.lineStyle(4, 0x228822, 1);
+    g.lineBetween(0, 80, -20, -20); g.lineBetween(0, 80, 0, -30); g.lineBetween(0, 80, 20, -15);
+    const petals = [{cx:-20,cy:-20,c:0xff88cc},{cx:0,cy:-30,c:0xff4488},{cx:20,cy:-15,c:0xff99dd}];
+    petals.forEach(p => {
+        for (let i = 0; i < 5; i++) {
+            const a = (i / 5) * Math.PI * 2;
+            g.fillStyle(p.c, 1); g.fillCircle(p.cx + Math.cos(a)*16, p.cy + Math.sin(a)*16, 12);
+        }
+        g.fillStyle(0xffee00, 1); g.fillCircle(p.cx, p.cy, 10);
+    });
+    g.fillStyle(0x88ee44, 1); g.fillRoundedRect(-10, 60, 20, 60, 6);
+    g.lineStyle(2, 0xffd700, 1); g.strokeRoundedRect(-10, 60, 20, 60, 6);
+}
+
+function drawItemWand(g) {
+    g.fillStyle(0xbb8a6a, 1); g.fillCircle(5, 5, 45);
+    g.fillStyle(0xffe4b5, 1); g.fillCircle(0, 0, 45);
+    g.fillStyle(0x2b1e1e, 1); g.fillRect(-3, -160, 12, 160);
+    g.fillStyle(0x4b2e1e, 1); g.fillRect(-6, -160, 10, 160);
+    g.fillStyle(0xffa500, 1); drawStar(g, 0, -170, 5, 45, 20);
+    g.fillStyle(0xffd700, 1); drawStar(g, -2, -172, 5, 40, 18);
+}
+
+function drawItemCandyCane(g) {
+    const colors = [0xffffff, 0xdd1111];
+    for (let i = 0; i < 8; i++) { g.fillStyle(colors[i%2],1); g.fillRect(-14,-80+i*22,28,22); }
+    g.fillStyle(0xffffff, 1); g.fillRect(-14,-80,60,28); g.fillRect(32,-80,28,55);
+    g.fillStyle(0xdd1111, 1); g.fillRect(-14,-80,60,11); g.fillRect(32,-80,28,11); g.fillRect(32,-47,28,11);
+    g.fillStyle(0xffffff, 0.6); g.fillRect(-8,-78,6,150);
+    g.fillStyle(0xffdddd, 1); g.fillCircle(46,-52,8);
+}
+
+function drawItemSword(g) {
+    g.fillStyle(0xaaaaaa, 1); g.fillTriangle(-10,-60,10,-60,0,-200); g.fillRect(-10,-60,20,120);
+    g.fillStyle(0xeeeeee, 1); g.fillTriangle(-2,-60,4,-60,0,-195); g.fillRect(-2,-60,6,120);
+    g.fillStyle(0xffd700, 1); g.fillRect(-50,55,100,18); g.fillCircle(-50,64,10); g.fillCircle(50,64,10);
+    g.fillStyle(0x5d2e0c, 1); g.fillRect(-12,73,24,80);
+    g.lineStyle(3, 0x3d1a00, 0.7);
+    for (let i = 0; i < 5; i++) g.lineBetween(-12, 80+i*14, 12, 80+i*14);
+    g.fillStyle(0xffd700, 1); g.fillCircle(0,160,16);
+    g.fillStyle(0xffee88, 1); g.fillCircle(-4,156,6);
+}
+
+function drawItemIceCream(g) {
+    g.fillStyle(0xf4a460, 1); g.fillTriangle(-20,30,20,30,0,120);
+    g.lineStyle(2, 0xc8862b, 0.7);
+    g.lineBetween(-10,50,0,120); g.lineBetween(10,50,0,120); g.lineBetween(-20,30,20,30); g.lineBetween(-17,45,17,45); g.lineBetween(-12,65,12,65);
+    g.fillStyle(0xffcc99, 1); g.fillCircle(0,0,38);
+    g.fillStyle(0xffddbb, 0.6); g.fillCircle(-8,-8,18);
+    g.fillStyle(0xff88cc, 1); g.fillCircle(0,-55,32);
+    g.fillStyle(0xffaadd, 0.6); g.fillCircle(-6,-62,14);
+    g.fillStyle(0x99ddff, 1); g.fillCircle(5,-105,26);
+    g.fillStyle(0xbbeeFF, 0.6); g.fillCircle(-2,-112,11);
+    g.fillStyle(0xdd0000, 1); g.fillCircle(5,-134,10);
+    g.lineStyle(2, 0x228822, 1); g.lineBetween(5,-134,14,-148);
+    const sc = [0xff4444,0x44ff88,0x4488ff,0xffee00];
+    [[-8,-20],[12,-8],[-5,10],[16,-35],[-14,-45]].forEach(([sx,sy],i)=>{
+        g.fillStyle(sc[i%sc.length],1); g.fillRect(sx-3,sy-1,8,3);
+    });
+}
+
+const ITEM_BG = '#0a0a1a';
+
+const LEFT_ITEMS = [
+    { fn: drawItemTeddy,      label: 'Ourson',           offsetY:  5, scale: 0.50 },
+    { fn: drawItemShield,     label: 'Bouclier',         offsetY:  5, scale: 0.55 },
+    { fn: drawItemMagicGlove, label: 'Gant Magique',     offsetY:  0, scale: 0.55 },
+    { fn: drawItemUmbrella,   label: 'Parapluie',        offsetY:-30, scale: 0.52 },
+    { fn: drawItemFlower,     label: 'Bouquet de Fleurs',offsetY:-15, scale: 0.60 },
+];
+
+const RIGHT_ITEMS = [
+    { fn: drawItemWand,      label: 'Baguette Magique', offsetY: 25, scale: 0.50 },
+    { fn: drawItemCandyCane, label: 'Canne en Sucre',   offsetY:  5, scale: 0.55 },
+    { fn: drawItemSword,     label: 'Épée',             offsetY: 15, scale: 0.45 },
+    { fn: drawItemIceCream,  label: 'Glace',            offsetY: 10, scale: 0.55 },
+];
+
+function buildItemSection(title, items, titleBg) {
+    const section = document.createElement('div');
+    section.className = 'world';
+
+    const hdr = document.createElement('div');
+    hdr.className = 'world-title';
+    hdr.style.background = titleBg;
+    hdr.textContent = title;
+    section.appendChild(hdr);
+
+    const row = document.createElement('div');
+    row.className = 'monsters';
+
+    items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const nameEl = document.createElement('div');
+        nameEl.className = 'card-name';
+        nameEl.textContent = item.label;
+        card.appendChild(nameEl);
+
+        const wrap = document.createElement('div');
+        wrap.className = 'variant';
+        const cvs = makeItemCanvas(item.fn, ITEM_BG, item.offsetY, item.scale);
+        wrap.appendChild(cvs);
+        card.appendChild(wrap);
+        row.appendChild(card);
+    });
+
+    section.appendChild(row);
+    document.body.appendChild(section);
+}
+
+buildItemSection('🛡️ Main Gauche — Objets Math', LEFT_ITEMS,  '#2a1a4a');
+buildItemSection('⚔️ Main Droite — Objets Math', RIGHT_ITEMS, '#1a2a4a');
+
 </script>
 </body>
 </html>

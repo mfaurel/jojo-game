@@ -6,9 +6,9 @@
 
 | # | Item | Key files | Effort | Done when |
 |---|------|-----------|--------|-----------|
-I want that all 50 word have new alternative variants (2 structurally different icon shapes each). Takes longer but gives real alternatives so I can check them in the @gallery.html directly in any browser without commpiling.
-+
-Check all the screens, verify with playwright and center the game when we have different kind of screen (browser, browser full screen, tablet, phone in portrait, phone in landscape or check with different kind of pixel ratio 1024*768px, 1280	1024, 1600	1200, 1920 × 1080 ...  : add tests to ensure that it works)
+Jojogames during first loading screen is correctly centered. Fix the other screens so it's centered alike. Also, when you do test, try to resize the browser. IT should always be centered in the middle of the screen with same size on left and right. Take also example of "Ma collection" which is rightly centered.
+
+Put at the end of gallery.html the sprites of items for right hand and left hand of mathematics game
 
 ---
 
