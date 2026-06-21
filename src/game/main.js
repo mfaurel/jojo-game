@@ -66,6 +66,7 @@ const config = {
 
 const StartGame = (parent) => {
     const game = new Game({ ...config, parent });
+    window.__game = game;
 
     initAds();
     initIAP();

@@ -61,9 +61,9 @@ export class CollectionScene extends Scene {
         this._flushPendingToasts();
 
         // B5: restart scene on resize so layout stays centered, preserving active tab
-        this.scale.on('resize', () => {
-            this.scene.restart({ tab: this.activeTab });
-        }, this);
+        const _onResize = () => this.scene.restart({ tab: this.activeTab });
+        this.scale.on('resize', _onResize, this);
+        this.events.once('shutdown', () => this.scale.off('resize', _onResize, this), this);
     }
 
     _attachBonusStarToTitle(titleText) {

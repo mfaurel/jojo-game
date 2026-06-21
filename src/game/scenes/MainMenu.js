@@ -97,7 +97,9 @@ export class MainMenu extends Scene {
 
         showBanner();
 
-        this.scale.on('resize', () => this.scene.restart(), this);
+        const _onResize = () => this.scene.restart();
+        this.scale.on('resize', _onResize, this);
+        this.events.once('shutdown', () => this.scale.off('resize', _onResize, this), this);
     }
 
     // ── Background themes ─────────────────────────────────────────────────────

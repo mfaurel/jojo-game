@@ -52,7 +52,9 @@ export class MemoryMenuScene extends Scene {
         }).setOrigin(0, 0).setInteractive({ useHandCursor: true });
         backBtn.on('pointerup', () => this.scene.start('MainMenu'));
 
-        this.scale.on('resize', () => this.scene.restart(), this);
+        const _onResize = () => this.scene.restart();
+        this.scale.on('resize', _onResize, this);
+        this.events.once('shutdown', () => this.scale.off('resize', _onResize, this), this);
 
         const progress  = getMemoryProgress();
         const doneCnt   = MEMORY_LEVELS.filter(l => progress[l.id]).length;
