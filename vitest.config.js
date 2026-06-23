@@ -5,6 +5,7 @@ export default defineConfig({
         environment: 'jsdom',
         globals: true,
         clearMocks: true,
+        exclude: ['**/node_modules/**', '**/dist/**', 'e2e/**'],
         coverage: {
             provider: 'v8',
             include: ['src/game/data/**', 'src/game/systems/**', 'src/game/services/**'],
