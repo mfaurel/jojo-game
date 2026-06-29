@@ -2,8 +2,7 @@ import { Scene } from 'phaser';
 import { ITEMS, RARITY, CARD_BACK_ITEMS } from '../data/ItemData.js';
 import { getInventory, getEquipment, setEquipment } from '../data/LevelData.js';
 import { t } from '../data/I18n.js';
-import { isNameUnlocked, getChildName, setChildName } from '../services/NameService.js';
-import { purchaseProduct } from '../services/IAPService.js';
+import { getChildName, setChildName } from '../services/NameService.js';
 import { getEasterStar, saveEasterStar } from '../data/LevelData.js';
 import { ACHIEVEMENTS, getAchievements, getProgress as getAchProgress } from '../services/AchievementService.js';
 import { showAchievementToast } from '../services/AchievementToast.js';
@@ -259,40 +258,14 @@ export class CollectionScene extends Scene {
             color: '#888888',
         }).setOrigin(0.5);
 
-        if (isNameUnlocked()) {
-            const current = getChildName();
-            const label = this.add.text(width / 2, sectionY + 36, `Prénom : ${current}`, {
-                fontSize: '20px',
-                fontFamily: 'Arial Black',
-                color: '#ffd700',
-            }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+        const current = getChildName();
+        const label = this.add.text(width / 2, sectionY + 36, `✏️ Prénom : ${current}`, {
+            fontSize: '20px',
+            fontFamily: 'Arial Black',
+            color: '#ffd700',
+        }).setOrigin(0.5).setInteractive({ useHandCursor: true });
 
-            label.on('pointerup', () => this._openNameInput(label));
-        } else {
-            const btnName = this._makePurchaseButton(width / 2 - 130, sectionY + 42,
-                '✏️ Prénom (~1 €)', 0x4422aa, () => {
-                    this.scene.launch('ParentalGateScene', {
-                        onSuccess: async () => {
-                            try {
-                                await purchaseProduct('unlock_child_name');
-                                this.scene.start('CollectionScene', { tab: 2 });
-                            } catch {}
-                        },
-                    });
-                });
-
-            this._makePurchaseButton(width / 2 + 130, sectionY + 42,
-                '🌟 Pack Premium (~5 €)', 0x885500, () => {
-                    this.scene.launch('ParentalGateScene', {
-                        onSuccess: async () => {
-                            try {
-                                await purchaseProduct('premium_bundle');
-                                this.scene.start('CollectionScene', { tab: 2 });
-                            } catch {}
-                        },
-                    });
-                });
-        }
+        label.on('pointerup', () => this._openNameInput(label));
     }
 
     _makePurchaseButton(x, y, label, color, onClick) {
