@@ -6,8 +6,6 @@
 
 | # | Item | Key files | Effort | Done when |
 |---|------|-----------|--------|-----------|
-Jojogames during first loading screen is correctly centered. Fix the other screens so it's centered alike. Also, when you do test, try to resize the browser. IT should always be centered in the middle of the screen with same size on left and right. Take also example of "Ma collection" which is rightly centered.
-
 Put at the end of gallery.html the sprites of items for right hand and left hand of mathematics game
 
 ---
